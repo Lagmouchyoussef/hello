@@ -248,6 +248,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/data.js"></script>
     <script src="../js/script.js"></script>
     <script>
         function toggleSidebar() {
@@ -259,10 +260,279 @@
             window.location.href = '../../LOGING/html/loging.html';
         }
 
-        // Enhanced search and filter functionality
-        document.getElementById('search-appointment').addEventListener('input', filterAppointments);
-        document.getElementById('filter-status').addEventListener('change', filterAppointments);
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAppointments();
+            populatePatientSelect();
+            populateDentistSelect();
 
+            // Enhanced search and filter functionality
+            document.getElementById('search-appointment').addEventListener('input', filterAppointments);
+            document.getElementById('filter-status').addEventListener('change', filterAppointments);
+        });
+
+        // Load and display appointments
+        function loadAppointments() {
+            const appointments = dataManager.getAll('appointments');
+            const tbody = document.querySelector('#appointments-table tbody');
+            tbody.innerHTML = '';
+
+            if (appointments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Aucun rendez-vous trouvé</td></tr>';
+                document.getElementById('total-appointments').textContent = '0';
+                return;
+            }
+
+            // Sort appointments by date (most recent first)
+            appointments.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            appointments.forEach(appointment => {
+                const patient = dataManager.getById('patients', appointment.patientId);
+                const patientName = patient ? `${patient.nom} ${patient.prenom}` : 'Patient inconnu';
+
+                const date = new Date(appointment.date);
+                const time = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+                const statusBadge = getStatusBadge(appointment.status);
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${appointment.id}</td>
+                    <td>${patientName}</td>
+                    <td>${date.toLocaleDateString('fr-FR')}</td>
+                    <td>${time}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-info action-btn" onclick="viewAppointment('${appointment.id}')">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary action-btn" onclick="editAppointment('${appointment.id}')">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger action-btn" onclick="deleteAppointment('${appointment.id}')">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('total-appointments').textContent = appointments.length;
+        }
+
+        // Get status badge HTML
+        function getStatusBadge(status) {
+            const badges = {
+                'Confirmé': '<span class="badge bg-success">Confirmé</span>',
+                'En attente': '<span class="badge bg-warning">En attente</span>',
+                'Annulé': '<span class="badge bg-danger">Annulé</span>',
+                'Terminé': '<span class="badge bg-secondary">Terminé</span>'
+            };
+            return badges[status] || `<span class="badge bg-secondary">${status}</span>`;
+        }
+
+        // Populate patient select dropdowns
+        function populatePatientSelect() {
+            const patients = dataManager.getAll('patients');
+            const selects = ['appointment-patient', 'edit-appointment-patient'];
+
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    select.innerHTML = '<option value="">Sélectionner un patient</option>';
+                    patients.forEach(patient => {
+                        select.innerHTML += `<option value="${patient.id}">${patient.nom} ${patient.prenom}</option>`;
+                    });
+                }
+            });
+        }
+
+        // Populate dentist select dropdowns
+        function populateDentistSelect() {
+            const team = dataManager.getAll('team').filter(member => member.role === 'Dentiste');
+            const selects = ['appointment-dentiste', 'edit-appointment-dentiste'];
+
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    select.innerHTML = '<option value="">Sélectionner un dentiste</option>';
+                    team.forEach(member => {
+                        select.innerHTML += `<option value="${member.id}">${member.nom} ${member.prenom}</option>`;
+                    });
+                }
+            });
+        }
+
+        // Add new appointment
+        function addAppointment() {
+            const form = document.getElementById('add-appointment-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const date = document.getElementById('appointment-date').value;
+            const time = document.getElementById('appointment-time').value;
+            const dateTime = `${date}T${time}`;
+
+            const appointment = {
+                id: dataManager.generateId('Appointment'),
+                patientId: document.getElementById('appointment-patient').value,
+                dentisteId: document.getElementById('appointment-dentiste') ? document.getElementById('appointment-dentiste').value : '',
+                salleId: document.getElementById('appointment-salle') ? document.getElementById('appointment-salle').value : '',
+                date: dateTime,
+                type: document.getElementById('appointment-type') ? document.getElementById('appointment-type').value : 'Consultation',
+                status: document.getElementById('appointment-status').value,
+                notes: document.getElementById('appointment-notes').value,
+                dateCreation: new Date().toISOString()
+            };
+
+            dataManager.add('appointments', appointment);
+
+            // Close modal and reset form
+            bootstrap.Modal.getInstance(document.getElementById('addAppointmentModal')).hide();
+            form.reset();
+
+            // Reload appointments list
+            loadAppointments();
+
+            showNotification('Rendez-vous ajouté avec succès', 'success');
+        }
+
+        // Edit appointment
+        function editAppointment(appointmentId) {
+            const appointment = dataManager.getById('appointments', appointmentId);
+            if (!appointment) return;
+
+            // Fill edit form
+            document.getElementById('edit-appointment-id').value = appointment.id;
+            document.getElementById('edit-appointment-patient').value = appointment.patientId;
+            if (document.getElementById('edit-appointment-dentiste')) {
+                document.getElementById('edit-appointment-dentiste').value = appointment.dentisteId || '';
+            }
+            if (document.getElementById('edit-appointment-salle')) {
+                document.getElementById('edit-appointment-salle').value = appointment.salleId || '';
+            }
+
+            const date = new Date(appointment.date);
+            document.getElementById('edit-appointment-date').value = date.toISOString().split('T')[0];
+            document.getElementById('edit-appointment-time').value = date.toTimeString().slice(0, 5);
+            document.getElementById('edit-appointment-status').value = appointment.status;
+            if (document.getElementById('edit-appointment-type')) {
+                document.getElementById('edit-appointment-type').value = appointment.type || '';
+            }
+            if (document.getElementById('edit-appointment-notes')) {
+                document.getElementById('edit-appointment-notes').value = appointment.notes || '';
+            }
+
+            // Show modal
+            new bootstrap.Modal(document.getElementById('editAppointmentModal')).show();
+        }
+
+        // Update appointment
+        function updateAppointment() {
+            const form = document.getElementById('edit-appointment-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const appointmentId = document.getElementById('edit-appointment-id').value;
+            const date = document.getElementById('edit-appointment-date').value;
+            const time = document.getElementById('edit-appointment-time').value;
+            const dateTime = `${date}T${time}`;
+
+            const updatedAppointment = {
+                patientId: document.getElementById('edit-appointment-patient').value,
+                dentisteId: document.getElementById('edit-appointment-dentiste') ? document.getElementById('edit-appointment-dentiste').value : '',
+                salleId: document.getElementById('edit-appointment-salle') ? document.getElementById('edit-appointment-salle').value : '',
+                date: dateTime,
+                type: document.getElementById('edit-appointment-type') ? document.getElementById('edit-appointment-type').value : 'Consultation',
+                status: document.getElementById('edit-appointment-status').value,
+                notes: document.getElementById('edit-appointment-notes') ? document.getElementById('edit-appointment-notes').value : '',
+                dateModification: new Date().toISOString()
+            };
+
+            dataManager.update('appointments', appointmentId, updatedAppointment);
+
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('editAppointmentModal')).hide();
+
+            // Reload appointments list
+            loadAppointments();
+
+            showNotification('Rendez-vous modifié avec succès', 'success');
+        }
+
+        // View appointment details
+        function viewAppointment(appointmentId) {
+            const appointment = dataManager.getById('appointments', appointmentId);
+            if (!appointment) return;
+
+            const patient = dataManager.getById('patients', appointment.patientId);
+            const patientName = patient ? `${patient.nom} ${patient.prenom}` : 'Patient inconnu';
+
+            const date = new Date(appointment.date);
+
+            // Create view modal content
+            const viewModal = document.createElement('div');
+            viewModal.className = 'modal fade';
+            viewModal.id = 'viewAppointmentModal';
+            viewModal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: linear-gradient(135deg, #06b6d4, #0891b2); color: white;">
+                            <h5 class="modal-title"><i class="bi bi-calendar-event me-2"></i>Détails du Rendez-vous</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Informations générales</h6>
+                                    <p><strong>ID:</strong> ${appointment.id}</p>
+                                    <p><strong>Patient:</strong> ${patientName}</p>
+                                    <p><strong>Date:</strong> ${date.toLocaleDateString('fr-FR')}</p>
+                                    <p><strong>Heure:</strong> ${date.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}</p>
+                                    <p><strong>Type:</strong> ${appointment.type || 'Consultation'}</p>
+                                    <p><strong>Statut:</strong> ${getStatusBadge(appointment.status)}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Personnel et salle</h6>
+                                    <p><strong>Dentiste:</strong> ${appointment.dentisteId ? getDentistName(appointment.dentisteId) : 'Non assigné'}</p>
+                                    <p><strong>Salle:</strong> ${appointment.salleId ? getRoomName(appointment.salleId) : 'Non assignée'}</p>
+                                    <p><strong>Notes:</strong> ${appointment.notes || '-'}</p>
+                                    <p><strong>Créé le:</strong> ${new Date(appointment.dateCreation).toLocaleString('fr-FR')}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(viewModal);
+            new bootstrap.Modal(viewModal).show();
+
+            // Remove modal from DOM after it's hidden
+            viewModal.addEventListener('hidden.bs.modal', function() {
+                document.body.removeChild(viewModal);
+            });
+        }
+
+        // Delete appointment
+        function deleteAppointment(appointmentId) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer ce rendez-vous ? Cette action est irréversible.')) {
+                return;
+            }
+
+            dataManager.delete('appointments', appointmentId);
+            loadAppointments();
+            showNotification('Rendez-vous supprimé avec succès', 'success');
+        }
+
+        // Filter appointments
         function filterAppointments() {
             const searchTerm = document.getElementById('search-appointment').value.toLowerCase();
             const statusFilter = document.getElementById('filter-status').value;
@@ -272,7 +542,7 @@
                 const text = row.textContent.toLowerCase();
                 const status = row.cells[4].textContent;
                 const matchesSearch = text.includes(searchTerm);
-                const matchesStatus = !statusFilter || status === statusFilter;
+                const matchesStatus = !statusFilter || status.includes(statusFilter);
 
                 row.style.display = matchesSearch && matchesStatus ? '' : 'none';
             });
@@ -284,43 +554,36 @@
             filterAppointments();
         }
 
+        // Utility functions
+        function getDentistName(dentistId) {
+            const dentist = dataManager.getById('team', dentistId);
+            return dentist ? `${dentist.nom} ${dentist.prenom}` : 'Inconnu';
+        }
+
+        function getRoomName(roomId) {
+            const room = dataManager.getById('rooms', roomId);
+            return room ? room.nom : 'Inconnue';
+        }
+
         function exportAppointments() {
-            alert('Fonction d\'export en développement');
+            const appointments = dataManager.getAll('appointments');
+            const csvContent = "data:text/csv;charset=utf-8,"
+                + "ID,Patient ID,Date,Type,Status,Notes\n"
+                + appointments.map(a => `${a.id},${a.patientId},${a.date},${a.type},${a.status},"${a.notes || ''}"`).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "rendez-vous.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showNotification('Export terminé', 'success');
         }
 
         function importAppointments() {
-            alert('Fonction d\'import en développement');
-        }
-
-        // Override loadAppointments to include total count
-        const originalLoadAppointments = loadAppointments;
-        loadAppointments = function() {
-            originalLoadAppointments();
-            setTimeout(() => {
-                const rows = document.querySelectorAll('#appointments-table tbody tr');
-                document.getElementById('total-appointments').textContent = rows.length;
-            }, 100);
-        };
-
-        // Load data on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            initData();
-            loadAppointments();
-            populatePatientSelect();
-        });
-
-        function populatePatientSelect() {
-            const patients = loadData(DATA_KEYS.patients);
-            const selects = ['appointment-patient', 'edit-appointment-patient'];
-            selects.forEach(selectId => {
-                const select = document.getElementById(selectId);
-                if (select) {
-                    select.innerHTML = '<option value="">Sélectionner un patient</option>';
-                    patients.forEach(patient => {
-                        select.innerHTML += `<option value="${patient.id}">${patient.nom} ${patient.prenom}</option>`;
-                    });
-                }
-            });
+            showNotification('Fonction d\'import à implémenter', 'info');
         }
     </script>
 

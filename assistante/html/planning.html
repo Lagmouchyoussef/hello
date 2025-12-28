@@ -8,6 +8,104 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
     <style>
+        /* Global box-sizing */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1f2937;
+            --card-bg: #f8fafc;
+            --border-color: #e5e7eb;
+            --sidebar-bg: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --header-bg: #ffffff;
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1f2937;
+            --text-color: #f9fafb;
+            --card-bg: #374151;
+            --border-color: #4b5563;
+            --sidebar-bg: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            --header-bg: #374151;
+            --shadow: rgba(0,0,0,0.3);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: var(--sidebar-bg);
+            color: white;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 4px 0 20px var(--shadow);
+            border-right: 2px solid #1d4ed8;
+            overflow-y: auto;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .nav-link {
+            color: white !important;
+            padding: 18px 25px;
+            display: block;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 20px 20px 20px 20px;
+            transition: margin-left 0.3s;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+    <style>
         /* Planning specific styles */
         .planning-header {
             display: flex;
