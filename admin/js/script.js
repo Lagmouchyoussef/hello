@@ -7,6 +7,7 @@ const DATA_KEYS = {
     insurances: 'dikra_insurances',
     team: 'dikra_team',
     rooms: 'dikra_rooms',
+    messages: 'dikra_messages',
     settings: 'dikra_settings'
 };
 
@@ -32,6 +33,9 @@ function initData() {
     }
     if (!localStorage.getItem(DATA_KEYS.rooms)) {
         localStorage.setItem(DATA_KEYS.rooms, JSON.stringify([]));
+    }
+    if (!localStorage.getItem(DATA_KEYS.messages)) {
+        localStorage.setItem(DATA_KEYS.messages, JSON.stringify([]));
     }
     if (!localStorage.getItem(DATA_KEYS.settings)) {
         localStorage.setItem(DATA_KEYS.settings, JSON.stringify({
@@ -265,6 +269,27 @@ function loadRooms() {
     });
 }
 
+function loadMessages() {
+    const messages = loadData(DATA_KEYS.messages);
+    const tbody = document.querySelector('#messages-table tbody');
+    tbody.innerHTML = '';
+    messages.forEach(m => {
+        const row = `<tr>
+            <td>${m.id}</td>
+            <td>${m.subject}</td>
+            <td>${m.sender}</td>
+            <td>${m.recipient}</td>
+            <td>${m.status}</td>
+            <td>${m.date}</td>
+            <td>
+                <button class="btn btn-sm btn-warning" onclick="editMessage(${m.id})">Modifier</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteMessage(${m.id})">Supprimer</button>
+            </td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
+}
+
 // Add functions
 function addPatient() {
     const form = document.getElementById('add-patient-form');
@@ -415,6 +440,31 @@ function addRoom() {
     form.reset();
 }
 
+function addMessage() {
+    const form = document.getElementById('add-message-form');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+    const messages = loadData(DATA_KEYS.messages);
+    const newMessage = {
+        id: Date.now(),
+        subject: document.getElementById('message-subject').value,
+        sender: document.getElementById('message-sender').value || 'Admin',
+        recipient: document.getElementById('message-recipient').value,
+        content: document.getElementById('message-content').value,
+        status: document.getElementById('message-status').value,
+        date: new Date().toLocaleDateString('fr-FR'),
+        time: new Date().toLocaleTimeString('fr-FR')
+    };
+    messages.push(newMessage);
+    saveData(DATA_KEYS.messages, messages);
+    loadMessages();
+    bootstrap.Modal.getInstance(document.getElementById('addMessageModal')).hide();
+    form.reset();
+    showToast('Message envoyé avec succès', 'success');
+}
+
 // Delete functions (simplified, add confirmation)
 function deletePatient(id) {
     if (confirm('Supprimer ce patient ?')) {
@@ -472,6 +522,14 @@ function deleteRoom(id) {
         const rooms = loadData(DATA_KEYS.rooms).filter(r => r.id != id);
         saveData(DATA_KEYS.rooms, rooms);
         loadRooms();
+    }
+}
+
+function deleteMessage(id) {
+    if (confirm('Supprimer ce message ?')) {
+        const messages = loadData(DATA_KEYS.messages).filter(m => m.id != id);
+        saveData(DATA_KEYS.messages, messages);
+        loadMessages();
     }
 }
 
@@ -737,6 +795,46 @@ function updateRoom() {
     }
 }
 
+function editMessage(id) {
+    const messages = loadData(DATA_KEYS.messages);
+    const message = messages.find(m => m.id == id);
+    if (message) {
+        document.getElementById('edit-message-subject').value = message.subject;
+        document.getElementById('edit-message-sender').value = message.sender;
+        document.getElementById('edit-message-recipient').value = message.recipient;
+        document.getElementById('edit-message-content').value = message.content;
+        document.getElementById('edit-message-status').value = message.status;
+        document.getElementById('edit-message-id').value = message.id;
+        const modal = new bootstrap.Modal(document.getElementById('editMessageModal'));
+        modal.show();
+    }
+}
+
+function updateMessage() {
+    const form = document.getElementById('edit-message-form');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+    const messages = loadData(DATA_KEYS.messages);
+    const id = document.getElementById('edit-message-id').value;
+    const index = messages.findIndex(m => m.id == id);
+    if (index !== -1) {
+        messages[index] = {
+            ...messages[index],
+            subject: document.getElementById('edit-message-subject').value,
+            sender: document.getElementById('edit-message-sender').value,
+            recipient: document.getElementById('edit-message-recipient').value,
+            content: document.getElementById('edit-message-content').value,
+            status: document.getElementById('edit-message-status').value
+        };
+        saveData(DATA_KEYS.messages, messages);
+        loadMessages();
+        bootstrap.Modal.getInstance(document.getElementById('editMessageModal')).hide();
+        showToast('Message mis à jour avec succès', 'success');
+    }
+}
+
 // Settings
 function saveSettings() {
     const settings = {
@@ -784,6 +882,7 @@ function loadAll() {
     loadInsurances();
     loadTeam();
     loadRooms();
+    loadMessages();
     loadRecentPatients();
     populateSelects();
     initChart();
