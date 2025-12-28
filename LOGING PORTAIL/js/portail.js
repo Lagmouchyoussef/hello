@@ -8,15 +8,25 @@ if (!localStorage.getItem('patientCredentials')) {
     localStorage.setItem('patientCredentials', JSON.stringify(patientCredentials));
 }
 
-document.getElementById('patientLogingForm').addEventListener('submit', function(e) {
+document.getElementById('patientLoginForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const email = document.getElementById('patientEmail').value;
     const password = document.getElementById('patientPassword').value;
     const errorDiv = document.getElementById('patientError');
 
     if (email === patientCredentials.email && password === patientCredentials.password) {
+        // Set current patient
+        const mockPatient = {
+            id: 1,
+            nom: 'Dupont',
+            prenom: 'Jean',
+            email: email,
+            telephone: '0123456789',
+            naissance: '1990-01-01'
+        };
+        localStorage.setItem('current_patient', JSON.stringify(mockPatient));
         // Redirect to patient dashboard
-        window.location.href = '../patient/dashboard.html';
+        window.location.href = '../../patient/html/dashboard.html';
     } else {
         errorDiv.textContent = 'Email ou mot de passe incorrect.';
     }

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Patient - DIKRA Centre Dentaire</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="../../Photo/Photo.png" alt="Logo" width="64" height="64">
+            <h5>DIKRA Centre Dentaire</h5>
+            <p>Patient</p>
+        </div>
+        <nav class="nav flex-column pb-3">
+            <a href="dashboard.html" class="nav-link active">
+                <i class="bi bi-house-door me-2"></i>Tableau de bord
+            </a>
+            <a href="profil.html" class="nav-link">
+                <i class="bi bi-person me-2"></i>Mon Profil
+            </a>
+            <a href="rendez-vous.html" class="nav-link">
+                <i class="bi bi-calendar-event me-2"></i>Mes Rendez-vous
+            </a>
+            <a href="factures.html" class="nav-link">
+                <i class="bi bi-receipt me-2"></i>Mes Factures
+            </a>
+            <a href="messages.html" class="nav-link">
+                <i class="bi bi-envelope me-2"></i>Messagerie
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <p>Patient</p>
+            <button onclick="logout()">
+                <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <!-- Main Content Area -->
+        <div class="dashboard-grid">
+            <!-- Welcome Widget -->
+            <div class="widget welcome-widget">
+                <div class="widget-header">
+                    <h3>Bonjour, [Patient Name]</h3>
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <div class="widget-content">
+                    <h4>Bienvenue dans votre espace patient</h4>
+                    <p>Gérez vos rendez-vous, consultez vos factures et communiquez avec notre équipe.</p>
+                    <div class="welcome-stats">
+                        <div class="stat">
+                            <div class="stat-number" id="next-appointment-count">0</div>
+                            <div class="stat-label">RDV à venir</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="unpaid-bills-count">0</div>
+                            <div class="stat-label">Factures impayées</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="messages-count">0</div>
+                            <div class="stat-label">Messages non lus</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Appointments Widget -->
+            <div class="widget appointments-widget">
+                <div class="widget-header">
+                    <h3>Prochains rendez-vous</h3>
+                    <i class="bi bi-calendar-event"></i>
+                </div>
+                <div class="widget-content">
+                    <div class="appointments-list" id="next-appointments-list">
+                        <!-- Appointments will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Bills Widget -->
+            <div class="widget table-widget">
+                <div class="widget-header">
+                    <h3>Factures récentes</h3>
+                    <i class="bi bi-receipt"></i>
+                </div>
+                <div class="widget-content">
+                    <div class="table-responsive">
+                        <table class="table" id="recent-bills-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Montant</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Tips Widget -->
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Conseils santé</h3>
+                    <i class="bi bi-heart"></i>
+                </div>
+                <div class="widget-content">
+                    <div class="health-tip">
+                        <div class="tip-icon">
+                            <i class="bi bi-tooth"></i>
+                        </div>
+                        <div class="tip-content">
+                            <h5>Hygiène bucco-dentaire</h5>
+                            <p>Brossez-vous les dents 2 fois par jour pendant 2 minutes minimum.</p>
+                        </div>
+                    </div>
+                    <div class="health-tip">
+                        <div class="tip-icon">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <div class="tip-content">
+                            <h5>Contrôle annuel</h5>
+                            <p>Un bilan dentaire annuel permet de prévenir les problèmes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Widget -->
+            <div class="widget actions-widget">
+                <div class="widget-header">
+                    <h3>Actions rapides</h3>
+                </div>
+                <div class="widget-content">
+                    <a href="rendez-vous.html" class="quick-action-btn">
+                        <i class="bi bi-calendar-plus"></i>
+                        <span>Prendre RDV</span>
+                    </a>
+                    <a href="profil.html" class="quick-action-btn">
+                        <i class="bi bi-person-gear"></i>
+                        <span>Modifier Profil</span>
+                    </a>
+                    <a href="factures.html" class="quick-action-btn">
+                        <i class="bi bi-receipt"></i>
+                        <span>Voir Factures</span>
+                    </a>
+                    <a href="messages.html" class="quick-action-btn">
+                        <i class="bi bi-envelope"></i>
+                        <span>Messagerie</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Notifications Widget -->
+            <div class="widget notifications-widget">
+                <div class="widget-header">
+                    <h3>Notifications</h3>
+                    <div class="widget-actions">
+                        <button class="widget-action-btn" onclick="markAllRead()">
+                            <i class="bi bi-check-all"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="notifications-list" id="notifications-list">
+                        <!-- Notifications will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/script.js"></script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('show');
+        }
+
+        function logout() {
+            window.location.href = '../../LOGING PORTAIL/html/index.html';
+        }
+
+        function markAllRead() {
+            // Mark all notifications as read
+            alert('Toutes les notifications marquées comme lues');
+        }
+
+        // Load patient data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPatientDashboard();
+        });
+
+        function loadPatientDashboard() {
+            // Get current patient from localStorage or session
+            const currentPatient = JSON.parse(localStorage.getItem('current_patient') || 'null');
+            if (!currentPatient) {
+                window.location.href = '../../LOGING PORTAIL/html/index.html';
+                return;
+            }
+
+            // Update welcome message
+            document.querySelector('.welcome-widget h3').textContent = `Bonjour, ${currentPatient.nom} ${currentPatient.prenom}`;
+
+            // Load appointments
+            loadNextAppointments(currentPatient.id);
+
+            // Load bills
+            loadRecentBills(currentPatient.id);
+
+            // Load notifications
+            loadNotifications(currentPatient.id);
+        }
+
+        function loadNextAppointments(patientId) {
+            const appointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
+            const now = new Date();
+            const nextAppointments = appointments
+                .filter(a => a.patientId == patientId && new Date(a.date) >= now)
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .slice(0, 3);
+
+            document.getElementById('next-appointment-count').textContent = nextAppointments.length;
+
+            const list = document.getElementById('next-appointments-list');
+            list.innerHTML = '';
+
+            if (nextAppointments.length === 0) {
+                list.innerHTML = '<p class="text-muted">Aucun rendez-vous à venir</p>';
+                return;
+            }
+
+            nextAppointments.forEach(appointment => {
+                const date = new Date(appointment.date);
+                const item = document.createElement('div');
+                item.className = 'appointment-item';
+                item.innerHTML = `
+                    <div class="appointment-icon">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                    <div class="appointment-content">
+                        <h5>${appointment.type}</h5>
+                        <p>${date.toLocaleDateString('fr-FR')} à ${date.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}</p>
+                        <div class="appointment-status ${appointment.status === 'Confirmé' ? 'confirmed' : 'pending'}">${appointment.status}</div>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function loadRecentBills(patientId) {
+            const bills = JSON.parse(localStorage.getItem('dikra_bills') || '[]');
+            const patientBills = bills.filter(b => b.patientId == patientId).slice(0, 5);
+
+            document.getElementById('unpaid-bills-count').textContent = patientBills.filter(b => b.status === 'Impayé').length;
+
+            const tbody = document.querySelector('#recent-bills-table tbody');
+            tbody.innerHTML = '';
+
+            if (patientBills.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Aucune facture</td></tr>';
+                return;
+            }
+
+            patientBills.forEach(bill => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${new Date(bill.date).toLocaleDateString('fr-FR')}</td>
+                    <td>${bill.amount} €</td>
+                    <td><span class="badge ${bill.status === 'Payé' ? 'bg-success' : 'bg-warning'}">${bill.status}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="viewBill(${bill.id})">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function loadNotifications(patientId) {
+            // Mock notifications for patient
+            const notifications = [
+                {
+                    icon: 'calendar-event',
+                    message: 'Votre rendez-vous de demain est confirmé',
+                    time: '2h ago'
+                },
+                {
+                    icon: 'receipt',
+                    message: 'Nouvelle facture disponible',
+                    time: '1j ago'
+                }
+            ];
+
+            document.getElementById('messages-count').textContent = notifications.length;
+
+            const list = document.getElementById('notifications-list');
+            list.innerHTML = '';
+
+            notifications.forEach(notification => {
+                const item = document.createElement('div');
+                item.className = 'notification-item';
+                item.innerHTML = `
+                    <div class="notification-icon">
+                        <i class="bi bi-${notification.icon}"></i>
+                    </div>
+                    <div class="notification-content">
+                        <p>${notification.message}</p>
+                        <span class="notification-time">${notification.time}</span>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function viewBill(id) {
+            // Redirect to bills page with bill id
+            window.location.href = `factures.html?view=${id}`;
+        }
+    </script>
+
+</body>
+</html>
