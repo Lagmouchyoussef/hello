@@ -26,7 +26,7 @@ document.getElementById('patientLoginForm').addEventListener('submit', function(
         };
         localStorage.setItem('current_patient', JSON.stringify(mockPatient));
         // Redirect to patient dashboard
-        window.location.href = '/hello/patient/html/dashboard.html';
+        window.location.href = '../../patient/html/dashboard.html';
     } else {
         errorDiv.textContent = 'Email ou mot de passe incorrect.';
     }
