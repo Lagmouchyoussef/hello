@@ -288,7 +288,14 @@
 
             appointments.forEach(appointment => {
                 const patient = dataManager.getById('patients', appointment.patientId);
-                const patientName = patient ? `${patient.nom} ${patient.prenom}` : 'Patient inconnu';
+                let patientName;
+                if (patient) {
+                    patientName = `${patient.nom} ${patient.prenom}`;
+                } else if (appointment.source === 'website') {
+                    patientName = `${appointment.lastName} ${appointment.firstName}`;
+                } else {
+                    patientName = 'Patient inconnu';
+                }
 
                 const date = new Date(appointment.date);
                 const time = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });

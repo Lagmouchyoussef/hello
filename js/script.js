@@ -103,14 +103,39 @@ function initializeAppointmentForm() {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        // Simulate form submission (replace with actual API call)
+        // Generate provisional patient ID
+        const year = new Date().getFullYear();
+        const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+        const provisionalId = `STW-${year}-${randomNum}`;
+
+        // Create appointment object
+        const appointment = {
+            id: dataManager.generateId('Appointment'),
+            patientId: provisionalId, // Provisional ID for new patients
+            firstName: data.prenom,
+            lastName: data.nom,
+            email: data.email,
+            phone: data.telephone,
+            service: data.service,
+            message: data.message || '',
+            date: new Date().toISOString().split('T')[0], // Today's date as request date
+            time: '09:00', // Default time
+            status: 'En attente', // Waiting for confirmation
+            createdAt: new Date().toISOString(),
+            source: 'website' // Mark as coming from website
+        };
+
+        // Save appointment to localStorage
+        dataManager.add('appointments', appointment);
+
+        // Simulate form submission delay
         setTimeout(() => {
             // Reset loading state
             submitBtn.textContent = originalText;
             submitBtn.classList.remove('loading');
 
-            // Show success message
-            showMessage('success', 'Votre demande de rendez-vous a été envoyée avec succès ! Nous vous contacterons bientôt.');
+            // Show success message with provisional ID
+            showMessage('success', `Votre demande de rendez-vous a été envoyée avec succès ! Votre ID provisoire est : <strong>${provisionalId}</strong>. Nous vous contacterons bientôt pour confirmer votre rendez-vous.`);
 
             // Reset form
             form.reset();

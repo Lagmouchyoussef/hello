@@ -99,10 +99,18 @@ function loadAppointments() {
         tbody.innerHTML = '';
         appointments.forEach(a => {
             const patient = patients.find(p => p.id == a.patientId);
+            let patientName;
+            if (patient) {
+                patientName = `${patient.nom} ${patient.prenom}`;
+            } else if (a.source === 'website') {
+                patientName = `${a.lastName} ${a.firstName}`;
+            } else {
+                patientName = 'Patient inconnu';
+            }
             const time = a.date.includes('T') ? a.date.split('T')[1].substring(0, 5) : '09:00';
             const row = `<tr>
                 <td>${a.id}</td>
-                <td>${patient ? patient.nom + ' ' + patient.prenom : 'Patient inconnu'}</td>
+                <td>${patientName}</td>
                 <td>${new Date(a.date).toLocaleDateString('fr-FR')}</td>
                 <td>${time}</td>
                 <td>${a.type || 'Consultation'}</td>
@@ -345,12 +353,20 @@ function viewAppointment(id) {
     const appointment = appointments.find(a => a.id == id);
     if (appointment) {
         const patient = patients.find(p => p.id == appointment.patientId);
+        let patientName;
+        if (patient) {
+            patientName = `${patient.nom} ${patient.prenom}`;
+        } else if (appointment.source === 'website') {
+            patientName = `${appointment.lastName} ${appointment.firstName}`;
+        } else {
+            patientName = 'Patient inconnu';
+        }
         const details = `
             <div class="row">
                 <div class="col-md-6">
                     <h6>Détails du rendez-vous</h6>
                     <p><strong>ID:</strong> ${appointment.id}</p>
-                    <p><strong>Patient:</strong> ${patient ? patient.nom + ' ' + patient.prenom : 'Patient inconnu'}</p>
+                    <p><strong>Patient:</strong> ${patientName}</p>
                     <p><strong>Date:</strong> ${new Date(appointment.date).toLocaleDateString('fr-FR')}</p>
                     <p><strong>Heure:</strong> ${appointment.date.split('T')[1] ? appointment.date.split('T')[1].substring(0, 5) : '09:00'}</p>
                 </div>
