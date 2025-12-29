@@ -6,7 +6,7 @@
     <title>Messagerie - DIKRA Centre Dentaire</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/hello/patient/css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
@@ -114,7 +114,7 @@
     <!-- Left Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <img src="../../Photo/Photo.png" alt="Logo" width="60" height="60" style="border-radius: 50%; margin-bottom: 10px;">
+            <img src="/hello/Photo/Photo.png" alt="Logo" width="60" height="60" style="border-radius: 50%; margin-bottom: 10px;">
             <h5>DIKRA Centre Dentaire</h5>
             <p>Patient</p>
         </div>
@@ -218,7 +218,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/script.js"></script>
+    <script src="/hello/patient/js/script.js"></script>
     <script>
         let currentView = 'inbox';
         let selectedMessageId = null;
@@ -230,7 +230,7 @@
 
         function logout() {
             localStorage.removeItem('current_patient');
-            window.location.href = '../../LOGING PORTAIL/html/index.html';
+            window.location.href = '/hello/LOGING PORTAIL/html/index.html';
         }
 
         function showInbox() {
@@ -309,7 +309,7 @@
         function loadMessages() {
             const currentPatient = JSON.parse(localStorage.getItem('current_patient') || 'null');
             if (!currentPatient) {
-                window.location.href = '../../LOGING PORTAIL/html/index.html';
+                window.location.href = '/hello/LOGING PORTAIL/html/index.html';
                 return;
             }
 
