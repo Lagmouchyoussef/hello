@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIKRA Centre Dentaire - Soins Dentaires Professionnels Casablanca</title>
+    <meta name="description" content="Centre dentaire DIKRA à Casablanca - Soins dentaires professionnels, orthodontie, implants dentaires. Prenez rendez-vous en ligne.">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="icon" href="../../Photo/Photo.png" type="image/png">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="../../Photo/Photo.png" alt="DIKRA Centre Dentaire" class="me-2" height="40">
+                DIKRA Centre Dentaire
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home"><i class="fas fa-home me-1"></i>Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services"><i class="fas fa-tooth me-1"></i>Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about"><i class="fas fa-info-circle me-1"></i>À Propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact"><i class="fas fa-envelope me-1"></i>Contact</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="fas fa-user me-1"></i>Se connecter
+                    </button>
+                    <a href="tel:0521155212" class="btn btn-primary me-2">
+                        <i class="fas fa-phone me-1"></i>0521 155 212
+                    </a>
+                    <a href="#appointment" class="btn btn-outline-primary">
+                        <i class="fas fa-calendar-check me-1"></i>Rendez-vous
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <video autoplay muted loop class="hero-video">
+            <source src="../../Photo/4490999-uhd_3840_2160_25fps.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1 class="typewriter">Sourires Sains,<br><span class="text-warning">Vie Meilleure</span></h1>
+                        <p class="lead">
+                            Centre dentaire DIKRA vous offre des soins dentaires professionnels de qualité supérieure
+                            à Casablanca. Notre équipe expérimentée est dédiée à votre santé bucco-dentaire.
+                        </p>
+                        <div class="d-flex flex-column flex-sm-row gap-3">
+                            <a href="#appointment" class="btn btn-professional">
+                                <i class="fas fa-calendar-plus me-2"></i>Prendre Rendez-vous
+                            </a>
+                            <a href="#services" class="btn btn-outline-professional">
+                                <i class="fas fa-tooth me-2"></i>Nos Services
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0">
+                    <!-- Video moved to background -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Nos Services Dentaires</h2>
+                <p class="section-subtitle">Des soins complets pour toute la famille</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-tooth fa-4x text-primary"></i>
+                            </div>
+                            <h5 class="card-title">Dentisterie Générale</h5>
+                            <p class="card-text">Soins préventifs, traitements des caries, détartrage, soins des gencives et restaurations dentaires.</p>
+                            <ul class="list-unstyled text-start mt-3">
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Consultations et diagnostics</li>
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Traitement des caries</li>
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Détartrage et polissage</li>
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Soins des gencives</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-align-left fa-4x text-primary"></i>
+                            </div>
+                            <h5 class="card-title">Orthodontie</h5>
+                            <p class="card-text">Correction des malpositions dentaires et des problèmes d'occlusion pour un sourire harmonieux.</p>
+                            <ul class="list-unstyled text-start mt-3">
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Appareils dentaires fixes</li>
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Orthodontie invisible</li>
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Gouttières transparentes</li>
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Traitement des enfants</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-implant-dentaire fa-4x text-primary"></i>
+                            </div>
+                            <h5 class="card-title">Implants Dentaires</h5>
+                            <p class="card-text">Remplacement des dents manquantes par des implants de haute qualité pour une fonction et une esthétique optimales.</p>
+                            <ul class="list-unstyled text-start mt-3">
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Implants en titane</li>
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Couronnes sur implants</li>
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Ponts dentaires</li>
+                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Chirurgie implantaire</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="display-5 fw-bold text-primary mb-4">Notre Équipe</h2>
+                    <p class="lead text-muted mb-4">
+                        Des professionnels qualifiés dédiés à votre santé bucco-dentaire.
+                        Notre équipe expérimentée utilise les dernières technologies pour vous offrir
+                        des soins de qualité supérieure.
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-user-md text-primary me-3 fs-4"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Dr. Sarah Bennani</h6>
+                                    <small class="text-muted">Chirurgien-Dentiste</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-award text-primary me-3 fs-4"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-0"><span class="counter" data-target="15">0</span>+ Ans d'Expérience</h6>
+                                    <small class="text-muted">Diplômée Mohammed V</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-4 mt-lg-0">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <img src="https://images.unsplash.com/photo-1606811951341-75675ddf7b99?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Cabinet moderne" class="img-fluid rounded-3 shadow">
+                        </div>
+                        <div class="col-6">
+                            <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Salle d'attente" class="img-fluid rounded-3 shadow mt-3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Notre Cabinet</h2>
+                <p class="section-subtitle">Découvrez nos installations modernes et accueillantes</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1606811951341-75675ddf7b99?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Salle de consultation">
+                    <div class="overlay">
+                        <h5>Salle de Consultation</h5>
+                        <p>Équipements de dernière génération</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Salle d'attente">
+                    <div class="overlay">
+                        <h5>Salle d'Attente</h5>
+                        <p>Ambiance relaxante et moderne</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Radiologie">
+                    <div class="overlay">
+                        <h5>Radiologie Numérique</h5>
+                        <p>Imagerie de pointe</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Stérilisation">
+                    <div class="overlay">
+                        <h5>Stérilisation</h5>
+                        <p>Protocoles d'hygiène stricts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6">
+                    <div class="contact-info">
+                        <h3>Contactez-nous</h3>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h5>Adresse</h5>
+                                <p>Casablanca, Maroc</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="map-container mb-3">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d424146.046694531!2d-8.057865!3d33.5731104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDM0JzIzLjIiTiA4wrAwMyc0OC4wIlc!5e0!3m2!1sfr!2sma!4v1634567890123!5m2!1sfr!2sma" width="100%" height="250" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                            <a href="https://www.waze.com/fr/live-map/directions?to=ll.33.597929%2C-7.643373" target="_blank" rel="noopener" class="btn btn-primary">
+                                <i class="fas fa-directions me-2"></i>Obtenir des directions (Waze)
+                            </a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h5>Téléphone</h5>
+                                <p><a href="tel:0521155212">0521 155 212</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h5>Email</h5>
+                                <p><a href="mailto:centredentairedikra@gmail.com">centredentairedikra@gmail.com</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-instagram"></i>
+                            <div>
+                                <h5>Instagram</h5>
+                                <p><a href="https://instagram.com/centredentairedikra" target="_blank" rel="noopener">@centredentairedikra</a></p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h6 class="fw-bold mb-3">Horaires d'ouverture</h6>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="p-3 bg-light rounded">
+                                        <div class="fw-semibold">Lundi - Vendredi</div>
+                                        <div class="text-muted">9h00 - 19h00</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 bg-light rounded">
+                                        <div class="fw-semibold">Samedi</div>
+                                        <div class="text-muted">9h00 - 17h00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="appointment" class="col-lg-6">
+                    <div class="appointment-form">
+                        <h3>Prendre Rendez-vous</h3>
+                        <form id="appointmentForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="nom" class="form-label">Nom complet *</label>
+                                    <input type="text" id="nom" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="prenom" class="form-label">Prénom *</label>
+                                    <input type="text" id="prenom" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email *</label>
+                                    <input type="email" id="email" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="telephone" class="form-label">Téléphone *</label>
+                                    <input type="tel" id="telephone" class="form-control" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="service" class="form-label">Service souhaité</label>
+                                    <select id="service" class="form-select">
+                                        <option value="">Choisir un service</option>
+                                        <option value="consultation">Consultation générale</option>
+                                        <option value="urgence">Urgence dentaire</option>
+                                        <option value="orthodontie">Orthodontie</option>
+                                        <option value="implants">Implants dentaires</option>
+                                        <option value="detartrage">Détartrage</option>
+                                        <option value="autre">Autre</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="message" class="form-label">Message</label>
+                                    <textarea id="message" class="form-control" rows="4" placeholder="Décrivez brièvement votre demande..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn-submit">
+                                        <i class="fas fa-paper-plane me-2"></i>Envoyer la demande
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <img src="../../Photo/Photo.png" alt="DIKRA Centre Dentaire" class="mb-3" style="height: 50px;">
+                    <p>Centre dentaire DIKRA - Votre santé bucco-dentaire est notre priorité. Nous offrons des soins de qualité supérieure dans un environnement moderne et accueillant.</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/centredentairedikra" target="_blank" rel="noopener">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://wa.me/212663697709" target="_blank" rel="noopener">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#services">Dentisterie Générale</a></li>
+                        <li><a href="#services">Orthodontie</a></li>
+                        <li><a href="#services">Implants Dentaires</a></li>
+                        <li><a href="#services">Esthétique Dentaire</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-phone me-2"></i><a href="tel:0521155212">0521 155 212</a></li>
+                        <li><i class="fab fa-whatsapp me-2"></i><a href="https://wa.me/212663697709">0663 697 709</a></li>
+                        <li><i class="fas fa-envelope me-2"></i><a href="mailto:centredentairedikra@gmail.com">Email</a></li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>Casablanca, Maroc</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 DIKRA Centre Dentaire. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Connexion Patient</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Se connecter</button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-decoration-none">Mot de passe oublié ?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/script.js"></script>
+</body>
+</html>
