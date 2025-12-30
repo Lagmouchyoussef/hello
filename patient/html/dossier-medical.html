@@ -107,31 +107,39 @@
         /* Dental Chart Styles */
         .dental-chart {
             margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .teeth-row {
             display: flex;
             justify-content: center;
-            margin: 10px 0;
+            margin: 5px 0;
         }
         .tooth {
-            width: 30px;
-            height: 40px;
+            width: 35px;
+            height: 45px;
             border: 2px solid #333;
             border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
-            margin: 0 2px;
+            margin: 0 1px;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
         }
         .tooth.saine { background-color: #d4edda; border-color: #28a745; }
         .tooth.cariee { background-color: #f8d7da; border-color: #dc3545; }
         .tooth.traitee { background-color: #d1ecf1; border-color: #17a2b8; }
         .tooth.manquante { background-color: #e2e3e5; border-color: #6c757d; }
-        .tooth:hover { transform: scale(1.1); }
+        .tooth.couronne { background-color: #fff3cd; border-color: #ffc107; }
+        .tooth.implant { background-color: #e9ecef; border-color: #6c757d; }
+        .tooth.prothese { background-color: #f8f9fa; border-color: #495057; }
+        .tooth:hover { transform: scale(1.1); box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+        .tooth.selected { box-shadow: 0 0 8px rgba(0,123,255,0.5); }
     </style>
 </head>
 <body>
@@ -355,6 +363,34 @@
                 </div>
             </div>
 
+            <!-- Historique des modifications -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#history">
+                        <i class="bi bi-clock-history me-2"></i>Historique des Modifications
+                    </button>
+                </h2>
+                <div id="history" class="accordion-collapse collapse" data-bs-parent="#medicalDossierAccordion">
+                    <div class="accordion-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover" id="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                        <th>Description</th>
+                                        <th>Utilisateur</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-tbody">
+                                    <!-- History will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Plan de traitement -->
             <div class="accordion-item">
                 <h2 class="accordion-header">
@@ -477,7 +513,78 @@
         </div>
     </div>
 
+    <!-- Tooth Condition Modal -->
+    <div class="modal fade" id="toothConditionModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">État de la dent <span id="selected-tooth-number"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Sélectionnez l'état de la dent :</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success" onclick="setToothCondition('saine')">Saine</button>
+                        <button class="btn btn-danger" onclick="setToothCondition('cariee')">Cariée</button>
+                        <button class="btn btn-info" onclick="setToothCondition('traitee')">Traitée</button>
+                        <button class="btn btn-secondary" onclick="setToothCondition('manquante')">Manquante</button>
+                        <button class="btn btn-warning" onclick="setToothCondition('couronne')">Couronne</button>
+                        <button class="btn btn-dark" onclick="setToothCondition('implant')">Implant</button>
+                        <button class="btn btn-light text-dark" onclick="setToothCondition('prothese')">Prothèse</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Document Modal -->
+    <div class="modal fade" id="addDocumentModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter un document médical</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="documentForm">
+                        <div class="mb-3">
+                            <label for="documentType" class="form-label">Type de document *</label>
+                            <select class="form-control" id="documentType" required>
+                                <option value="">Sélectionner un type</option>
+                                <option value="Radio">Radio</option>
+                                <option value="Scanner">Scanner</option>
+                                <option value="PDF">PDF</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="documentName" class="form-label">Nom du document *</label>
+                            <input type="text" class="form-control" id="documentName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="documentFile" class="form-label">Fichier *</label>
+                            <input type="file" class="form-control" id="documentFile" accept=".pdf,.jpg,.jpeg,.png,.dcm" required>
+                            <div class="form-text">Formats acceptés: PDF, JPG, PNG, DCM (pour radios)</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="documentDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="documentDescription" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="saveDocument()">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/data.js"></script>
     <script src="../js/script.js"></script>
     <script>
         let currentRecordId = null;
@@ -567,6 +674,13 @@
 
             localStorage.setItem('dikra_medical_records', JSON.stringify(records));
 
+            // Log audit
+            dataManager.logAudit(
+                existingIndex !== -1 ? 'Enregistrement modifié' : 'Enregistrement ajouté',
+                `Enregistrement médical ${existingIndex !== -1 ? 'modifié' : 'ajouté'} pour patient ${recordData.patientId}`,
+                recordData.patientId
+            );
+
             bootstrap.Modal.getInstance(document.getElementById('addRecordModal')).hide();
             form.reset();
             document.getElementById('recordId').value = '';
@@ -597,6 +711,7 @@
             loadTreatmentPlan(currentPatient);
             loadFinancialInfo(currentPatient);
             loadConsents(currentPatient);
+            loadHistory(currentPatient);
         }
 
         function loadPersonalInfo(patient) {
@@ -874,43 +989,72 @@
 
         function loadDentalChart(patient) {
             const chart = JSON.parse(localStorage.getItem('dikra_dental_chart') || '{}');
+            const patientChart = chart[patient.id] || {};
             const content = document.getElementById('dental-chart-content');
             content.innerHTML = `
                 <div class="text-center">
                     <h6>Schéma Dentaire Interactif</h6>
-                    <p class="text-muted">Cliquez sur une dent pour voir son historique</p>
+                    <p class="text-muted">Cliquez sur une dent pour marquer son état</p>
                     <div class="dental-chart">
-                        <!-- Simplified dental chart -->
+                        <!-- Upper right -->
                         <div class="teeth-row">
-                            ${Array.from({length: 16}, (_, i) => {
-                                const toothNum = 11 + i;
-                                const status = chart[toothNum] || 'saine';
-                                return `<div class="tooth ${status}" onclick="viewToothHistory(${toothNum})" title="Dent ${toothNum}">${toothNum}</div>`;
+                            ${[18,17,16,15,14,13,12,11].map(toothNum => {
+                                const status = patientChart[toothNum] || 'saine';
+                                return `<div class="tooth ${status}" onclick="selectTooth(${toothNum})" title="Dent ${toothNum} - ${getStatusLabel(status)}">${toothNum}</div>`;
                             }).join('')}
                         </div>
+                        <!-- Upper left -->
                         <div class="teeth-row">
-                            ${Array.from({length: 16}, (_, i) => {
-                                const toothNum = 41 + i;
-                                const status = chart[toothNum] || 'saine';
-                                return `<div class="tooth ${status}" onclick="viewToothHistory(${toothNum})" title="Dent ${toothNum}">${toothNum}</div>`;
+                            ${[21,22,23,24,25,26,27,28].map(toothNum => {
+                                const status = patientChart[toothNum] || 'saine';
+                                return `<div class="tooth ${status}" onclick="selectTooth(${toothNum})" title="Dent ${toothNum} - ${getStatusLabel(status)}">${toothNum}</div>`;
+                            }).join('')}
+                        </div>
+                        <!-- Lower left -->
+                        <div class="teeth-row">
+                            ${[31,32,33,34,35,36,37,38].map(toothNum => {
+                                const status = patientChart[toothNum] || 'saine';
+                                return `<div class="tooth ${status}" onclick="selectTooth(${toothNum})" title="Dent ${toothNum} - ${getStatusLabel(status)}">${toothNum}</div>`;
+                            }).join('')}
+                        </div>
+                        <!-- Lower right -->
+                        <div class="teeth-row">
+                            ${[41,42,43,44,45,46,47,48].map(toothNum => {
+                                const status = patientChart[toothNum] || 'saine';
+                                return `<div class="tooth ${status}" onclick="selectTooth(${toothNum})" title="Dent ${toothNum} - ${getStatusLabel(status)}">${toothNum}</div>`;
                             }).join('')}
                         </div>
                     </div>
                     <div class="mt-3">
                         <small class="text-muted">
                             <span class="badge bg-success me-2">Saine</span>
-                            <span class="badge bg-warning me-2">Cariée</span>
+                            <span class="badge bg-danger me-2">Cariée</span>
                             <span class="badge bg-info me-2">Traitée</span>
-                            <span class="badge bg-danger me-2">Manquante</span>
+                            <span class="badge bg-secondary me-2">Manquante</span>
+                            <span class="badge bg-warning me-2">Couronne</span>
+                            <span class="badge bg-dark me-2">Implant</span>
+                            <span class="badge bg-light text-dark me-2">Prothèse</span>
                         </small>
                     </div>
                 </div>
             `;
         }
 
+        function getStatusLabel(status) {
+            const labels = {
+                saine: 'Saine',
+                cariee: 'Cariée',
+                traitee: 'Traitée',
+                manquante: 'Manquante',
+                couronne: 'Couronne',
+                implant: 'Implant',
+                prothese: 'Prothèse'
+            };
+            return labels[status] || 'Saine';
+        }
+
         function loadDocuments(patient) {
-            const documents = JSON.parse(localStorage.getItem('dikra_documents') || '[]');
-            const patientDocuments = documents.filter(d => d.patientId == patient.id);
+            const patientDocuments = dataManager.getDocumentsByPatient(patient.id);
 
             const grid = document.getElementById('documents-grid');
             grid.innerHTML = '';
@@ -929,11 +1073,14 @@
                             <i class="bi bi-file-earmark-medical fa-3x text-primary mb-3"></i>
                             <h6 class="card-title">${doc.name}</h6>
                             <p class="card-text small text-muted">${doc.type} - ${new Date(doc.date).toLocaleDateString('fr-FR')}</p>
-                            <button class="btn btn-outline-primary btn-sm" onclick="viewDocument(${doc.id})">
+                            <button class="btn btn-outline-primary btn-sm" onclick="viewDocument('${doc.id}')">
                                 <i class="bi bi-eye me-1"></i>Voir
                             </button>
-                            <button class="btn btn-outline-success btn-sm ms-1" onclick="downloadDocument(${doc.id})">
+                            <button class="btn btn-outline-success btn-sm ms-1" onclick="downloadDocument('${doc.id}')">
                                 <i class="bi bi-download me-1"></i>Télécharger
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm ms-1" onclick="deleteDocument('${doc.id}')">
+                                <i class="bi bi-trash me-1"></i>Supprimer
                             </button>
                         </div>
                     </div>
@@ -1049,14 +1196,138 @@
         // Placeholder functions for adding
         function addConsultation() { alert('Fonction d\'ajout à implémenter'); }
         function addProcedure() { alert('Fonction d\'ajout à implémenter'); }
-        function addDocument() { alert('Fonction d\'ajout à implémenter'); }
+        function addDocument() {
+            document.getElementById('documentForm').reset();
+            new bootstrap.Modal(document.getElementById('addDocumentModal')).show();
+        }
 
         // Placeholder functions for viewing
         function viewConsultation(id) { alert('Fonction de visualisation à implémenter'); }
         function viewProcedure(id) { alert('Fonction de visualisation à implémenter'); }
-        function viewDocument(id) { alert('Fonction de visualisation à implémenter'); }
-        function downloadDocument(id) { alert('Fonction de téléchargement à implémenter'); }
-        function viewToothHistory(toothNum) { alert(`Historique de la dent ${toothNum} à implémenter`); }
+        function viewDocument(id) {
+            const documents = dataManager.getAll('documents');
+            const doc = documents.find(d => d.id == id);
+            if (doc && doc.data) {
+                const blob = new Blob([Uint8Array.from(atob(doc.data), c => c.charCodeAt(0))], { type: doc.mimeType });
+                const url = URL.createObjectURL(blob);
+                window.open(url, '_blank');
+            }
+        }
+        function downloadDocument(id) {
+            const documents = dataManager.getAll('documents');
+            const doc = documents.find(d => d.id == id);
+            if (doc && doc.data) {
+                const blob = new Blob([Uint8Array.from(atob(doc.data), c => c.charCodeAt(0))], { type: doc.mimeType });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = doc.name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        }
+        function deleteDocument(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
+                dataManager.deleteDocument(id);
+                const currentPatient = JSON.parse(localStorage.getItem('current_patient') || 'null');
+                if (currentPatient) {
+                    loadDocuments(currentPatient);
+                }
+            }
+        }
+
+        function saveDocument() {
+            const form = document.getElementById('documentForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const fileInput = document.getElementById('documentFile');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Veuillez sélectionner un fichier');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64 = e.target.result.split(',')[1]; // Remove data:image/...;base64,
+                const currentPatient = JSON.parse(localStorage.getItem('current_patient') || 'null');
+                if (!currentPatient) return;
+
+                const documentData = {
+                    patientId: currentPatient.id,
+                    type: document.getElementById('documentType').value,
+                    name: document.getElementById('documentName').value,
+                    description: document.getElementById('documentDescription').value,
+                    data: base64,
+                    mimeType: file.type,
+                    size: file.size,
+                    date: new Date().toISOString().split('T')[0]
+                };
+
+                dataManager.addDocument(documentData);
+                bootstrap.Modal.getInstance(document.getElementById('addDocumentModal')).hide();
+                loadDocuments(currentPatient);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadHistory(patient) {
+            const history = dataManager.getAuditTrail(patient.id);
+            const tbody = document.getElementById('history-tbody');
+            tbody.innerHTML = '';
+
+            if (history.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Aucun historique trouvé</td></tr>';
+                return;
+            }
+
+            history.forEach(entry => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${new Date(entry.timestamp).toLocaleString('fr-FR')}</td>
+                    <td>${entry.action}</td>
+                    <td>${entry.description}</td>
+                    <td>${entry.userRole} (${entry.userId})</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Dental chart functions
+        let selectedTooth = null;
+
+        function selectTooth(toothNum) {
+            selectedTooth = toothNum;
+            document.getElementById('selected-tooth-number').textContent = toothNum;
+            new bootstrap.Modal(document.getElementById('toothConditionModal')).show();
+        }
+
+        function setToothCondition(condition) {
+            if (!selectedTooth) return;
+
+            const currentPatient = JSON.parse(localStorage.getItem('current_patient') || 'null');
+            if (!currentPatient) return;
+
+            const chart = JSON.parse(localStorage.getItem('dikra_dental_chart') || '{}');
+            if (!chart[currentPatient.id]) {
+                chart[currentPatient.id] = {};
+            }
+            chart[currentPatient.id][selectedTooth] = condition;
+            localStorage.setItem('dikra_dental_chart', JSON.stringify(chart));
+
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('toothConditionModal')).hide();
+
+            // Reload dental chart
+            loadDentalChart(currentPatient);
+
+            selectedTooth = null;
+        }
 
         // Placeholder functions for editing
         function editConsultation(id) { alert('Fonction d\'édition à implémenter'); }

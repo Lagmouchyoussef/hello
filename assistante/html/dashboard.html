@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../js/data.js"></script>
     <style>
         /* Global box-sizing */
         *, *::before, *::after {
@@ -105,6 +106,157 @@
                 margin-left: 0;
             }
         }
+
+        /* Status Indicators */
+        .status-indicators {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            flex: 1;
+            text-align: center;
+        }
+
+        .status-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .status-icon.arrived {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-icon.waiting {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-icon.in-consultation {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-count {
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .status-label {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        /* Waiting Patients */
+        .waiting-patients-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .waiting-patient-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .waiting-patient-info {
+            flex: 1;
+        }
+
+        .waiting-patient-name {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .waiting-patient-time {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .waiting-patient-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .waiting-patient-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-arrived {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-consultation {
+            background: #2563eb;
+            color: white;
+        }
+
+        .no-waiting-patients {
+            text-align: center;
+            color: #6b7280;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        /* Upcoming Appointments */
+        .upcoming-appointments-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .upcoming-appointment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .upcoming-appointment-info {
+            flex: 1;
+        }
+
+        .upcoming-appointment-name {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .upcoming-appointment-date {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .no-upcoming-appointments {
+            text-align: center;
+            color: #6b7280;
+            padding: 20px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -120,14 +272,44 @@
             <a href="dashboard.html" class="nav-link active">
                 <i class="bi bi-house-door me-2"></i>Tableau de bord
             </a>
-            <a href="planning.html" class="nav-link">
-                <i class="bi bi-calendar-week me-2"></i>Planning
-            </a>
-            <a href="patients.html" class="nav-link">
-                <i class="bi bi-people me-2"></i>Patients
-            </a>
-            <a href="rendez-vous.html" class="nav-link">
-                <i class="bi bi-calendar-event me-2"></i>Rendez-vous
+            <div class="dropdown">
+                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                    <i class="bi bi-calendar-event me-2"></i>Rendez-vous
+                </button>
+                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
+                    <li><a class="dropdown-item" href="planning.html" style="color: white;"><i class="bi bi-calendar-week me-2"></i>Planning</a></li>
+                    <li><a class="dropdown-item" href="rendez-vous.html" style="color: white;"><i class="bi bi-calendar-event me-2"></i>Rendez-vous</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                    <i class="bi bi-people me-2"></i>Gestion des Patients
+                </button>
+                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
+                    <li><a class="dropdown-item" href="patients.html" style="color: white;"><i class="bi bi-people me-2"></i>Patients</a></li>
+                    <li><a class="dropdown-item" href="documents.html" style="color: white;"><i class="bi bi-file-earmark me-2"></i>Documents</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                    <i class="bi bi-cash me-2"></i>Financier
+                </button>
+                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
+                    <li><a class="dropdown-item" href="factures.html" style="color: white;"><i class="bi bi-receipt me-2"></i>Factures</a></li>
+                    <li><a class="dropdown-item" href="mutuelles.html" style="color: white;"><i class="bi bi-shield-check me-2"></i>Mutuelles</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                    <i class="bi bi-chat me-2"></i>Communication
+                </button>
+                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
+                    <li><a class="dropdown-item" href="notifications.html" style="color: white;"><i class="bi bi-bell me-2"></i>Notifications</a></li>
+                    <li><a class="dropdown-item" href="messagerie.html" style="color: white;"><i class="bi bi-envelope me-2"></i>Messagerie</a></li>
+                </ul>
+            </div>
+            <a href="parametres.html" class="nav-link">
+                <i class="bi bi-gear me-2"></i>Paramètres
             </a>
         </nav>
         <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
@@ -206,6 +388,44 @@
                 </div>
             </div>
 
+            <!-- Status Indicators Widget -->
+            <div class="widget status-widget">
+                <div class="widget-header">
+                    <h3>Statut des Patients</h3>
+                </div>
+                <div class="widget-content">
+                    <div class="status-indicators">
+                        <div class="status-item" id="status-arrived">
+                            <div class="status-icon arrived">
+                                <i class="bi bi-person-check"></i>
+                            </div>
+                            <div class="status-info">
+                                <span class="status-count">0</span>
+                                <span class="status-label">Patient arrivé</span>
+                            </div>
+                        </div>
+                        <div class="status-item" id="status-waiting">
+                            <div class="status-icon waiting">
+                                <i class="bi bi-clock"></i>
+                            </div>
+                            <div class="status-info">
+                                <span class="status-count">0</span>
+                                <span class="status-label">Patient en attente</span>
+                            </div>
+                        </div>
+                        <div class="status-item" id="status-in-consultation">
+                            <div class="status-icon in-consultation">
+                                <i class="bi bi-person-gear"></i>
+                            </div>
+                            <div class="status-info">
+                                <span class="status-count">0</span>
+                                <span class="status-label">Consultation en cours</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Table Widget -->
             <div class="widget table-widget">
                 <div class="widget-header">
@@ -224,10 +444,45 @@
                                     <th>Patient</th>
                                     <th>Heure</th>
                                     <th>Statut</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Waiting Patients Widget -->
+            <div class="widget waiting-patients-widget">
+                <div class="widget-header">
+                    <h3>Patients en Attente</h3>
+                    <div class="widget-actions">
+                        <button class="widget-action-btn" onclick="refreshWaitingPatients()">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="waiting-patients-list" id="waiting-patients-list">
+                        <div class="no-waiting-patients">Aucun patient en attente</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Appointments Widget -->
+            <div class="widget upcoming-appointments-widget">
+                <div class="widget-header">
+                    <h3>Rendez-vous à Venir</h3>
+                    <div class="widget-actions">
+                        <button class="widget-action-btn" onclick="viewAllAppointments()">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="upcoming-appointments-list" id="upcoming-appointments-list">
+                        <div class="no-upcoming-appointments">Aucun rendez-vous à venir</div>
                     </div>
                 </div>
             </div>
@@ -305,12 +560,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/script.js"></script>
     <script>
+        // Check authentication
+        const currentUser = dataManager.getCurrentUser();
+        if (!currentUser || currentUser.role !== 'Assistant') {
+            window.location.href = '../../LOGING/html/loging.html';
+        }
+
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             sidebar.classList.toggle('show');
         }
 
         function logout() {
+            dataManager.logoutUser();
             window.location.href = '../../LOGING/html/loging.html';
         }
 
@@ -351,6 +613,15 @@
 
             // Load today's appointments table
             loadTodayAppointments(todayAppointments, patients);
+
+            // Load status indicators
+            loadStatusIndicators();
+
+            // Load waiting patients
+            loadWaitingPatients();
+
+            // Load upcoming appointments
+            loadUpcomingAppointments();
         }
 
         function loadTodayAppointments(todayAppointments, patients) {
@@ -358,20 +629,167 @@
             tbody.innerHTML = '';
 
             if (todayAppointments.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Aucun rendez-vous aujourd\'hui</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Aucun rendez-vous aujourd\'hui</td></tr>';
                 return;
             }
 
             todayAppointments.slice(0, 5).forEach(a => {
                 const patient = patients.find(p => p.id == a.patientId);
                 const time = a.date.includes('T') ? a.date.split('T')[1].substring(0, 5) : '09:00';
+                const statusBadge = getStatusBadge(a.status);
+                const actions = getAppointmentActions(a.id, a.status);
                 const row = `<tr>
                     <td>${patient ? patient.nom + ' ' + patient.prenom : 'Patient inconnu'}</td>
                     <td>${time}</td>
-                    <td><span class="badge bg-${a.status === 'Confirmé' ? 'success' : a.status === 'En attente' ? 'warning' : 'secondary'}">${a.status}</span></td>
+                    <td>${statusBadge}</td>
+                    <td>${actions}</td>
                 </tr>`;
                 tbody.innerHTML += row;
             });
+        }
+
+        function getStatusBadge(status) {
+            const statusMap = {
+                'Confirmé': 'success',
+                'En attente': 'warning',
+                'Annulé': 'danger',
+                'Terminé': 'secondary',
+                'Patient arrivé': 'info',
+                'Patient en attente': 'warning',
+                'Consultation en cours': 'primary'
+            };
+            const color = statusMap[status] || 'secondary';
+            return `<span class="badge bg-${color}">${status}</span>`;
+        }
+
+        function getAppointmentActions(appointmentId, currentStatus) {
+            let actions = '';
+            if (currentStatus === 'Confirmé') {
+                actions += `<button class="btn btn-sm btn-success" onclick="markPatientArrived(${appointmentId})" title="Marquer arrivé"><i class="bi bi-check-circle"></i></button>`;
+            } else if (currentStatus === 'Patient arrivé' || currentStatus === 'Patient en attente') {
+                actions += `<button class="btn btn-sm btn-primary" onclick="startConsultation(${appointmentId})" title="Commencer consultation"><i class="bi bi-play-circle"></i></button>`;
+            } else if (currentStatus === 'Consultation en cours') {
+                actions += `<button class="btn btn-sm btn-secondary" onclick="endConsultation(${appointmentId})" title="Terminer consultation"><i class="bi bi-stop-circle"></i></button>`;
+            }
+            return actions;
+        }
+
+        function loadStatusIndicators() {
+            const appointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppointments = appointments.filter(a => a.date.startsWith(today));
+
+            const statusCounts = {
+                'Patient arrivé': 0,
+                'Patient en attente': 0,
+                'Consultation en cours': 0
+            };
+
+            todayAppointments.forEach(a => {
+                if (statusCounts.hasOwnProperty(a.status)) {
+                    statusCounts[a.status]++;
+                }
+            });
+
+            document.getElementById('status-arrived').querySelector('.status-count').textContent = statusCounts['Patient arrivé'];
+            document.getElementById('status-waiting').querySelector('.status-count').textContent = statusCounts['Patient en attente'];
+            document.getElementById('status-in-consultation').querySelector('.status-count').textContent = statusCounts['Consultation en cours'];
+        }
+
+        function loadWaitingPatients() {
+            const appointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
+            const patients = JSON.parse(localStorage.getItem('dikra_patients') || '[]');
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppointments = appointments.filter(a => a.date.startsWith(today) && (a.status === 'Patient arrivé' || a.status === 'Patient en attente'));
+
+            const list = document.getElementById('waiting-patients-list');
+
+            if (todayAppointments.length === 0) {
+                list.innerHTML = '<div class="no-waiting-patients">Aucun patient en attente</div>';
+                return;
+            }
+
+            list.innerHTML = '';
+            todayAppointments.forEach(a => {
+                const patient = patients.find(p => p.id == a.patientId);
+                const time = a.date.includes('T') ? a.date.split('T')[1].substring(0, 5) : '09:00';
+                const item = document.createElement('div');
+                item.className = 'waiting-patient-item';
+                item.innerHTML = `
+                    <div class="waiting-patient-info">
+                        <div class="waiting-patient-name">${patient ? patient.nom + ' ' + patient.prenom : 'Patient inconnu'}</div>
+                        <div class="waiting-patient-time">${time} - ${a.status}</div>
+                    </div>
+                    <div class="waiting-patient-actions">
+                        ${a.status === 'Patient arrivé' ? `<button class="waiting-patient-btn btn-consultation" onclick="startConsultation(${a.id})">Consulter</button>` : ''}
+                        ${a.status === 'Patient en attente' ? `<button class="waiting-patient-btn btn-arrived" onclick="markPatientArrived(${a.id})">Arrivé</button>` : ''}
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function loadUpcomingAppointments() {
+            const appointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
+            const patients = JSON.parse(localStorage.getItem('dikra_patients') || '[]');
+            const today = new Date();
+            const nextWeek = new Date(today);
+            nextWeek.setDate(today.getDate() + 7);
+
+            const upcomingAppointments = appointments.filter(a => {
+                const appointmentDate = new Date(a.date);
+                return appointmentDate > today && appointmentDate <= nextWeek && a.status !== 'Annulé' && a.status !== 'Terminé';
+            }).sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 10);
+
+            const list = document.getElementById('upcoming-appointments-list');
+
+            if (upcomingAppointments.length === 0) {
+                list.innerHTML = '<div class="no-upcoming-appointments">Aucun rendez-vous à venir</div>';
+                return;
+            }
+
+            list.innerHTML = '';
+            upcomingAppointments.forEach(a => {
+                const patient = patients.find(p => p.id == a.patientId);
+                const date = new Date(a.date).toLocaleDateString('fr-FR');
+                const time = a.date.includes('T') ? a.date.split('T')[1].substring(0, 5) : '09:00';
+                const item = document.createElement('div');
+                item.className = 'upcoming-appointment-item';
+                item.innerHTML = `
+                    <div class="upcoming-appointment-info">
+                        <div class="upcoming-appointment-name">${patient ? patient.nom + ' ' + patient.prenom : 'Patient inconnu'}</div>
+                        <div class="upcoming-appointment-date">${date} à ${time}</div>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function markPatientArrived(appointmentId) {
+            updateAppointmentStatus(appointmentId, 'Patient arrivé');
+        }
+
+        function startConsultation(appointmentId) {
+            updateAppointmentStatus(appointmentId, 'Consultation en cours');
+        }
+
+        function endConsultation(appointmentId) {
+            updateAppointmentStatus(appointmentId, 'Terminé');
+        }
+
+        function updateAppointmentStatus(appointmentId, newStatus) {
+            const appointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
+            const index = appointments.findIndex(a => a.id == appointmentId);
+            if (index !== -1) {
+                appointments[index].status = newStatus;
+                localStorage.setItem('dikra_appointments', JSON.stringify(appointments));
+                loadDashboardData();
+                showToast(`Statut mis à jour: ${newStatus}`, 'success');
+            }
+        }
+
+        function refreshWaitingPatients() {
+            loadWaitingPatients();
         }
 
         function initActivityChart() {

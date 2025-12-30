@@ -7,6 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+    <script src="../../js/data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
     <style>
         /* Global box-sizing */
         *, *::before, *::after {
@@ -84,6 +87,29 @@
             font-weight: bold;
         }
 
+        .dropdown-menu {
+            background: var(--sidebar-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .dropdown-item {
+            color: white !important;
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .dropdown-item.active {
+            background: rgba(255,255,255,0.2);
+            font-weight: bold;
+        }
+
         /* Main Content */
         .main-content {
             margin-left: 280px;
@@ -117,33 +143,50 @@
             <a href="dashboard.html" class="nav-link">
                 <i class="bi bi-house-door me-2"></i>Tableau de bord
             </a>
-            <a href="patients.html" class="nav-link">
-                <i class="bi bi-people me-2"></i>Patients
-            </a>
-            <a href="rendez-vous.html" class="nav-link active">
-                <i class="bi bi-calendar-event me-2"></i>Rendez-vous
-            </a>
-            <a href="soins.html" class="nav-link">
-                <i class="bi bi-heart me-2"></i>Soins & Actes
-            </a>
-            <a href="factures.html" class="nav-link">
-                <i class="bi bi-cash-coin me-2"></i>Facturation
-            </a>
-            <a href="mutuelles.html" class="nav-link">
-                <i class="bi bi-shield-check me-2"></i>Mutuelles & Assurances
-            </a>
-            <a href="equipe.html" class="nav-link">
-                <i class="bi bi-person-badge me-2"></i>Équipe médicale
-            </a>
-            <a href="salles.html" class="nav-link">
-                <i class="bi bi-box-seam me-2"></i>Salles & Fauteuils
-            </a>
-            <a href="statistiques.html" class="nav-link">
-                <i class="bi bi-bar-chart me-2"></i>Statistiques
-            </a>
-            <a href="messagerie.html" class="nav-link">
-                <i class="bi bi-envelope me-2"></i>Messagerie
-            </a>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-people me-2"></i>Patient Management
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="patients.html"><i class="bi bi-people me-2"></i>Patients</a></li>
+                    <li><a class="dropdown-item" href="soins.html"><i class="bi bi-heart me-2"></i>Soins & Actes</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-calendar-event me-2"></i>Appointments
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item active" href="rendez-vous.html"><i class="bi bi-calendar-event me-2"></i>Rendez-vous</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-cash-coin me-2"></i>Financial
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="factures.html"><i class="bi bi-cash-coin me-2"></i>Facturation</a></li>
+                    <li><a class="dropdown-item" href="mutuelles.html"><i class="bi bi-shield-check me-2"></i>Mutuelles & Assurances</a></li>
+                    <li><a class="dropdown-item" href="statistiques.html"><i class="bi bi-bar-chart me-2"></i>Statistiques</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-badge me-2"></i>Staff
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="equipe.html"><i class="bi bi-person-badge me-2"></i>Équipe médicale</a></li>
+                    <li><a class="dropdown-item" href="salles.html"><i class="bi bi-box-seam me-2"></i>Salles & Fauteuils</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-envelope me-2"></i>Communication
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="messagerie.html"><i class="bi bi-envelope me-2"></i>Messagerie</a></li>
+                </ul>
+            </div>
             <a href="parametres.html" class="nav-link">
                 <i class="bi bi-gear me-2"></i>Paramètres
             </a>
@@ -175,18 +218,29 @@
             </div>
         </div>
 
-        <!-- Search and Filters -->
+        <!-- View Toggle and Search and Filters -->
         <div class="card mb-4" style="border: none; background: var(--card-bg); border-radius: 12px; box-shadow: var(--shadow);">
             <div class="card-body">
                 <div class="row g-3">
-                    <div class="col-md-4">
-                        <input type="text" class="form-control" id="search-appointment" placeholder="Rechercher par patient, date...">
+                    <div class="col-md-3">
+                        <div class="btn-group w-100" role="group">
+                            <button type="button" class="btn btn-outline-primary active" onclick="switchView('table')">Table</button>
+                            <button type="button" class="btn btn-outline-primary" onclick="switchView('daily')">Jour</button>
+                            <button type="button" class="btn btn-outline-primary" onclick="switchView('weekly')">Semaine</button>
+                            <button type="button" class="btn btn-outline-primary" onclick="switchView('monthly')">Mois</button>
+                        </div>
                     </div>
                     <div class="col-md-3">
+                        <input type="text" class="form-control" id="search-appointment" placeholder="Rechercher par patient, date...">
+                    </div>
+                    <div class="col-md-2">
                         <select class="form-select" id="filter-status">
                             <option value="">Tous les statuts</option>
                             <option value="Confirmé">Confirmé</option>
                             <option value="En attente">En attente</option>
+                            <option value="Patient arrivé">Patient arrivé</option>
+                            <option value="Patient en attente">Patient en attente</option>
+                            <option value="Consultation en cours">Consultation en cours</option>
                             <option value="Annulé">Annulé</option>
                             <option value="Terminé">Terminé</option>
                         </select>
@@ -196,18 +250,38 @@
                             <i class="bi bi-x-circle me-1"></i>Effacer
                         </button>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="d-flex gap-2">
                             <button class="btn btn-success" onclick="exportAppointments()">
                                 <i class="bi bi-download me-1"></i>Exporter
-                            </button>
-                            <button class="btn btn-info" onclick="importAppointments()">
-                                <i class="bi bi-upload me-1"></i>Importer
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Calendar Navigation (hidden by default) -->
+        <div class="card mb-4 calendar-nav-card d-none" style="border: none; background: var(--card-bg); border-radius: 12px; box-shadow: var(--shadow);">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-outline-primary" onclick="previousPeriod()">
+                        <i class="bi bi-chevron-left"></i> Précédent
+                    </button>
+                    <h4 id="calendar-title" class="mb-0">Calendrier</h4>
+                    <div>
+                        <button class="btn btn-outline-primary me-2" onclick="goToToday()">Aujourd'hui</button>
+                        <button class="btn btn-outline-primary" onclick="nextPeriod()">
+                            Suivant <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Container (hidden by default) -->
+        <div class="calendar-container d-none" style="border: none; background: var(--card-bg); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden;">
+            <div id="calendar"></div>
         </div>
 
         <!-- Appointments Table -->
@@ -224,6 +298,9 @@
                                 <th>Patient</th>
                                 <th>Date</th>
                                 <th>Heure</th>
+                                <th>Durée</th>
+                                <th>Dentiste</th>
+                                <th>Salle</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
@@ -260,16 +337,252 @@
             window.location.href = '../../LOGING/html/loging.html';
         }
 
+        let currentView = 'table';
+        let currentDate = new Date();
+
         // Load data on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadAppointments();
             populatePatientSelect();
             populateDentistSelect();
+            populateRoomSelect();
 
             // Enhanced search and filter functionality
             document.getElementById('search-appointment').addEventListener('input', filterAppointments);
             document.getElementById('filter-status').addEventListener('change', filterAppointments);
         });
+
+        // View switching functions
+        function switchView(view) {
+            currentView = view;
+            const tableView = document.getElementById('appointments-table').closest('.card');
+            const calendarNav = document.querySelector('.calendar-nav-card');
+            const calendarContainer = document.querySelector('.calendar-container');
+
+            // Update button states
+            document.querySelectorAll('.btn-group .btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (view === 'table') {
+                tableView.classList.remove('d-none');
+                calendarNav.classList.add('d-none');
+                calendarContainer.classList.add('d-none');
+                loadAppointments();
+            } else {
+                tableView.classList.add('d-none');
+                calendarNav.classList.remove('d-none');
+                calendarContainer.classList.remove('d-none');
+                renderCalendar();
+            }
+        }
+
+        // Calendar navigation
+        function previousPeriod() {
+            if (calendar) {
+                calendar.prev();
+                updateCalendarTitle();
+            }
+        }
+
+        function nextPeriod() {
+            if (calendar) {
+                calendar.next();
+                updateCalendarTitle();
+            }
+        }
+
+        function goToToday() {
+            if (calendar) {
+                calendar.today();
+                updateCalendarTitle();
+            }
+        }
+
+        function updateCalendarTitle() {
+            if (calendar) {
+                const calendarTitle = document.getElementById('calendar-title');
+                calendarTitle.textContent = calendar.view.title;
+            }
+        }
+
+        // Calendar rendering
+        let calendar = null;
+
+        function renderCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            const calendarTitle = document.getElementById('calendar-title');
+
+            if (calendar) {
+                calendar.destroy();
+            }
+
+            // Get appointments data
+            const appointments = dataManager.getAll('appointments');
+            const events = appointments.map(apt => {
+                const patient = dataManager.getById('patients', apt.patientId);
+                const dentist = apt.dentisteId ? dataManager.getById('team', apt.dentisteId) : null;
+                const room = apt.salleId ? dataManager.getById('rooms', apt.salleId) : null;
+
+                const patientName = patient ? `${patient.nom} ${patient.prenom}` : 'Patient inconnu';
+                const dentistName = dentist ? `${dentist.nom} ${dentist.prenom}` : 'Non assigné';
+                const roomName = room ? room.nom : 'Non assignée';
+
+                const startDate = new Date(apt.date);
+                const endDate = new Date(startDate.getTime() + (apt.duration || 60) * 60000);
+
+                return {
+                    id: apt.id,
+                    title: `${patientName} - ${apt.type || 'Consultation'}`,
+                    start: startDate.toISOString(),
+                    end: endDate.toISOString(),
+                    backgroundColor: getStatusColor(apt.status),
+                    borderColor: getStatusColor(apt.status),
+                    textColor: '#ffffff',
+                    extendedProps: {
+                        patientName: patientName,
+                        dentistName: dentistName,
+                        roomName: roomName,
+                        type: apt.type || 'Consultation',
+                        status: apt.status,
+                        duration: apt.duration || 60,
+                        notes: apt.notes || ''
+                    }
+                };
+            });
+
+            // Determine initial view
+            let initialView = 'dayGridMonth';
+            if (currentView === 'daily') {
+                initialView = 'timeGridDay';
+            } else if (currentView === 'weekly') {
+                initialView = 'timeGridWeek';
+            }
+
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: initialView,
+                locale: 'fr',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: events,
+                eventClick: function(info) {
+                    viewAppointment(info.event.id);
+                },
+                dateClick: function(info) {
+                    // Open add appointment modal with pre-filled date
+                    const addModal = new bootstrap.Modal(document.getElementById('addAppointmentModal'));
+                    document.getElementById('appointment-date').value = info.dateStr;
+                    if (currentView === 'daily' || currentView === 'weekly') {
+                        const timeStr = info.date.toTimeString().slice(0, 5);
+                        document.getElementById('appointment-time').value = timeStr;
+                    }
+                    addModal.show();
+                },
+                eventDidMount: function(info) {
+                    // Add tooltip with appointment details
+                    info.el.title = `${info.event.title}\nDentiste: ${info.event.extendedProps.dentistName}\nSalle: ${info.event.extendedProps.roomName}\nDurée: ${info.event.extendedProps.duration} min`;
+                },
+                height: 'auto',
+                slotMinTime: '08:00:00',
+                slotMaxTime: '18:00:00',
+                businessHours: {
+                    daysOfWeek: [1, 2, 3, 4, 5, 6], // Monday - Saturday
+                    startTime: '08:00',
+                    endTime: '18:00',
+                },
+                nowIndicator: true,
+                dayMaxEvents: true,
+                moreLinkClick: 'popover'
+            });
+
+            calendar.render();
+
+            // Update title
+            const viewTitle = calendar.view.title;
+            calendarTitle.textContent = viewTitle;
+        }
+
+        // Populate room select dropdowns
+        function populateRoomSelect() {
+            const rooms = dataManager.getAll('rooms');
+            const selects = ['appointment-salle', 'edit-appointment-salle'];
+
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    select.innerHTML = '<option value="">Auto-assigner</option>';
+                    rooms.forEach(room => {
+                        select.innerHTML += `<option value="${room.id}">${room.nom}</option>`;
+                    });
+                }
+            });
+        }
+
+        // Conflict checking
+        function checkConflicts() {
+            const date = document.getElementById('appointment-date').value;
+            const time = document.getElementById('appointment-time').value;
+            const duration = document.getElementById('appointment-duration').value;
+
+            if (!date || !time || !duration) return;
+
+            const dateTime = `${date}T${time}`;
+            const conflicts = dataManager.checkAppointmentConflict(dateTime, parseInt(duration));
+
+            const alertDiv = document.getElementById('conflict-alert');
+            if (conflicts.length > 0) {
+                alertDiv.classList.remove('d-none');
+                alertDiv.innerHTML = `
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <strong>Conflit détecté!</strong> ${conflicts.length} rendez-vous conflictuel(s) trouvé(s).
+                    <br><small>Dentistes occupés: ${conflicts.map(c => c.dentisteId ? getDentistName(c.dentisteId) : 'Non assigné').join(', ')}</small>
+                `;
+            } else {
+                alertDiv.classList.add('d-none');
+            }
+
+            // Update available dentists and rooms
+            updateAvailableOptions(dateTime, parseInt(duration));
+        }
+
+        function updateAvailableOptions(dateTime, duration) {
+            const availableDentists = dataManager.getAvailableDentists(dateTime, duration);
+            const availableRooms = dataManager.getAvailableRooms(dateTime, duration);
+
+            const dentistSelect = document.getElementById('appointment-dentiste');
+            const roomSelect = document.getElementById('appointment-salle');
+
+            // Update dentists
+            const currentDentistValue = dentistSelect.value;
+            dentistSelect.innerHTML = '<option value="">Auto-assigner</option>';
+            availableDentists.forEach(dentist => {
+                const selected = currentDentistValue == dentist.id ? 'selected' : '';
+                dentistSelect.innerHTML += `<option value="${dentist.id}" ${selected}>${dentist.nom} ${dentist.prenom}</option>`;
+            });
+
+            // Update rooms
+            const currentRoomValue = roomSelect.value;
+            roomSelect.innerHTML = '<option value="">Auto-assigner</option>';
+            availableRooms.forEach(room => {
+                const selected = currentRoomValue == room.id ? 'selected' : '';
+                roomSelect.innerHTML += `<option value="${room.id}" ${selected}>${room.nom}</option>`;
+            });
+        }
+
+        function onPatientChange() {
+            // Could load patient care history here
+            const patientId = document.getElementById('appointment-patient').value;
+            if (patientId) {
+                // Load recent cares for this patient
+                const cares = dataManager.getCaresByPatient(patientId);
+                if (cares.length > 0) {
+                    const recentCare = cares[cares.length - 1];
+                    document.getElementById('appointment-type').value = recentCare.type || 'Consultation';
+                }
+            }
+        }
 
         // Load and display appointments
         function loadAppointments() {
@@ -278,7 +591,7 @@
             tbody.innerHTML = '';
 
             if (appointments.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Aucun rendez-vous trouvé</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Aucun rendez-vous trouvé</td></tr>';
                 document.getElementById('total-appointments').textContent = '0';
                 return;
             }
@@ -302,25 +615,32 @@
 
                 const statusBadge = getStatusBadge(appointment.status);
 
+                const duration = appointment.duration || 60;
+                const dentistName = appointment.dentisteId ? getDentistName(appointment.dentisteId) : 'Non assigné';
+                const roomName = appointment.salleId ? getRoomName(appointment.salleId) : 'Non assignée';
+
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${appointment.id}</td>
-                    <td>${patientName}</td>
-                    <td>${date.toLocaleDateString('fr-FR')}</td>
-                    <td>${time}</td>
-                    <td>${statusBadge}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-info action-btn" onclick="viewAppointment('${appointment.id}')">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-primary action-btn" onclick="editAppointment('${appointment.id}')">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger action-btn" onclick="deleteAppointment('${appointment.id}')">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                `;
+                 row.innerHTML = `
+                     <td>${appointment.id}</td>
+                     <td>${patientName}</td>
+                     <td>${date.toLocaleDateString('fr-FR')}</td>
+                     <td>${time}</td>
+                     <td>${duration} min</td>
+                     <td>${dentistName}</td>
+                     <td>${roomName}</td>
+                     <td>${statusBadge}</td>
+                     <td>
+                         <button class="btn btn-sm btn-outline-info action-btn" onclick="viewAppointment('${appointment.id}')">
+                             <i class="bi bi-eye"></i>
+                         </button>
+                         <button class="btn btn-sm btn-outline-primary action-btn" onclick="editAppointment('${appointment.id}')">
+                             <i class="bi bi-pencil"></i>
+                         </button>
+                         <button class="btn btn-sm btn-outline-danger action-btn" onclick="deleteAppointment('${appointment.id}')">
+                             <i class="bi bi-trash"></i>
+                         </button>
+                     </td>
+                 `;
                 tbody.appendChild(row);
             });
 
@@ -332,6 +652,9 @@
             const badges = {
                 'Confirmé': '<span class="badge bg-success">Confirmé</span>',
                 'En attente': '<span class="badge bg-warning">En attente</span>',
+                'Patient arrivé': '<span class="badge bg-info">Patient arrivé</span>',
+                'Patient en attente': '<span class="badge bg-warning">Patient en attente</span>',
+                'Consultation en cours': '<span class="badge bg-primary">Consultation en cours</span>',
                 'Annulé': '<span class="badge bg-danger">Annulé</span>',
                 'Terminé': '<span class="badge bg-secondary">Terminé</span>'
             };
@@ -380,15 +703,36 @@
 
             const date = document.getElementById('appointment-date').value;
             const time = document.getElementById('appointment-time').value;
+            const duration = parseInt(document.getElementById('appointment-duration').value);
             const dateTime = `${date}T${time}`;
+
+            // Check for conflicts
+            const conflicts = dataManager.checkAppointmentConflict(dateTime, duration);
+            if (conflicts.length > 0) {
+                if (!confirm(`Il y a ${conflicts.length} conflit(s) détecté(s). Voulez-vous continuer ?`)) {
+                    return;
+                }
+            }
+
+            let dentisteId = document.getElementById('appointment-dentiste').value;
+            let salleId = document.getElementById('appointment-salle').value;
+
+            // Auto-assign if not selected
+            if (!dentisteId) {
+                dentisteId = dataManager.autoAssignDentist(dateTime, duration);
+            }
+            if (!salleId) {
+                salleId = dataManager.autoAssignRoom(dateTime, duration);
+            }
 
             const appointment = {
                 id: dataManager.generateId('Appointment'),
                 patientId: document.getElementById('appointment-patient').value,
-                dentisteId: document.getElementById('appointment-dentiste') ? document.getElementById('appointment-dentiste').value : '',
-                salleId: document.getElementById('appointment-salle') ? document.getElementById('appointment-salle').value : '',
+                dentisteId: dentisteId,
+                salleId: salleId,
                 date: dateTime,
-                type: document.getElementById('appointment-type') ? document.getElementById('appointment-type').value : 'Consultation',
+                duration: duration,
+                type: document.getElementById('appointment-type').value,
                 status: document.getElementById('appointment-status').value,
                 notes: document.getElementById('appointment-notes').value,
                 dateCreation: new Date().toISOString()
@@ -400,8 +744,12 @@
             bootstrap.Modal.getInstance(document.getElementById('addAppointmentModal')).hide();
             form.reset();
 
-            // Reload appointments list
-            loadAppointments();
+            // Reload appointments list or calendar
+            if (currentView === 'table') {
+                loadAppointments();
+            } else {
+                renderCalendar();
+            }
 
             showNotification('Rendez-vous ajouté avec succès', 'success');
         }
@@ -414,23 +762,16 @@
             // Fill edit form
             document.getElementById('edit-appointment-id').value = appointment.id;
             document.getElementById('edit-appointment-patient').value = appointment.patientId;
-            if (document.getElementById('edit-appointment-dentiste')) {
-                document.getElementById('edit-appointment-dentiste').value = appointment.dentisteId || '';
-            }
-            if (document.getElementById('edit-appointment-salle')) {
-                document.getElementById('edit-appointment-salle').value = appointment.salleId || '';
-            }
+            document.getElementById('edit-appointment-dentiste').value = appointment.dentisteId || '';
+            document.getElementById('edit-appointment-salle').value = appointment.salleId || '';
 
             const date = new Date(appointment.date);
             document.getElementById('edit-appointment-date').value = date.toISOString().split('T')[0];
             document.getElementById('edit-appointment-time').value = date.toTimeString().slice(0, 5);
+            document.getElementById('edit-appointment-duration').value = appointment.duration || 60;
             document.getElementById('edit-appointment-status').value = appointment.status;
-            if (document.getElementById('edit-appointment-type')) {
-                document.getElementById('edit-appointment-type').value = appointment.type || '';
-            }
-            if (document.getElementById('edit-appointment-notes')) {
-                document.getElementById('edit-appointment-notes').value = appointment.notes || '';
-            }
+            document.getElementById('edit-appointment-type').value = appointment.type || 'Consultation';
+            document.getElementById('edit-appointment-notes').value = appointment.notes || '';
 
             // Show modal
             new bootstrap.Modal(document.getElementById('editAppointmentModal')).show();
@@ -447,16 +788,29 @@
             const appointmentId = document.getElementById('edit-appointment-id').value;
             const date = document.getElementById('edit-appointment-date').value;
             const time = document.getElementById('edit-appointment-time').value;
+            const duration = parseInt(document.getElementById('edit-appointment-duration').value);
             const dateTime = `${date}T${time}`;
+
+            let dentisteId = document.getElementById('edit-appointment-dentiste').value;
+            let salleId = document.getElementById('edit-appointment-salle').value;
+
+            // Auto-assign if not selected
+            if (!dentisteId) {
+                dentisteId = dataManager.autoAssignDentist(dateTime, duration, null);
+            }
+            if (!salleId) {
+                salleId = dataManager.autoAssignRoom(dateTime, duration, null);
+            }
 
             const updatedAppointment = {
                 patientId: document.getElementById('edit-appointment-patient').value,
-                dentisteId: document.getElementById('edit-appointment-dentiste') ? document.getElementById('edit-appointment-dentiste').value : '',
-                salleId: document.getElementById('edit-appointment-salle') ? document.getElementById('edit-appointment-salle').value : '',
+                dentisteId: dentisteId,
+                salleId: salleId,
                 date: dateTime,
-                type: document.getElementById('edit-appointment-type') ? document.getElementById('edit-appointment-type').value : 'Consultation',
+                duration: duration,
+                type: document.getElementById('edit-appointment-type').value,
                 status: document.getElementById('edit-appointment-status').value,
-                notes: document.getElementById('edit-appointment-notes') ? document.getElementById('edit-appointment-notes').value : '',
+                notes: document.getElementById('edit-appointment-notes').value,
                 dateModification: new Date().toISOString()
             };
 
@@ -465,8 +819,12 @@
             // Close modal
             bootstrap.Modal.getInstance(document.getElementById('editAppointmentModal')).hide();
 
-            // Reload appointments list
-            loadAppointments();
+            // Reload appointments list or calendar
+            if (currentView === 'table') {
+                loadAppointments();
+            } else {
+                renderCalendar();
+            }
 
             showNotification('Rendez-vous modifié avec succès', 'success');
         }
@@ -480,6 +838,7 @@
             const patientName = patient ? `${patient.nom} ${patient.prenom}` : 'Patient inconnu';
 
             const date = new Date(appointment.date);
+            const endTime = new Date(date.getTime() + (appointment.duration || 60) * 60000);
 
             // Create view modal content
             const viewModal = document.createElement('div');
@@ -499,7 +858,8 @@
                                     <p><strong>ID:</strong> ${appointment.id}</p>
                                     <p><strong>Patient:</strong> ${patientName}</p>
                                     <p><strong>Date:</strong> ${date.toLocaleDateString('fr-FR')}</p>
-                                    <p><strong>Heure:</strong> ${date.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}</p>
+                                    <p><strong>Heure:</strong> ${date.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}</p>
+                                    <p><strong>Durée:</strong> ${appointment.duration || 60} minutes</p>
                                     <p><strong>Type:</strong> ${appointment.type || 'Consultation'}</p>
                                     <p><strong>Statut:</strong> ${getStatusBadge(appointment.status)}</p>
                                 </div>
@@ -509,23 +869,81 @@
                                     <p><strong>Salle:</strong> ${appointment.salleId ? getRoomName(appointment.salleId) : 'Non assignée'}</p>
                                     <p><strong>Notes:</strong> ${appointment.notes || '-'}</p>
                                     <p><strong>Créé le:</strong> ${new Date(appointment.dateCreation).toLocaleString('fr-FR')}</p>
+                                    ${appointment.dateModification ? `<p><strong>Modifié le:</strong> ${new Date(appointment.dateModification).toLocaleString('fr-FR')}</p>` : ''}
                                 </div>
                             </div>
+                            ${patient ? `
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <h6>Historique du patient</h6>
+                                    <div id="patient-history-${appointmentId}"></div>
+                                </div>
+                            </div>
+                            ` : ''}
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                            <button type="button" class="btn btn-primary" onclick="editAppointment('${appointment.id}')">Modifier</button>
                         </div>
                     </div>
                 </div>
             `;
 
             document.body.appendChild(viewModal);
-            new bootstrap.Modal(viewModal).show();
+            const modal = new bootstrap.Modal(viewModal);
+            modal.show();
+
+            // Load patient history if patient exists
+            if (patient) {
+                loadPatientHistory(appointmentId, patient.id);
+            }
 
             // Remove modal from DOM after it's hidden
             viewModal.addEventListener('hidden.bs.modal', function() {
                 document.body.removeChild(viewModal);
             });
+        }
+
+        function loadPatientHistory(appointmentId, patientId) {
+            const cares = dataManager.getCaresByPatient(patientId);
+            const appointments = dataManager.getAppointmentsByPatient(patientId);
+
+            const historyDiv = document.getElementById(`patient-history-${appointmentId}`);
+            if (!historyDiv) return;
+
+            let html = '<div class="row">';
+
+            // Recent cares
+            html += '<div class="col-md-6"><h6>Derniers soins</h6>';
+            if (cares.length > 0) {
+                cares.slice(-3).forEach(care => {
+                    html += `<div class="mb-2 p-2 border rounded">
+                        <strong>${care.type}</strong><br>
+                        <small class="text-muted">${new Date(care.date).toLocaleDateString('fr-FR')} - ${care.status}</small>
+                    </div>`;
+                });
+            } else {
+                html += '<p class="text-muted">Aucun soin enregistré</p>';
+            }
+            html += '</div>';
+
+            // Recent appointments
+            html += '<div class="col-md-6"><h6>Derniers rendez-vous</h6>';
+            if (appointments.length > 1) {
+                appointments.slice(-4).forEach(apt => {
+                    if (apt.id !== appointmentId) {
+                        html += `<div class="mb-2 p-2 border rounded">
+                            <strong>${apt.type}</strong><br>
+                            <small class="text-muted">${new Date(apt.date).toLocaleDateString('fr-FR')} - ${apt.status}</small>
+                        </div>`;
+                    }
+                });
+            } else {
+                html += '<p class="text-muted">Aucun autre rendez-vous</p>';
+            }
+            html += '</div></div>';
+
+            historyDiv.innerHTML = html;
         }
 
         // Delete appointment
@@ -535,7 +953,14 @@
             }
 
             dataManager.delete('appointments', appointmentId);
-            loadAppointments();
+
+            // Reload appointments list or calendar
+            if (currentView === 'table') {
+                loadAppointments();
+            } else {
+                renderCalendar();
+            }
+
             showNotification('Rendez-vous supprimé avec succès', 'success');
         }
 
@@ -592,6 +1017,38 @@
         function importAppointments() {
             showNotification('Fonction d\'import à implémenter', 'info');
         }
+
+
+        function getStatusColor(status) {
+            switch(status) {
+                case 'Confirmé': return '#10b981';
+                case 'En attente': return '#f59e0b';
+                case 'Patient arrivé': return '#06b6d4';
+                case 'Patient en attente': return '#f59e0b';
+                case 'Consultation en cours': return '#3b82f6';
+                case 'Annulé': return '#ef4444';
+                case 'Terminé': return '#6b7280';
+                default: return '#3b82f6';
+            }
+        }
+
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : 'info-circle'} me-2"></i>${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
     </script>
 
     <!-- Add Appointment Modal -->
@@ -607,30 +1064,74 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="appointment-patient" class="form-label">Patient *</label>
-                                <select class="form-select" id="appointment-patient" required>
+                                <select class="form-select" id="appointment-patient" required onchange="onPatientChange()">
                                     <option value="">Sélectionner un patient</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="appointment-date" class="form-label">Date *</label>
-                                <input type="date" class="form-control" id="appointment-date" required>
+                                <input type="date" class="form-control" id="appointment-date" required onchange="checkConflicts()">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="appointment-time" class="form-label">Heure *</label>
-                                <input type="time" class="form-control" id="appointment-time" required>
+                                <input type="time" class="form-control" id="appointment-time" required onchange="checkConflicts()">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <label for="appointment-duration" class="form-label">Durée (min) *</label>
+                                <select class="form-select" id="appointment-duration" required onchange="checkConflicts()">
+                                    <option value="30">30 min</option>
+                                    <option value="60" selected>60 min</option>
+                                    <option value="90">90 min</option>
+                                    <option value="120">120 min</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
                                 <label for="appointment-status" class="form-label">Statut *</label>
                                 <select class="form-select" id="appointment-status" required>
                                     <option value="Confirmé">Confirmé</option>
                                     <option value="En attente">En attente</option>
+                                    <option value="Patient arrivé">Patient arrivé</option>
+                                    <option value="Patient en attente">Patient en attente</option>
+                                    <option value="Consultation en cours">Consultation en cours</option>
                                     <option value="Annulé">Annulé</option>
                                     <option value="Terminé">Terminé</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="appointment-dentiste" class="form-label">Dentiste</label>
+                                <select class="form-select" id="appointment-dentiste">
+                                    <option value="">Auto-assigner</option>
+                                </select>
+                                <div class="form-text">Laissez vide pour assignation automatique</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="appointment-salle" class="form-label">Salle</label>
+                                <select class="form-select" id="appointment-salle">
+                                    <option value="">Auto-assigner</option>
+                                </select>
+                                <div class="form-text">Laissez vide pour assignation automatique</div>
+                            </div>
+                            <div class="col-12">
+                                <label for="appointment-type" class="form-label">Type de soin</label>
+                                <select class="form-select" id="appointment-type">
+                                    <option value="Consultation">Consultation</option>
+                                    <option value="Détartrage">Détartrage</option>
+                                    <option value="Carie">Traitement de carie</option>
+                                    <option value="Extraction">Extraction</option>
+                                    <option value="Prothèse">Prothèse</option>
+                                    <option value="Orthodontie">Orthodontie</option>
+                                    <option value="Autre">Autre</option>
                                 </select>
                             </div>
                             <div class="col-12">
                                 <label for="appointment-notes" class="form-label">Notes</label>
                                 <textarea class="form-control" id="appointment-notes" rows="3" placeholder="Notes supplémentaires..."></textarea>
+                            </div>
+                            <div class="col-12">
+                                <div id="conflict-alert" class="alert alert-warning d-none">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>
+                                    <strong>Conflit détecté!</strong> Il y a déjà un rendez-vous à cette heure.
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -667,17 +1168,55 @@
                                 <label for="edit-appointment-date" class="form-label">Date *</label>
                                 <input type="date" class="form-control" id="edit-appointment-date" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="edit-appointment-time" class="form-label">Heure *</label>
                                 <input type="time" class="form-control" id="edit-appointment-time" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <label for="edit-appointment-duration" class="form-label">Durée (min) *</label>
+                                <select class="form-select" id="edit-appointment-duration" required>
+                                    <option value="30">30 min</option>
+                                    <option value="60" selected>60 min</option>
+                                    <option value="90">90 min</option>
+                                    <option value="120">120 min</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
                                 <label for="edit-appointment-status" class="form-label">Statut *</label>
                                 <select class="form-select" id="edit-appointment-status" required>
                                     <option value="Confirmé">Confirmé</option>
                                     <option value="En attente">En attente</option>
+                                    <option value="Patient arrivé">Patient arrivé</option>
+                                    <option value="Patient en attente">Patient en attente</option>
+                                    <option value="Consultation en cours">Consultation en cours</option>
                                     <option value="Annulé">Annulé</option>
                                     <option value="Terminé">Terminé</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-appointment-dentiste" class="form-label">Dentiste</label>
+                                <select class="form-select" id="edit-appointment-dentiste">
+                                    <option value="">Auto-assigner</option>
+                                </select>
+                                <div class="form-text">Laissez vide pour assignation automatique</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-appointment-salle" class="form-label">Salle</label>
+                                <select class="form-select" id="edit-appointment-salle">
+                                    <option value="">Auto-assigner</option>
+                                </select>
+                                <div class="form-text">Laissez vide pour assignation automatique</div>
+                            </div>
+                            <div class="col-12">
+                                <label for="edit-appointment-type" class="form-label">Type de soin</label>
+                                <select class="form-select" id="edit-appointment-type">
+                                    <option value="Consultation">Consultation</option>
+                                    <option value="Détartrage">Détartrage</option>
+                                    <option value="Carie">Traitement de carie</option>
+                                    <option value="Extraction">Extraction</option>
+                                    <option value="Prothèse">Prothèse</option>
+                                    <option value="Orthodontie">Orthodontie</option>
+                                    <option value="Autre">Autre</option>
                                 </select>
                             </div>
                             <div class="col-12">

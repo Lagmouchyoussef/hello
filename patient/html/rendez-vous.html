@@ -156,29 +156,64 @@
             </button>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Rendez-vous à venir</h5>
+        <!-- View Toggle -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="btn-group w-100" role="group">
+                    <button type="button" class="btn btn-outline-primary active" onclick="switchView('list')">Liste</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="switchView('calendar')">Calendrier</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- List View -->
+        <div id="list-view">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Rendez-vous à venir</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="upcoming-appointments">
+                                <!-- Upcoming appointments will be loaded here -->
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div id="upcoming-appointments">
-                            <!-- Upcoming appointments will be loaded here -->
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Historique des rendez-vous</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="past-appointments">
+                                <!-- Past appointments will be loaded here -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Historique des rendez-vous</h5>
+        </div>
+
+        <!-- Calendar View -->
+        <div id="calendar-view" class="d-none">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Calendrier de mes rendez-vous</h5>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="previousMonth()">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="nextMonth()">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="goToCurrentMonth()">Aujourd'hui</button>
                     </div>
-                    <div class="card-body">
-                        <div id="past-appointments">
-                            <!-- Past appointments will be loaded here -->
-                        </div>
-                    </div>
+                </div>
+                <div class="card-body">
+                    <h6 id="calendar-title" class="text-center mb-3">Calendrier</h6>
+                    <div id="patient-calendar"></div>
                 </div>
             </div>
         </div>
@@ -333,6 +368,108 @@
             form.reset();
             loadAppointments();
             alert('Demande de rendez-vous envoyée avec succès !');
+        }
+
+        let currentView = 'list';
+        let currentMonth = new Date();
+
+        // View switching
+        function switchView(view) {
+            currentView = view;
+            const listView = document.getElementById('list-view');
+            const calendarView = document.getElementById('calendar-view');
+
+            if (view === 'list') {
+                listView.classList.remove('d-none');
+                calendarView.classList.add('d-none');
+                loadAppointments();
+            } else {
+                listView.classList.add('d-none');
+                calendarView.classList.remove('d-none');
+                renderPatientCalendar();
+            }
+        }
+
+        // Calendar navigation
+        function previousMonth() {
+            currentMonth.setMonth(currentMonth.getMonth() - 1);
+            renderPatientCalendar();
+        }
+
+        function nextMonth() {
+            currentMonth.setMonth(currentMonth.getMonth() + 1);
+            renderPatientCalendar();
+        }
+
+        function goToCurrentMonth() {
+            currentMonth = new Date();
+            renderPatientCalendar();
+        }
+
+        // Patient calendar rendering
+        function renderPatientCalendar() {
+            const calendarTitle = document.getElementById('calendar-title');
+            const calendarDiv = document.getElementById('patient-calendar');
+
+            const year = currentMonth.getFullYear();
+            const month = currentMonth.getMonth();
+            calendarTitle.textContent = new Date(year, month).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(firstDay.getDate() - firstDay.getDay() + 1);
+            const endDate = new Date(lastDay);
+            endDate.setDate(lastDay.getDate() + (6 - lastDay.getDay()));
+
+            // Get patient appointments
+            const currentPatient = JSON.parse(localStorage.getItem('current_patient') || 'null');
+            if (!currentPatient) return;
+
+            const allAppointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
+            const patientAppointments = allAppointments.filter(a => a.patientId == currentPatient.id);
+
+            let html = '<div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #e5e7eb;">';
+
+            // Day headers
+            const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+            days.forEach(day => {
+                html += `<div style="padding: 12px; text-align: center; font-weight: 600; background: var(--card-bg); border: 1px solid var(--border-color);">${day}</div>`;
+            });
+
+            // Calendar days
+            let currentDay = new Date(startDate);
+            while (currentDay <= endDate) {
+                const dayAppointments = patientAppointments.filter(a => {
+                    const aDate = new Date(a.date);
+                    return aDate.toDateString() === currentDay.toDateString();
+                });
+
+                const isCurrentMonth = currentDay.getMonth() === month;
+                const isToday = currentDay.toDateString() === new Date().toDateString();
+                const bgColor = isCurrentMonth ? 'var(--card-bg)' : '#f8fafc';
+                const borderStyle = isToday ? 'border: 2px solid #3b82f6;' : 'border: 1px solid var(--border-color);';
+                const textColor = isCurrentMonth ? 'inherit' : '#9ca3af';
+
+                let dayContent = `<div style="font-weight: ${isToday ? 'bold' : '600'}; margin-bottom: 4px; color: ${textColor};">${currentDay.getDate()}</div>`;
+
+                dayAppointments.forEach(apt => {
+                    const time = new Date(apt.date).toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'});
+                    const statusColor = apt.status === 'Confirmé' ? '#10b981' : apt.status === 'En attente' ? '#f59e0b' : '#ef4444';
+                    dayContent += `
+                        <div class="appointment-card" onclick="viewAppointment('${apt.id}')" style="background: ${statusColor}; color: white; padding: 2px 4px; margin-bottom: 1px; border-radius: 2px; font-size: 10px; cursor: pointer;">
+                            ${time} - ${apt.type}
+                        </div>
+                    `;
+                });
+
+                html += `<div style="min-height: 100px; background: ${bgColor}; ${borderStyle} padding: 8px;">${dayContent}</div>`;
+
+                currentDay.setDate(currentDay.getDate() + 1);
+            }
+
+            html += '</div>';
+            calendarDiv.innerHTML = html;
         }
 
         // Load appointments on page load

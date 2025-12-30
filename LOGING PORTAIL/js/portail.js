@@ -1,26 +1,20 @@
-let patientCredentials = JSON.parse(localStorage.getItem('patientCredentials')) || {
-    email: 'patient@cabinet.ma',
-    password: 'patient123'
-};
-
-// Save to localStorage if not present
-if (!localStorage.getItem('patientCredentials')) {
-    localStorage.setItem('patientCredentials', JSON.stringify(patientCredentials));
-}
-
 document.getElementById('patientLoginForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const email = document.getElementById('patientEmail').value;
     const password = document.getElementById('patientPassword').value;
     const errorDiv = document.getElementById('patientError');
 
-    if (email === patientCredentials.email && password === patientCredentials.password) {
+    const user = dataManager.authenticateUser(email, password);
+    if (user && user.role === 'Patient') {
+        // Login the user
+        dataManager.loginUser(user);
+
         // Set current patient
         const mockPatient = {
             id: 1,
             nom: 'Dupont',
             prenom: 'Jean',
-            email: email,
+            email: user.email,
             telephone: '0123456789',
             naissance: '1990-01-01'
         };

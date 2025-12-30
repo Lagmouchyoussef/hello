@@ -6,7 +6,7 @@
     <title>Gestion des Mutuelles - DIKRA Centre Dentaire</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css"><script src="../../js/data.js"></script><script src="../../js/data.js"></script>
     <style>
         /* Global box-sizing */
         *, *::before, *::after {
@@ -84,6 +84,29 @@
             font-weight: bold;
         }
 
+        .dropdown-menu {
+            background: var(--sidebar-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .dropdown-item {
+            color: white !important;
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .dropdown-item.active {
+            background: rgba(255,255,255,0.2);
+            font-weight: bold;
+        }
+
         /* Main Content */
         .main-content {
             margin-left: 280px;
@@ -147,33 +170,50 @@
             <a href="dashboard.html" class="nav-link">
                 <i class="bi bi-house-door me-2"></i>Tableau de bord
             </a>
-            <a href="patients.html" class="nav-link">
-                <i class="bi bi-people me-2"></i>Patients
-            </a>
-            <a href="rendez-vous.html" class="nav-link">
-                <i class="bi bi-calendar-event me-2"></i>Rendez-vous
-            </a>
-            <a href="soins.html" class="nav-link">
-                <i class="bi bi-heart me-2"></i>Soins & Actes
-            </a>
-            <a href="factures.html" class="nav-link">
-                <i class="bi bi-cash-coin me-2"></i>Facturation
-            </a>
-            <a href="mutuelles.html" class="nav-link active">
-                <i class="bi bi-shield-check me-2"></i>Mutuelles & Assurances
-            </a>
-            <a href="equipe.html" class="nav-link">
-                <i class="bi bi-person-badge me-2"></i>Équipe médicale
-            </a>
-            <a href="salles.html" class="nav-link">
-                <i class="bi bi-box-seam me-2"></i>Salles & Fauteuils
-            </a>
-            <a href="statistiques.html" class="nav-link">
-                <i class="bi bi-bar-chart me-2"></i>Statistiques
-            </a>
-            <a href="messagerie.html" class="nav-link">
-                <i class="bi bi-envelope me-2"></i>Messagerie
-            </a>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-people me-2"></i>Patient Management
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="patients.html"><i class="bi bi-people me-2"></i>Patients</a></li>
+                    <li><a class="dropdown-item" href="soins.html"><i class="bi bi-heart me-2"></i>Soins & Actes</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-calendar-event me-2"></i>Appointments
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="rendez-vous.html"><i class="bi bi-calendar-event me-2"></i>Rendez-vous</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-cash-coin me-2"></i>Financial
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="factures.html"><i class="bi bi-cash-coin me-2"></i>Facturation</a></li>
+                    <li><a class="dropdown-item active" href="mutuelles.html"><i class="bi bi-shield-check me-2"></i>Mutuelles & Assurances</a></li>
+                    <li><a class="dropdown-item" href="statistiques.html"><i class="bi bi-bar-chart me-2"></i>Statistiques</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-badge me-2"></i>Staff
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="equipe.html"><i class="bi bi-person-badge me-2"></i>Équipe médicale</a></li>
+                    <li><a class="dropdown-item" href="salles.html"><i class="bi bi-box-seam me-2"></i>Salles & Fauteuils</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-envelope me-2"></i>Communication
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="messagerie.html"><i class="bi bi-envelope me-2"></i>Messagerie</a></li>
+                </ul>
+            </div>
             <a href="parametres.html" class="nav-link">
                 <i class="bi bi-gear me-2"></i>Paramètres
             </a>
@@ -221,6 +261,39 @@
                 </div>
             </div>
         </div>
+
+        <div class="mutuelles-header">
+            <h1>Réclamations d'Assurance</h1>
+            <div class="d-flex gap-3">
+                <input type="text" class="form-control search-bar" id="search-claim" placeholder="Rechercher une réclamation...">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClaimModal">
+                    <i class="bi bi-plus-circle me-2"></i>Ajouter Réclamation
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="claims-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient</th>
+                                <th>Facture</th>
+                                <th>Type Assurance</th>
+                                <th>Montant</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="claims-tbody">
+                            <!-- Claims will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -235,14 +308,23 @@
             window.location.href = '../../LOGING/html/loging.html';
         }
 
-        // Load insurances on page load
+        // Load insurances and claims on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadInsurances();
+            loadClaims();
 
             // Search functionality
             document.getElementById('search-insurance').addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase();
                 const rows = document.querySelectorAll('#insurances-tbody tr');
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+            document.getElementById('search-claim').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#claims-tbody tr');
                 rows.forEach(row => {
                     const text = row.textContent.toLowerCase();
                     row.style.display = text.includes(searchTerm) ? '' : 'none';
@@ -331,6 +413,136 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                     <button type="button" class="btn btn-primary" onclick="updateInsurance()">Modifier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Claim Modal -->
+    <div class="modal fade" id="addClaimModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter une Réclamation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-claim-form">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="claim-patient" class="form-label">Patient *</label>
+                                <select class="form-control" id="claim-patient" required>
+                                    <option value="">Sélectionner</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="claim-bill" class="form-label">Facture *</label>
+                                <select class="form-control" id="claim-bill" required>
+                                    <option value="">Sélectionner</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="claim-type" class="form-label">Type d'Assurance *</label>
+                                <select class="form-control" id="claim-type" required>
+                                    <option value="CNSS">CNSS</option>
+                                    <option value="CNOPS">CNOPS</option>
+                                    <option value="Privé">Privé</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="claim-amount" class="form-label">Montant *</label>
+                                <input type="number" class="form-control" id="claim-amount" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="claim-notes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="claim-notes" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="addClaim()">Ajouter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Claim Modal -->
+    <div class="modal fade" id="editClaimModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier Réclamation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-claim-form">
+                        <input type="hidden" id="edit-claim-id">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-claim-patient" class="form-label">Patient *</label>
+                                <select class="form-control" id="edit-claim-patient" required>
+                                    <option value="">Sélectionner</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-claim-bill" class="form-label">Facture *</label>
+                                <select class="form-control" id="edit-claim-bill" required>
+                                    <option value="">Sélectionner</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-claim-type" class="form-label">Type d'Assurance *</label>
+                                <select class="form-control" id="edit-claim-type" required>
+                                    <option value="CNSS">CNSS</option>
+                                    <option value="CNOPS">CNOPS</option>
+                                    <option value="Privé">Privé</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-claim-amount" class="form-label">Montant *</label>
+                                <input type="number" class="form-control" id="edit-claim-amount" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-claim-status" class="form-label">Statut *</label>
+                                <select class="form-control" id="edit-claim-status" required>
+                                    <option value="Soumis">Soumis</option>
+                                    <option value="Approuvé">Approuvé</option>
+                                    <option value="Rejeté">Rejeté</option>
+                                    <option value="Remboursé">Remboursé</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-claim-submission-date" class="form-label">Date de Soumission</label>
+                                <input type="date" class="form-control" id="edit-claim-submission-date">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-claim-approval-date" class="form-label">Date d'Approbation</label>
+                                <input type="date" class="form-control" id="edit-claim-approval-date">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-claim-reimbursement-date" class="form-label">Date de Remboursement</label>
+                                <input type="date" class="form-control" id="edit-claim-reimbursement-date">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-claim-notes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="edit-claim-notes" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="updateClaim()">Modifier</button>
                 </div>
             </div>
         </div>

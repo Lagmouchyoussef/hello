@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Patients - Assistante</title>
+    <title>Paramètres - DIKRA Centre Dentaire</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
     <style>
-         /* Global box-sizing */
+        /* Global box-sizing */
         *, *::before, *::after {
             box-sizing: border-box;
         }
@@ -33,6 +33,18 @@
             --shadow: rgba(0,0,0,0.3);
         }
 
+        [lang="ar"] {
+            direction: rtl;
+        }
+
+        [lang="ar"] .nav-link {
+            text-align: right;
+        }
+
+        [lang="ar"] .settings-header h1 {
+            text-align: right;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -40,7 +52,6 @@
             color: var(--text-color);
             transition: background-color 0.3s, color 0.3s;
         }
-
 
         /* Sidebar */
         .sidebar {
@@ -104,6 +115,47 @@
                 margin-left: 0;
             }
         }
+
+        /* Parametres specific styles */
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .settings-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .settings-section h5 {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-save:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+        }
     </style>
 </head>
 <body>
@@ -129,7 +181,7 @@
                 </ul>
             </div>
             <div class="dropdown">
-                <button class="btn dropdown-toggle nav-link active" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
                     <i class="bi bi-people me-2"></i>Gestion des Patients
                 </button>
                 <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
@@ -155,7 +207,7 @@
                     <li><a class="dropdown-item" href="messagerie.html" style="color: white;"><i class="bi bi-envelope me-2"></i>Messagerie</a></li>
                 </ul>
             </div>
-            <a href="parametres.html" class="nav-link">
+            <a href="parametres.html" class="nav-link active">
                 <i class="bi bi-gear me-2"></i>Paramètres
             </a>
         </nav>
@@ -169,40 +221,90 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()" aria-label="Toggle sidebar" style="position: absolute; top: 0; left: 0; z-index: 1001;">
             <i class="bi bi-list"></i>
         </button>
 
-        <div class="patients-header">
-            <h1>Gestion des Patients</h1>
-            <div class="d-flex gap-3">
-                <input type="text" class="form-control search-bar" id="search-patient" placeholder="Rechercher un patient...">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPatientModal">
-                    <i class="bi bi-person-plus me-2"></i>Ajouter Patient
+        <div class="settings-header">
+            <h1>Paramètres Personnels</h1>
+            <button class="btn btn-save" onclick="saveAssistantSettings()">
+                <i class="bi bi-check-circle me-2"></i>Sauvegarder
+            </button>
+        </div>
+
+        <!-- Profile Settings -->
+        <div class="settings-card">
+            <div class="settings-section">
+                <h5><i class="bi bi-person me-2"></i>Profil</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="assistant-nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="assistant-nom" placeholder="Votre nom">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="assistant-prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="assistant-prenom" placeholder="Votre prénom">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="assistant-email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="assistant-email" placeholder="votre.email@example.com">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="assistant-phone" class="form-label">Téléphone</label>
+                        <input type="tel" class="form-control" id="assistant-phone" placeholder="+212 6 XX XX XX XX">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Password Change -->
+        <div class="settings-card">
+            <div class="settings-section">
+                <h5><i class="bi bi-lock me-2"></i>Changer le Mot de Passe</h5>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="current-password" class="form-label">Mot de passe actuel</label>
+                        <input type="password" class="form-control" id="current-password" placeholder="Mot de passe actuel">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="new-password" class="form-label">Nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="new-password" placeholder="Nouveau mot de passe">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="confirm-password" class="form-label">Confirmer le mot de passe</label>
+                        <input type="password" class="form-control" id="confirm-password" placeholder="Confirmer le mot de passe">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="changeAssistantPassword()">
+                    <i class="bi bi-key me-2"></i>Changer le Mot de Passe
                 </button>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover" id="patients-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nom</th>
-                                <th>Prénom</th>
-                                <th>Date de naissance</th>
-                                <th>Téléphone</th>
-                                <th>Adresse</th>
-                                <th>Mutuelle</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="patients-tbody">
-                            <!-- Patients will be loaded here -->
-                        </tbody>
-                    </table>
+        <!-- Preferences Settings -->
+        <div class="settings-card">
+            <div class="settings-section">
+                <h5><i class="bi bi-gear me-2"></i>Préférences</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="language-selector" class="form-label">Langue</label>
+                        <select class="form-control" id="language-selector">
+                            <option value="fr">Français</option>
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="theme-toggle" class="form-label">Thème</label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="theme-toggle">
+                            <label class="form-check-label" for="theme-toggle">
+                                Mode sombre
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -210,125 +312,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/script.js"></script>
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('show');
-        }
-
-        function logout() {
-            window.location.href = '../../LOGING/html/loging.html';
-        }
-
-        // Load patients on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            loadPatients();
-
-            // Search functionality
-            document.getElementById('search-patient').addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                const rows = document.querySelectorAll('#patients-tbody tr');
-                rows.forEach(row => {
-                    const text = row.textContent.toLowerCase();
-                    row.style.display = text.includes(searchTerm) ? '' : 'none';
-                });
-            });
-        });
-    </script>
-
-    <!-- Add Patient Modal -->
-    <div class="modal fade" id="addPatientModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Ajouter un Patient</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="add-patient-form">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="patient-nom" class="form-label">Nom *</label>
-                                <input type="text" class="form-control" id="patient-nom" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="patient-prenom" class="form-label">Prénom *</label>
-                                <input type="text" class="form-control" id="patient-prenom" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="patient-naissance" class="form-label">Date de naissance *</label>
-                                <input type="date" class="form-control" id="patient-naissance" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="patient-telephone" class="form-label">Téléphone *</label>
-                                <input type="tel" class="form-control" id="patient-telephone" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="patient-adresse" class="form-label">Adresse</label>
-                            <input type="text" class="form-control" id="patient-adresse">
-                        </div>
-                        <div class="mb-3">
-                            <label for="patient-mutuelle" class="form-label">Mutuelle / Assurance</label>
-                            <input type="text" class="form-control" id="patient-mutuelle">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" onclick="addPatient()">Ajouter</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- View Patient Modal -->
-    <div class="modal fade" id="viewPatientModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Détails du Patient</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body" id="view-patient-details">
-                    <!-- Patient details will be loaded here -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Patient Modal -->
-    <div class="modal fade" id="editPatientModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modifier les Informations Administratives</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="edit-patient-form">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="edit-patient-telephone" class="form-label">Téléphone *</label>
-                                <input type="tel" class="form-control" id="edit-patient-telephone" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="edit-patient-adresse" class="form-label">Adresse</label>
-                                <input type="text" class="form-control" id="edit-patient-adresse">
-                            </div>
-                        </div>
-                        <input type="hidden" id="edit-patient-id">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" onclick="updatePatient()">Modifier</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </body>
 </html>

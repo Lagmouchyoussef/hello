@@ -1,19 +1,22 @@
-let users = [
-    { email: 'patient@cabinet.ma', password: 'patient123', role: 'Patient', interface: '/patient/html/dashboard.html' },
-];
-
-localStorage.setItem('users', JSON.stringify(users));
+// Include dataManager
+// Assuming dataManager is available globally from data.js
 
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
     const errorDiv = document.getElementById('error');
 
-    const user = users.find(u => u.email === email && u.password === password);
+    console.log('Login attempt with:', email, password);
+    console.log('dataManager available:', !!dataManager);
+    const user = dataManager.authenticateUser(email, password);
+    console.log('Authentication result:', user);
     if (user) {
+        // Login the user
+        dataManager.loginUser(user);
+
+        // Set current patient if role is Patient
         if (user.role === 'Patient') {
-            // Set current patient
             const mockPatient = {
                 id: 1,
                 nom: 'Dupont',
@@ -24,8 +27,18 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
             };
             localStorage.setItem('current_patient', JSON.stringify(mockPatient));
         }
-        // Redirect to the interface
-        window.location.href = user.interface;
+
+        // Redirect based on role
+        const roleRoutes = {
+            'Admin': '../../admin/html/dashboard.html',
+            'Dentist': '../../admin/html/dashboard.html', // Redirect to admin for now
+            'Assistant': '../../assistante/html/dashboard.html',
+            'Accountant': '../../admin/html/dashboard.html', // Redirect to admin for now
+            'Patient': '../../patient/html/dashboard.html'
+        };
+
+        const redirectUrl = roleRoutes[user.role] || '../../patient/html/dashboard.html';
+        window.location.href = redirectUrl;
     } else {
         errorDiv.textContent = 'Email ou mot de passe incorrect.';
     }

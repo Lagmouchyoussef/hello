@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Factures - DIKRA Centre Dentaire</title>
+    <title>Factures - DIKRA Centre Dentaire</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css"><script src="../../js/data.js"></script><script src="../../js/data.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../../js/data.js"></script>
     <style>
         /* Global box-sizing */
         *, *::before, *::after {
@@ -80,29 +81,6 @@
         }
 
         .nav-link.active {
-            background: rgba(255,255,255,0.2);
-            font-weight: bold;
-        }
-
-        .dropdown-menu {
-            background: var(--sidebar-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-
-        .dropdown-item {
-            color: white !important;
-            padding: 10px 25px;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .dropdown-item:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .dropdown-item.active {
             background: rgba(255,255,255,0.2);
             font-weight: bold;
         }
@@ -187,53 +165,46 @@
         <div class="sidebar-header" style="padding: 20px; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
             <img src="../../Photo/Photo.png" alt="Logo" width="60" height="60" style="border-radius: 50%; margin-bottom: 10px;">
             <h5 style="color: white; margin: 0; font-size: 18px; font-weight: 600; text-align: center;">DIKRA Centre Dentaire</h5>
+            <p style="color: rgba(255,255,255,0.8); margin: 5px 0 0 0; font-size: 14px;">Assistante</p>
         </div>
         <nav class="nav flex-column pb-3" style="padding-top: 0;">
             <a href="dashboard.html" class="nav-link">
                 <i class="bi bi-house-door me-2"></i>Tableau de bord
             </a>
             <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-people me-2"></i>Patient Management
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="patients.html"><i class="bi bi-people me-2"></i>Patients</a></li>
-                    <li><a class="dropdown-item" href="soins.html"><i class="bi bi-heart me-2"></i>Soins & Actes</a></li>
+                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                    <i class="bi bi-calendar-event me-2"></i>Rendez-vous
+                </button>
+                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
+                    <li><a class="dropdown-item" href="planning.html" style="color: white;"><i class="bi bi-calendar-week me-2"></i>Planning</a></li>
+                    <li><a class="dropdown-item" href="rendez-vous.html" style="color: white;"><i class="bi bi-calendar-event me-2"></i>Rendez-vous</a></li>
                 </ul>
             </div>
             <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-calendar-event me-2"></i>Appointments
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="rendez-vous.html"><i class="bi bi-calendar-event me-2"></i>Rendez-vous</a></li>
+                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                    <i class="bi bi-people me-2"></i>Gestion des Patients
+                </button>
+                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
+                    <li><a class="dropdown-item" href="patients.html" style="color: white;"><i class="bi bi-people me-2"></i>Patients</a></li>
+                    <li><a class="dropdown-item" href="documents.html" style="color: white;"><i class="bi bi-file-earmark me-2"></i>Documents</a></li>
                 </ul>
             </div>
             <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-cash-coin me-2"></i>Financial
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item active" href="factures.html"><i class="bi bi-cash-coin me-2"></i>Facturation</a></li>
-                    <li><a class="dropdown-item" href="mutuelles.html"><i class="bi bi-shield-check me-2"></i>Mutuelles & Assurances</a></li>
-                    <li><a class="dropdown-item" href="statistiques.html"><i class="bi bi-bar-chart me-2"></i>Statistiques</a></li>
+                <button class="btn dropdown-toggle nav-link active" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                    <i class="bi bi-cash me-2"></i>Financier
+                </button>
+                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
+                    <li><a class="dropdown-item" href="factures.html" style="color: white;"><i class="bi bi-receipt me-2"></i>Factures</a></li>
+                    <li><a class="dropdown-item" href="mutuelles.html" style="color: white;"><i class="bi bi-shield-check me-2"></i>Mutuelles</a></li>
                 </ul>
             </div>
             <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-badge me-2"></i>Staff
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="equipe.html"><i class="bi bi-person-badge me-2"></i>Équipe médicale</a></li>
-                    <li><a class="dropdown-item" href="salles.html"><i class="bi bi-box-seam me-2"></i>Salles & Fauteuils</a></li>
-                </ul>
-            </div>
-            <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-envelope me-2"></i>Communication
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="messagerie.html"><i class="bi bi-envelope me-2"></i>Messagerie</a></li>
+                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                    <i class="bi bi-chat me-2"></i>Communication
+                </button>
+                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
+                    <li><a class="dropdown-item" href="notifications.html" style="color: white;"><i class="bi bi-bell me-2"></i>Notifications</a></li>
+                    <li><a class="dropdown-item" href="messagerie.html" style="color: white;"><i class="bi bi-envelope me-2"></i>Messagerie</a></li>
                 </ul>
             </div>
             <a href="parametres.html" class="nav-link">
@@ -241,8 +212,8 @@
             </a>
         </nav>
         <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-            <p style="color: white; text-align: center; margin-bottom: 10px; font-weight: bold;">Admin</p>
-            <button onclick="logout()" style="width: 100%; background: red; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
+            <p style="color: white; text-align: center; margin-bottom: 10px; font-weight: bold;">Assistante</p>
+            <button onclick="logout()" style="width: 100%; background: #dc2626; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
                 <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
             </button>
         </div>
@@ -250,7 +221,7 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()" aria-label="Toggle sidebar" style="position: absolute; top: 0; left: 0; z-index: 1001;">
+        <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()" aria-label="Toggle sidebar">
             <i class="bi bi-list"></i>
         </button>
 
@@ -289,8 +260,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="../../js/data.js"></script>
     <script src="../js/script.js"></script>
     <script>
         function toggleSidebar() {
@@ -299,13 +268,21 @@
         }
 
         function logout() {
+            dataManager.logoutUser();
             window.location.href = '../../LOGING/html/loging.html';
         }
 
         // Load data on page load
         document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const currentUser = dataManager.getCurrentUser();
+            if (!currentUser || currentUser.role !== 'Assistant') {
+                window.location.href = '../../LOGING/html/loging.html';
+            }
+
             loadFactures();
             populatePatientSelect();
+            populateTreatmentsSelect();
 
             // Search functionality
             document.getElementById('search-facture').addEventListener('input', function() {
@@ -325,7 +302,7 @@
             tbody.innerHTML = '';
 
             if (bills.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Aucune facture trouvée</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Aucune facture trouvée</td></tr>';
                 return;
             }
 
@@ -354,15 +331,6 @@
                         <button class="btn btn-sm btn-outline-success action-btn" onclick="addPayment('${bill.id}')">
                             <i class="bi bi-cash"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-primary action-btn" onclick="editFacture('${bill.id}')">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-secondary action-btn" onclick="exportPDF('${bill.id}')">
-                            <i class="bi bi-file-earmark-pdf"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger action-btn" onclick="deleteFacture('${bill.id}')">
-                            <i class="bi bi-trash"></i>
-                        </button>
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -382,7 +350,7 @@
         // Populate patient select dropdowns
         function populatePatientSelect() {
             const patients = dataManager.getAll('patients');
-            const selects = ['facture-patient', 'edit-facture-patient'];
+            const selects = ['facture-patient'];
 
             selects.forEach(selectId => {
                 const select = document.getElementById(selectId);
@@ -395,6 +363,18 @@
             });
         }
 
+        // Populate treatments select
+        function populateTreatmentsSelect() {
+            const cares = dataManager.getAll('cares');
+            const select = document.getElementById('facture-treatments');
+            if (select) {
+                select.innerHTML = '';
+                cares.forEach(care => {
+                    select.innerHTML += `<option value="${care.id}" data-price="${care.price || 0}">${care.description} - ${care.price || 0} MAD</option>`;
+                });
+            }
+        }
+
         // Add new bill
         function addFacture() {
             const form = document.getElementById('add-facture-form');
@@ -403,9 +383,15 @@
                 return;
             }
 
+            const selectedTreatments = Array.from(document.getElementById('facture-treatments').selectedOptions);
+            if (selectedTreatments.length === 0) {
+                alert('Veuillez sélectionner au moins un traitement.');
+                return;
+            }
+
+            const subtotal = selectedTreatments.reduce((sum, option) => sum + parseFloat(option.getAttribute('data-price') || 0), 0);
             const settings = dataManager.getSettings();
             const vatRate = settings.vatRate || 20;
-            const subtotal = parseFloat(document.getElementById('facture-montant').value);
             const vat = subtotal * (vatRate / 100);
             const total = subtotal + vat;
 
@@ -417,11 +403,12 @@
                 subtotal: subtotal.toFixed(2),
                 vat: vat.toFixed(2),
                 vatRate: vatRate,
-                status: document.getElementById('facture-statut').value,
-                description: document.getElementById('facture-description').value,
-                paymentMethod: 'Espèces', // Default
-                payments: [], // Initialize empty payments array
-                dateCreation: new Date().toISOString()
+                status: 'Impayé',
+                description: selectedTreatments.map(opt => opt.text.split(' - ')[0]).join(', '),
+                paymentMethod: 'Espèces',
+                payments: [],
+                dateCreation: new Date().toISOString(),
+                treatments: selectedTreatments.map(opt => ({ id: opt.value, description: opt.text.split(' - ')[0], price: opt.getAttribute('data-price') }))
             };
 
             dataManager.add('bills', bill);
@@ -436,65 +423,6 @@
             showNotification('Facture créée avec succès', 'success');
         }
 
-        // Edit bill
-        function editFacture(billId) {
-            const bill = dataManager.getById('bills', billId);
-            if (!bill) return;
-
-            // Fill edit form with HT amount (excluding TVA)
-            const htAmount = bill.subtotal || (parseFloat(bill.amount) / (1 + (bill.vatRate || 20) / 100));
-            document.getElementById('edit-facture-id').value = bill.id;
-            document.getElementById('edit-facture-patient').value = bill.patientId;
-            document.getElementById('edit-facture-date').value = bill.date;
-            document.getElementById('edit-facture-montant').value = htAmount.toFixed(2);
-            document.getElementById('edit-facture-statut').value = bill.status;
-            document.getElementById('edit-facture-description').value = bill.description || '';
-
-            // Show modal
-            new bootstrap.Modal(document.getElementById('editFactureModal')).show();
-        }
-
-        // Update bill
-        function updateFacture() {
-            const form = document.getElementById('edit-facture-form');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            const billId = document.getElementById('edit-facture-id').value;
-            const bill = dataManager.getById('bills', billId);
-            if (!bill) return;
-
-            const settings = dataManager.getSettings();
-            const vatRate = settings.vatRate || 20;
-            const subtotal = parseFloat(document.getElementById('edit-facture-montant').value);
-            const vat = subtotal * (vatRate / 100);
-            const total = subtotal + vat;
-
-            const updatedBill = {
-                patientId: document.getElementById('edit-facture-patient').value,
-                date: document.getElementById('edit-facture-date').value,
-                amount: total.toFixed(2),
-                subtotal: subtotal.toFixed(2),
-                vat: vat.toFixed(2),
-                vatRate: vatRate,
-                status: document.getElementById('edit-facture-statut').value,
-                description: document.getElementById('edit-facture-description').value,
-                dateModification: new Date().toISOString()
-            };
-
-            dataManager.update('bills', billId, updatedBill);
-
-            // Close modal
-            bootstrap.Modal.getInstance(document.getElementById('editFactureModal')).hide();
-
-            // Reload bills list
-            loadFactures();
-
-            showNotification('Facture modifiée avec succès', 'success');
-        }
-
         // View bill details
         function viewFacture(billId) {
             const bill = dataManager.getById('bills', billId);
@@ -505,11 +433,19 @@
             const settings = dataManager.getSettings();
             const vatRate = settings.vatRate || 20;
 
-            // Calculate TVA breakdown (handle backward compatibility)
             const subtotal = bill.subtotal ? parseFloat(bill.subtotal) : (parseFloat(bill.amount) / (1 + vatRate / 100));
             const vat = bill.vat ? parseFloat(bill.vat) : (parseFloat(bill.amount) - subtotal);
             const totalPaid = (bill.payments || []).reduce((sum, payment) => sum + parseFloat(payment.amount || 0), 0);
             const remaining = parseFloat(bill.amount) - totalPaid;
+
+            let treatmentsList = '';
+            if (bill.treatments && bill.treatments.length > 0) {
+                treatmentsList = '<h6>Traitements</h6><ul>';
+                bill.treatments.forEach(treatment => {
+                    treatmentsList += `<li>${treatment.description} - ${treatment.price} MAD</li>`;
+                });
+                treatmentsList += '</ul>';
+            }
 
             let paymentHistory = '';
             if (bill.payments && bill.payments.length > 0) {
@@ -531,9 +467,7 @@
                         <p><strong>Patient:</strong> ${patientName}</p>
                         <p><strong>Date:</strong> ${formatDate(bill.date)}</p>
                         <p><strong>Statut:</strong> ${getStatusBadge(bill.status)}</p>
-                        <p><strong>Description:</strong> ${bill.description || '-'}</p>
                         <p><strong>Créé le:</strong> ${new Date(bill.dateCreation).toLocaleString('fr-FR')}</p>
-                        ${bill.dateModification ? `<p><strong>Modifié le:</strong> ${new Date(bill.dateModification).toLocaleString('fr-FR')}</p>` : ''}
                     </div>
                     <div class="col-md-6">
                         <h6>Détails financiers</h6>
@@ -545,7 +479,10 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-12">
+                    <div class="col-md-6">
+                        ${treatmentsList}
+                    </div>
+                    <div class="col-md-6">
                         ${paymentHistory}
                     </div>
                 </div>
@@ -555,46 +492,11 @@
             new bootstrap.Modal(document.getElementById('viewFactureModal')).show();
         }
 
-        // Delete bill
-        function deleteFacture(billId) {
-            if (!confirm('Êtes-vous sûr de vouloir supprimer cette facture ? Cette action est irréversible.')) {
-                return;
-            }
-
-            dataManager.delete('bills', billId);
-            loadFactures();
-            showNotification('Facture supprimée avec succès', 'success');
-        }
-
         // Calculate remaining balance for a bill
         function calculateRemainingBalance(bill) {
             const totalPaid = (bill.payments || []).reduce((sum, payment) => sum + parseFloat(payment.amount || 0), 0);
             const remaining = parseFloat(bill.amount) - totalPaid;
             return remaining.toFixed(2);
-        }
-
-        // Calculate automatic totals with TVA
-        function calculateBillTotal() {
-            // This would be called when adding cares to a bill
-            // For now, it's a placeholder for future enhancement
-            const cares = dataManager.getAll('cares');
-            const settings = dataManager.getSettings();
-            const vatRate = settings.vatRate || 20;
-
-            // Calculate subtotal
-            const subtotal = cares.reduce((sum, care) => sum + (care.price || 0), 0);
-
-            // Calculate VAT
-            const vat = subtotal * (vatRate / 100);
-
-            // Calculate total
-            const total = subtotal + vat;
-
-            return {
-                subtotal: subtotal.toFixed(2),
-                vat: vat.toFixed(2),
-                total: total.toFixed(2)
-            };
         }
 
         // Add payment to bill
@@ -665,68 +567,6 @@
             showNotification('Paiement enregistré avec succès', 'success');
         }
 
-        // Export PDF
-        function exportPDF(billId) {
-            const bill = dataManager.getById('bills', billId);
-            if (!bill) return;
-
-            const patient = dataManager.getById('patients', bill.patientId);
-            const settings = dataManager.getSettings();
-            const vatRate = settings.vatRate || 20;
-
-            // Calculate TVA breakdown (handle backward compatibility)
-            const subtotal = bill.subtotal ? parseFloat(bill.subtotal) : (parseFloat(bill.amount) / (1 + vatRate / 100));
-            const vat = bill.vat ? parseFloat(bill.vat) : (parseFloat(bill.amount) - subtotal);
-            const totalPaid = (bill.payments || []).reduce((sum, payment) => sum + parseFloat(payment.amount || 0), 0);
-            const remaining = parseFloat(bill.amount) - totalPaid;
-
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            // Header
-            doc.setFontSize(20);
-            doc.text(settings.clinicName || 'DIKRA Centre Dentaire', 105, 20, { align: 'center' });
-            doc.setFontSize(14);
-            doc.text('Facture', 105, 35, { align: 'center' });
-
-            // Bill details
-            doc.setFontSize(12);
-            let y = 50;
-            doc.text(`Numéro de facture: ${bill.id}`, 20, y);
-            y += 10;
-            doc.text(`Date: ${formatDate(bill.date)}`, 20, y);
-            y += 10;
-            doc.text(`Patient: ${patient ? `${patient.nom} ${patient.prenom}` : 'Patient inconnu'}`, 20, y);
-            y += 20;
-
-            // Financial details
-            doc.text('Détails financiers:', 20, y);
-            y += 10;
-            doc.text(`Sous-total HT: ${subtotal.toFixed(2)} MAD`, 30, y);
-            y += 10;
-            doc.text(`TVA (${vatRate}%): ${vat.toFixed(2)} MAD`, 30, y);
-            y += 10;
-            doc.text(`Total TTC: ${bill.amount} MAD`, 30, y);
-            y += 10;
-            doc.text(`Total payé: ${totalPaid.toFixed(2)} MAD`, 30, y);
-            y += 10;
-            doc.text(`Reste à payer: ${remaining.toFixed(2)} MAD`, 30, y);
-
-            // Payment history
-            if (bill.payments && bill.payments.length > 0) {
-                y += 20;
-                doc.text('Historique des paiements:', 20, y);
-                y += 10;
-                bill.payments.forEach(payment => {
-                    doc.text(`${formatDate(payment.date)} - ${payment.amount} MAD (${payment.method})`, 30, y);
-                    y += 8;
-                });
-            }
-
-            // Save PDF
-            doc.save(`facture_${bill.id}.pdf`);
-        }
-
         // Utility function for date formatting
         function formatDate(dateString) {
             if (!dateString) return '-';
@@ -770,83 +610,22 @@
                                 <input type="date" class="form-control" id="facture-date" required>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="facture-montant" class="form-label">Montant HT (€) *</label>
-                                <input type="number" step="0.01" class="form-control" id="facture-montant" required>
-                                <small class="form-text text-muted">Montant hors TVA - la TVA sera calculée automatiquement</small>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="facture-statut" class="form-label">Statut *</label>
-                                <select class="form-control" id="facture-statut" required>
-                                    <option value="pending">En attente</option>
-                                    <option value="paid">Payée</option>
-                                    <option value="overdue">En retard</option>
-                                </select>
-                            </div>
+                        <div class="mb-3">
+                            <label for="facture-treatments" class="form-label">Traitements *</label>
+                            <select class="form-control" id="facture-treatments" multiple required style="height: 150px;" onchange="updateTotal()">
+                                <!-- Treatments will be loaded here -->
+                            </select>
+                            <small class="form-text text-muted">Maintenez Ctrl (ou Cmd) pour sélectionner plusieurs traitements</small>
                         </div>
                         <div class="mb-3">
-                            <label for="facture-description" class="form-label">Description</label>
-                            <textarea class="form-control" id="facture-description" rows="3"></textarea>
+                            <label for="facture-total" class="form-label">Total estimé (calculé automatiquement)</label>
+                            <input type="text" class="form-control" id="facture-total" readonly placeholder="0.00 MAD">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                     <button type="button" class="btn btn-primary" onclick="addFacture()">Créer</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Facture Modal -->
-    <div class="modal fade" id="editFactureModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modifier Facture</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="edit-facture-form">
-                        <input type="hidden" id="edit-facture-id">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="edit-facture-patient" class="form-label">Patient *</label>
-                                <select class="form-control" id="edit-facture-patient" required>
-                                    <option value="">Sélectionner un patient</option>
-                                    <!-- Patients will be loaded here -->
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="edit-facture-date" class="form-label">Date *</label>
-                                <input type="date" class="form-control" id="edit-facture-date" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="edit-facture-montant" class="form-label">Montant HT (€) *</label>
-                                <input type="number" step="0.01" class="form-control" id="edit-facture-montant" required>
-                                <small class="form-text text-muted">Montant hors TVA - la TVA sera calculée automatiquement</small>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="edit-facture-statut" class="form-label">Statut *</label>
-                                <select class="form-control" id="edit-facture-statut" required>
-                                    <option value="pending">En attente</option>
-                                    <option value="paid">Payée</option>
-                                    <option value="overdue">En retard</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-facture-description" class="form-label">Description</label>
-                            <textarea class="form-control" id="edit-facture-description" rows="3"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" onclick="updateFacture()">Modifier</button>
                 </div>
             </div>
         </div>
@@ -891,9 +670,6 @@
                                 <select class="form-control" id="payment-method" required>
                                     <option value="Espèces">Espèces</option>
                                     <option value="Carte bancaire">Carte bancaire</option>
-                                    <option value="Virement">Virement</option>
-                                    <option value="Chèque">Chèque</option>
-                                    <option value="Mutuelle">Mutuelle</option>
                                 </select>
                             </div>
                         </div>

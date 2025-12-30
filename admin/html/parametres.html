@@ -6,7 +6,7 @@
     <title>Paramètres - DIKRA Centre Dentaire</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css"><script src="../../js/data.js"></script><script src="../../js/data.js"></script>
     <style>
         /* Global box-sizing */
         *, *::before, *::after {
@@ -31,6 +31,18 @@
             --sidebar-bg: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
             --header-bg: #374151;
             --shadow: rgba(0,0,0,0.3);
+        }
+
+        [lang="ar"] {
+            direction: rtl;
+        }
+
+        [lang="ar"] .nav-link {
+            text-align: right;
+        }
+
+        [lang="ar"] .settings-header h1 {
+            text-align: right;
         }
 
         body {
@@ -175,33 +187,50 @@
             <a href="dashboard.html" class="nav-link">
                 <i class="bi bi-house-door me-2"></i>Tableau de bord
             </a>
-            <a href="patients.html" class="nav-link">
-                <i class="bi bi-people me-2"></i>Patients
-            </a>
-            <a href="rendez-vous.html" class="nav-link">
-                <i class="bi bi-calendar-event me-2"></i>Rendez-vous
-            </a>
-            <a href="soins.html" class="nav-link">
-                <i class="bi bi-heart me-2"></i>Soins & Actes
-            </a>
-            <a href="factures.html" class="nav-link">
-                <i class="bi bi-cash-coin me-2"></i>Facturation
-            </a>
-            <a href="mutuelles.html" class="nav-link">
-                <i class="bi bi-shield-check me-2"></i>Mutuelles & Assurances
-            </a>
-            <a href="equipe.html" class="nav-link">
-                <i class="bi bi-person-badge me-2"></i>Équipe médicale
-            </a>
-            <a href="salles.html" class="nav-link">
-                <i class="bi bi-box-seam me-2"></i>Salles & Fauteuils
-            </a>
-            <a href="statistiques.html" class="nav-link">
-                <i class="bi bi-bar-chart me-2"></i>Statistiques
-            </a>
-            <a href="messagerie.html" class="nav-link">
-                <i class="bi bi-envelope me-2"></i>Messagerie
-            </a>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="patientManagementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-people me-2"></i>Patient Management
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="patientManagementDropdown">
+                    <li><a class="dropdown-item" href="patients.html"><i class="bi bi-person me-2"></i>Patients</a></li>
+                    <li><a class="dropdown-item" href="soins.html"><i class="bi bi-heart me-2"></i>Soins & Actes</a></li>
+                </ul>
+            </div>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="appointmentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-calendar-event me-2"></i>Appointments
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="appointmentsDropdown">
+                    <li><a class="dropdown-item" href="rendez-vous.html"><i class="bi bi-calendar-check me-2"></i>Rendez-vous</a></li>
+                </ul>
+            </div>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="financialDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-cash-coin me-2"></i>Financial
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="financialDropdown">
+                    <li><a class="dropdown-item" href="factures.html"><i class="bi bi-receipt me-2"></i>Facturation</a></li>
+                    <li><a class="dropdown-item" href="mutuelles.html"><i class="bi bi-shield-check me-2"></i>Mutuelles & Assurances</a></li>
+                    <li><a class="dropdown-item" href="statistiques.html"><i class="bi bi-bar-chart me-2"></i>Statistiques</a></li>
+                </ul>
+            </div>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="staffDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-badge me-2"></i>Staff
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="staffDropdown">
+                    <li><a class="dropdown-item" href="equipe.html"><i class="bi bi-people-fill me-2"></i>Équipe médicale</a></li>
+                    <li><a class="dropdown-item" href="salles.html"><i class="bi bi-box-seam me-2"></i>Salles & Fauteuils</a></li>
+                </ul>
+            </div>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="communicationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-envelope me-2"></i>Communication
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="communicationDropdown">
+                    <li><a class="dropdown-item" href="messagerie.html"><i class="bi bi-chat me-2"></i>Messagerie</a></li>
+                </ul>
+            </div>
             <a href="parametres.html" class="nav-link active">
                 <i class="bi bi-gear me-2"></i>Paramètres
             </a>
@@ -348,6 +377,32 @@
             </div>
         </div>
 
+        <!-- Preferences Settings -->
+        <div class="settings-card">
+            <div class="settings-section">
+                <h5><i class="bi bi-gear me-2"></i>Préférences</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="language-selector" class="form-label">Langue</label>
+                        <select class="form-control" id="language-selector">
+                            <option value="fr">Français</option>
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="theme-toggle" class="form-label">Thème</label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="theme-toggle">
+                            <label class="form-check-label" for="theme-toggle">
+                                Mode sombre
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Danger Zone -->
         <div class="settings-card danger-zone">
             <div class="settings-section">
@@ -380,6 +435,23 @@
         // Load settings on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
+
+            // Event listeners for preferences
+            document.getElementById('language-selector').addEventListener('change', function() {
+                const lang = this.value;
+                document.documentElement.lang = lang;
+                const settings = JSON.parse(localStorage.getItem('dikra_settings') || '{}');
+                settings.language = lang;
+                localStorage.setItem('dikra_settings', JSON.stringify(settings));
+            });
+
+            document.getElementById('theme-toggle').addEventListener('change', function() {
+                const theme = this.checked ? 'dark' : 'light';
+                document.body.setAttribute('data-theme', theme);
+                const settings = JSON.parse(localStorage.getItem('dikra_settings') || '{}');
+                settings.theme = theme;
+                localStorage.setItem('dikra_settings', JSON.stringify(settings));
+            });
         });
 
         function loadSettings() {
@@ -387,6 +459,15 @@
             document.getElementById('tva-rate').value = settings.tva || 20;
             document.getElementById('currency').value = settings.currency || '€';
             document.getElementById('clinic-email').value = settings.contact || 'contact@dikra.com';
+
+            // Load preferences
+            const language = settings.language || 'fr';
+            document.getElementById('language-selector').value = language;
+            document.documentElement.lang = language;
+
+            const theme = settings.theme || 'light';
+            document.getElementById('theme-toggle').checked = theme === 'dark';
+            document.body.setAttribute('data-theme', theme);
         }
 
         function saveSettings() {
@@ -405,7 +486,9 @@
                 reminderTime: document.getElementById('reminder-time').value,
                 emailNotifications: document.getElementById('email-notifications').checked,
                 smsNotifications: document.getElementById('sms-notifications').checked,
-                reminderNotifications: document.getElementById('reminder-notifications').checked
+                reminderNotifications: document.getElementById('reminder-notifications').checked,
+                language: document.getElementById('language-selector').value,
+                theme: document.getElementById('theme-toggle').checked ? 'dark' : 'light'
             };
 
             localStorage.setItem('dikra_settings', JSON.stringify(settings));

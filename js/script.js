@@ -48,9 +48,7 @@ function initializeLoginForm() {
 
         // Show loading state
         const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Connexion...';
-        submitBtn.disabled = true;
+        disableButton(submitBtn, 'Connexion...');
 
         // Get form data
         const email = document.getElementById('loginEmail').value;
@@ -59,8 +57,7 @@ function initializeLoginForm() {
         // Simulate login (replace with actual authentication)
         setTimeout(() => {
             // Reset loading state
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+            enableButton(submitBtn);
 
             // Simple validation (replace with real authentication)
             if (email && password) {
@@ -95,9 +92,7 @@ function initializeAppointmentForm() {
 
         // Show loading state
         const submitBtn = form.querySelector('.btn-submit');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Envoi en cours...';
-        submitBtn.classList.add('loading');
+        disableButton(submitBtn, 'Envoi en cours...');
 
         // Get form data
         const formData = new FormData(form);
@@ -131,8 +126,7 @@ function initializeAppointmentForm() {
         // Simulate form submission delay
         setTimeout(() => {
             // Reset loading state
-            submitBtn.textContent = originalText;
-            submitBtn.classList.remove('loading');
+            enableButton(submitBtn);
 
             // Show success message with provisional ID
             showMessage('success', `Votre demande de rendez-vous a été envoyée avec succès ! Votre ID provisoire est : <strong>${provisionalId}</strong>. Nous vous contacterons bientôt pour confirmer votre rendez-vous.`);
@@ -152,14 +146,11 @@ function initializeContactForm() {
         e.preventDefault();
 
         const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Envoi en cours...';
-        submitBtn.disabled = true;
+        disableButton(submitBtn, 'Envoi en cours...');
 
         // Simulate form submission
         setTimeout(() => {
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+            enableButton(submitBtn);
 
             showMessage('success', 'Votre message a été envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.');
             contactForm.reset();

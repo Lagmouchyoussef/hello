@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Rendez-vous - Assistante</title>
+    <title>Gestion des Mutuelles - DIKRA Centre Dentaire</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
+    <script src="../../js/data.js"></script>
     <style>
-         /* Global box-sizing */
+        /* Global box-sizing */
         *, *::before, *::after {
             box-sizing: border-box;
         }
@@ -40,7 +41,6 @@
             color: var(--text-color);
             transition: background-color 0.3s, color 0.3s;
         }
-
 
         /* Sidebar */
         .sidebar {
@@ -104,6 +104,58 @@
                 margin-left: 0;
             }
         }
+
+        /* Mutuelles specific styles */
+        .mutuelles-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            max-width: 400px;
+        }
+
+        .table th {
+            background-color: var(--card-bg);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .action-btn {
+            margin: 0 2px;
+            padding: 5px 10px;
+        }
+
+        .modal-content {
+            border-radius: 10px;
+        }
+
+        .coverage-rate {
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: #3b82f6;
+        }
+
+        .upload-area.dragover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
     </style>
 </head>
 <body>
@@ -120,7 +172,7 @@
                 <i class="bi bi-house-door me-2"></i>Tableau de bord
             </a>
             <div class="dropdown">
-                <button class="btn dropdown-toggle nav-link active" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
                     <i class="bi bi-calendar-event me-2"></i>Rendez-vous
                 </button>
                 <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
@@ -138,7 +190,7 @@
                 </ul>
             </div>
             <div class="dropdown">
-                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                <button class="btn dropdown-toggle nav-link active" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
                     <i class="bi bi-cash me-2"></i>Financier
                 </button>
                 <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
@@ -173,12 +225,13 @@
             <i class="bi bi-list"></i>
         </button>
 
-        <div class="appointments-header">
-            <h1>Gestion des Rendez-vous</h1>
+        <!-- Patient Insurance Management -->
+        <div class="mutuelles-header">
+            <h1>Gestion des Mutuelles des Patients</h1>
             <div class="d-flex gap-3">
-                <input type="text" class="form-control search-bar" id="search-appointment" placeholder="Rechercher un rendez-vous...">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAppointmentModal">
-                    <i class="bi bi-calendar-plus me-2"></i>Nouveau RDV
+                <input type="text" class="form-control search-bar" id="search-patient-insurance" placeholder="Rechercher un patient...">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#manageInsuranceModal">
+                    <i class="bi bi-plus-circle me-2"></i>Gérer Mutuelle
                 </button>
             </div>
         </div>
@@ -186,20 +239,88 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover" id="appointments-table">
+                    <table class="table table-hover" id="patient-insurance-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Patient</th>
-                                <th>Date</th>
-                                <th>Heure</th>
-                                <th>Type</th>
+                                <th>Type Mutuelle</th>
+                                <th>Couverture</th>
+                                <th>Documents</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="appointments-tbody">
-                            <!-- Appointments will be loaded here -->
+                        <tbody id="patient-insurance-tbody">
+                            <!-- Patient insurance data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coverage Rates Section -->
+        <div class="mutuelles-header mt-4">
+            <h1>Taux de Couverture</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">CNSS</h5>
+                        <div class="coverage-rate" style="font-size: 2rem;">80%</div>
+                        <p class="text-muted">Couverture moyenne</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">CNOPS</h5>
+                        <div class="coverage-rate" style="font-size: 2rem;">85%</div>
+                        <p class="text-muted">Couverture moyenne</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Privé</h5>
+                        <div class="coverage-rate" style="font-size: 2rem;">90%</div>
+                        <p class="text-muted">Couverture moyenne</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Claims Tracking -->
+        <div class="mutuelles-header mt-4">
+            <h1>Suivi des Réclamations</h1>
+            <div class="d-flex gap-3">
+                <input type="text" class="form-control search-bar" id="search-claim" placeholder="Rechercher une réclamation...">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClaimModal">
+                    <i class="bi bi-plus-circle me-2"></i>Nouvelle Réclamation
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="claims-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient</th>
+                                <th>Type Assurance</th>
+                                <th>Montant Réclamé</th>
+                                <th>Statut</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="claims-tbody">
+                            <!-- Claims will be loaded here -->
                         </tbody>
                     </table>
                 </div>
@@ -216,17 +337,28 @@
         }
 
         function logout() {
+            dataManager.logoutUser();
             window.location.href = '../../LOGING/html/loging.html';
         }
 
-        // Load appointments on page load
+        // Load data on page load
         document.addEventListener('DOMContentLoaded', function() {
-            loadAppointments();
+            loadPatientInsurances();
+            loadClaims();
 
             // Search functionality
-            document.getElementById('search-appointment').addEventListener('input', function() {
+            document.getElementById('search-patient-insurance').addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase();
-                const rows = document.querySelectorAll('#appointments-tbody tr');
+                const rows = document.querySelectorAll('#patient-insurance-tbody tr');
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+
+            document.getElementById('search-claim').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#claims-tbody tr');
                 rows.forEach(row => {
                     const text = row.textContent.toLowerCase();
                     row.style.display = text.includes(searchTerm) ? '' : 'none';
@@ -235,161 +367,118 @@
         });
     </script>
 
-    <!-- Add Appointment Modal -->
-    <div class="modal fade" id="addAppointmentModal" tabindex="-1">
+    <!-- Manage Insurance Modal -->
+    <div class="modal fade" id="manageInsuranceModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Créer un Rendez-vous</h5>
+                    <h5 class="modal-title">Gérer la Mutuelle du Patient</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="add-appointment-form">
+                    <form id="manage-insurance-form">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="appointment-patient" class="form-label">Patient *</label>
-                                <select class="form-control" id="appointment-patient" required onchange="onPatientChange()">
+                                <label for="insurance-patient" class="form-label">Patient *</label>
+                                <select class="form-control" id="insurance-patient" required>
                                     <option value="">Sélectionner un patient</option>
-                                    <!-- Patients will be loaded here -->
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="appointment-date" class="form-label">Date *</label>
-                                <input type="date" class="form-control" id="appointment-date" required onchange="checkConflicts()">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label for="appointment-time" class="form-label">Heure *</label>
-                                <input type="time" class="form-control" id="appointment-time" required onchange="checkConflicts()">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="appointment-duration" class="form-label">Durée (min) *</label>
-                                <select class="form-control" id="appointment-duration" required onchange="checkConflicts()">
-                                    <option value="30">30 min</option>
-                                    <option value="60" selected>60 min</option>
-                                    <option value="90">90 min</option>
-                                    <option value="120">120 min</option>
+                                <label for="insurance-type" class="form-label">Type de Mutuelle *</label>
+                                <select class="form-control" id="insurance-type" required>
+                                    <option value="CNSS">CNSS</option>
+                                    <option value="CNOPS">CNOPS</option>
+                                    <option value="Privé">Privé</option>
                                 </select>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="appointment-status" class="form-label">Statut *</label>
-                                <select class="form-control" id="appointment-status" required>
-                                    <option value="Confirmé">Confirmé</option>
-                                    <option value="En attente">En attente</option>
-                                    <option value="Patient arrivé">Patient arrivé</option>
-                                    <option value="Patient en attente">Patient en attente</option>
-                                    <option value="Consultation en cours">Consultation en cours</option>
-                                    <option value="Annulé">Annulé</option>
-                                    <option value="Terminé">Terminé</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="appointment-dentiste" class="form-label">Dentiste</label>
-                                <select class="form-control" id="appointment-dentiste">
-                                    <option value="">Auto-assigner</option>
-                                    <!-- Dentists will be loaded here -->
-                                </select>
-                                <div class="form-text">Laissez vide pour assignation automatique</div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="appointment-salle" class="form-label">Salle</label>
-                                <select class="form-control" id="appointment-salle">
-                                    <option value="">Auto-assigner</option>
-                                    <!-- Rooms will be loaded here -->
-                                </select>
-                                <div class="form-text">Laissez vide pour assignation automatique</div>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="appointment-type" class="form-label">Type de soin</label>
-                            <select class="form-control" id="appointment-type">
-                                <option value="Consultation">Consultation</option>
-                                <option value="Détartrage">Détartrage</option>
-                                <option value="Carie">Traitement de carie</option>
-                                <option value="Extraction">Extraction</option>
-                                <option value="Prothèse">Prothèse</option>
-                                <option value="Orthodontie">Orthodontie</option>
-                                <option value="Autre">Autre</option>
-                            </select>
+                            <label for="insurance-number" class="form-label">Numéro d'Assurance</label>
+                            <input type="text" class="form-control" id="insurance-number">
                         </div>
                         <div class="mb-3">
-                            <label for="appointment-notes" class="form-label">Notes</label>
-                            <textarea class="form-control" id="appointment-notes" rows="3" placeholder="Notes supplémentaires..."></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <div id="conflict-alert" class="alert alert-warning d-none">
-                                <i class="bi bi-exclamation-triangle me-2"></i>
-                                <strong>Conflit détecté!</strong> Il y a déjà un rendez-vous à cette heure.
+                            <label class="form-label">Documents Justificatifs</label>
+                            <div class="upload-area" id="upload-area">
+                                <i class="bi bi-cloud-upload" style="font-size: 2rem; color: #6b7280;"></i>
+                                <p class="mb-2">Glissez et déposez vos fichiers ici ou</p>
+                                <input type="file" id="insurance-documents" multiple accept=".pdf,.jpg,.jpeg,.png" style="display: none;">
+                                <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('insurance-documents').click()">Parcourir</button>
                             </div>
+                            <div id="uploaded-files" class="mt-3"></div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" onclick="addAppointment()">Créer</button>
+                    <button type="button" class="btn btn-primary" onclick="savePatientInsurance()">Enregistrer</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Edit Appointment Modal -->
-    <div class="modal fade" id="editAppointmentModal" tabindex="-1">
+    <!-- Add Claim Modal -->
+    <div class="modal fade" id="addClaimModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modifier le Rendez-vous</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title">Nouvelle Réclamation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="edit-appointment-form">
-                        <input type="hidden" id="edit-appointment-id">
+                    <form id="add-claim-form">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="edit-appointment-patient" class="form-label">Patient *</label>
-                                <select class="form-control" id="edit-appointment-patient" required>
+                                <label for="claim-patient" class="form-label">Patient *</label>
+                                <select class="form-control" id="claim-patient" required>
                                     <option value="">Sélectionner un patient</option>
-                                    <!-- Patients will be loaded here -->
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="edit-appointment-date" class="form-label">Date *</label>
-                                <input type="date" class="form-control" id="edit-appointment-date" required>
+                                <label for="claim-bill" class="form-label">Facture *</label>
+                                <select class="form-control" id="claim-bill" required>
+                                    <option value="">Sélectionner une facture</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="edit-appointment-time" class="form-label">Heure *</label>
-                                <input type="time" class="form-control" id="edit-appointment-time" required>
+                                <label for="claim-type" class="form-label">Type d'Assurance *</label>
+                                <select class="form-control" id="claim-type" required>
+                                    <option value="CNSS">CNSS</option>
+                                    <option value="CNOPS">CNOPS</option>
+                                    <option value="Privé">Privé</option>
+                                </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="edit-appointment-type" class="form-label">Type de soin *</label>
-                                <input type="text" class="form-control" id="edit-appointment-type" required>
+                                <label for="claim-amount" class="form-label">Montant Réclamé *</label>
+                                <input type="number" class="form-control" id="claim-amount" step="0.01" required>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="edit-appointment-status" class="form-label">Statut *</label>
-                            <select class="form-control" id="edit-appointment-status" required>
-                                <option value="Confirmé">Confirmé</option>
-                                <option value="En attente">En attente</option>
-                                <option value="Patient arrivé">Patient arrivé</option>
-                                <option value="Patient en attente">Patient en attente</option>
-                                <option value="Consultation en cours">Consultation en cours</option>
-                                <option value="Annulé">Annulé</option>
-                                <option value="Terminé">Terminé</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-appointment-notes" class="form-label">Notes</label>
-                            <textarea class="form-control" id="edit-appointment-notes" rows="3"></textarea>
+                            <label for="claim-notes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="claim-notes" rows="3"></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-warning" onclick="updateAppointment()">Modifier</button>
+                    <button type="button" class="btn btn-primary" onclick="addClaim()">Ajouter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Claim Modal -->
+    <div class="modal fade" id="viewClaimModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Détails de la Réclamation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="view-claim-details">
+                    <!-- Claim details will be loaded here -->
                 </div>
             </div>
         </div>

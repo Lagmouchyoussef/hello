@@ -120,6 +120,12 @@ function setActiveNavLink() {
             link.classList.add('active');
         }
     });
+
+    // Scroll the active navigation link into view
+    const activeLink = document.querySelector('.nav-link.active');
+    if (activeLink) {
+        activeLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 }
 
 // Logout function
@@ -274,4 +280,190 @@ function debounce(func, wait) {
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
+}
+
+// UX Enhancement Utilities
+
+// Loading spinner utility
+function showLoadingSpinner(elementId, message = 'Chargement...') {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    // Create spinner overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'loading-overlay';
+    overlay.innerHTML = `
+        <div class="spinner-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="spinner-message">${message}</div>
+        </div>
+    `;
+
+    // Add styles if not already present
+    if (!document.getElementById('loading-spinner-styles')) {
+        const styles = document.createElement('style');
+        styles.id = 'loading-spinner-styles';
+        styles.textContent = `
+            .loading-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                border-radius: var(--border-radius);
+            }
+            [data-theme="dark"] .loading-overlay {
+                background: rgba(15, 23, 42, 0.9);
+            }
+            .spinner-container {
+                text-align: center;
+            }
+            .spinner-message {
+                margin-top: 10px;
+                color: var(--text-color);
+                font-weight: 500;
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+
+    element.style.position = 'relative';
+    element.appendChild(overlay);
+}
+
+function hideLoadingSpinner(elementId) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    const overlay = element.querySelector('.loading-overlay');
+    if (overlay) {
+        overlay.remove();
+    }
+}
+
+// Confirmation dialog utility
+function showConfirmationDialog(message, onConfirm, onCancel = null, confirmText = 'Confirmer', cancelText = 'Annuler') {
+    // Create modal
+    const modal = document.createElement('div');
+    modal.className = 'modal fade';
+    modal.innerHTML = `
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>${message}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">${cancelText}</button>
+                    <button type="button" class="btn btn-danger" id="confirm-btn">${confirmText}</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Initialize Bootstrap modal
+    const bsModal = new bootstrap.Modal(modal);
+
+    // Handle confirm button
+    const confirmBtn = modal.querySelector('#confirm-btn');
+    confirmBtn.addEventListener('click', () => {
+        bsModal.hide();
+        if (onConfirm) onConfirm();
+    });
+
+    // Handle cancel
+    modal.addEventListener('hidden.bs.modal', () => {
+        modal.remove();
+        if (onCancel) onCancel();
+    });
+
+    bsModal.show();
+}
+
+// Button disable/enable utility
+function disableButton(buttonElement, loadingText = 'Traitement...') {
+    if (!buttonElement) return;
+
+    buttonElement.disabled = true;
+    buttonElement.dataset.originalText = buttonElement.textContent;
+    buttonElement.innerHTML = `
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        ${loadingText}
+    `;
+}
+
+function enableButton(buttonElement) {
+    if (!buttonElement) return;
+
+    buttonElement.disabled = false;
+    if (buttonElement.dataset.originalText) {
+        buttonElement.textContent = buttonElement.dataset.originalText;
+    }
+}
+
+// Global loading state for page-level operations
+function showPageLoading(message = 'Chargement...') {
+    if (document.getElementById('page-loading-overlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'page-loading-overlay';
+    overlay.innerHTML = `
+        <div class="page-spinner-container">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="mt-3">${message}</div>
+        </div>
+    `;
+
+    // Add styles
+    if (!document.getElementById('page-loading-styles')) {
+        const styles = document.createElement('style');
+        styles.id = 'page-loading-styles';
+        styles.textContent = `
+            #page-loading-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.95);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 99999;
+                backdrop-filter: blur(2px);
+            }
+            [data-theme="dark"] #page-loading-overlay {
+                background: rgba(15, 23, 42, 0.95);
+            }
+            .page-spinner-container {
+                text-align: center;
+                color: var(--text-color);
+                font-weight: 500;
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+
+    document.body.appendChild(overlay);
+}
+
+function hidePageLoading() {
+    const overlay = document.getElementById('page-loading-overlay');
+    if (overlay) {
+        overlay.remove();
+    }
 }
