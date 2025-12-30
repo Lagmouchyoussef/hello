@@ -7,8 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
+    <script src="../../js/common.js"></script>
+    <script src="../../js/data.js"></script>
     <style>
-         /* Global box-sizing */
+        /* Global box-sizing */
         *, *::before, *::after {
             box-sizing: border-box;
         }
@@ -40,7 +42,6 @@
             color: var(--text-color);
             transition: background-color 0.3s, color 0.3s;
         }
-
 
         /* Sidebar */
         .sidebar {
@@ -85,6 +86,29 @@
             font-weight: bold;
         }
 
+        .dropdown-menu {
+            background: var(--sidebar-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .dropdown-item {
+            color: white !important;
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .dropdown-item.active {
+            background: rgba(255,255,255,0.2);
+            font-weight: bold;
+        }
+
         /* Main Content */
         .main-content {
             margin-left: 280px;
@@ -103,6 +127,113 @@
             .main-content {
                 margin-left: 0;
             }
+        }
+
+        /* Patients specific styles */
+        .patients-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .table th {
+            background-color: var(--card-bg);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-actif {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-archivé {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .action-btn {
+            margin: 0 2px;
+            padding: 5px 10px;
+        }
+
+        .modal-xl {
+            max-width: 1200px;
+        }
+
+        .patient-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--border-color);
+        }
+
+        .tab-content {
+            padding: 20px 0;
+        }
+
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .filters-row {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .error-message {
+            color: #dc2626;
+            background-color: #fef2f2;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .success-message {
+            color: #059669;
+            background-color: #ecfdf5;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -174,15 +305,54 @@
         </button>
 
         <div class="patients-header">
-            <h1>Gestion des Patients</h1>
+            <h1><i class="bi bi-people me-2"></i>Gestion des Patients</h1>
             <div class="d-flex gap-3">
-                <input type="text" class="form-control search-bar" id="search-patient" placeholder="Rechercher un patient...">
+                <input type="text" class="form-control search-bar" id="search-patient" placeholder="Rechercher un patient..." style="min-width: 250px;">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPatientModal">
                     <i class="bi bi-person-plus me-2"></i>Ajouter Patient
                 </button>
             </div>
         </div>
 
+        <!-- Messages -->
+        <div id="messages-container"></div>
+
+        <!-- Filters -->
+        <div class="filters-row">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label for="filter-mutuelle" class="form-label">Mutuelle</label>
+                    <select class="form-select" id="filter-mutuelle">
+                        <option value="">Toutes</option>
+                        <option value="CNSS">CNSS</option>
+                        <option value="CNOPS">CNOPS</option>
+                        <option value="Aucune">Aucune</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="filter-sexe" class="form-label">Sexe</label>
+                    <select class="form-select" id="filter-sexe">
+                        <option value="">Tous</option>
+                        <option value="Homme">Homme</option>
+                        <option value="Femme">Femme</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="filter-date-start" class="form-label">Date création (début)</label>
+                    <input type="date" class="form-control" id="filter-date-start">
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading-indicator">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Chargement...</span>
+            </div>
+            <p class="mt-2">Chargement des patients...</p>
+        </div>
+
+        <!-- Patients Table -->
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -190,12 +360,10 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nom</th>
-                                <th>Prénom</th>
-                                <th>Date de naissance</th>
+                                <th>Nom complet</th>
                                 <th>Téléphone</th>
-                                <th>Adresse</th>
                                 <th>Mutuelle</th>
+                                <th>Dernière visite</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -211,12 +379,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/script.js"></script>
     <script>
+        // Check authentication
+        const currentUser = dataManager.getCurrentUser();
+        if (!currentUser || currentUser.role !== 'Assistant') {
+            window.location.href = '../../LOGING/html/loging.html';
+        }
+
+        let allPatients = [];
+        let filteredPatients = [];
+
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             sidebar.classList.toggle('show');
         }
 
         function logout() {
+            dataManager.logoutUser();
             window.location.href = '../../LOGING/html/loging.html';
         }
 
@@ -225,72 +403,315 @@
             loadPatients();
 
             // Search functionality
-            document.getElementById('search-patient').addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                const rows = document.querySelectorAll('#patients-tbody tr');
-                rows.forEach(row => {
-                    const text = row.textContent.toLowerCase();
-                    row.style.display = text.includes(searchTerm) ? '' : 'none';
-                });
+            document.getElementById('search-patient').addEventListener('input', filterPatients);
+
+            // Filter functionality
+            ['filter-mutuelle', 'filter-sexe', 'filter-date-start'].forEach(id => {
+                document.getElementById(id).addEventListener('change', filterPatients);
             });
         });
+
+        function showMessage(message, type = 'success') {
+            const container = document.getElementById('messages-container');
+            const className = type === 'error' ? 'error-message' : 'success-message';
+            container.innerHTML = `<div class="${className}">${message}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        function loadPatients() {
+            const loading = document.getElementById('loading-indicator');
+            loading.style.display = 'block';
+
+            try {
+                // Assistant can only see active patients
+                allPatients = dataManager.getAll('patients').filter(p => p.status === 'Actif');
+                filteredPatients = [...allPatients];
+                renderPatientsTable();
+
+                loading.style.display = 'none';
+            } catch (error) {
+                console.error('Erreur lors du chargement des patients:', error);
+                showMessage('Erreur lors du chargement des patients', 'error');
+                loading.style.display = 'none';
+            }
+        }
+
+        function filterPatients() {
+            const searchTerm = document.getElementById('search-patient').value.toLowerCase();
+            const mutuelleFilter = document.getElementById('filter-mutuelle').value;
+            const sexeFilter = document.getElementById('filter-sexe').value;
+            const dateStart = document.getElementById('filter-date-start').value;
+
+            filteredPatients = allPatients.filter(patient => {
+                // Search term
+                const matchesSearch = !searchTerm ||
+                    patient.nom.toLowerCase().includes(searchTerm) ||
+                    patient.prenom.toLowerCase().includes(searchTerm) ||
+                    patient.telephone.includes(searchTerm) ||
+                    patient.cin?.includes(searchTerm) ||
+                    patient.id.toLowerCase().includes(searchTerm);
+
+                // Filters
+                const matchesMutuelle = !mutuelleFilter || patient.mutuelle === mutuelleFilter;
+                const matchesSexe = !sexeFilter || patient.sexe === sexeFilter;
+
+                // Date range
+                let matchesDate = true;
+                if (dateStart) {
+                    matchesDate = new Date(patient.dateCreation) >= new Date(dateStart);
+                }
+
+                return matchesSearch && matchesMutuelle && matchesSexe && matchesDate;
+            });
+
+            renderPatientsTable();
+        }
+
+        function renderPatientsTable() {
+            const tbody = document.getElementById('patients-tbody');
+            tbody.innerHTML = '';
+
+            if (filteredPatients.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <i class="bi bi-info-circle me-2"></i>Aucun patient trouvé
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filteredPatients.forEach(patient => {
+                const dernierRDV = patient.dernierRDV ? new Date(patient.dernierRDV).toLocaleDateString('fr-FR') : '-';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><code>${patient.id}</code></td>
+                        <td>${patient.nom} ${patient.prenom}</td>
+                        <td>${patient.telephone}</td>
+                        <td>${patient.mutuelle || '-'}</td>
+                        <td>${dernierRDV}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary action-btn" onclick="viewPatient('${patient.id}')" title="Voir détails">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary action-btn" onclick="editPatient('${patient.id}')" title="Modifier">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function viewPatient(id) {
+            const patient = dataManager.getById('patients', id);
+            if (!patient) {
+                showMessage('Patient non trouvé', 'error');
+                return;
+            }
+
+            // Load basic patient info (no medical details for assistant)
+            let content = `
+                <div class="row g-3">
+                    <div class="col-md-3 text-center">
+                        <img src="../../Photo/Photo.png" alt="Photo patient" class="patient-photo mb-2">
+                        <div class="mt-2">
+                            <span class="status-badge status-actif">Actif</span>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <strong>ID Patient:</strong> <code>${patient.id}</code>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Nom complet:</strong> ${patient.nom} ${patient.prenom}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>CIN:</strong> ${patient.cin}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Sexe:</strong> ${patient.sexe}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Date de naissance:</strong> ${new Date(patient.naissance).toLocaleDateString('fr-FR')}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Téléphone:</strong> ${patient.telephone}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Email:</strong> ${patient.email || 'Non spécifié'}
+                            </div>
+                            <div class="col-12">
+                                <strong>Adresse:</strong> ${patient.adresse || 'Non spécifiée'}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Mutuelle:</strong> ${patient.mutuelle}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Numéro adhérent:</strong> ${patient.numeroMutuelle || 'N/A'}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Taux remboursement:</strong> ${patient.tauxRemboursement}%
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Dernière visite:</strong> ${patient.dernierRDV ? new Date(patient.dernierRDV).toLocaleDateString('fr-FR') : 'Aucune'}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Prochain RDV:</strong> ${patient.prochainRDV ? new Date(patient.prochainRDV).toLocaleDateString('fr-FR') : 'Aucun'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-info mt-3">
+                    <i class="bi bi-info-circle me-2"></i>
+                    <strong>Information:</strong> En tant qu'assistante, vous ne pouvez voir que les informations administratives des patients.
+                    Pour consulter les informations médicales, contactez un administrateur ou un dentiste.
+                </div>
+            `;
+
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('viewPatientModal'));
+            document.getElementById('viewPatientModalLabel').textContent = `Détails du Patient: ${patient.nom} ${patient.prenom}`;
+            document.getElementById('view-patient-details').innerHTML = content;
+            modal.show();
+        }
+
+        function editPatient(id) {
+            const patient = dataManager.getById('patients', id);
+            if (!patient) {
+                showMessage('Patient non trouvé', 'error');
+                return;
+            }
+
+            // Populate edit form with limited fields for assistant
+            document.getElementById('edit-patient-id').value = patient.id;
+            document.getElementById('edit-patient-telephone').value = patient.telephone;
+            document.getElementById('edit-patient-adresse').value = patient.adresse || '';
+            document.getElementById('edit-patient-mutuelle').value = patient.mutuelle;
+            document.getElementById('edit-patient-numero-mutuelle').value = patient.numeroMutuelle || '';
+            document.getElementById('edit-patient-taux-remboursement').value = patient.tauxRemboursement || 0;
+
+            // Show edit modal
+            const modal = new bootstrap.Modal(document.getElementById('editPatientModal'));
+            modal.show();
+        }
+
+        function updatePatient() {
+            const form = document.getElementById('edit-patient-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const patientId = document.getElementById('edit-patient-id').value;
+            const updateData = {
+                telephone: document.getElementById('edit-patient-telephone').value.trim(),
+                adresse: document.getElementById('edit-patient-adresse').value.trim() || undefined,
+                mutuelle: document.getElementById('edit-patient-mutuelle').value,
+                numeroMutuelle: document.getElementById('edit-patient-numero-mutuelle').value.trim() || undefined,
+                tauxRemboursement: parseInt(document.getElementById('edit-patient-taux-remboursement').value) || 0
+            };
+
+            try {
+                dataManager.updatePatient(patientId, updateData);
+                bootstrap.Modal.getInstance(document.getElementById('editPatientModal')).hide();
+                loadPatients();
+                showMessage('Informations patient mises à jour avec succès');
+            } catch (error) {
+                console.error('Erreur modification patient:', error);
+                showMessage(error.message, 'error');
+            }
+        }
     </script>
 
     <!-- Add Patient Modal -->
-    <div class="modal fade" id="addPatientModal" tabindex="-1">
+    <div class="modal fade" id="addPatientModal" tabindex="-1" aria-labelledby="addPatientModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Ajouter un Patient</h5>
+                    <h5 class="modal-title" id="addPatientModalLabel">Ajouter un Nouveau Patient</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="add-patient-form">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
+                        <div class="row g-3">
+                            <div class="col-md-6">
                                 <label for="patient-nom" class="form-label">Nom *</label>
                                 <input type="text" class="form-control" id="patient-nom" required>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6">
                                 <label for="patient-prenom" class="form-label">Prénom *</label>
                                 <input type="text" class="form-control" id="patient-prenom" required>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4">
+                                <label for="patient-cin" class="form-label">CIN *</label>
+                                <input type="text" class="form-control" id="patient-cin" placeholder="AB123456" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="patient-sexe" class="form-label">Sexe *</label>
+                                <select class="form-select" id="patient-sexe" required>
+                                    <option value="">Sélectionner</option>
+                                    <option value="Homme">Homme</option>
+                                    <option value="Femme">Femme</option>
+                                    <option value="Autre">Autre</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
                                 <label for="patient-naissance" class="form-label">Date de naissance *</label>
                                 <input type="date" class="form-control" id="patient-naissance" required>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6">
                                 <label for="patient-telephone" class="form-label">Téléphone *</label>
-                                <input type="tel" class="form-control" id="patient-telephone" required>
+                                <input type="tel" class="form-control" id="patient-telephone" placeholder="+212 6XX XX XX XX" required>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="patient-adresse" class="form-label">Adresse</label>
-                            <input type="text" class="form-control" id="patient-adresse">
-                        </div>
-                        <div class="mb-3">
-                            <label for="patient-mutuelle" class="form-label">Mutuelle / Assurance</label>
-                            <input type="text" class="form-control" id="patient-mutuelle">
+                            <div class="col-md-6">
+                                <label for="patient-email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="patient-email">
+                            </div>
+                            <div class="col-12">
+                                <label for="patient-adresse" class="form-label">Adresse</label>
+                                <textarea class="form-control" id="patient-adresse" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="patient-mutuelle" class="form-label">Type de mutuelle</label>
+                                <select class="form-select" id="patient-mutuelle">
+                                    <option value="Aucune">Aucune</option>
+                                    <option value="CNSS">CNSS</option>
+                                    <option value="CNOPS">CNOPS</option>
+                                    <option value="Privée">Privée</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="patient-numero-mutuelle" class="form-label">Numéro d'adhérent</label>
+                                <input type="text" class="form-control" id="patient-numero-mutuelle">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="patient-taux-remboursement" class="form-label">Taux de remboursement (%)</label>
+                                <input type="number" class="form-control" id="patient-taux-remboursement" min="0" max="100" value="0">
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" onclick="addPatient()">Ajouter</button>
+                    <button type="button" class="btn btn-primary" onclick="addPatient()">Ajouter le Patient</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- View Patient Modal -->
-    <div class="modal fade" id="viewPatientModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="viewPatientModal" tabindex="-1" aria-labelledby="viewPatientModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Détails du Patient</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title" id="viewPatientModalLabel">Détails du Patient</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="view-patient-details">
                     <!-- Patient details will be loaded here -->
@@ -300,23 +721,40 @@
     </div>
 
     <!-- Edit Patient Modal -->
-    <div class="modal fade" id="editPatientModal" tabindex="-1">
+    <div class="modal fade" id="editPatientModal" tabindex="-1" aria-labelledby="editPatientModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modifier les Informations Administratives</h5>
+                    <h5 class="modal-title" id="editPatientModalLabel">Modifier les Informations Administratives</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="edit-patient-form">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
+                        <div class="row g-3">
+                            <div class="col-md-6">
                                 <label for="edit-patient-telephone" class="form-label">Téléphone *</label>
                                 <input type="tel" class="form-control" id="edit-patient-telephone" required>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6">
                                 <label for="edit-patient-adresse" class="form-label">Adresse</label>
                                 <input type="text" class="form-control" id="edit-patient-adresse">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="edit-patient-mutuelle" class="form-label">Type de mutuelle</label>
+                                <select class="form-select" id="edit-patient-mutuelle">
+                                    <option value="Aucune">Aucune</option>
+                                    <option value="CNSS">CNSS</option>
+                                    <option value="CNOPS">CNOPS</option>
+                                    <option value="Privée">Privée</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="edit-patient-numero-mutuelle" class="form-label">Numéro d'adhérent</label>
+                                <input type="text" class="form-control" id="edit-patient-numero-mutuelle">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="edit-patient-taux-remboursement" class="form-label">Taux de remboursement (%)</label>
+                                <input type="number" class="form-control" id="edit-patient-taux-remboursement" min="0" max="100">
                             </div>
                         </div>
                         <input type="hidden" id="edit-patient-id">
@@ -324,11 +762,46 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" onclick="updatePatient()">Modifier</button>
+                    <button type="button" class="btn btn-primary" onclick="updatePatient()">Enregistrer les Modifications</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function addPatient() {
+            const form = document.getElementById('add-patient-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const patientData = {
+                nom: document.getElementById('patient-nom').value.trim(),
+                prenom: document.getElementById('patient-prenom').value.trim(),
+                cin: document.getElementById('patient-cin').value.trim(),
+                sexe: document.getElementById('patient-sexe').value,
+                naissance: document.getElementById('patient-naissance').value,
+                telephone: document.getElementById('patient-telephone').value.trim(),
+                email: document.getElementById('patient-email').value.trim() || undefined,
+                adresse: document.getElementById('patient-adresse').value.trim() || undefined,
+                mutuelle: document.getElementById('patient-mutuelle').value,
+                numeroMutuelle: document.getElementById('patient-numero-mutuelle').value.trim() || undefined,
+                tauxRemboursement: parseInt(document.getElementById('patient-taux-remboursement').value) || 0
+            };
+
+            try {
+                const newPatient = dataManager.createPatient(patientData);
+                bootstrap.Modal.getInstance(document.getElementById('addPatientModal')).hide();
+                form.reset();
+                loadPatients();
+                showMessage(`Patient ${newPatient.nom} ${newPatient.prenom} ajouté avec succès`);
+            } catch (error) {
+                console.error('Erreur ajout patient:', error);
+                showMessage(error.message, 'error');
+            }
+        }
+    </script>
 
 </body>
 </html>

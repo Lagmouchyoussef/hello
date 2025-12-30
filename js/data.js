@@ -9,97 +9,7 @@ class DataManager {
     // Initialize default data structure
     initializeData() {
         const defaultData = {
-            patients: [
-                {
-                    id: 'PAT-2024-0001',
-                    nom: 'Dupont',
-                    prenom: 'Jean',
-                    naissance: '1985-05-15',
-                    telephone: '+212 6 12 34 56 78',
-                    adresse: '123 Rue de la Paix, Casablanca',
-                    mutuelle: 'CNSS',
-                    dateCreation: '2024-01-01T00:00:00.000Z'
-                },
-                {
-                    id: 'PAT-2024-0002',
-                    nom: 'Martin',
-                    prenom: 'Marie',
-                    naissance: '1990-08-22',
-                    telephone: '+212 6 98 76 54 32',
-                    adresse: '456 Avenue Hassan II, Rabat',
-                    mutuelle: 'CNOPS',
-                    dateCreation: '2024-01-01T00:00:00.000Z'
-                },
-                {
-                    id: 'PAT-2024-0003',
-                    nom: 'Benali',
-                    prenom: 'Ahmed',
-                    naissance: '1978-12-10',
-                    telephone: '+212 6 55 44 33 22',
-                    adresse: '789 Boulevard Mohammed V, Marrakech',
-                    mutuelle: 'Aucune',
-                    dateCreation: '2024-01-01T00:00:00.000Z'
-                }
-            ],
-            appointments: [],
-            cares: [
-                {
-                    id: 'ACT-2024-0001',
-                    description: 'Consultation dentaire générale',
-                    price: 200,
-                    dateCreation: '2024-01-01T00:00:00.000Z',
-                    status: 'Actif'
-                },
-                {
-                    id: 'ACT-2024-0002',
-                    description: 'Détartrage et polissage',
-                    price: 300,
-                    dateCreation: '2024-01-01T00:00:00.000Z',
-                    status: 'Actif'
-                },
-                {
-                    id: 'ACT-2024-0003',
-                    description: 'Obturation dentaire simple',
-                    price: 150,
-                    dateCreation: '2024-01-01T00:00:00.000Z',
-                    status: 'Actif'
-                },
-                {
-                    id: 'ACT-2024-0004',
-                    description: 'Extraction dentaire simple',
-                    price: 250,
-                    dateCreation: '2024-01-01T00:00:00.000Z',
-                    status: 'Actif'
-                },
-                {
-                    id: 'ACT-2024-0005',
-                    description: 'Radiographie panoramique',
-                    price: 100,
-                    dateCreation: '2024-01-01T00:00:00.000Z',
-                    status: 'Actif'
-                },
-                {
-                    id: 'ACT-2024-0006',
-                    description: 'Traitement de canal',
-                    price: 800,
-                    dateCreation: '2024-01-01T00:00:00.000Z',
-                    status: 'Actif'
-                },
-                {
-                    id: 'ACT-2024-0007',
-                    description: 'Prothèse dentaire',
-                    price: 1500,
-                    dateCreation: '2024-01-01T00:00:00.000Z',
-                    status: 'Actif'
-                },
-                {
-                    id: 'ACT-2024-0008',
-                    description: 'Blanchiment dentaire',
-                    price: 400,
-                    dateCreation: '2024-01-01T00:00:00.000Z',
-                    status: 'Actif'
-                }
-            ],
+            patients: [],
             bills: [],
             insurances: [],
             claims: [],
@@ -642,6 +552,238 @@ class DataManager {
             localStorage.removeItem(`dikra_${entity}`);
         });
         this.initializeData();
+    }
+
+    // Enhanced patient management methods
+    validatePatientData(data) {
+        const errors = [];
+
+        // Required fields
+        if (!data.nom?.trim()) errors.push('Nom requis');
+        if (!data.prenom?.trim()) errors.push('Prénom requis');
+        if (!data.cin?.trim()) errors.push('CIN requis');
+        if (!data.naissance) errors.push('Date de naissance requise');
+        if (!data.telephone?.trim()) errors.push('Téléphone requis');
+
+        // Format validations
+        if (data.cin && !/^[A-Z]{1,2}\d{6}$/.test(data.cin)) {
+            errors.push('Format CIN invalide (ex: AB123456)');
+        }
+        if (data.telephone && !/^\+212\s6\d{2}\s\d{2}\s\d{2}\s\d{2}$/.test(data.telephone)) {
+            errors.push('Format téléphone invalide (+212 6XX XX XX XX)');
+        }
+        if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+            errors.push('Format email invalide');
+        }
+
+        // Age validation (must be adult)
+        if (data.naissance) {
+            const birthDate = new Date(data.naissance);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            if (age < 18) errors.push('Le patient doit être majeur');
+        }
+
+        return errors;
+    }
+
+    checkDuplicatePatient(field, value, excludeId = null) {
+        const patients = this.getAll('patients');
+        return patients.some(p => p[field] === value && p.id !== excludeId);
+    }
+
+    archivePatient(id, userId) {
+        const patient = this.getById('patients', id);
+        if (patient) {
+            this.update('patients', id, {
+                status: 'Archivé',
+                dateArchivage: new Date().toISOString(),
+                archivedBy: userId
+            });
+            this.logAudit('Patient archivé', `Patient ${patient.nom} ${patient.prenom} archivé`, id);
+            return true;
+        }
+        return false;
+    }
+
+    restorePatient(id) {
+        const patient = this.getById('patients', id);
+        if (patient) {
+            this.update('patients', id, {
+                status: 'Actif',
+                dateArchivage: null,
+                archivedBy: null
+            });
+            this.logAudit('Patient restauré', `Patient ${patient.nom} ${patient.prenom} restauré`, id);
+            return true;
+        }
+        return false;
+    }
+
+    getPatientsByFilters(filters = {}) {
+        let patients = this.getAll('patients');
+
+        if (filters.status) {
+            patients = patients.filter(p => p.status === filters.status);
+        }
+        if (filters.mutuelle) {
+            patients = patients.filter(p => p.mutuelle === filters.mutuelle);
+        }
+        if (filters.dateCreationStart) {
+            patients = patients.filter(p => new Date(p.dateCreation) >= new Date(filters.dateCreationStart));
+        }
+        if (filters.dateCreationEnd) {
+            patients = patients.filter(p => new Date(p.dateCreation) <= new Date(filters.dateCreationEnd));
+        }
+        if (filters.sexe) {
+            patients = patients.filter(p => p.sexe === filters.sexe);
+        }
+
+        return patients;
+    }
+
+    exportPatientsToCSV(filters = {}) {
+        const patients = this.getPatientsByFilters(filters);
+        const headers = [
+            'ID', 'Nom', 'Prénom', 'CIN', 'Sexe', 'Date Naissance', 'Téléphone',
+            'Email', 'Adresse', 'Mutuelle', 'Numéro Mutuelle', 'Taux Remboursement',
+            'Groupe Sanguin', 'Allergies', 'Maladies Chroniques', 'Traitements',
+            'Antécédents Dentaires', 'Notes', 'Statut', 'Date Création'
+        ];
+
+        const csvContent = [
+            headers.join(';'),
+            ...patients.map(p => [
+                p.id,
+                p.nom,
+                p.prenom,
+                p.cin,
+                p.sexe,
+                p.naissance,
+                p.telephone,
+                p.email || '',
+                p.adresse || '',
+                p.mutuelle,
+                p.numeroMutuelle || '',
+                p.tauxRemboursement || 0,
+                p.groupeSanguin || '',
+                (p.allergies || []).join(', '),
+                (p.maladiesChroniques || []).join(', '),
+                (p.traitementsEnCours || []).join(', '),
+                p.antecedentsDentaires || '',
+                p.notesGenerales || '',
+                p.status,
+                p.dateCreation
+            ].map(field => `"${field}"`).join(';'))
+        ].join('\n');
+
+        return csvContent;
+    }
+
+    exportPatientsToPDF(filters = {}) {
+        // This would require a PDF library like jsPDF
+        // For now, return basic structure that can be used with jsPDF
+        const patients = this.getPatientsByFilters(filters);
+        return {
+            title: 'Liste des Patients - DIKRA Centre Dentaire',
+            date: new Date().toLocaleDateString('fr-FR'),
+            patients: patients.map(p => ({
+                id: p.id,
+                nomComplet: `${p.nom} ${p.prenom}`,
+                telephone: p.telephone,
+                mutuelle: p.mutuelle,
+                status: p.status,
+                dateCreation: new Date(p.dateCreation).toLocaleDateString('fr-FR')
+            }))
+        };
+    }
+
+    // Enhanced patient creation with validation
+    createPatient(patientData) {
+        const errors = this.validatePatientData(patientData);
+        if (errors.length > 0) {
+            throw new Error(`Erreurs de validation: ${errors.join(', ')}`);
+        }
+
+        // Check duplicates
+        if (this.checkDuplicatePatient('cin', patientData.cin)) {
+            throw new Error('Un patient avec ce CIN existe déjà');
+        }
+        if (this.checkDuplicatePatient('telephone', patientData.telephone)) {
+            throw new Error('Un patient avec ce numéro de téléphone existe déjà');
+        }
+        if (patientData.email && this.checkDuplicatePatient('email', patientData.email)) {
+            throw new Error('Un patient avec cet email existe déjà');
+        }
+
+        const patient = {
+            ...patientData,
+            id: this.generateId('Patient'),
+            status: 'Actif',
+            dateCreation: new Date().toISOString(),
+            dernierRDV: null,
+            prochainRDV: null,
+            allergies: patientData.allergies || [],
+            maladiesChroniques: patientData.maladiesChroniques || [],
+            traitementsEnCours: patientData.traitementsEnCours || []
+        };
+
+        this.add('patients', patient);
+        this.logAudit('Patient créé', `Nouveau patient ${patient.nom} ${patient.prenom} créé`, patient.id);
+        return patient;
+    }
+
+    // Enhanced patient update with validation
+    updatePatient(id, updateData) {
+        const existing = this.getById('patients', id);
+        if (!existing) {
+            throw new Error('Patient non trouvé');
+        }
+
+        const errors = this.validatePatientData({ ...existing, ...updateData });
+        if (errors.length > 0) {
+            throw new Error(`Erreurs de validation: ${errors.join(', ')}`);
+        }
+
+        // Check duplicates (excluding current patient)
+        if (updateData.cin && this.checkDuplicatePatient('cin', updateData.cin, id)) {
+            throw new Error('Un patient avec ce CIN existe déjà');
+        }
+        if (updateData.telephone && this.checkDuplicatePatient('telephone', updateData.telephone, id)) {
+            throw new Error('Un patient avec ce numéro de téléphone existe déjà');
+        }
+        if (updateData.email && this.checkDuplicatePatient('email', updateData.email, id)) {
+            throw new Error('Un patient avec cet email existe déjà');
+        }
+
+        const updated = this.update('patients', id, updateData);
+        this.logAudit('Patient modifié', `Patient ${existing.nom} ${existing.prenom} modifié`, id);
+        return updated;
+    }
+
+    // Permanent patient deletion (Admin only)
+    deletePatient(id) {
+        const patient = this.getById('patients', id);
+        if (!patient) {
+            throw new Error('Patient non trouvé');
+        }
+
+        // Log before deletion
+        this.logAudit('Patient supprimé', `Patient ${patient.nom} ${patient.prenom} supprimé définitivement`, id);
+
+        // Remove related data
+        const appointments = this.getAppointmentsByPatient(id);
+        appointments.forEach(apt => this.delete('appointments', apt.id));
+
+        const bills = this.getBillsByPatient(id);
+        bills.forEach(bill => this.delete('bills', bill.id));
+
+        const documents = this.getDocumentsByPatient(id);
+        documents.forEach(doc => this.deleteDocument(doc.id));
+
+        // Delete patient
+        this.delete('patients', id);
+        return true;
     }
 }
 
