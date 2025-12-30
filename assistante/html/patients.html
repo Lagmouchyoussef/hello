@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <script src="../../js/common.js"></script>
     <script src="../../js/data.js"></script>
     <style>
@@ -23,6 +25,10 @@
             --sidebar-bg: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
             --header-bg: #ffffff;
             --shadow: rgba(0,0,0,0.1);
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
         }
 
         [data-theme="dark"] {
@@ -134,66 +140,111 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .patients-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px var(--shadow);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--info-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .filters-section {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px var(--shadow);
             margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
         }
 
-        .search-filters {
+        .table-responsive {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px var(--shadow);
+            overflow: hidden;
+        }
+
+        .table {
+            margin: 0;
+        }
+
+        .table thead th {
+            background: var(--sidebar-bg);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 15px;
+        }
+
+        .table tbody td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .patient-actions {
             display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
+            gap: 5px;
         }
 
-        .table th {
-            background-color: var(--card-bg);
-            border-bottom: 2px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .table td {
-            vertical-align: middle;
+        .btn-action {
+            padding: 5px 10px;
+            font-size: 0.8rem;
         }
 
         .status-badge {
             padding: 4px 8px;
             border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
 
         .status-actif {
-            background-color: #d1fae5;
-            color: #065f46;
+            background: var(--success-color);
+            color: white;
         }
 
-        .status-archivé {
-            background-color: #fee2e2;
-            color: #991b1b;
-        }
-
-        .action-btn {
-            margin: 0 2px;
-            padding: 5px 10px;
+        .search-input {
+            max-width: 300px;
         }
 
         .modal-xl {
             max-width: 1200px;
         }
 
-        .patient-photo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--border-color);
-        }
-
         .tab-content {
             padding: 20px 0;
+        }
+
+        .form-section {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
 
         .document-item {
@@ -206,34 +257,85 @@
             margin-bottom: 10px;
         }
 
-        .filters-row {
-            background-color: var(--card-bg);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+        .audit-entry {
+            padding: 10px;
+            border-left: 3px solid var(--info-color);
+            margin-bottom: 10px;
+            background: var(--card-bg);
+        }
+
+        .loading-skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: var(--card-bg);
+            color: var(--text-color);
             border: 1px solid var(--border-color);
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .error-message {
-            color: #dc2626;
-            background-color: #fef2f2;
-            padding: 10px;
             border-radius: 5px;
-            margin-bottom: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px var(--shadow);
         }
 
-        .success-message {
-            color: #059669;
-            background-color: #ecfdf5;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
+        .toast.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .toast.warning {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .patients-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .patients-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .table-responsive {
+                font-size: 0.8rem;
+            }
+
+            .patient-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Assistant-specific styling */
+        .assistant-notice {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .assistant-notice .bi {
+            color: #d97706;
         }
     </style>
 </head>
@@ -251,7 +353,7 @@
                 <i class="bi bi-house-door me-2"></i>Tableau de bord
             </a>
             <div class="dropdown">
-                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                <button class="btn dropdown-toggle nav-link active" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
                     <i class="bi bi-calendar-event me-2"></i>Rendez-vous
                 </button>
                 <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
@@ -260,11 +362,11 @@
                 </ul>
             </div>
             <div class="dropdown">
-                <button class="btn dropdown-toggle nav-link active" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
+                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
                     <i class="bi bi-people me-2"></i>Gestion des Patients
                 </button>
                 <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
-                    <li><a class="dropdown-item" href="patients.html" style="color: white;"><i class="bi bi-people me-2"></i>Patients</a></li>
+                    <li><a class="dropdown-item active" href="patients.html" style="color: white;"><i class="bi bi-people me-2"></i>Patients</a></li>
                     <li><a class="dropdown-item" href="documents.html" style="color: white;"><i class="bi bi-file-earmark me-2"></i>Documents</a></li>
                 </ul>
             </div>
@@ -292,7 +394,7 @@
         </nav>
         <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
             <p style="color: white; text-align: center; margin-bottom: 10px; font-weight: bold;">Assistante</p>
-            <button onclick="logout()" style="width: 100%; background: #dc2626; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
+            <button onclick="logout()" style="width: 100%; background: red; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
                 <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
             </button>
         </div>
@@ -300,81 +402,145 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()" aria-label="Toggle sidebar" style="position: absolute; top: 0; left: 0; z-index: 1001;">
             <i class="bi bi-list"></i>
         </button>
 
+        <!-- Assistant Notice -->
+        <div class="assistant-notice">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-info-circle me-3 fs-4"></i>
+                <div>
+                    <h6 class="mb-1">Mode Assistante</h6>
+                    <p class="mb-0 small">Vous pouvez consulter et modifier les informations administratives des patients. Les données médicales sensibles ne sont pas accessibles.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patients Header -->
         <div class="patients-header">
-            <h1><i class="bi bi-people me-2"></i>Gestion des Patients</h1>
-            <div class="d-flex gap-3">
-                <input type="text" class="form-control search-bar" id="search-patient" placeholder="Rechercher un patient..." style="min-width: 250px;">
+            <div>
+                <h1 style="margin: 0; color: var(--text-color);"><i class="bi bi-people me-2"></i>Gestion des Patients</h1>
+                <p style="margin: 5px 0 0 0; color: #6b7280;">Système de gestion complet des patients actifs</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-success" onclick="exportPatients('csv')">
+                    <i class="bi bi-download me-1"></i>Exporter CSV
+                </button>
+                <button class="btn btn-danger" onclick="exportPatients('pdf')">
+                    <i class="bi bi-file-earmark-pdf me-1"></i>Exporter PDF
+                </button>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPatientModal">
                     <i class="bi bi-person-plus me-2"></i>Ajouter Patient
                 </button>
             </div>
         </div>
 
-        <!-- Messages -->
-        <div id="messages-container"></div>
+        <!-- Statistics Cards -->
+        <div class="patients-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="total-active-patients">0</div>
+                <div class="stat-label">Patients Actifs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="new-patients-week">0</div>
+                <div class="stat-label">Nouveaux cette semaine</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="appointments-week">0</div>
+                <div class="stat-label">RDV cette semaine</div>
+            </div>
+        </div>
 
-        <!-- Filters -->
-        <div class="filters-row">
-            <div class="row g-3">
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="row g-3 align-items-end">
                 <div class="col-md-3">
-                    <label for="filter-mutuelle" class="form-label">Mutuelle</label>
-                    <select class="form-select" id="filter-mutuelle">
+                    <label class="form-label">Recherche</label>
+                    <input type="text" class="form-control search-input" id="search-input" placeholder="Nom, prénom, CIN, téléphone...">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Mutuelle</label>
+                    <select class="form-select" id="mutuelle-filter">
                         <option value="">Toutes</option>
                         <option value="CNSS">CNSS</option>
                         <option value="CNOPS">CNOPS</option>
+                        <option value="Privée">Privée</option>
                         <option value="Aucune">Aucune</option>
                     </select>
                 </div>
-                <div class="col-md-3">
-                    <label for="filter-sexe" class="form-label">Sexe</label>
-                    <select class="form-select" id="filter-sexe">
+                <div class="col-md-2">
+                    <label class="form-label">Sexe</label>
+                    <select class="form-select" id="sexe-filter">
                         <option value="">Tous</option>
                         <option value="Homme">Homme</option>
                         <option value="Femme">Femme</option>
                     </select>
                 </div>
-                <div class="col-md-6">
-                    <label for="filter-date-start" class="form-label">Date création (début)</label>
-                    <input type="date" class="form-control" id="filter-date-start">
+                <div class="col-md-3">
+                    <label class="form-label">Période de création</label>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <input type="date" class="form-control" id="date-start" placeholder="Début">
+                        </div>
+                        <div class="col-6">
+                            <input type="date" class="form-control" id="date-end" placeholder="Fin">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary" onclick="applyFilters()">
+                            <i class="bi bi-funnel me-1"></i>Filtrer
+                        </button>
+                        <button class="btn btn-outline-secondary" onclick="resetFilters()">
+                            <i class="bi bi-x-circle me-1"></i>Réinitialiser
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Loading -->
-        <div class="loading" id="loading-indicator">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Chargement...</span>
-            </div>
-            <p class="mt-2">Chargement des patients...</p>
         </div>
 
         <!-- Patients Table -->
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover" id="patients-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nom complet</th>
-                                <th>Téléphone</th>
-                                <th>Mutuelle</th>
-                                <th>Dernière visite</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="patients-tbody">
-                            <!-- Patients will be loaded here -->
-                        </tbody>
-                    </table>
-                </div>
+        <div class="table-responsive">
+            <table class="table table-hover" id="patients-table">
+                <thead>
+                    <tr>
+                        <th>ID Patient</th>
+                        <th>Nom Complet</th>
+                        <th>Téléphone</th>
+                        <th>Mutuelle</th>
+                        <th>Dernière Visite</th>
+                        <th>Prochain RDV</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="patients-tbody">
+                    <!-- Patients will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+                <select class="form-select d-inline-block w-auto" id="page-size">
+                    <option value="10">10 par page</option>
+                    <option value="25">25 par page</option>
+                    <option value="50">50 par page</option>
+                    <option value="100">100 par page</option>
+                </select>
             </div>
+            <nav aria-label="Patients pagination">
+                <ul class="pagination" id="pagination">
+                    <!-- Pagination will be generated here -->
+                </ul>
+            </nav>
         </div>
     </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/script.js"></script>
@@ -385,8 +551,28 @@
             window.location.href = '../../LOGING/html/loging.html';
         }
 
+        let currentFilters = {};
+        let currentPage = 1;
+        let pageSize = 10;
         let allPatients = [];
-        let filteredPatients = [];
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPatients();
+            updateStats();
+
+            // Event listeners
+            document.getElementById('search-input').addEventListener('input', debounce(applyFilters, 300));
+            document.getElementById('mutuelle-filter').addEventListener('change', applyFilters);
+            document.getElementById('sexe-filter').addEventListener('change', applyFilters);
+            document.getElementById('date-start').addEventListener('change', applyFilters);
+            document.getElementById('date-end').addEventListener('change', applyFilters);
+            document.getElementById('page-size').addEventListener('change', function(e) {
+                pageSize = parseInt(e.target.value);
+                currentPage = 1;
+                renderPatientsTable();
+            });
+        });
 
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
@@ -398,193 +584,451 @@
             window.location.href = '../../LOGING/html/loging.html';
         }
 
-        // Load patients on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            loadPatients();
-
-            // Search functionality
-            document.getElementById('search-patient').addEventListener('input', filterPatients);
-
-            // Filter functionality
-            ['filter-mutuelle', 'filter-sexe', 'filter-date-start'].forEach(id => {
-                document.getElementById(id).addEventListener('change', filterPatients);
-            });
-        });
-
-        function showMessage(message, type = 'success') {
-            const container = document.getElementById('messages-container');
-            const className = type === 'error' ? 'error-message' : 'success-message';
-            container.innerHTML = `<div class="${className}">${message}</div>`;
-            setTimeout(() => {
-                container.innerHTML = '';
-            }, 5000);
-        }
-
         function loadPatients() {
-            const loading = document.getElementById('loading-indicator');
-            loading.style.display = 'block';
-
-            try {
-                // Assistant can only see active patients
-                allPatients = dataManager.getAll('patients').filter(p => p.status === 'Actif');
-                filteredPatients = [...allPatients];
-                renderPatientsTable();
-
-                loading.style.display = 'none';
-            } catch (error) {
-                console.error('Erreur lors du chargement des patients:', error);
-                showMessage('Erreur lors du chargement des patients', 'error');
-                loading.style.display = 'none';
-            }
+            // Assistant can only see active patients
+            allPatients = dataManager.getAll('patients').filter(p => p.status === 'Actif');
+            renderPatientsTable();
         }
 
-        function filterPatients() {
-            const searchTerm = document.getElementById('search-patient').value.toLowerCase();
-            const mutuelleFilter = document.getElementById('filter-mutuelle').value;
-            const sexeFilter = document.getElementById('filter-sexe').value;
-            const dateStart = document.getElementById('filter-date-start').value;
+        function updateStats() {
+            const patients = dataManager.getAll('patients').filter(p => p.status === 'Actif');
+            const appointments = dataManager.getAll('appointments');
 
-            filteredPatients = allPatients.filter(patient => {
-                // Search term
-                const matchesSearch = !searchTerm ||
-                    patient.nom.toLowerCase().includes(searchTerm) ||
-                    patient.prenom.toLowerCase().includes(searchTerm) ||
-                    patient.telephone.includes(searchTerm) ||
-                    patient.cin?.includes(searchTerm) ||
-                    patient.id.toLowerCase().includes(searchTerm);
+            // Active patients
+            document.getElementById('total-active-patients').textContent = patients.length;
 
-                // Filters
-                const matchesMutuelle = !mutuelleFilter || patient.mutuelle === mutuelleFilter;
-                const matchesSexe = !sexeFilter || patient.sexe === sexeFilter;
+            // New patients this week
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            const newPatientsWeek = patients.filter(p => new Date(p.dateCreation) >= oneWeekAgo).length;
+            document.getElementById('new-patients-week').textContent = newPatientsWeek;
 
-                // Date range
-                let matchesDate = true;
-                if (dateStart) {
-                    matchesDate = new Date(patient.dateCreation) >= new Date(dateStart);
-                }
+            // Appointments this week
+            const appointmentsWeek = appointments.filter(a => {
+                const appointmentDate = new Date(a.date);
+                const today = new Date();
+                const weekFromNow = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+                return appointmentDate >= today && appointmentDate <= weekFromNow && a.status !== 'Annulé';
+            }).length;
+            document.getElementById('appointments-week').textContent = appointmentsWeek;
+        }
 
-                return matchesSearch && matchesMutuelle && matchesSexe && matchesDate;
-            });
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const mutuelleFilter = document.getElementById('mutuelle-filter').value;
+            const sexeFilter = document.getElementById('sexe-filter').value;
+            const dateStart = document.getElementById('date-start').value;
+            const dateEnd = document.getElementById('date-end').value;
 
+            currentFilters = {
+                search: searchTerm,
+                mutuelle: mutuelleFilter,
+                sexe: sexeFilter,
+                dateStart: dateStart,
+                dateEnd: dateEnd
+            };
+
+            currentPage = 1;
+            renderPatientsTable();
+        }
+
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('mutuelle-filter').value = '';
+            document.getElementById('sexe-filter').value = '';
+            document.getElementById('date-start').value = '';
+            document.getElementById('date-end').value = '';
+            currentFilters = {};
+            currentPage = 1;
             renderPatientsTable();
         }
 
         function renderPatientsTable() {
+            let filteredPatients = allPatients;
+
+            // Apply filters
+            if (currentFilters.search) {
+                filteredPatients = filteredPatients.filter(p =>
+                    `${p.nom} ${p.prenom}`.toLowerCase().includes(currentFilters.search) ||
+                    (p.cin && p.cin.toLowerCase().includes(currentFilters.search)) ||
+                    (p.telephone && p.telephone.includes(currentFilters.search)) ||
+                    (p.id && p.id.toLowerCase().includes(currentFilters.search))
+                );
+            }
+
+            if (currentFilters.mutuelle) {
+                filteredPatients = filteredPatients.filter(p => p.mutuelle === currentFilters.mutuelle);
+            }
+
+            if (currentFilters.sexe) {
+                filteredPatients = filteredPatients.filter(p => p.sexe === currentFilters.sexe);
+            }
+
+            if (currentFilters.dateStart) {
+                filteredPatients = filteredPatients.filter(p => new Date(p.dateCreation) >= new Date(currentFilters.dateStart));
+            }
+
+            if (currentFilters.dateEnd) {
+                filteredPatients = filteredPatients.filter(p => new Date(p.dateCreation) <= new Date(currentFilters.dateEnd));
+            }
+
+            // Sort by creation date (newest first)
+            filteredPatients.sort((a, b) => new Date(b.dateCreation) - new Date(a.dateCreation));
+
+            // Pagination
+            const totalPages = Math.ceil(filteredPatients.length / pageSize);
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = startIndex + pageSize;
+            const patientsToShow = filteredPatients.slice(startIndex, endIndex);
+
+            // Render table
             const tbody = document.getElementById('patients-tbody');
             tbody.innerHTML = '';
 
-            if (filteredPatients.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center py-4">
-                            <i class="bi bi-info-circle me-2"></i>Aucun patient trouvé
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
+            if (patientsToShow.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">Aucun patient trouvé</td></tr>';
+            } else {
+                patientsToShow.forEach(patient => {
+                    const dernierRDV = patient.dernierRDV ? new Date(patient.dernierRDV).toLocaleDateString('fr-FR') : '-';
+                    const prochainRDV = patient.prochainRDV ? new Date(patient.prochainRDV).toLocaleDateString('fr-FR') : '-';
 
-            filteredPatients.forEach(patient => {
-                const dernierRDV = patient.dernierRDV ? new Date(patient.dernierRDV).toLocaleDateString('fr-FR') : '-';
-
-                tbody.innerHTML += `
-                    <tr>
+                    tbody.innerHTML += `
                         <td><code>${patient.id}</code></td>
-                        <td>${patient.nom} ${patient.prenom}</td>
-                        <td>${patient.telephone}</td>
+                        <td><strong>${patient.nom} ${patient.prenom}</strong></td>
+                        <td><i class="bi bi-telephone me-1"></i>${patient.telephone}</td>
                         <td>${patient.mutuelle || '-'}</td>
                         <td>${dernierRDV}</td>
+                        <td>${prochainRDV}</td>
                         <td>
-                            <button class="btn btn-sm btn-outline-primary action-btn" onclick="viewPatient('${patient.id}')" title="Voir détails">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary action-btn" onclick="editPatient('${patient.id}')" title="Modifier">
-                                <i class="bi bi-pencil"></i>
-                            </button>
+                            <div class="patient-actions">
+                                <button class="btn btn-sm btn-outline-primary btn-action" onclick="viewPatient('${patient.id}')" title="Voir détails">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary btn-action" onclick="editPatient('${patient.id}')" title="Modifier">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </div>
                         </td>
-                    </tr>
-                `;
-            });
+                    `;
+                });
+            }
+
+            // Render pagination
+            renderPagination(totalPages);
         }
 
-        function viewPatient(id) {
-            const patient = dataManager.getById('patients', id);
+        function renderPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // Previous button
+            const prevLi = document.createElement('li');
+            prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+            prevLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Précédent</a>`;
+            pagination.appendChild(prevLi);
+
+            // Page numbers
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const li = document.createElement('li');
+                li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                li.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
+                pagination.appendChild(li);
+            }
+
+            // Next button
+            const nextLi = document.createElement('li');
+            nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+            nextLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Suivant</a>`;
+            pagination.appendChild(nextLi);
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            renderPatientsTable();
+        }
+
+        function viewPatient(patientId) {
+            const patient = dataManager.getById('patients', patientId);
             if (!patient) {
-                showMessage('Patient non trouvé', 'error');
+                showToast('Patient non trouvé', 'error');
                 return;
             }
 
-            // Load basic patient info (no medical details for assistant)
-            let content = `
-                <div class="row g-3">
-                    <div class="col-md-3 text-center">
-                        <img src="../../Photo/Photo.png" alt="Photo patient" class="patient-photo mb-2">
-                        <div class="mt-2">
-                            <span class="status-badge status-actif">Actif</span>
+            // Build patient details HTML with assistant-appropriate tabs
+            const detailsHtml = `
+                <div class="patient-profile-header mb-4 p-3 bg-light rounded">
+                    <div class="d-flex align-items-center">
+                        <div class="patient-avatar me-3">
+                            <i class="bi bi-person-circle" style="font-size: 3rem; color: var(--sidebar-bg);"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="mb-1">${patient.nom} ${patient.prenom}</h4>
+                            <p class="mb-1"><strong>ID:</strong> <code>${patient.id}</code></p>
+                            <p class="mb-1"><strong>CIN:</strong> ${patient.cin}</p>
+                            <p class="mb-0"><strong>Statut:</strong>
+                                <span class="badge bg-success ms-2">Actif</span>
+                            </p>
                         </div>
                     </div>
-                    <div class="col-md-9">
+                </div>
+
+                <ul class="nav nav-tabs" id="detailsTabs" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#assistant-general">Général</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#assistant-appointments">Rendez-vous</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#assistant-documents">Documents</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#assistant-audit">Historique</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content mt-3">
+                    <!-- General Tab -->
+                    <div class="tab-pane fade show active" id="assistant-general">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <strong>ID Patient:</strong> <code>${patient.id}</code>
+                                <strong>Nom:</strong> ${patient.nom}
                             </div>
                             <div class="col-md-6">
-                                <strong>Nom complet:</strong> ${patient.nom} ${patient.prenom}
+                                <strong>Prénom:</strong> ${patient.prenom}
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <strong>CIN:</strong> ${patient.cin}
                             </div>
-                            <div class="col-md-4">
-                                <strong>Sexe:</strong> ${patient.sexe}
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <strong>Date de naissance:</strong> ${new Date(patient.naissance).toLocaleDateString('fr-FR')}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Sexe:</strong> ${patient.sexe || '-'}
                             </div>
                             <div class="col-md-6">
                                 <strong>Téléphone:</strong> ${patient.telephone}
                             </div>
                             <div class="col-md-6">
-                                <strong>Email:</strong> ${patient.email || 'Non spécifié'}
+                                <strong>Email:</strong> ${patient.email || '-'}
                             </div>
-                            <div class="col-12">
-                                <strong>Adresse:</strong> ${patient.adresse || 'Non spécifiée'}
+                            <div class="col-md-6">
+                                <strong>Adresse:</strong> ${patient.adresse || '-'}
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <strong>Mutuelle:</strong> ${patient.mutuelle}
                             </div>
-                            <div class="col-md-4">
-                                <strong>Numéro adhérent:</strong> ${patient.numeroMutuelle || 'N/A'}
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Taux remboursement:</strong> ${patient.tauxRemboursement}%
+                            <div class="col-md-6">
+                                <strong>Numéro adhérent:</strong> ${patient.numeroMutuelle || '-'}
                             </div>
                             <div class="col-md-6">
-                                <strong>Dernière visite:</strong> ${patient.dernierRDV ? new Date(patient.dernierRDV).toLocaleDateString('fr-FR') : 'Aucune'}
+                                <strong>Taux remboursement:</strong> ${patient.tauxRemboursement || 0}%
                             </div>
                             <div class="col-md-6">
-                                <strong>Prochain RDV:</strong> ${patient.prochainRDV ? new Date(patient.prochainRDV).toLocaleDateString('fr-FR') : 'Aucun'}
+                                <strong>Date création:</strong> ${new Date(patient.dateCreation).toLocaleDateString('fr-FR')}
+                            </div>
+                        </div>
+                        <div class="alert alert-info mt-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Information:</strong> En tant qu'assistante, vous ne pouvez voir que les informations administratives.
+                            Les données médicales sensibles sont réservées aux administrateurs et dentistes.
+                        </div>
+                    </div>
+
+                    <!-- Appointments Tab -->
+                    <div class="tab-pane fade" id="assistant-appointments">
+                        <div id="patient-appointments-list">
+                            <!-- Appointments will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Documents Tab -->
+                    <div class="tab-pane fade" id="assistant-documents">
+                        <div class="mb-3">
+                            <button class="btn btn-primary btn-sm" onclick="showUploadDocumentModal()">
+                                <i class="bi bi-upload me-1"></i>Ajouter Document
+                            </button>
+                        </div>
+                        <div id="patient-documents-list">
+                            <!-- Documents will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Audit Tab -->
+                    <div class="tab-pane fade" id="assistant-audit">
+                        <div id="patient-audit-list">
+                            <!-- Audit trail will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('patient-details-content').innerHTML = detailsHtml;
+
+            // Load related data
+            loadPatientAppointments(patientId);
+            loadPatientDocuments(patientId);
+            loadPatientAuditTrail(patientId);
+
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('patientDetailsModal'));
+            modal.show();
+        }
+
+        function loadPatientAppointments(patientId) {
+            const appointments = dataManager.getAppointmentsByPatient(patientId);
+            const container = document.getElementById('patient-appointments-list');
+
+            if (appointments.length === 0) {
+                container.innerHTML = '<p class="text-muted">Aucun rendez-vous trouvé</p>';
+                return;
+            }
+
+            const html = appointments.map(apt => `
+                <div class="card mb-2">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="card-title mb-1">${apt.type || 'Rendez-vous'}</h6>
+                                <p class="card-text small mb-1">
+                                    <i class="bi bi-calendar me-1"></i>${new Date(apt.date).toLocaleString('fr-FR')}
+                                </p>
+                                <p class="card-text small mb-0">
+                                    <i class="bi bi-person me-1"></i>Statut: <span class="badge bg-${getStatusColor(apt.status)}">${apt.status}</span>
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="alert alert-info mt-3">
-                    <i class="bi bi-info-circle me-2"></i>
-                    <strong>Information:</strong> En tant qu'assistante, vous ne pouvez voir que les informations administratives des patients.
-                    Pour consulter les informations médicales, contactez un administrateur ou un dentiste.
-                </div>
-            `;
+            `).join('');
 
-            // Show modal
-            const modal = new bootstrap.Modal(document.getElementById('viewPatientModal'));
-            document.getElementById('viewPatientModalLabel').textContent = `Détails du Patient: ${patient.nom} ${patient.prenom}`;
-            document.getElementById('view-patient-details').innerHTML = content;
-            modal.show();
+            container.innerHTML = html;
         }
 
-        function editPatient(id) {
-            const patient = dataManager.getById('patients', id);
+        function loadPatientDocuments(patientId) {
+            const documents = dataManager.getDocumentsByPatient(patientId);
+            const container = document.getElementById('patient-documents-list');
+
+            if (documents.length === 0) {
+                container.innerHTML = '<p class="text-muted">Aucun document trouvé</p>';
+                return;
+            }
+
+            const html = documents.map(doc => `
+                <div class="document-item">
+                    <div class="flex-grow-1">
+                        <strong>${doc.name}</strong>
+                        <br><small class="text-muted">${doc.type} - ${new Date(doc.uploadDate).toLocaleDateString('fr-FR')}</small>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary" onclick="downloadDocument('${doc.id}')">
+                        <i class="bi bi-download"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
+        function loadPatientAuditTrail(patientId) {
+            const auditTrail = dataManager.getAuditTrail(patientId, 20);
+            const container = document.getElementById('patient-audit-list');
+
+            if (auditTrail.length === 0) {
+                container.innerHTML = '<p class="text-muted">Aucun historique trouvé</p>';
+                return;
+            }
+
+            const html = auditTrail.map(entry => `
+                <div class="audit-entry">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <strong>${entry.action}</strong>
+                            <br><small class="text-muted">${entry.description}</small>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted">${new Date(entry.timestamp).toLocaleString('fr-FR')}</small>
+                            <br><small class="text-muted">${entry.userRole}</small>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'Confirmé': 'success',
+                'En attente': 'warning',
+                'Patient arrivé': 'info',
+                'Consultation en cours': 'primary',
+                'Terminé': 'success',
+                'Annulé': 'danger'
+            };
+            return colors[status] || 'secondary';
+        }
+
+        function downloadDocument(docId) {
+            const documents = dataManager.getAll('documents');
+            const doc = documents.find(d => d.id == docId);
+
+            if (!doc) {
+                showToast('Document non trouvé', 'error');
+                return;
+            }
+
+            try {
+                // Convert base64 to blob and download
+                const byteCharacters = atob(doc.content);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], { type: doc.mimeType });
+
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = doc.name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showToast('Document téléchargé', 'success');
+            } catch (error) {
+                showToast('Erreur lors du téléchargement: ' + error.message, 'error');
+            }
+        }
+
+        let currentPatientForDocument = null;
+
+        function showUploadDocumentModal() {
+            // Get current patient from details modal
+            const detailsModal = document.getElementById('patientDetailsModal');
+            if (detailsModal.classList.contains('show')) {
+                // Extract patient ID from the details content
+                const patientIdMatch = document.getElementById('patient-details-content').innerHTML.match(/<code>(PAT-\d{4}-\d{4})<\/code>/);
+                if (patientIdMatch) {
+                    currentPatientForDocument = patientIdMatch[1];
+                    const modal = new bootstrap.Modal(document.getElementById('uploadDocumentModal'));
+                    modal.show();
+                } else {
+                    showToast('Erreur: Patient non identifié', 'error');
+                }
+            }
+        }
+
+        function editPatient(patientId) {
+            const patient = dataManager.getById('patients', patientId);
             if (!patient) {
-                showMessage('Patient non trouvé', 'error');
+                showToast('Patient non trouvé', 'error');
                 return;
             }
 
@@ -602,12 +1046,6 @@
         }
 
         function updatePatient() {
-            const form = document.getElementById('edit-patient-form');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
             const patientId = document.getElementById('edit-patient-id').value;
             const updateData = {
                 telephone: document.getElementById('edit-patient-telephone').value.trim(),
@@ -618,103 +1056,300 @@
             };
 
             try {
+                // Validate required fields
+                if (!updateData.telephone || !updateData.mutuelle) {
+                    throw new Error('Veuillez remplir tous les champs obligatoires');
+                }
+
+                // Update patient
                 dataManager.updatePatient(patientId, updateData);
-                bootstrap.Modal.getInstance(document.getElementById('editPatientModal')).hide();
+
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editPatientModal'));
+                modal.hide();
+
+                // Refresh data
                 loadPatients();
-                showMessage('Informations patient mises à jour avec succès');
+                updateStats();
+
+                showToast('Informations patient mises à jour avec succès', 'success');
+
             } catch (error) {
-                console.error('Erreur modification patient:', error);
-                showMessage(error.message, 'error');
+                showToast('Erreur: ' + error.message, 'error');
             }
+        }
+
+        function exportPatients(format) {
+            try {
+                if (format === 'csv') {
+                    const csv = dataManager.exportPatientsToCSV(currentFilters);
+                    downloadFile(csv, 'patients_assistant.csv', 'text/csv');
+                    showToast('Export CSV réussi', 'success');
+                } else if (format === 'pdf') {
+                    // Get filtered patients
+                    let filteredPatients = allPatients;
+        
+                    // Apply same filters as table
+                    if (currentFilters.search) {
+                        filteredPatients = filteredPatients.filter(p =>
+                            `${p.nom} ${p.prenom}`.toLowerCase().includes(currentFilters.search) ||
+                            (p.cin && p.cin.toLowerCase().includes(currentFilters.search)) ||
+                            (p.telephone && p.telephone.includes(currentFilters.search)) ||
+                            (p.id && p.id.toLowerCase().includes(currentFilters.search))
+                        );
+                    }
+        
+                    if (currentFilters.mutuelle) {
+                        filteredPatients = filteredPatients.filter(p => p.mutuelle === currentFilters.mutuelle);
+                    }
+        
+                    if (currentFilters.sexe) {
+                        filteredPatients = filteredPatients.filter(p => p.sexe === currentFilters.sexe);
+                    }
+        
+                    if (currentFilters.dateStart) {
+                        filteredPatients = filteredPatients.filter(p => new Date(p.dateCreation) >= new Date(currentFilters.dateStart));
+                    }
+        
+                    if (currentFilters.dateEnd) {
+                        filteredPatients = filteredPatients.filter(p => new Date(p.dateCreation) <= new Date(currentFilters.dateEnd));
+                    }
+        
+                    // Sort by creation date (newest first)
+                    filteredPatients.sort((a, b) => new Date(b.dateCreation) - new Date(a.dateCreation));
+        
+                    // Create PDF
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+        
+                    // Add title
+                    doc.setFontSize(16);
+                    doc.text('Liste des Patients - Assistante', 14, 20);
+                    doc.setFontSize(10);
+                    doc.text(`Généré le ${new Date().toLocaleDateString('fr-FR')} - ${filteredPatients.length} patients`, 14, 30);
+        
+                    // Prepare table data
+                    const tableData = filteredPatients.map(patient => [
+                        patient.id,
+                        `${patient.nom} ${patient.prenom}`,
+                        patient.telephone,
+                        patient.mutuelle || '-',
+                        patient.dernierRDV ? new Date(patient.dernierRDV).toLocaleDateString('fr-FR') : '-',
+                        patient.prochainRDV ? new Date(patient.prochainRDV).toLocaleDateString('fr-FR') : '-'
+                    ]);
+        
+                    // Add table
+                    doc.autoTable({
+                        head: [['ID Patient', 'Nom Complet', 'Téléphone', 'Mutuelle', 'Dernière Visite', 'Prochain RDV']],
+                        body: tableData,
+                        startY: 40,
+                        styles: {
+                            fontSize: 8,
+                            cellPadding: 2
+                        },
+                        headStyles: {
+                            fillColor: [59, 130, 246], // Blue header
+                            textColor: 255
+                        },
+                        alternateRowStyles: {
+                            fillColor: [248, 250, 252] // Light gray alternate rows
+                        }
+                    });
+        
+                    // Save PDF
+                    doc.save('patients_assistant.pdf');
+                    showToast('Export PDF réussi', 'success');
+                }
+            } catch (error) {
+                showToast('Erreur lors de l\'export: ' + error.message, 'error');
+            }
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+
+            document.getElementById('toast-container').appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
         }
     </script>
 
     <!-- Add Patient Modal -->
     <div class="modal fade" id="addPatientModal" tabindex="-1" aria-labelledby="addPatientModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addPatientModalLabel">Ajouter un Nouveau Patient</h5>
+                    <h5 class="modal-title" id="addPatientModalLabel">
+                        <i class="bi bi-person-plus me-2"></i>Ajouter un Nouveau Patient
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="add-patient-form">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="patient-nom" class="form-label">Nom *</label>
-                                <input type="text" class="form-control" id="patient-nom" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="patient-prenom" class="form-label">Prénom *</label>
-                                <input type="text" class="form-control" id="patient-prenom" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="patient-cin" class="form-label">CIN *</label>
-                                <input type="text" class="form-control" id="patient-cin" placeholder="AB123456" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="patient-sexe" class="form-label">Sexe *</label>
-                                <select class="form-select" id="patient-sexe" required>
-                                    <option value="">Sélectionner</option>
-                                    <option value="Homme">Homme</option>
-                                    <option value="Femme">Femme</option>
-                                    <option value="Autre">Autre</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="patient-naissance" class="form-label">Date de naissance *</label>
-                                <input type="date" class="form-control" id="patient-naissance" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="patient-telephone" class="form-label">Téléphone *</label>
-                                <input type="tel" class="form-control" id="patient-telephone" placeholder="+212 6XX XX XX XX" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="patient-email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="patient-email">
-                            </div>
-                            <div class="col-12">
-                                <label for="patient-adresse" class="form-label">Adresse</label>
-                                <textarea class="form-control" id="patient-adresse" rows="2"></textarea>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="patient-mutuelle" class="form-label">Type de mutuelle</label>
-                                <select class="form-select" id="patient-mutuelle">
-                                    <option value="Aucune">Aucune</option>
-                                    <option value="CNSS">CNSS</option>
-                                    <option value="CNOPS">CNOPS</option>
-                                    <option value="Privée">Privée</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="patient-numero-mutuelle" class="form-label">Numéro d'adhérent</label>
-                                <input type="text" class="form-control" id="patient-numero-mutuelle">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="patient-taux-remboursement" class="form-label">Taux de remboursement (%)</label>
-                                <input type="number" class="form-control" id="patient-taux-remboursement" min="0" max="100" value="0">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" id="patientTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab">
+                                <i class="bi bi-person me-1"></i>Informations Personnelles
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="insurance-tab" data-bs-toggle="tab" data-bs-target="#insurance" type="button" role="tab">
+                                <i class="bi bi-shield-check me-1"></i>Assurance & Mutuelle
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab content -->
+                    <div class="tab-content" id="patientTabsContent">
+                        <!-- Personal Information Tab -->
+                        <div class="tab-pane fade show active" id="personal" role="tabpanel">
+                            <div class="form-section">
+                                <h6 class="mb-3"><i class="bi bi-person-circle me-2"></i>Informations Personnelles</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="patient-nom" class="form-label">Nom <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="patient-nom" required>
+                                        <div class="invalid-feedback">Le nom est requis</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="patient-prenom" class="form-label">Prénom <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="patient-prenom" required>
+                                        <div class="invalid-feedback">Le prénom est requis</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="patient-cin" class="form-label">CIN <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="patient-cin" placeholder="AB123456" required maxlength="8">
+                                        <div class="form-text">Format marocain: 1-2 lettres + 6 chiffres (ex: AB123456)</div>
+                                        <div class="invalid-feedback">CIN invalide (format: AB123456)</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="patient-naissance" class="form-label">Date de naissance <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="patient-naissance" required>
+                                        <div class="form-text">Le patient doit être majeur (18+ ans)</div>
+                                        <div class="invalid-feedback">Date invalide ou patient mineur</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="patient-sexe" class="form-label">Sexe</label>
+                                        <select class="form-select" id="patient-sexe">
+                                            <option value="">Sélectionner</option>
+                                            <option value="Homme">Homme</option>
+                                            <option value="Femme">Femme</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="patient-telephone" class="form-label">Téléphone <span class="text-danger">*</span></label>
+                                        <input type="tel" class="form-control" id="patient-telephone" placeholder="+212 6XX XX XX XX" required>
+                                        <div class="form-text">Format: +212 6XX XX XX XX</div>
+                                        <div class="invalid-feedback">Format téléphone invalide</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="patient-email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="patient-email">
+                                        <div class="invalid-feedback">Format email invalide</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="patient-adresse" class="form-label">Adresse</label>
+                                        <textarea class="form-control" id="patient-adresse" rows="2"></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </form>
+
+                        <!-- Insurance Information Tab -->
+                        <div class="tab-pane fade" id="insurance" role="tabpanel">
+                            <div class="form-section">
+                                <h6 class="mb-3"><i class="bi bi-shield-check me-2"></i>Assurance & Mutuelle</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="patient-mutuelle" class="form-label">Type de mutuelle <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="patient-mutuelle" required>
+                                            <option value="Aucune">Aucune</option>
+                                            <option value="CNSS">CNSS</option>
+                                            <option value="CNOPS">CNOPS</option>
+                                            <option value="Privée">Privée</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="patient-numero-mutuelle" class="form-label">Numéro d'adhérent</label>
+                                        <input type="text" class="form-control" id="patient-numero-mutuelle" placeholder="Numéro d'adhérent ou carte">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="patient-taux-remboursement" class="form-label">Taux de remboursement (%)</label>
+                                        <input type="number" class="form-control" id="patient-taux-remboursement" min="0" max="100" step="1" placeholder="70">
+                                        <div class="form-text">Pourcentage de remboursement (0-100%)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" onclick="addPatient()">Ajouter le Patient</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Annuler
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="savePatient()">
+                        <i class="bi bi-check-circle me-1"></i>Enregistrer Patient
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- View Patient Modal -->
-    <div class="modal fade" id="viewPatientModal" tabindex="-1" aria-labelledby="viewPatientModalLabel" aria-hidden="true">
+    <!-- Patient Details Modal -->
+    <div class="modal fade" id="patientDetailsModal" tabindex="-1" aria-labelledby="patientDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewPatientModalLabel">Détails du Patient</h5>
+                    <h5 class="modal-title" id="patientDetailsModalLabel">
+                        <i class="bi bi-person-circle me-2"></i>Détails du Patient
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="view-patient-details">
-                    <!-- Patient details will be loaded here -->
+                <div class="modal-body">
+                    <div id="patient-details-content">
+                        <!-- Patient details will be loaded here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Fermer
+                    </button>
+                    <button type="button" class="btn btn-warning" onclick="editPatientFromDetails()">
+                        <i class="bi bi-pencil me-1"></i>Modifier
+                    </button>
                 </div>
             </div>
         </div>
@@ -725,14 +1360,16 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editPatientModalLabel">Modifier les Informations Administratives</h5>
+                    <h5 class="modal-title" id="editPatientModalLabel">
+                        <i class="bi bi-pencil me-2"></i>Modifier les Informations Administratives
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="edit-patient-form">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label for="edit-patient-telephone" class="form-label">Téléphone *</label>
+                                <label for="edit-patient-telephone" class="form-label">Téléphone <span class="text-danger">*</span></label>
                                 <input type="tel" class="form-control" id="edit-patient-telephone" required>
                             </div>
                             <div class="col-md-6">
@@ -740,8 +1377,8 @@
                                 <input type="text" class="form-control" id="edit-patient-adresse">
                             </div>
                             <div class="col-md-4">
-                                <label for="edit-patient-mutuelle" class="form-label">Type de mutuelle</label>
-                                <select class="form-select" id="edit-patient-mutuelle">
+                                <label for="edit-patient-mutuelle" class="form-label">Type de mutuelle <span class="text-danger">*</span></label>
+                                <select class="form-select" id="edit-patient-mutuelle" required>
                                     <option value="Aucune">Aucune</option>
                                     <option value="CNSS">CNSS</option>
                                     <option value="CNOPS">CNOPS</option>
@@ -761,47 +1398,216 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" onclick="updatePatient()">Enregistrer les Modifications</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Annuler
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="updatePatient()">
+                        <i class="bi bi-check-circle me-1"></i>Enregistrer les Modifications
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Document Modal -->
+    <div class="modal fade" id="uploadDocumentModal" tabindex="-1" aria-labelledby="uploadDocumentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadDocumentModalLabel">
+                        <i class="bi bi-upload me-2"></i>Ajouter un Document
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="upload-document-form">
+                        <div class="mb-3">
+                            <label for="document-type" class="form-label">Type de document</label>
+                            <select class="form-select" id="document-type" required>
+                                <option value="">Sélectionner un type</option>
+                                <option value="CIN">Carte d'Identité Nationale</option>
+                                <option value="Carte Mutuelle">Carte Mutuelle/Assurance</option>
+                                <option value="Consentement">Formulaire de Consentement</option>
+                                <option value="Autre">Autre document administratif</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="document-file" class="form-label">Fichier</label>
+                            <input type="file" class="form-control" id="document-file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" required>
+                            <div class="form-text">Formats acceptés: PDF, JPG, PNG, DOC, DOCX (Max 5MB)</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="document-description" class="form-label">Description (optionnel)</label>
+                            <textarea class="form-control" id="document-description" rows="2" placeholder="Description du document"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Annuler
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="uploadDocument()">
+                        <i class="bi bi-upload me-1"></i>Télécharger
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function addPatient() {
-            const form = document.getElementById('add-patient-form');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
+        function savePatient() {
+            // Collect form data
             const patientData = {
                 nom: document.getElementById('patient-nom').value.trim(),
                 prenom: document.getElementById('patient-prenom').value.trim(),
-                cin: document.getElementById('patient-cin').value.trim(),
-                sexe: document.getElementById('patient-sexe').value,
+                cin: document.getElementById('patient-cin').value.trim().toUpperCase(),
                 naissance: document.getElementById('patient-naissance').value,
+                sexe: document.getElementById('patient-sexe').value,
                 telephone: document.getElementById('patient-telephone').value.trim(),
-                email: document.getElementById('patient-email').value.trim() || undefined,
-                adresse: document.getElementById('patient-adresse').value.trim() || undefined,
+                email: document.getElementById('patient-email').value.trim(),
+                adresse: document.getElementById('patient-adresse').value.trim(),
                 mutuelle: document.getElementById('patient-mutuelle').value,
-                numeroMutuelle: document.getElementById('patient-numero-mutuelle').value.trim() || undefined,
+                numeroMutuelle: document.getElementById('patient-numero-mutuelle').value.trim(),
                 tauxRemboursement: parseInt(document.getElementById('patient-taux-remboursement').value) || 0
             };
 
             try {
+                // Validate required fields
+                if (!patientData.nom || !patientData.prenom || !patientData.cin || !patientData.naissance || !patientData.telephone || !patientData.mutuelle) {
+                    throw new Error('Veuillez remplir tous les champs obligatoires');
+                }
+
+                // Create patient
                 const newPatient = dataManager.createPatient(patientData);
-                bootstrap.Modal.getInstance(document.getElementById('addPatientModal')).hide();
-                form.reset();
+
+                // Close modal and reset form
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addPatientModal'));
+                modal.hide();
+
+                // Reset form
+                resetPatientForm();
+
+                // Refresh data
                 loadPatients();
-                showMessage(`Patient ${newPatient.nom} ${newPatient.prenom} ajouté avec succès`);
+                updateStats();
+
+                showToast('Patient créé avec succès', 'success');
+
             } catch (error) {
-                console.error('Erreur ajout patient:', error);
-                showMessage(error.message, 'error');
+                showToast('Erreur: ' + error.message, 'error');
             }
         }
-    </script>
 
+        function resetPatientForm() {
+            // Reset all form fields
+            const fields = [
+                'patient-nom', 'patient-prenom', 'patient-cin', 'patient-naissance',
+                'patient-sexe', 'patient-telephone', 'patient-email', 'patient-adresse',
+                'patient-mutuelle', 'patient-numero-mutuelle', 'patient-taux-remboursement'
+            ];
+
+            fields.forEach(fieldId => {
+                const element = document.getElementById(fieldId);
+                if (element) {
+                    element.value = '';
+                    element.classList.remove('is-invalid');
+                }
+            });
+
+            // Reset to first tab
+            const firstTab = document.getElementById('personal-tab');
+            if (firstTab) {
+                firstTab.click();
+            }
+        }
+
+        function uploadDocument() {
+            if (!currentPatientForDocument) {
+                showToast('Erreur: Patient non sélectionné', 'error');
+                return;
+            }
+
+            const type = document.getElementById('document-type').value;
+            const fileInput = document.getElementById('document-file');
+            const description = document.getElementById('document-description').value.trim();
+
+            if (!type) {
+                showToast('Veuillez sélectionner un type de document', 'error');
+                return;
+            }
+
+            if (!fileInput.files[0]) {
+                showToast('Veuillez sélectionner un fichier', 'error');
+                return;
+            }
+
+            const file = fileInput.files[0];
+
+            // Check file size (5MB limit)
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('Le fichier ne doit pas dépasser 5MB', 'error');
+                return;
+            }
+
+            // Check file type
+            const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!allowedTypes.includes(file.type)) {
+                showToast('Type de fichier non supporté', 'error');
+                return;
+            }
+
+            // Read file as base64
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Content = e.target.result.split(',')[1]; // Remove data URL prefix
+
+                const documentData = {
+                    patientId: currentPatientForDocument,
+                    name: file.name,
+                    type: type,
+                    description: description,
+                    content: base64Content,
+                    mimeType: file.type,
+                    size: file.size,
+                    uploadDate: new Date().toISOString()
+                };
+
+                try {
+                    dataManager.addDocument(documentData);
+
+                    // Close modal and reset form
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('uploadDocumentModal'));
+                    modal.hide();
+
+                    // Reset form
+                    document.getElementById('upload-document-form').reset();
+
+                    // Refresh documents list
+                    loadPatientDocuments(currentPatientForDocument);
+
+                    showToast('Document ajouté avec succès', 'success');
+                    currentPatientForDocument = null;
+
+                } catch (error) {
+                    showToast('Erreur lors de l\'ajout du document: ' + error.message, 'error');
+                }
+            };
+
+            reader.onerror = function() {
+                showToast('Erreur lors de la lecture du fichier', 'error');
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function editPatientFromDetails() {
+            // Close details modal and open edit modal
+            const detailsModal = bootstrap.Modal.getInstance(document.getElementById('patientDetailsModal'));
+            detailsModal.hide();
+
+            // The edit modal will be populated by the editPatient function
+            showToast('Fonction d\'édition à implémenter', 'warning');
+        }
+    </script>
 </body>
 </html>
