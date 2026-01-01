@@ -1,449 +1,761 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Patient - DIKRA Centre Dentaire</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../../js/data.js"></script>
-    <style>
-        /* Global box-sizing */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #1f2937;
-            --card-bg: #f8fafc;
-            --border-color: #e5e7eb;
-            --sidebar-bg: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            --header-bg: #ffffff;
-            --shadow: rgba(0,0,0,0.1);
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #1f2937;
-            --text-color: #f9fafb;
-            --card-bg: #374151;
-            --border-color: #4b5563;
-            --sidebar-bg: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-            --header-bg: #374151;
-            --shadow: rgba(0,0,0,0.3);
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background: var(--sidebar-bg);
-            color: white;
-            transition: all 0.3s;
-            z-index: 999;
-            box-shadow: 4px 0 20px var(--shadow);
-            border-right: 2px solid #1d4ed8;
-            overflow-y: auto;
-        }
-
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
-
-        .sidebar.show {
-            transform: translateX(0);
-        }
-
-        .nav-link {
-            color: white !important;
-            padding: 18px 25px;
-            display: block;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .nav-link:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .nav-link.active {
-            background: rgba(255,255,255,0.2);
-            font-weight: bold;
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: 280px;
-            padding: 20px 20px 20px 20px;
-            transition: margin-left 0.3s;
-            min-height: 100vh;
-        }
-
-        @media (max-width: 991.98px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.show {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace Patient - Cabinet Dentaire Al-Farabi</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============== IDENTIQUE À VOTRE ADMIN ============== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --medical-blue: #1e3a8a;
+  --medical-blue-dark: #1e40af;
+  --medical-blue-darker: #172554;
+  --medical-blue-light: #3b82f6;
+  --success: #059669;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --text-light: #f8fafc;
+  --text-gray: #64748b;
+  --border-radius: 0.5rem;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --ai-purple: #7e22ce;
+  --ai-purple-light: #c084fc;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --unread-bg: #dbeafe;
+}
+/* Light mode */
+.light-mode {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --border-color: #e2e8f0;
+  --card-shadow: var(--shadow);
+  --section-bg: rgba(30, 58, 138, 0.05);
+  --hover-bg: rgba(255, 255, 255, 0.1);
+  --active-bg: rgba(255, 255, 255, 0.2);
+}
+/* Dark mode */
+.dark-mode {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --border-color: #334155;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --unread-bg: #1e3a8a;
+  --section-bg: rgba(255, 255, 255, 0.05);
+  --hover-bg: rgba(255, 255, 255, 0.1);
+  --active-bg: rgba(255, 255, 255, 0.2);
+}
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: 0.875rem;
+  transition: var(--transition);
+}
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
+  color: var(--text-light);
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 1.5rem 0;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+}
+.cabinet-header {
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  position: relative;
+}
+.cabinet-logo {
+  width: 64px;
+  height: 64px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: var(--medical-blue);
+  font-weight: 700;
+  font-size: 1.5rem;
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
+  transition: var(--transition);
+}
+.cabinet-logo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
+}
+.cabinet-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.025em;
+  background: linear-gradient(to right, #ffffff, #cbd5e1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cabinet-subtitle {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+}
+/* User Section */
+.user-section {
+  padding: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin-top: auto;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.user-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.user-details {
+  flex: 1;
+}
+.user-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: white;
+}
+.user-role {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+.logout-btn,
+.theme-toggle {
+  width: 100%;
+  padding: 0.625rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border: none;
+  text-align: left;
+}
+.logout-btn {
+  background: rgba(220, 38, 38, 0.2);
+  color: white;
+}
+.logout-btn:hover {
+  background: rgba(220, 38, 38, 0.3);
+  transform: translateY(-1px);
+}
+.theme-toggle {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  margin-bottom: 0.75rem;
+}
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+.sidebar-menu {
+  list-style: none;
+  padding: 0 1.5rem;
+  flex: 1;
+}
+.sidebar-item {
+  margin: 0.375rem 0;
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: var(--transition);
+  border-radius: var(--border-radius);
+  position: relative;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.sidebar-link:hover {
+  background: var(--hover-bg);
+  color: white;
+  transform: translateX(4px);
+}
+.sidebar-link.active {
+  background: var(--active-bg);
+  color: white;
+  border-left: 3px solid var(--medical-blue-light);
+  padding-left: 1rem;
+  transform: translateX(4px);
+}
+.sidebar-icon {
+  width: 24px;
+  text-align: center;
+  font-size: 1.125rem;
+  min-width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.badge {
+  background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
+  color: white;
+  border-radius: 9999px;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: auto;
+  margin-right: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+/* Collapsible Sections */
+.section-header {
+  padding: 0.75rem 1.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 1.5rem;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.section-header:first-child {
+  margin-top: 0;
+}
+.section-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 1.25rem;
+  right: 1.25rem;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+.section-chevron {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+  color: rgba(255, 255, 255, 0.6);
+}
+.section-header.collapsed .section-chevron {
+  transform: rotate(-90deg);
+}
+.section-content {
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  max-height: 1000px;
+  opacity: 1;
+}
+.section-content.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+/* Main Content */
+.main-content {
+  margin-left: 280px;
+  padding: 2rem;
+  min-height: 100vh;
+  transition: var(--transition);
+}
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+}
+.maroc-compliance {
+  background: linear-gradient(135deg, var(--medical-blue-darker), var(--medical-blue));
+  color: white;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+/* Cards */
+.patient-card {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  transition: var(--transition);
+}
+.patient-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.15);
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+/* Forms & Buttons */
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+}
+.btn-primary {
+  background: var(--medical-blue);
+  color: white;
+}
+.btn-primary:hover {
+  background: var(--medical-blue-dark);
+  transform: translateY(-2px);
+}
+.btn-success {
+  background: var(--success);
+  color: white;
+}
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+.form-group {
+  margin-bottom: 1.25rem;
+}
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.form-control {
+  width: 100%;
+  padding: 0.625rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--medical-blue);
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+.btn-send {
+  width: 100%;
+  padding: 0.875rem;
+  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.9375rem;
+}
+.btn-send:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(30, 58, 138, 0.3);
+}
+/* Messages */
+.message-item {
+  padding: 0.875rem;
+  margin-bottom: 0.875rem;
+  border-radius: var(--border-radius);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+.message-item.unread {
+  background: var(--unread-bg);
+  border-left: 4px solid var(--success);
+}
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.message-time {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+.message-content {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+.message-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.875rem;
+}
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+}
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--medical-blue);
+  margin: 0.5rem 0;
+}
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+/* Responsive */
+@media (max-width: 992px) {
+  .sidebar { width: 250px; }
+  .main-content { margin-left: 250px; padding: 1.5rem; }
+}
+@media (max-width: 768px) {
+  .sidebar { width: 240px; }
+  .main-content { margin-left: 240px; padding: 1.5rem; }
+  .stats-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
+  .main-content { margin-left: 0; padding: 1rem; }
+}
+</style>
 </head>
-<body>
+<body class="light-mode">
+<!-- =============== SIDEBAR IDENTIQUE =============== -->
+<div class="sidebar">
+  <div class="cabinet-header">
+    <div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
+    <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+    <div class="cabinet-subtitle">Casablanca, Maroc</div>
+  </div>
+  <ul class="sidebar-menu">
+    <li class="sidebar-item">
+      <a href="dashboard.html" class="sidebar-link active">
+        <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+        Tableau de bord
+      </a>
+    </li>
+    
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-rdv-toggle">
+        Mes rendez-vous
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-content" id="section-rdv-content">
+        <div class="sidebar-item">
+          <a href="prendre-rendez-vous.html" class="sidebar-link">
+            <span class="sidebar-icon"><i class="fas fa-plus-circle"></i></span>
+            Prendre un rendez-vous
+          </a>
+        </div>
+        <div class="sidebar-item">
+          <a href="mes-rendez-vous.html" class="sidebar-link">
+            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+            Mes rendez-vous
+          </a>
+        </div>
+      </div>
+    </li>
 
-    <!-- Left Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <img src="../../Photo/Photo.png" alt="Logo" width="60" height="60" style="border-radius: 50%; margin-bottom: 10px;">
-            <h5>DIKRA Centre Dentaire</h5>
-            <p>Patient</p>
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-com-toggle">
+        Communication
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-content" id="section-com-content">
+        <div class="sidebar-item">
+          <a href="messagerie.html" class="sidebar-link">
+            <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+            Messagerie
+          </a>
         </div>
-        <nav class="nav flex-column pb-3">
-            <a href="dashboard.html" class="nav-link active">
-                <i class="bi bi-house-door me-2"></i>Tableau de bord
-            </a>
-            <a href="profil.html" class="nav-link">
-                <i class="bi bi-person me-2"></i>Mon Profil
-            </a>
-            <a href="rendez-vous.html" class="nav-link">
-                <i class="bi bi-calendar-event me-2"></i>Mes Rendez-vous
-            </a>
-            <a href="factures.html" class="nav-link">
-                <i class="bi bi-receipt me-2"></i>Mes Factures
-            </a>
-            <a href="messages.html" class="nav-link">
-                <i class="bi bi-envelope me-2"></i>Messagerie
-            </a>
-            <a href="dossier-medical.html" class="nav-link">
-                <i class="bi bi-file-medical me-2"></i>Mon Dossier Médical
-            </a>
-        </nav>
-        <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-            <p style="color: white; text-align: center; margin-bottom: 10px; font-weight: bold;">Patient</p>
-            <button onclick="logout()" style="width: 100%; background: #dc2626; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
-                <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
-            </button>
+      </div>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-docs-toggle">
+        Dossier médical
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-content" id="section-docs-content">
+        <div class="sidebar-item">
+          <a href="dossier-medical.html" class="sidebar-link">
+            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+            Mon dossier médical
+          </a>
         </div>
+        <div class="sidebar-item">
+          <a href="mes-documents.html" class="sidebar-link">
+            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+            Mes documents
+          </a>
+        </div>
+        <div class="sidebar-item">
+          <a href="suivi-protheses.html" class="sidebar-link">
+            <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+            Suivi prothèses
+          </a>
+        </div>
+        <div class="sidebar-item">
+          <a href="paiements.html" class="sidebar-link">
+            <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
+            Paiements
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-compte-toggle">
+        Mon compte
+        <i class="fas fa-chevron-down section-chevron"></i>
+      </div>
+      <div class="section-content" id="section-compte-content">
+        <div class="sidebar-item">
+          <a href="#profil" class="sidebar-link">
+            <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+            Mon profil
+          </a>
+        </div>
+        <div class="sidebar-item">
+          <a href="#notifications" class="sidebar-link">
+            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+            Notifications
+          </a>
+        </div>
+        <div class="sidebar-item">
+          <a href="#securite" class="sidebar-link">
+            <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+            Sécurité
+          </a>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="user-section">
+    <div class="user-info">
+      <div class="user-avatar">YB</div>
+      <div class="user-details">
+        <div class="user-name">Youssef Belkadi</div>
+        <div class="user-role">Patient</div>
+      </div>
     </div>
+    <button class="theme-toggle" id="themeToggle">
+      <i class="fas fa-moon"></i>
+      <span>Mode Sombre</span>
+    </button>
+    <button class="logout-btn" id="logoutBtn">
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Déconnexion</span>
+    </button>
+  </div>
+</div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-            <i class="bi bi-list"></i>
-        </button>
+<!-- =============== CONTENU PRINCIPAL =============== -->
+<div class="main-content">
+  <div class="content-header">
+    <h1 class="page-title">Bonjour, Youssef Belkadi 👋</h1>
+  </div>
 
-        <!-- Main Content Area -->
-        <div class="dashboard-grid">
-            <!-- Welcome Widget -->
-            <div class="widget welcome-widget">
-                <div class="widget-header">
-                    <h3>Bonjour, [Patient Name]</h3>
-                    <i class="bi bi-person-circle"></i>
-                </div>
-                <div class="widget-content">
-                    <h4>Bienvenue dans votre espace patient</h4>
-                    <p>Gérez vos rendez-vous, consultez vos factures et communiquez avec notre équipe.</p>
-                    <div class="welcome-stats">
-                        <div class="stat">
-                            <div class="stat-number" id="next-appointment-count">0</div>
-                            <div class="stat-label">RDV à venir</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number" id="unpaid-bills-count">0</div>
-                            <div class="stat-label">Factures impayées</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number" id="messages-count">0</div>
-                            <div class="stat-label">Messages non lus</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Next Appointments Widget -->
-            <div class="widget appointments-widget">
-                <div class="widget-header">
-                    <h3>Prochains rendez-vous</h3>
-                    <i class="bi bi-calendar-event"></i>
-                </div>
-                <div class="widget-content">
-                    <div class="appointments-list" id="next-appointments-list">
-                        <!-- Appointments will be loaded here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Bills Widget -->
-            <div class="widget table-widget">
-                <div class="widget-header">
-                    <h3>Factures récentes</h3>
-                    <i class="bi bi-receipt"></i>
-                </div>
-                <div class="widget-content">
-                    <div class="table-responsive">
-                        <table class="table" id="recent-bills-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Montant</th>
-                                    <th>Statut</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Health Tips Widget -->
-            <div class="widget">
-                <div class="widget-header">
-                    <h3>Conseils santé</h3>
-                    <i class="bi bi-heart"></i>
-                </div>
-                <div class="widget-content">
-                    <div class="health-tip">
-                        <div class="tip-icon">
-                            <i class="bi bi-tooth"></i>
-                        </div>
-                        <div class="tip-content">
-                            <h5>Hygiène bucco-dentaire</h5>
-                            <p>Brossez-vous les dents 2 fois par jour pendant 2 minutes minimum.</p>
-                        </div>
-                    </div>
-                    <div class="health-tip">
-                        <div class="tip-icon">
-                            <i class="bi bi-calendar-check"></i>
-                        </div>
-                        <div class="tip-content">
-                            <h5>Contrôle annuel</h5>
-                            <p>Un bilan dentaire annuel permet de prévenir les problèmes.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Actions Widget -->
-            <div class="widget actions-widget">
-                <div class="widget-header">
-                    <h3>Actions rapides</h3>
-                </div>
-                <div class="widget-content">
-                    <a href="rendez-vous.html" class="quick-action-btn">
-                        <i class="bi bi-calendar-plus"></i>
-                        <span>Prendre RDV</span>
-                    </a>
-                    <a href="profil.html" class="quick-action-btn">
-                        <i class="bi bi-person-gear"></i>
-                        <span>Modifier Profil</span>
-                    </a>
-                    <a href="factures.html" class="quick-action-btn">
-                        <i class="bi bi-receipt"></i>
-                        <span>Voir Factures</span>
-                    </a>
-                    <a href="messages.html" class="quick-action-btn">
-                        <i class="bi bi-envelope"></i>
-                        <span>Messagerie</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Notifications Widget -->
-            <div class="widget notifications-widget">
-                <div class="widget-header">
-                    <h3>Notifications</h3>
-                    <div class="widget-actions">
-                        <button class="widget-action-btn" onclick="markAllRead()">
-                            <i class="bi bi-check-all"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="widget-content">
-                    <div class="notifications-list" id="notifications-list">
-                        <!-- Notifications will be loaded here -->
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value" id="next-appointment">Aucun</div>
+      <div class="stat-label">Prochain rendez-vous</div>
     </div>
+    <div class="stat-card">
+      <div class="stat-value" id="last-care">Aucun</div>
+      <div class="stat-label">Dernier soin effectué</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="ongoing-treatments">0</div>
+      <div class="stat-label">Traitements en cours</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="pending-payments">0 DH</div>
+      <div class="stat-label">Paiements en attente</div>
+    </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/script.js"></script>
-    <script>
-        // Check authentication
-        const currentUser = dataManager.getCurrentUser();
-        if (!currentUser || currentUser.role !== 'Patient') {
-            window.location.href = '../../LOGING PORTAIL/html/index.html';
-        }
+  <!-- Alertes importantes -->
+  <div class="patient-card">
+    <div class="card-header">
+      <h3 class="card-title">Alertes importantes</h3>
+    </div>
+    <div id="alerts-list">
+      <p>Aucune alerte pour le moment.</p>
+    </div>
+  </div>
 
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('show');
-        }
+  <!-- Notifications rapides -->
+  <div class="patient-card">
+    <div class="card-header">
+      <h3 class="card-title">Notifications rapides</h3>
+    </div>
+    <div id="notifications-list">
+      <p>Aucune notification.</p>
+    </div>
+  </div>
 
-        function logout() {
-            dataManager.logoutUser();
-            window.location.href = '../../LOGING PORTAIL/html/index.html';
-        }
+</div>
 
-        function markAllRead() {
-            // Mark all notifications as read
-            alert('Toutes les notifications marquées comme lues');
-        }
+<script>
+// ====== THEME & LOGOUT ======
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+const themeIcon = themeToggle.querySelector('i');
+const savedTheme = sessionStorage.getItem('theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+  body.classList.remove('light-mode');
+  body.classList.add('dark-mode');
+  themeIcon.className = 'fas fa-sun';
+}
+themeToggle.addEventListener('click', () => {
+  if (body.classList.contains('light-mode')) {
+    body.classList.remove('light-mode');
+    body.classList.add('dark-mode');
+    themeIcon.className = 'fas fa-sun';
+    sessionStorage.setItem('theme', 'dark');
+  } else {
+    body.classList.remove('dark-mode');
+    body.classList.add('light-mode');
+    themeIcon.className = 'fas fa-moon';
+    sessionStorage.setItem('theme', 'light');
+  }
+});
 
-        // Load patient data on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            loadPatientDashboard();
-        });
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  if (confirm('Déconnexion ?')) alert('Déconnecté. À bientôt !');
+});
 
-        function loadPatientDashboard() {
-            // Get current patient from localStorage or session
-            const currentPatient = JSON.parse(localStorage.getItem('current_patient') || 'null');
-            if (!currentPatient) {
-                window.location.href = '../../LOGING PORTAIL/html/index.html';
-                return;
-            }
+// ====== COLLAPSIBLE SECTIONS ======
+document.querySelectorAll('.section-header.clickable').forEach(header => {
+  header.addEventListener('click', () => {
+    const content = header.nextElementSibling;
+    const isCollapsed = content.classList.contains('collapsed');
+    document.querySelectorAll('.section-content').forEach(el => {
+      if (el !== content) el.classList.add('collapsed');
+    });
+    if (isCollapsed) {
+      content.classList.remove('collapsed');
+      header.classList.remove('collapsed');
+    } else {
+      content.classList.add('collapsed');
+      header.classList.add('collapsed');
+    }
+  });
+});
 
-            // Update welcome message
-            document.querySelector('.welcome-widget h3').textContent = `Bonjour, ${currentPatient.nom} ${currentPatient.prenom}`;
+// Ouvrir Mes rendez-vous par défaut
+document.getElementById('section-rdv-content').classList.remove('collapsed');
+document.getElementById('section-rdv-toggle').classList.remove('collapsed');
 
-            // Load appointments
-            loadNextAppointments(currentPatient.id);
+// Prendre RDV
+document.getElementById('btn-prendre-rdv').addEventListener('click', () => {
+  alert('✅ Votre demande a été envoyée. L’assistante vous contactera sous 24h pour confirmer.');
+});
 
-            // Load bills
-            loadRecentBills(currentPatient.id);
+// Actions messages
+document.querySelectorAll('.btn-success').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const msg = this.closest('.message-item');
+    msg.classList.remove('unread');
+    this.textContent = 'Lu';
+    this.disabled = true;
+    this.style.opacity = '0.7';
+  });
+});
 
-            // Load notifications
-            loadNotifications(currentPatient.id);
-        }
-
-        function loadNextAppointments(patientId) {
-            const appointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
-            const now = new Date();
-            const nextAppointments = appointments
-                .filter(a => a.patientId == patientId && new Date(a.date) >= now)
-                .sort((a, b) => new Date(a.date) - new Date(b.date))
-                .slice(0, 3);
-
-            document.getElementById('next-appointment-count').textContent = nextAppointments.length;
-
-            const list = document.getElementById('next-appointments-list');
-            list.innerHTML = '';
-
-            if (nextAppointments.length === 0) {
-                list.innerHTML = '<p class="text-muted">Aucun rendez-vous à venir</p>';
-                return;
-            }
-
-            nextAppointments.forEach(appointment => {
-                const date = new Date(appointment.date);
-                const item = document.createElement('div');
-                item.className = 'appointment-item';
-                item.innerHTML = `
-                    <div class="appointment-icon">
-                        <i class="bi bi-calendar-event"></i>
-                    </div>
-                    <div class="appointment-content">
-                        <h5>${appointment.type}</h5>
-                        <p>${date.toLocaleDateString('fr-FR')} à ${date.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}</p>
-                        <div class="appointment-status ${appointment.status === 'Confirmé' ? 'confirmed' : 'pending'}">${appointment.status}</div>
-                    </div>
-                `;
-                list.appendChild(item);
-            });
-        }
-
-        function loadRecentBills(patientId) {
-            const bills = JSON.parse(localStorage.getItem('dikra_bills') || '[]');
-            const patientBills = bills.filter(b => b.patientId == patientId).slice(0, 5);
-
-            document.getElementById('unpaid-bills-count').textContent = patientBills.filter(b => b.status === 'Impayé').length;
-
-            const tbody = document.querySelector('#recent-bills-table tbody');
-            tbody.innerHTML = '';
-
-            if (patientBills.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Aucune facture</td></tr>';
-                return;
-            }
-
-            patientBills.forEach(bill => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${new Date(bill.date).toLocaleDateString('fr-FR')}</td>
-                    <td>${bill.amount} €</td>
-                    <td><span class="badge ${bill.status === 'Payé' ? 'bg-success' : 'bg-warning'}">${bill.status}</span></td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="viewBill(${bill.id})">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        function loadNotifications(patientId) {
-            // Mock notifications for patient
-            const notifications = [
-                {
-                    icon: 'calendar-event',
-                    message: 'Votre rendez-vous de demain est confirmé',
-                    time: '2h ago'
-                },
-                {
-                    icon: 'receipt',
-                    message: 'Nouvelle facture disponible',
-                    time: '1j ago'
-                }
-            ];
-
-            document.getElementById('messages-count').textContent = notifications.length;
-
-            const list = document.getElementById('notifications-list');
-            list.innerHTML = '';
-
-            notifications.forEach(notification => {
-                const item = document.createElement('div');
-                item.className = 'notification-item';
-                item.innerHTML = `
-                    <div class="notification-icon">
-                        <i class="bi bi-${notification.icon}"></i>
-                    </div>
-                    <div class="notification-content">
-                        <p>${notification.message}</p>
-                        <span class="notification-time">${notification.time}</span>
-                    </div>
-                `;
-                list.appendChild(item);
-            });
-        }
-
-        function viewBill(id) {
-            // Redirect to bills page with bill id
-            window.location.href = `factures.html?view=${id}`;
-        }
-    </script>
-
+document.querySelectorAll('.btn-danger').forEach(btn => {
+  btn.addEventListener('click', function() {
+    if (confirm('Supprimer ce message ?')) {
+      const msg = this.closest('.message-item');
+      msg.style.opacity = '0';
+      setTimeout(() => msg.remove(), 300);
+    }
+  });
+});
+</script>
 </body>
 </html>

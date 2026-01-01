@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Espace Patient - Mon dossier médical</title>
+<title>Espace Patient - Mon compte</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -423,76 +423,29 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(30, 58, 138, 0.3);
 }
-/* Messages */
-.message-item {
-  padding: 0.875rem;
-  margin-bottom: 0.875rem;
-  border-radius: var(--border-radius);
+/* Tabs */
+.tab-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.tab-btn {
+  padding: 0.5rem 1rem;
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
   transition: var(--transition);
 }
-.message-item.unread {
-  background: var(--unread-bg);
-  border-left: 4px solid var(--success);
+.tab-btn.active {
+  background: var(--medical-blue);
+  color: white;
 }
-.message-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: var(--text-primary);
+.tab-content {
+  display: none;
 }
-.message-time {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-}
-.message-content {
-  font-size: 0.875rem;
-  line-height: 1.4;
-  color: var(--text-primary);
-}
-.message-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 0.875rem;
-}
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-.stat-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 1rem;
-  text-align: center;
-  box-shadow: var(--card-shadow);
-}
-.stat-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--medical-blue);
-  margin: 0.5rem 0;
-}
-.stat-label {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-.appointment-item {
-  padding: 0.875rem;
-  margin-bottom: 0.875rem;
-  border-radius: var(--border-radius);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-}
-.filters {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
+.tab-content.active {
+  display: block;
 }
 /* Responsive */
 @media (max-width: 992px) {
@@ -568,7 +521,7 @@ body {
       </div>
       <div class="section-content" id="section-docs-content">
         <div class="sidebar-item">
-          <a href="dossier-medical.html" class="sidebar-link active">
+          <a href="dossier-medical.html" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
             Mon dossier médical
           </a>
@@ -601,7 +554,7 @@ body {
       </div>
       <div class="section-content" id="section-compte-content">
         <div class="sidebar-item">
-          <a href="mon-compte.html" class="sidebar-link">
+          <a href="mon-compte.html" class="sidebar-link active">
             <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
             Mon profil
           </a>
@@ -644,42 +597,79 @@ body {
 <!-- Main Content -->
 <div class="main-content">
   <div class="content-header">
-    <h1 class="page-title">Mon dossier médical</h1>
+    <h1 class="page-title">Mon compte</h1>
   </div>
 
-  <!-- Informations personnelles -->
-  <div class="patient-card">
-    <div class="card-header">
-      <h3 class="card-title">Informations personnelles</h3>
-    </div>
-    <div id="personal-info">
-      <p>Informations personnelles non disponibles.</p>
+  <!-- Tabs -->
+  <div class="tab-buttons">
+    <button class="tab-btn active" data-tab="profil">Mon profil</button>
+    <button class="tab-btn" data-tab="notifications">Notifications</button>
+    <button class="tab-btn" data-tab="securite">Sécurité</button>
+  </div>
+
+  <!-- Profil Tab -->
+  <div id="profil" class="tab-content active">
+    <div class="patient-card">
+      <div class="card-header">
+        <h3 class="card-title">Informations personnelles</h3>
+      </div>
+      <form id="profil-form">
+        <div class="form-group">
+          <label class="form-label">Nom complet</label>
+          <input type="text" class="form-control" value="Youssef Belkadi">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" value="youssef@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Téléphone</label>
+          <input type="tel" class="form-control" value="+212 6 12 34 56 78">
+        </div>
+        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+      </form>
     </div>
   </div>
 
-  <!-- Historique médical -->
-  <div class="patient-card">
-    <div class="card-header">
-      <h3 class="card-title">Historique médical</h3>
-    </div>
-    <div id="medical-history">
-      <p>Aucun historique médical disponible.</p>
+  <!-- Notifications Tab -->
+  <div id="notifications" class="tab-content">
+    <div class="patient-card">
+      <div class="card-header">
+        <h3 class="card-title">Préférences de notifications</h3>
+      </div>
+      <div id="notifications-settings">
+        <p>Paramètres de notifications non disponibles.</p>
+      </div>
     </div>
   </div>
 
-  <!-- Allergies et médicaments -->
-  <div class="patient-card">
-    <div class="card-header">
-      <h3 class="card-title">Allergies et médicaments</h3>
-    </div>
-    <div id="allergies-medications">
-      <p>Aucune information sur les allergies ou médicaments.</p>
+  <!-- Sécurité Tab -->
+  <div id="securite" class="tab-content">
+    <div class="patient-card">
+      <div class="card-header">
+        <h3 class="card-title">Changer le mot de passe</h3>
+      </div>
+      <form id="security-form">
+        <div class="form-group">
+          <label class="form-label">Mot de passe actuel</label>
+          <input type="password" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nouveau mot de passe</label>
+          <input type="password" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirmer le mot de passe</label>
+          <input type="password" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Changer</button>
+      </form>
     </div>
   </div>
 
 </div>
 
-<script src="../js/dossier-medical.js"></script>
+<script src="../js/mon-compte.js"></script>
 <script>
 // Theme & Logout
 const themeToggle = document.getElementById('themeToggle');
@@ -728,9 +718,19 @@ document.querySelectorAll('.section-header.clickable').forEach(header => {
   });
 });
 
-// Ouvrir Dossier médical par défaut
-document.getElementById('section-docs-content').classList.remove('collapsed');
-document.getElementById('section-docs-toggle').classList.remove('collapsed');
+// Ouvrir Mon compte par défaut
+document.getElementById('section-compte-content').classList.remove('collapsed');
+document.getElementById('section-compte-toggle').classList.remove('collapsed');
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
 
 </script>
 </body>

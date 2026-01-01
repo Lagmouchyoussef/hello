@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rendez-vous en Présentiel - Assistante</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============== IDENTIQUE À VOTRE ADMIN ============== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --medical-blue: #1e3a8a;
+            --medical-blue-dark: #1e40af;
+            --medical-blue-darker: #172554;
+            --medical-blue-light: #3b82f6;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --text-light: #f8fafc;
+            --text-gray: #64748b;
+            --border-radius: 0.5rem;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --ai-purple: #7e22ce;
+            --ai-purple-light: #c084fc;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --unread-bg: #dbeafe;
+        }
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --border-color: #e2e8f0;
+            --card-shadow: var(--shadow);
+            --section-bg: rgba(30, 58, 138, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
+        .dark-mode {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --unread-bg: #1e3a8a;
+            --section-bg: rgba(255, 255, 255, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
+            color: var(--text-light);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 1.5rem 0;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        .cabinet-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .cabinet-logo {
+            width: 64px;
+            height: 64px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--medical-blue);
+            font-weight: 700;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
+        }
+        .cabinet-name { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; background: linear-gradient(to right, #ffffff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cabinet-subtitle { font-size: 0.875rem; color: rgba(255, 255, 255, 0.8); }
+
+        .user-section {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            margin-top: auto;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+        .user-name { font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.25rem; color: white; }
+        .user-role { font-size: 0.75rem; color: rgba(255, 255, 255, 0.8); }
+
+        .logout-btn, .theme-toggle {
+            width: 100%;
+            padding: 0.625rem;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            border: none;
+            text-align: left;
+        }
+        .logout-btn { background: rgba(220, 38, 38, 0.2); color: white; }
+        .theme-toggle { background: rgba(255, 255, 255, 0.15); color: white; margin-bottom: 0.75rem; }
+
+        .sidebar-menu { list-style: none; padding: 0 1.5rem; flex: 1; }
+        .sidebar-item { margin: 0.375rem 0; }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.875rem 1.25rem;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border-radius: var(--border-radius);
+            width: 100%;
+            text-align: left;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        .sidebar-link:hover { background: var(--hover-bg); color: white; transform: translateX(4px); }
+        .sidebar-link.active { background: var(--active-bg); color: white; border-left: 3px solid var(--medical-blue-light); padding-left: 1rem; transform: translateX(4px); }
+        .sidebar-icon { width: 24px; text-align: center; font-size: 1.125rem; display: flex; align-items: center; justify-content: center; }
+        .badge {
+            background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
+            color: white;
+            border-radius: 9999px;
+            padding: 0.25rem 0.625rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: auto;
+            margin-right: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-header {
+            padding: 0.75rem 1.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .section-chevron { font-size: 0.75rem; transition: transform 0.3s ease; color: rgba(255, 255, 255, 0.6); }
+        .section-header.collapsed .section-chevron { transform: rotate(-90deg); }
+        .section-content {
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            max-height: 1000px;
+            opacity: 1;
+        }
+        .section-content.collapsed { max-height: 0; opacity: 0; }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+        .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .page-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.025em; color: var(--text-primary); }
+
+        .assistant-card {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+        .assistant-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.15); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+
+        .tab-nav { display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+        .tab-btn.active { color: var(--medical-blue); border-bottom-color: var(--medical-blue); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+        .btn-primary { background: var(--medical-blue); color: white; }
+        .btn-primary:hover { background: var(--medical-blue-dark); transform: translateY(-2px); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #b91c1c; transform: translateY(-2px); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #047857; transform: translateY(-2px); }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-warning:hover { background: #b45309; transform: translateY(-2px); }
+        .btn-outline {
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-primary);
+        }
+        .btn-outline:hover { background: var(--bg-primary); transform: translateY(-2px); }
+
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary); }
+        .form-control {
+            width: 100%;
+            padding: 0.625rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+        .btn-send {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9375rem;
+        }
+        .btn-send:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(30, 58, 138, 0.3); }
+
+        /* In-Person Booking Styles */
+        .booking-container {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .booking-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .booking-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .booking-form {
+            padding: 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(30, 58, 138, 0.3);
+        }
+
+        .success-message {
+            display: none;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-top: 1rem;
+            text-align: center;
+            border: 1px solid #a7f3d0;
+        }
+
+        .waiting-area {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .waiting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .waiting-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .waiting-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .waiting-patient {
+            background: var(--section-bg);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .patient-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .patient-details {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .waiting-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            border-radius: 0.375rem;
+        }
+
+        .quick-actions {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .quick-actions h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .quick-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .quick-btn {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .quick-btn:hover {
+            border-color: var(--medical-blue);
+            background: var(--section-bg);
+            transform: translateY(-2px);
+        }
+
+        .quick-btn i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar { width: 250px; }
+            .main-content { margin-left: 250px; padding: 1.5rem; }
+        }
+        @media (max-width: 768px) {
+            .sidebar { width: 240px; }
+            .main-content { margin-left: 240px; padding: 1.5rem; }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .quick-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
+            .main-content { margin-left: 0; padding: 1rem; }
+            .cabinet-header,
+            .user-section {
+                text-align: left;
+            }
+            .cabinet-logo {
+                margin: 0 0 1rem 1.5rem;
+            }
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .booking-header,
+            .waiting-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            .waiting-list {
+                display: block;
+            }
+            .waiting-patient {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- ============= SIDEBAR ASSISTANTE ============= -->
+    <div class="sidebar">
+        <div class="cabinet-header">
+            <div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
+            <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+            <div class="cabinet-subtitle">Casablanca, Maroc</div>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item"><a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-home"></i></span> Tableau de bord</a></li>
+
+            <!-- RENDEZ-VOUS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-rdv-toggle">Rendez-vous <i class="fas fa-chevron-down section-chevron"></i></div>
+                <div class="section-content" id="section-rdv-content">
+                    <div class="sidebar-item"><a href="Listes des Rendez-vous.html" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-list"></i></span> Liste des rendez-vous</a></div>
+                    <div class="sidebar-item"><a href="Prise en ligne.html" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-globe"></i></span> Prise en ligne</a></div>
+                    <div class="sidebar-item"><a href="En présentiel.html" class="sidebar-link active"><span class="sidebar-icon"><i class="fas fa-building"></i></span> En présentiel</a></div>
+                    <div class="sidebar-item"><a href="#rdv-portail" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-shield"></i></span> Via espace patient</a></div>
+                </div>
+            </li>
+
+            <!-- PATIENTS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-patients-toggle">Patients <i class="fas fa-chevron-down section-chevron"></i></div>
+                <div class="section-content" id="section-patients-content">
+                    <div class="sidebar-item"><a href="#fiches-patients" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-injured"></i></span> Fiches patients</a></div>
+                    <div class="sidebar-item"><a href="#ajout-patient" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-plus"></i></span> Ajouter patient</a></div>
+                </div>
+            </li>
+
+            <!-- CABINET -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-cabinet-toggle">Cabinet <i class="fas fa-chevron-down section-chevron"></i></div>
+                <div class="section-content" id="section-cabinet-content">
+                    <div class="sidebar-item"><a href="#salle-attente" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-chair"></i></span> Salle d'attente</a></div>
+                </div>
+            </li>
+
+            <!-- COMPTABILITÉ -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-compta-toggle">Comptabilité <i class="fas fa-chevron-down section-chevron"></i></div>
+                <div class="section-content" id="section-compta-content">
+                    <div class="sidebar-item"><a href="#paiements" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-credit-card"></i></span> Paiements reçus</a></div>
+                </div>
+            </li>
+
+            <!-- COMMUNICATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-com-toggle">Communication <i class="fas fa-chevron-down section-chevron"></i></div>
+                <div class="section-content" id="section-com-content">
+                    <div class="sidebar-item"><a href="#messagerie" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-comments"></i></span> Messagerie</a></div>
+                    <div class="sidebar-item"><a href="#ai-agent" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-robot"></i></span> Assistant IA</a></div>
+                    <div class="sidebar-item"><a href="#sms" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-sms"></i></span> Envoi de SMS</a></div>
+                </div>
+            </li>
+
+            <!-- ORGANISATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-org-toggle">Organisation <i class="fas fa-chevron-down section-chevron"></i></div>
+                <div class="section-content" id="section-org-content">
+                    <div class="sidebar-item"><a href="#taches" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-tasks"></i></span> Tâches & rappels</a></div>
+                    <div class="sidebar-item"><a href="#notes" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span> Notes personnelles</a></div>
+                    <div class="sidebar-item"><a href="#statistiques" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span> Statistiques</a></div>
+                </div>
+            </li>
+
+            <!-- DOCUMENTS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-docs-toggle">Documents & formulaires <i class="fas fa-chevron-down section-chevron"></i></div>
+                <div class="section-content" id="section-docs-content">
+                    <div class="sidebar-item"><a href="#ordonnances" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-prescription"></i></span> Ordonnances</a></div>
+                    <div class="sidebar-item"><a href="#certificats" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-medical"></i></span> Certificats médicaux</a></div>
+                    <div class="sidebar-item"><a href="#feuilles-soins" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span> Feuilles de soins (CNOPS/CNSS)</a></div>
+                </div>
+            </li>
+
+            <!-- UTILISATEURS / PORTAIL -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-users-toggle">Portail Patients <i class="fas fa-chevron-down section-chevron"></i></div>
+                <div class="section-content" id="section-users-content">
+                    <div class="sidebar-item"><a href="#liste-personnel" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-list"></i></span> Liste du personnel</a></div>
+                    <div class="sidebar-item"><a href="#planning" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span> Planning de l'équipe</a></div>
+                    <div class="sidebar-item"><a href="#param-portail" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-cog"></i></span> Paramètres espace patient</a></div>
+                    <div class="sidebar-item"><a href="#gestion-acces" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-key"></i></span> Gestion des accès</a></div>
+                    <div class="sidebar-item"><a href="#messages-patients" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-envelope"></i></span> Messages patients</a></div>
+                    <div class="sidebar-item"><a href="#dossiers-medicaux" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-medical"></i></span> Dossiers médicaux</a></div>
+                </div>
+            </li>
+
+            <!-- CONFIGURATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-config-toggle">Configuration <i class="fas fa-chevron-down section-chevron"></i></div>
+                <div class="section-content" id="section-config-content">
+                    <div class="sidebar-item"><a href="#profil" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-cog"></i></span> Mon profil</a></div>
+                    <div class="sidebar-item"><a href="#notifications" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-bell"></i></span> Notifications</a></div>
+                </div>
+            </li>
+        </ul>
+
+        <div class="user-section">
+            <div class="user-info">
+                <div class="user-avatar">HA</div>
+                <div class="user-details">
+                    <div class="user-name">Hind Alaoui</div>
+                    <div class="user-role">Assistante Dentaire</div>
+                </div>
+            </div>
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> <span>Mode Sombre</span></button>
+            <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></button>
+        </div>
+    </div>
+
+    <!-- ============= MAIN CONTENT ============= -->
+    <div class="main-content">
+        <div class="content-header">
+            <h1 class="page-title">Rendez-vous en Présentiel</h1>
+            <div>
+                <button class="btn btn-primary" onclick="showBookingForm()">
+                    <i class="fas fa-plus"></i> Nouveau RDV
+                </button>
+                <button class="btn btn-success" onclick="showWaitingList()">
+                    <i class="fas fa-users"></i> Salle d'attente
+                </button>
+                <button class="btn btn-warning" onclick="callNextPatient()">
+                    <i class="fas fa-bullhorn"></i> Appeler patient
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h3>Actions Rapides</h3>
+            <div class="quick-buttons">
+                <button class="quick-btn" onclick="quickUrgent()">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Urgent
+                </button>
+                <button class="quick-btn" onclick="quickConsultation()">
+                    <i class="fas fa-stethoscope"></i>
+                    Consultation
+                </button>
+                <button class="quick-btn" onclick="quickCleaning()">
+                    <i class="fas fa-tooth"></i>
+                    Détartrage
+                </button>
+                <button class="quick-btn" onclick="quickCheckup()">
+                    <i class="fas fa-search"></i>
+                    Contrôle
+                </button>
+            </div>
+        </div>
+
+        <!-- Booking Form (Hidden by default) -->
+        <div class="booking-container" id="bookingForm" style="display: none;">
+            <div class="booking-header">
+                <h2 class="booking-title">Nouveau Rendez-vous en Présentiel</h2>
+            </div>
+            <form class="booking-form" id="inPersonForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="patientName">
+                            <i class="fas fa-user"></i> Nom du patient *
+                        </label>
+                        <input type="text" id="patientName" name="patientName" class="form-control" required placeholder="Nom complet">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="patientPhone">
+                            <i class="fas fa-phone"></i> Téléphone
+                        </label>
+                        <input type="tel" id="patientPhone" name="patientPhone" class="form-control" placeholder="06 XX XX XX XX">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="appointmentDate">
+                            <i class="fas fa-calendar"></i> Date *
+                        </label>
+                        <input type="date" id="appointmentDate" name="appointmentDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="appointmentTime">
+                            <i class="fas fa-clock"></i> Heure *
+                        </label>
+                        <input type="time" id="appointmentTime" name="appointmentTime" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="doctor">
+                            <i class="fas fa-user-md"></i> Médecin *
+                        </label>
+                        <select id="doctor" name="doctor" class="form-control" required>
+                            <option value="">Sélectionner un médecin</option>
+                            <option value="Dr. Mohammed Alami">Dr. Mohammed Alami</option>
+                            <option value="Dr. Fatima Bennani">Dr. Fatima Bennani</option>
+                            <option value="Dr. Karim Tazi">Dr. Karim Tazi</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="treatment">
+                            <i class="fas fa-tooth"></i> Traitement *
+                        </label>
+                        <select id="treatment" name="treatment" class="form-control" required>
+                            <option value="">Sélectionner un traitement</option>
+                            <option value="Consultation générale">Consultation générale</option>
+                            <option value="Détartrage">Détartrage</option>
+                            <option value="Traitement de carie">Traitement de carie</option>
+                            <option value="Extraction dentaire">Extraction dentaire</option>
+                            <option value="Implant dentaire">Implant dentaire</option>
+                            <option value="Orthodontie">Orthodontie</option>
+                            <option value="Prothèse dentaire">Prothèse dentaire</option>
+                            <option value="Urgence dentaire">Urgence dentaire</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="notes">
+                        <i class="fas fa-sticky-note"></i> Notes complémentaires
+                    </label>
+                    <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Informations supplémentaires, antécédents médicaux, etc."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-control" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="insurance" name="insurance">
+                            <span>Patient assuré (CNOPS/CNSS/RAMED)</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="firstVisit" name="firstVisit">
+                            <span>Première visite</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-calendar-check"></i> Programmer le rendez-vous
+                </button>
+            </form>
+        </div>
+
+        <!-- Waiting Area -->
+        <div class="waiting-area" id="waitingArea" style="display: none;">
+            <div class="waiting-header">
+                <h2 class="waiting-title">Salle d'attente</h2>
+                <button class="btn btn-primary" onclick="addToWaitingList()">
+                    <i class="fas fa-plus"></i> Ajouter patient
+                </button>
+            </div>
+            <div class="waiting-list" id="waitingList">
+                <!-- Waiting patients will be displayed here -->
+            </div>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i>
+            <h3>Rendez-vous programmé avec succès !</h3>
+            <p>Le patient a été ajouté au planning.</p>
+        </div>
+    </div>
+
+    <script>
+        // ====== THEME & LOGOUT ======
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+        const themeText = themeToggle.querySelector('span');
+        const savedTheme = sessionStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            themeIcon.className = 'fas fa-sun';
+            themeText.textContent = 'Mode Clair';
+            sessionStorage.setItem('theme', 'dark');
+        }
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Mode Clair';
+                sessionStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Mode Sombre';
+                sessionStorage.setItem('theme', 'light');
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            if (confirm('Déconnexion ?')) alert('Déconnectée.');
+        });
+
+        // ====== COLLAPSIBLE SECTIONS ======
+        document.querySelectorAll('.section-header.clickable').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isCollapsed = content.classList.contains('collapsed');
+                document.querySelectorAll('.section-content').forEach(el => {
+                    if (el !== content) el.classList.add('collapsed');
+                });
+                if (isCollapsed) {
+                    content.classList.remove('collapsed');
+                    header.classList.remove('collapsed');
+                } else {
+                    content.classList.add('collapsed');
+                    header.classList.add('collapsed');
+                }
+            });
+        });
+
+        // Open Rendez-vous by default
+        document.getElementById('section-rdv-content').classList.remove('collapsed');
+        document.getElementById('section-rdv-toggle').classList.remove('collapsed');
+
+        // In-Person Booking Management
+        let waitingList = JSON.parse(localStorage.getItem('waitingList')) || [];
+
+        function showBookingForm() {
+            document.getElementById('bookingForm').style.display = 'block';
+            document.getElementById('waitingArea').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('inPersonForm').reset();
+
+            // Set default date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointmentDate').value = today;
+        }
+
+        function showWaitingList() {
+            document.getElementById('bookingForm').style.display = 'none';
+            document.getElementById('waitingArea').style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+            renderWaitingList();
+        }
+
+        function renderWaitingList() {
+            const waitingListDiv = document.getElementById('waitingList');
+            waitingListDiv.innerHTML = '';
+
+            if (waitingList.length === 0) {
+                waitingListDiv.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">Aucun patient en salle d\'attente</p>';
+                return;
+            }
+
+            waitingList.forEach((patient, index) => {
+                const patientDiv = document.createElement('div');
+                patientDiv.className = 'waiting-patient';
+
+                const arrivalTime = new Date(patient.arrivalTime);
+                const waitTime = Math.floor((new Date() - arrivalTime) / (1000 * 60)); // minutes
+
+                patientDiv.innerHTML = `
+                    <div class="patient-info">
+                        <h4>${patient.name}</h4>
+                        <div class="patient-details">
+                            Arrivée: ${arrivalTime.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                            • Attente: ${waitTime} min
+                            ${patient.phone ? `• ${patient.phone}` : ''}
+                        </div>
+                    </div>
+                    <div class="waiting-actions">
+                        <button class="btn btn-small btn-success" onclick="callPatient(${index})">
+                            <i class="fas fa-user-check"></i> Appeler
+                        </button>
+                        <button class="btn btn-small btn-primary" onclick="scheduleFromWaiting(${index})">
+                            <i class="fas fa-calendar-plus"></i> RDV
+                        </button>
+                        <button class="btn btn-small btn-danger" onclick="removeFromWaiting(${index})">
+                            <i class="fas fa-times"></i> Retirer
+                        </button>
+                    </div>
+                `;
+
+                waitingListDiv.appendChild(patientDiv);
+            });
+        }
+
+        function addToWaitingList() {
+            const name = prompt('Nom du patient:');
+            if (!name || name.trim() === '') return;
+
+            const phone = prompt('Téléphone (optionnel):');
+
+            const patient = {
+                id: Date.now(),
+                name: name.trim(),
+                phone: phone ? phone.trim() : '',
+                arrivalTime: new Date().toISOString()
+            };
+
+            waitingList.push(patient);
+            localStorage.setItem('waitingList', JSON.stringify(waitingList));
+            renderWaitingList();
+        }
+
+        function callPatient(index) {
+            const patient = waitingList[index];
+            alert(`Appel du patient: ${patient.name}`);
+            // In a real system, this could trigger audio alerts, screen notifications, etc.
+        }
+
+        function callNextPatient() {
+            if (waitingList.length === 0) {
+                alert('Aucun patient en salle d\'attente.');
+                return;
+            }
+
+            const nextPatient = waitingList[0];
+            alert(`Appel du prochain patient: ${nextPatient.name}`);
+            // Could automatically remove from waiting list after calling
+        }
+
+        function scheduleFromWaiting(index) {
+            const patient = waitingList[index];
+            showBookingForm();
+            document.getElementById('patientName').value = patient.name;
+            if (patient.phone) {
+                document.getElementById('patientPhone').value = patient.phone;
+            }
+            removeFromWaiting(index);
+        }
+
+        function removeFromWaiting(index) {
+            if (confirm('Retirer ce patient de la salle d\'attente ?')) {
+                waitingList.splice(index, 1);
+                localStorage.setItem('waitingList', JSON.stringify(waitingList));
+                renderWaitingList();
+            }
+        }
+
+        // Quick action functions
+        function quickUrgent() {
+            showBookingForm();
+            document.getElementById('treatment').value = 'Urgence dentaire';
+            document.getElementById('appointmentTime').value = '09:00'; // Next available slot
+        }
+
+        function quickConsultation() {
+            showBookingForm();
+            document.getElementById('treatment').value = 'Consultation générale';
+        }
+
+        function quickCleaning() {
+            showBookingForm();
+            document.getElementById('treatment').value = 'Détartrage';
+        }
+
+        function quickCheckup() {
+            showBookingForm();
+            document.getElementById('treatment').value = 'Contrôle';
+        }
+
+        // Form submission
+        document.getElementById('inPersonForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const appointmentData = Object.fromEntries(formData.entries());
+
+            // Create appointment object
+            const appointment = {
+                date: appointmentData.appointmentDate,
+                time: appointmentData.appointmentTime,
+                patient: appointmentData.patientName,
+                doctor: appointmentData.doctor,
+                treatment: appointmentData.treatment,
+                mode: 'En présentiel',
+                status: 'Confirmé',
+                phone: appointmentData.patientPhone || '',
+                notes: appointmentData.notes || '',
+                insurance: appointmentData.insurance ? true : false,
+                firstVisit: appointmentData.firstVisit ? true : false
+            };
+
+            // Save to appointments
+            let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            appointments.push(appointment);
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+
+            // Show success message
+            document.getElementById('bookingForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+
+            // Reset form
+            this.reset();
+
+            // Hide success message after 3 seconds
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 3000);
+        });
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('appointmentDate').min = today;
+
+        // Load waiting list on page load
+        renderWaitingList();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Prises de Rendez-vous en Ligne - Cabinet Dentaire Al-Farabi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --medical-blue: #1e3a8a;
+            --medical-blue-dark: #1e40af;
+            --medical-blue-darker: #172554;
+            --medical-blue-light: #3b82f6;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --text-light: #f8fafc;
+            --text-gray: #64748b;
+            --border-radius: 0.5rem;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --ai-purple: #7e22ce;
+            --ai-purple-light: #c084fc;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --unread-bg: #dbeafe;
+        }
+
+        /* Light mode */
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --border-color: #e2e8f0;
+            --card-shadow: var(--shadow);
+            --section-bg: rgba(30, 58, 138, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Dark mode */
+        .dark-mode {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --unread-bg: #1e3a8a;
+            --section-bg: rgba(255, 255, 255, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        /* Professional Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
+            color: var(--text-light);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 1.5rem 0;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        .cabinet-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .cabinet-logo {
+            width: 64px;
+            height: 64px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--medical-blue);
+            font-weight: 700;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .cabinet-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
+        }
+
+        .cabinet-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cabinet-subtitle {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+        }
+
+        /* User Section */
+        .user-section {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            margin-top: auto;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: white;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .logout-btn,
+        .theme-toggle {
+            width: 100%;
+            padding: 0.625rem;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            border: none;
+            text-align: left;
+        }
+
+        .logout-btn {
+            background: rgba(220, 38, 38, 0.2);
+            color: white;
+        }
+
+        .logout-btn:hover {
+            background: rgba(220, 38, 38, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            margin-bottom: 0.75rem;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+
+        .sidebar-item {
+            margin: 0;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.875rem 1.25rem;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border-radius: var(--border-radius);
+            position: relative;
+            width: 100%;
+            text-align: left;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .sidebar-link:hover {
+            background: var(--hover-bg);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .sidebar-link.active {
+            background: var(--active-bg);
+            color: white;
+            border-left: 3px solid var(--medical-blue-light);
+            padding-left: 1rem;
+            transform: translateX(4px);
+        }
+
+        .sidebar-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 1.125rem;
+            min-width: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
+            color: white;
+            border-radius: 9999px;
+            padding: 0.25rem 0.625rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: auto;
+            margin-right: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .ai-agent-icon {
+            background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
+            color: white;
+            padding: 0.375rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Section Headers as dropdown triggers */
+        .section-header {
+            padding: 0.75rem 1.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 1.5rem;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-header:first-child {
+            margin-top: 0;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1.25rem;
+            right: 1.25rem;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .section-chevron {
+            font-size: 0.75rem;
+            transition: transform 0.3s ease;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .section-header.collapsed .section-chevron {
+            transform: rotate(-90deg);
+        }
+
+        /* Section content */
+        .section-content {
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            max-height: 1000px;
+            opacity: 1;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        /* Sidebar section wrapper */
+        .sidebar-section {
+            list-style: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--medical-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--medical-blue-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #b45309;
+            transform: translateY(-2px);
+        }
+
+        /* Online Bookings Container */
+        .online-bookings-container {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .online-bookings-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .online-bookings-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .filters-section {
+            padding: 1.5rem;
+            background: var(--section-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .filter-control {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .online-bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .online-bookings-table th,
+        .online-bookings-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .online-bookings-table th {
+            background: var(--section-bg);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .online-bookings-table tbody tr:hover {
+            background: var(--section-bg);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status-pending {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning);
+        }
+
+        .status-confirmed {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+
+        .status-cancelled {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+
+        .status-completed {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--medical-blue);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            border-radius: 0.375rem;
+        }
+
+        .booking-details {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .booking-details.show {
+            display: block;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+        }
+
+        .booking-message {
+            background: var(--section-bg);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-top: 1rem;
+        }
+
+        .booking-message .detail-label {
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stats-card {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 250px;
+            }
+            .main-content {
+                margin-left: 250px;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 240px;
+            }
+            .main-content {
+                margin-left: 240px;
+                padding: 1.5rem;
+            }
+            .online-bookings-table {
+                font-size: 0.8rem;
+            }
+            .online-bookings-table th,
+            .online-bookings-table td {
+                padding: 0.75rem 0.5rem;
+            }
+            .filters-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-group {
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem 0;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            .cabinet-header,
+            .user-section {
+                text-align: left;
+            }
+            .cabinet-logo {
+                margin: 0 0 1rem 1.5rem;
+            }
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .online-bookings-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            .online-bookings-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Focus states for accessibility */
+        .sidebar-link:focus {
+            outline: 2px solid var(--medical-blue-light);
+            outline-offset: 2px;
+        }
+
+        .btn:focus {
+            outline: 2px solid currentColor;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Professional Sidebar Navigation -->
+    <div class="sidebar">
+        <!-- Cabinet Header -->
+        <div class="cabinet-header">
+            <div class="cabinet-logo">
+                <i class="fas fa-tooth"></i>
+            </div>
+            <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+            <div class="cabinet-subtitle">Casablanca, Maroc</div>
+        </div>
+        <!-- Navigation Menu -->
+        <ul class="sidebar-menu">
+            <!-- DASHBOARD -->
+            <li class="sidebar-item">
+                <a href="dashboard.html" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                    Tableau de bord
+                </a>
+            </li>
+
+            <!-- RENDEZ-VOUS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-rdv-toggle">
+                    Rendez-vous
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-rdv-content">
+                    <div class="sidebar-item">
+                        <a href="Listes des Rendez-vous.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                            Liste des rendez-vous
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="Prise en ligne.html" class="sidebar-link active">
+                            <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
+                            Prise en ligne
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="En présentiel.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            En présentiel
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="via-espace-patient.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
+                            Via espace patient
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- PATIENTS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-patients-toggle">
+                    Patients
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-patients-content">
+                    <div class="sidebar-item">
+                        <a href="#patients" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                            Fiches patients
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#prothese" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                            Prothèses
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#imagerie" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
+                            Imagerie médicale
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- CABINET -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-cabinet-toggle">
+                    Cabinet
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-cabinet-content">
+                    <div class="sidebar-item">
+                        <a href="#salle-attente" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
+                            Salle d'attente
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- COMPTABILITÉ -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-compta-toggle">
+                    Comptabilité
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-compta-content">
+                    <div class="sidebar-item">
+                        <a href="#comptabilite" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
+                            Comptabilité générale
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#paiements" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
+                            Paiements reçus
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#charges" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                            Charges & dépenses
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- COMMUNICATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-com-toggle">
+                    Communication
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-com-content">
+                    <div class="sidebar-item">
+                        <a href="#messaging" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                            Messagerie interne
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#ai-agent" class="sidebar-link">
+                            <span class="sidebar-icon">
+                                <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
+                            </span>
+                            Assistant IA
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#sms" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
+                            Envoi de SMS
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- ORGANISATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-org-toggle">
+                    Organisation
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-org-content">
+                    <div class="sidebar-item">
+                        <a href="#taches" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
+                            Tâches & rappels
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#remarques" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
+                            Notes personnelles
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#statistiques" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                            Statistiques
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- GESTION DES STOCKS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-stock-toggle">
+                    Gestion des stocks
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-stock-content">
+                    <div class="sidebar-item">
+                        <a href="#stock-materiel" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-box"></i></span>
+                            Matériel dentaire
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#stock-consommables" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
+                            Consommables
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#stock-medicaments" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
+                            Médicaments
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- DOCUMENTS & FORMULAIRES -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-docs-toggle">
+                    Documents & formulaires
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-docs-content">
+                    <div class="sidebar-item">
+                        <a href="#ordonnances" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
+                            Ordonnances
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#certificats" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                            Certificats médicaux
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#feuilles-soins" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                            Feuilles de soins (CNOPS/CNSS)
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- UTILISATEURS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-users-toggle">
+                    Utilisateurs
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-users-content">
+                    <div class="sidebar-item">
+                        <a href="#staff-list" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-list"></i></span>
+                            Liste du personnel
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#staff-add" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
+                            Ajouter un membre
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#staff-permissions" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                            Rôles & permissions
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#staff-schedule" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                            Planning de l'équipe
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#portal-settings" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                            Paramètres espace patient
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#portal-access" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-key"></i></span>
+                            Gestion des accès
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#portal-messages" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
+                            Messages patients
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#portal-records" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                            Dossiers médicaux
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- SITE WEB -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-website-toggle">
+                    Site web
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-website-content">
+                    <div class="sidebar-item">
+                        <a href="#website-content" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
+                            Contenu & articles
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#website-design" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
+                            Design & thème
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#website-seo" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-search"></i></span>
+                            Référencement (SEO)
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#website-contact" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
+                            Formulaire de contact
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#website-analytics" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
+                            Statistiques de visite
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- CONFIGURATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-config-toggle">
+                    Configuration
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-config-content">
+                    <div class="sidebar-item">
+                        <a href="#profil" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                            Mon profil
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#cabinet-settings" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            Informations cabinet
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#facturation" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                            Paramètres de facturation
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#notifications" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                            Notifications
+                        </a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!-- User Section -->
+        <div class="user-section">
+            <div class="user-info">
+                <div class="user-avatar">DM</div>
+                <div class="user-details">
+                    <div class="user-name">Dr. Mohammed Alami</div>
+                    <div class="user-role">Chirurgien-Dentiste</div>
+                </div>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+                <span>Mode Sombre</span>
+            </button>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content-header">
+            <h1 class="page-title">Gestion des Prises de Rendez-vous en Ligne</h1>
+            <div>
+                <button class="btn btn-primary" onclick="refreshBookings()">
+                    <i class="fas fa-sync"></i> Actualiser
+                </button>
+                <button class="btn btn-success" onclick="exportBookings()">
+                    <i class="fas fa-download"></i> Exporter
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-cards">
+            <div class="stats-card">
+                <div class="stats-number" id="totalBookings">0</div>
+                <div class="stats-label">Total demandes</div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-number" id="pendingBookings">0</div>
+                <div class="stats-label">En attente</div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-number" id="confirmedBookings">0</div>
+                <div class="stats-label">Confirmés</div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-number" id="todayBookings">0</div>
+                <div class="stats-label">Aujourd'hui</div>
+            </div>
+        </div>
+
+        <div class="online-bookings-container">
+            <div class="online-bookings-header">
+                <h2 class="online-bookings-title">Demandes de rendez-vous en ligne</h2>
+                <div id="bookingCount">0 demandes</div>
+            </div>
+
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label class="filter-label">Rechercher:</label>
+                    <input type="text" id="searchInput" class="filter-control" placeholder="Nom, email, téléphone...">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Statut:</label>
+                    <select id="statusFilter" class="filter-control">
+                        <option value="">Tous</option>
+                        <option value="En attente">En attente</option>
+                        <option value="Confirmé">Confirmé</option>
+                        <option value="Annulé">Annulé</option>
+                        <option value="Terminé">Terminé</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Traitement:</label>
+                    <select id="treatmentFilter" class="filter-control">
+                        <option value="">Tous</option>
+                        <option value="Consultation générale">Consultation générale</option>
+                        <option value="Détartrage">Détartrage</option>
+                        <option value="Traitement de carie">Traitement de carie</option>
+                        <option value="Extraction dentaire">Extraction dentaire</option>
+                        <option value="Implant dentaire">Implant dentaire</option>
+                        <option value="Orthodontie">Orthodontie</option>
+                        <option value="Prothèse dentaire">Prothèse dentaire</option>
+                        <option value="Urgence dentaire">Urgence dentaire</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Trier par:</label>
+                    <select id="sortBy" class="filter-control">
+                        <option value="submittedAt">Date de demande</option>
+                        <option value="preferredDate">Date souhaitée</option>
+                        <option value="lastName">Nom</option>
+                    </select>
+                </div>
+            </div>
+
+            <table class="online-bookings-table">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Contact</th>
+                        <th>Traitement</th>
+                        <th>Date souhaitée</th>
+                        <th>Heure souhaitée</th>
+                        <th>Statut</th>
+                        <th>Date demande</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingsTableBody">
+                    <!-- Bookings will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Booking Details Modal (simplified) -->
+        <div id="bookingDetails" class="booking-details">
+            <h3>Détails de la demande</h3>
+            <div class="details-grid" id="detailsContent">
+                <!-- Details will be populated here -->
+            </div>
+            <div class="booking-message" id="bookingMessage">
+                <!-- Message will be shown here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+        const themeText = themeToggle.querySelector('span');
+
+        // Using sessionStorage instead of localStorage
+        const savedTheme = sessionStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            themeIcon.className = 'fas fa-sun';
+            themeText.textContent = 'Mode Clair';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Mode Clair';
+                sessionStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Mode Sombre';
+                sessionStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
+            }
+        });
+
+        // Collapsible section headers
+        document.querySelectorAll('.section-header.clickable').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isCollapsed = content.classList.contains('collapsed');
+
+                // Close all other sections
+                document.querySelectorAll('.section-content').forEach(el => {
+                    if (el !== content) {
+                        el.classList.add('collapsed');
+                        el.previousElementSibling.classList.add('collapsed');
+                    }
+                });
+
+                // Toggle current section
+                if (isCollapsed) {
+                    content.classList.remove('collapsed');
+                    header.classList.remove('collapsed');
+                } else {
+                    content.classList.add('collapsed');
+                    header.classList.add('collapsed');
+                }
+            });
+        });
+
+        // Open "Rendez-vous" by default
+        document.getElementById('section-rdv-content').classList.remove('collapsed');
+        document.getElementById('section-rdv-toggle').classList.remove('collapsed');
+
+        // Online Bookings Management
+        let onlineBookings = [];
+        let currentBookingId = null;
+
+        function loadBookings() {
+            onlineBookings = JSON.parse(localStorage.getItem('onlineBookings')) || [];
+            renderBookings();
+            updateStats();
+        }
+
+        function renderBookings() {
+            const tbody = document.getElementById('bookingsTableBody');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const treatmentFilter = document.getElementById('treatmentFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+
+            // Filter bookings
+            let filteredBookings = onlineBookings.filter(booking => {
+                const matchesSearch = booking.firstName.toLowerCase().includes(searchTerm) ||
+                                    booking.lastName.toLowerCase().includes(searchTerm) ||
+                                    booking.email.toLowerCase().includes(searchTerm) ||
+                                    booking.phone.includes(searchTerm);
+                const matchesStatus = !statusFilter || booking.status === statusFilter;
+                const matchesTreatment = !treatmentFilter || booking.treatment === treatmentFilter;
+
+                return matchesSearch && matchesStatus && matchesTreatment;
+            });
+
+            // Sort bookings
+            filteredBookings.sort((a, b) => {
+                if (sortBy === 'preferredDate') {
+                    return new Date(a.preferredDate) - new Date(b.preferredDate);
+                } else if (sortBy === 'lastName') {
+                    return a.lastName.localeCompare(b.lastName);
+                } else {
+                    return new Date(b.submittedAt) - new Date(a.submittedAt);
+                }
+            });
+
+            tbody.innerHTML = '';
+
+            filteredBookings.forEach(booking => {
+                const row = document.createElement('tr');
+
+                let statusClass = '';
+                if (booking.status === 'Confirmé') statusClass = 'status-confirmed';
+                else if (booking.status === 'En attente') statusClass = 'status-pending';
+                else if (booking.status === 'Annulé') statusClass = 'status-cancelled';
+                else if (booking.status === 'Terminé') statusClass = 'status-completed';
+
+                row.innerHTML = `
+                    <td>${booking.firstName} ${booking.lastName}</td>
+                    <td>
+                        <div>${booking.email}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">${booking.phone}</div>
+                    </td>
+                    <td>${booking.treatment}</td>
+                    <td>${formatDate(booking.preferredDate)}</td>
+                    <td>${booking.preferredTime || 'Indifférent'}</td>
+                    <td><span class="status-badge ${statusClass}">${booking.status}</span></td>
+                    <td>${formatDateTime(booking.submittedAt)}</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-small btn-success" title="Voir détails" onclick="viewBooking(${booking.id})">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-small btn-primary" title="Confirmer" onclick="confirmBooking(${booking.id})">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn btn-small btn-warning" title="Modifier statut" onclick="changeStatus(${booking.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteBooking(${booking.id})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('bookingCount').textContent = `${filteredBookings.length} demandes`;
+        }
+
+        function updateStats() {
+            const total = onlineBookings.length;
+            const pending = onlineBookings.filter(b => b.status === 'En attente').length;
+            const confirmed = onlineBookings.filter(b => b.status === 'Confirmé').length;
+            const today = onlineBookings.filter(b => {
+                const bookingDate = new Date(b.preferredDate);
+                const today = new Date();
+                return bookingDate.toDateString() === today.toDateString();
+            }).length;
+
+            document.getElementById('totalBookings').textContent = total;
+            document.getElementById('pendingBookings').textContent = pending;
+            document.getElementById('confirmedBookings').textContent = confirmed;
+            document.getElementById('todayBookings').textContent = today;
+        }
+
+        function viewBooking(id) {
+            const booking = onlineBookings.find(b => b.id === id);
+            if (!booking) return;
+
+            const detailsDiv = document.getElementById('bookingDetails');
+            const detailsContent = document.getElementById('detailsContent');
+            const messageDiv = document.getElementById('bookingMessage');
+
+            detailsContent.innerHTML = `
+                <div class="detail-item">
+                    <div class="detail-label">Patient</div>
+                    <div class="detail-value">${booking.firstName} ${booking.lastName}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Email</div>
+                    <div class="detail-value">${booking.email}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Téléphone</div>
+                    <div class="detail-value">${booking.phone}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Date de naissance</div>
+                    <div class="detail-value">${booking.birthDate ? formatDate(booking.birthDate) : 'Non spécifiée'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Assurance</div>
+                    <div class="detail-value">${booking.insurance || 'Non spécifiée'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Traitement souhaité</div>
+                    <div class="detail-value">${booking.treatment}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Date souhaitée</div>
+                    <div class="detail-value">${formatDate(booking.preferredDate)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Heure souhaitée</div>
+                    <div class="detail-value">${booking.preferredTime || 'Indifférent'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Médecin assigné</div>
+                    <div class="detail-value">${booking.doctor}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Date de demande</div>
+                    <div class="detail-value">${formatDateTime(booking.submittedAt)}</div>
+                </div>
+            `;
+
+            if (booking.message) {
+                messageDiv.innerHTML = `
+                    <div class="detail-label">Message du patient</div>
+                    <div class="detail-value">${booking.message}</div>
+                `;
+                messageDiv.style.display = 'block';
+            } else {
+                messageDiv.style.display = 'none';
+            }
+
+            detailsDiv.classList.toggle('show');
+            currentBookingId = id;
+        }
+
+        function confirmBooking(id) {
+            const booking = onlineBookings.find(b => b.id === id);
+            if (!booking) return;
+
+            if (confirm(`Confirmer le rendez-vous pour ${booking.firstName} ${booking.lastName} ?`)) {
+                booking.status = 'Confirmé';
+                // Also add to regular appointments
+                const regularAppointment = {
+                    date: booking.preferredDate,
+                    time: booking.preferredTime || '09:00',
+                    patient: `${booking.firstName} ${booking.lastName}`,
+                    doctor: booking.doctor,
+                    treatment: booking.treatment,
+                    mode: 'Prise en ligne',
+                    status: 'Confirmé'
+                };
+
+                let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+                appointments.push(regularAppointment);
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+
+                localStorage.setItem('onlineBookings', JSON.stringify(onlineBookings));
+                renderBookings();
+                updateStats();
+                alert('Rendez-vous confirmé et ajouté au planning !');
+            }
+        }
+
+        function changeStatus(id) {
+            const booking = onlineBookings.find(b => b.id === id);
+            if (!booking) return;
+
+            const newStatus = prompt('Nouveau statut (En attente/Confirmé/Annulé/Terminé):', booking.status);
+            if (newStatus && ['En attente', 'Confirmé', 'Annulé', 'Terminé'].includes(newStatus)) {
+                booking.status = newStatus;
+                localStorage.setItem('onlineBookings', JSON.stringify(onlineBookings));
+                renderBookings();
+                updateStats();
+            }
+        }
+
+        function deleteBooking(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')) {
+                onlineBookings = onlineBookings.filter(b => b.id !== id);
+                localStorage.setItem('onlineBookings', JSON.stringify(onlineBookings));
+                renderBookings();
+                updateStats();
+            }
+        }
+
+        function refreshBookings() {
+            loadBookings();
+        }
+
+        function exportBookings() {
+            // Simple CSV export
+            let csv = 'Nom,Prénom,Email,Téléphone,Traitement,Date souhaitée,Heure souhaitée,Statut,Date demande\n';
+            onlineBookings.forEach(booking => {
+                csv += `"${booking.lastName}","${booking.firstName}","${booking.email}","${booking.phone}","${booking.treatment}","${booking.preferredDate}","${booking.preferredTime || ''}","${booking.status}","${booking.submittedAt}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'demandes-rendez-vous.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR');
+        }
+
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR') + ' ' + date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', renderBookings);
+        document.getElementById('statusFilter').addEventListener('change', renderBookings);
+        document.getElementById('treatmentFilter').addEventListener('change', renderBookings);
+        document.getElementById('sortBy').addEventListener('change', renderBookings);
+
+        // Initial load
+        loadBookings();
+    </script>
+</body>
+</html>

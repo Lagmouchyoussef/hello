@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Espace Patient - Mon dossier médical</title>
+<title>Espace Patient - Suivi prothèses</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -568,7 +568,7 @@ body {
       </div>
       <div class="section-content" id="section-docs-content">
         <div class="sidebar-item">
-          <a href="dossier-medical.html" class="sidebar-link active">
+          <a href="dossier-medical.html" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
             Mon dossier médical
           </a>
@@ -580,7 +580,7 @@ body {
           </a>
         </div>
         <div class="sidebar-item">
-          <a href="suivi-protheses.html" class="sidebar-link">
+          <a href="suivi-protheses.html" class="sidebar-link active">
             <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
             Suivi prothèses
           </a>
@@ -644,42 +644,22 @@ body {
 <!-- Main Content -->
 <div class="main-content">
   <div class="content-header">
-    <h1 class="page-title">Mon dossier médical</h1>
+    <h1 class="page-title">Suivi prothèses</h1>
   </div>
 
-  <!-- Informations personnelles -->
+  <!-- Prothèses list -->
   <div class="patient-card">
     <div class="card-header">
-      <h3 class="card-title">Informations personnelles</h3>
+      <h3 class="card-title">Mes prothèses</h3>
     </div>
-    <div id="personal-info">
-      <p>Informations personnelles non disponibles.</p>
-    </div>
-  </div>
-
-  <!-- Historique médical -->
-  <div class="patient-card">
-    <div class="card-header">
-      <h3 class="card-title">Historique médical</h3>
-    </div>
-    <div id="medical-history">
-      <p>Aucun historique médical disponible.</p>
-    </div>
-  </div>
-
-  <!-- Allergies et médicaments -->
-  <div class="patient-card">
-    <div class="card-header">
-      <h3 class="card-title">Allergies et médicaments</h3>
-    </div>
-    <div id="allergies-medications">
-      <p>Aucune information sur les allergies ou médicaments.</p>
+    <div id="protheses-list">
+      <p>Aucune prothèse disponible.</p>
     </div>
   </div>
 
 </div>
 
-<script src="../js/dossier-medical.js"></script>
+<script src="../js/suivi-protheses.js"></script>
 <script>
 // Theme & Logout
 const themeToggle = document.getElementById('themeToggle');

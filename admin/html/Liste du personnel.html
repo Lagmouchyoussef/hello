@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cabinet Dentaire - Logiciel de Gestion Professionnel</title>
+<title>Liste du personnel - Cabinet Dentaire Al-Farabi</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -377,223 +376,6 @@ body {
   color: var(--text-primary);
 }
 
-.maroc-compliance {
-  background: linear-gradient(135deg, var(--medical-blue-darker), var(--medical-blue));
-  color: white;
-  padding: 0.625rem 1.25rem;
-  border-radius: var(--border-radius);
-  font-size: 0.875rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.compliance-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  background: rgba(255, 255, 255, 0.15);
-  padding: 0.375rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  margin-right: 0.5rem;
-  font-weight: 600;
-}
-
-/* Dashboard Cards */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.dashboard-card {
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border-color);
-  transition: var(--transition);
-}
-
-.dashboard-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.15);
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.25rem;
-}
-
-.card-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.card-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  background: rgba(30, 58, 138, 0.1);
-  color: var(--medical-blue);
-}
-
-.card-stats {
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-}
-
-.card-trend {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-/* Maroc-Specific Features */
-.maroc-features {
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border-color);
-  margin-bottom: 2rem;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.feature-item {
-  text-align: center;
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  background: var(--section-bg);
-  transition: var(--transition);
-  border: 1px solid transparent;
-}
-
-.feature-item:hover {
-  transform: translateY(-4px);
-  background: rgba(30, 58, 138, 0.1);
-  border-color: var(--medical-blue);
-}
-
-.feature-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-  color: white;
-  font-size: 1.25rem;
-  box-shadow: 0 4px 8px rgba(30, 58, 138, 0.2);
-}
-
-.feature-title {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-}
-
-.feature-desc {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-}
-
-
-/* Messaging Section */
-.messaging-container {
-  display: none;
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border-color);
-  margin-bottom: 2rem;
-  overflow: hidden;
-}
-
-.messaging-header {
-  padding: 1.25rem 1.5rem;
-  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.messaging-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.message-list {
-  height: 400px;
-  overflow-y: auto;
-  padding: 1rem;
-}
-
-.message-item {
-  padding: 0.875rem;
-  margin-bottom: 0.875rem;
-  border-radius: var(--border-radius);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  transition: var(--transition);
-}
-
-.message-item.unread {
-  background: var(--unread-bg);
-  border-left: 4px solid var(--success);
-}
-
-.message-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.message-time {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-}
-
-.message-content {
-  font-size: 0.875rem;
-  line-height: 1.4;
-  color: var(--text-primary);
-}
-
-.message-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 0.875rem;
-}
-
 .btn {
   padding: 0.5rem 1rem;
   border-radius: var(--border-radius);
@@ -614,16 +396,6 @@ body {
   transform: translateY(-2px);
 }
 
-.btn-danger {
-  background: var(--danger);
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #b91c1c;
-  transform: translateY(-2px);
-}
-
 .btn-success {
   background: var(--success);
   color: white;
@@ -634,11 +406,94 @@ body {
   transform: translateY(-2px);
 }
 
-.message-compose {
-  padding: 1.5rem;
-  border-top: 1px solid var(--border-color);
+.btn-danger {
+  background: var(--danger);
+  color: white;
 }
 
+.btn-danger:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+}
+
+/* Staff Table */
+.staff-container {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.staff-header {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.staff-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.staff-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.staff-table th,
+.staff-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.staff-table th {
+  background: var(--section-bg);
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.staff-table tbody tr:hover {
+  background: var(--section-bg);
+}
+
+.role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.role-admin {
+  background: rgba(30, 58, 138, 0.1);
+  color: var(--medical-blue);
+}
+
+.role-assistant {
+  background: rgba(126, 34, 206, 0.1);
+  color: var(--ai-purple);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-small {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  border-radius: 0.375rem;
+}
+
+/* Form Styles */
 .form-group {
   margin-bottom: 1.25rem;
 }
@@ -666,121 +521,6 @@ body {
   box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
 
-.btn-send {
-  width: 100%;
-  padding: 0.875rem;
-  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 0.9375rem;
-}
-
-.btn-send:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(30, 58, 138, 0.3);
-}
-
-/* AI Assistant */
-.ai-assistant {
-  background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  color: white;
-  box-shadow: 0 8px 16px rgba(126, 34, 206, 0.3);
-}
-
-.ai-header {
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  margin-bottom: 1rem;
-}
-
-.ai-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ai-purple);
-  font-weight: 700;
-  font-size: 1.125rem;
-}
-
-.ai-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-
-.ai-status {
-  font-size: 0.875rem;
-  opacity: 0.9;
-}
-
-.ai-chat {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: var(--border-radius);
-  padding: 1.25rem;
-  min-height: 100px;
-  margin-bottom: 1.25rem;
-  font-style: italic;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.ai-actions {
-  display: flex;
-  gap: 1rem;
-}
-
-.ai-btn {
-  flex: 1;
-  padding: 0.625rem;
-  border-radius: var(--border-radius);
-  background: white;
-  color: var(--ai-purple);
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 0.9375rem;
-}
-
-.ai-btn:hover {
-  background: rgba(255, 255, 255, 0.9);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Compliance Notice */
-.compliance-notice {
-  background: var(--medical-blue-darker);
-  color: white;
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  margin-bottom: 2rem;
-}
-
-.compliance-notice h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.compliance-notice p {
-  line-height: 1.6;
-}
-
-.compliance-notice strong {
-  color: #cbd5e1;
-}
-
 /* Responsive Design */
 @media (max-width: 992px) {
   .sidebar {
@@ -800,16 +540,12 @@ body {
     margin-left: 240px;
     padding: 1.5rem;
   }
-  .dashboard-grid,
-  .features-grid {
-    grid-template-columns: 1fr;
+  .staff-table {
+    font-size: 0.8rem;
   }
-  .messaging-container,
-  .ai-assistant {
-    display: block !important;
-  }
-  .message-list {
-    height: 300px;
+  .staff-table th,
+  .staff-table td {
+    padding: 0.75rem 0.5rem;
   }
 }
 
@@ -835,25 +571,16 @@ body {
     flex-direction: column;
     align-items: flex-start;
   }
-  .maroc-compliance {
-    width: 100%;
-    margin-top: 1rem;
+  .staff-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
   }
-}
-
-/* Active messaging view */
-.main-content.messaging-view .dashboard-grid,
-.main-content.messaging-view .maroc-features,
-.main-content.messaging-view .compliance-notice {
-  display: none;
-}
-
-.main-content.messaging-view .messaging-container {
-  display: block;
-}
-
-.main-content.messaging-view .ai-assistant {
-  display: block;
+  .staff-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }
 
 /* Focus states for accessibility */
@@ -881,9 +608,9 @@ body {
   </div>
   <!-- Navigation Menu -->
   <ul class="sidebar-menu">
-    <!-- DASHBOARD (toujours visible, pas de dropdown) -->
+    <!-- DASHBOARD -->
     <li class="sidebar-item">
-      <a href="dashboard.html" class="sidebar-link active">
+      <a href="dashboard.html" class="sidebar-link">
         <span class="sidebar-icon"><i class="fas fa-home"></i></span>
         Tableau de bord
       </a>
@@ -1117,7 +844,7 @@ body {
       </div>
       <div class="section-content" id="section-users-content">
         <div class="sidebar-item">
-          <a href="Liste du personnel.html" class="sidebar-link">
+          <a href="Liste du personnel.html" class="sidebar-link active">
             <span class="sidebar-icon"><i class="fas fa-list"></i></span>
             Liste du personnel
           </a>
@@ -1261,12 +988,85 @@ body {
   </div>
 </div>
 <!-- Main Content -->
-<div class="main-content" id="mainContent">
+<div class="main-content">
   <div class="content-header">
-    <h1 class="page-title">Tableau de bord professionnel</h1>
+    <h1 class="page-title">Liste du personnel</h1>
+    <button class="btn btn-primary" onclick="showForm()">
+      <i class="fas fa-plus"></i>
+      Ajouter un membre
+    </button>
   </div>
 
+  <!-- Add Staff Form -->
+  <div class="staff-container" id="addForm" style="display: none; margin-bottom: 2rem;">
+    <div class="staff-header">
+      <h2 class="staff-title" id="formTitle">Ajouter un membre du personnel</h2>
+    </div>
+    <form id="staffForm" style="padding: 1.5rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div class="form-group">
+          <label class="form-label">Nom complet</label>
+          <input type="text" class="form-control" id="name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mot de passe</label>
+          <input type="password" class="form-control" id="password" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Rôle</label>
+          <select class="form-control" id="role" required>
+            <option value="Admin">Admin</option>
+            <option value="Assistant">Assistant</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Téléphone</label>
+          <input type="tel" class="form-control" id="phone">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Spécialité</label>
+          <input type="text" class="form-control" id="specialty" placeholder="ex: Chirurgien-Dentiste">
+        </div>
+      </div>
+      <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+        <button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
+      </div>
+    </form>
+  </div>
 
+  <div class="staff-container">
+    <div class="staff-header">
+      <h2 class="staff-title">Membres du personnel</h2>
+      <div>
+        <input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
+        <select id="roleFilter" title="Filtrer par rôle" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary);">
+          <option value="">Tous les rôles</option>
+          <option value="Admin">Admin</option>
+          <option value="Assistant">Assistant</option>
+        </select>
+      </div>
+    </div>
+    <table class="staff-table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Rôle</th>
+          <th>Téléphone</th>
+          <th>Spécialité</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="staffTableBody">
+        <!-- Staff will be loaded here -->
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <script>
@@ -1311,41 +1111,12 @@ logoutBtn.addEventListener('click', () => {
   }
 });
 
-// Navigation link functionality
-const mainLinks = document.querySelectorAll('.sidebar-link');
-const mainContent = document.getElementById('mainContent');
-
-mainLinks.forEach(link => {
-  link.addEventListener('click', function(e) {
-    const target = this.getAttribute('href');
-
-    // Only prevent default for anchor links
-    if (target.startsWith('#')) {
-      e.preventDefault();
-
-      // Update active states
-      mainLinks.forEach(l => l.classList.remove('active'));
-      this.classList.add('active');
-
-      // Show/hide content based on selection
-      if (target === '#messaging') {
-        mainContent.classList.add('messaging-view');
-      } else {
-        mainContent.classList.remove('messaging-view');
-      }
-    }
-  });
-});
-
-// Initialize active link
-document.querySelector('.sidebar-link[href="#dashboard"]').classList.add('active');
-
 // Collapsible section headers
 document.querySelectorAll('.section-header.clickable').forEach(header => {
   header.addEventListener('click', () => {
     const content = header.nextElementSibling;
     const isCollapsed = content.classList.contains('collapsed');
-    
+
     // Close all other sections
     document.querySelectorAll('.section-content').forEach(el => {
       if (el !== content) {
@@ -1353,7 +1124,7 @@ document.querySelectorAll('.section-header.clickable').forEach(header => {
         el.previousElementSibling.classList.add('collapsed');
       }
     });
-    
+
     // Toggle current section
     if (isCollapsed) {
       content.classList.remove('collapsed');
@@ -1365,149 +1136,138 @@ document.querySelectorAll('.section-header.clickable').forEach(header => {
   });
 });
 
-// Open "Rendez-vous" by default
-document.getElementById('section-rdv-content').classList.remove('collapsed');
-document.getElementById('section-rdv-toggle').classList.remove('collapsed');
+// Open "Utilisateurs" by default
+document.getElementById('section-users-content').classList.remove('collapsed');
+document.getElementById('section-users-toggle').classList.remove('collapsed');
 
-// Message actions
-document.querySelectorAll('.message-actions .btn-success').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const messageItem = this.closest('.message-item');
-    messageItem.classList.remove('unread');
-    this.textContent = 'Lu';
-    this.disabled = true;
-    this.style.opacity = '0.7';
-  });
-});
-
-document.querySelectorAll('.message-actions .btn-danger').forEach(btn => {
-  btn.addEventListener('click', function() {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce message ?')) {
-      const messageItem = this.closest('.message-item');
-      messageItem.style.opacity = '0';
-      setTimeout(() => {
-        messageItem.remove();
-      }, 300);
-    }
-  });
-});
-
-
-// Send message button
-document.querySelector('.btn-send').addEventListener('click', () => {
-  const recipientSelect = document.querySelector('.form-control');
-  const subject = document.querySelector('.form-control[type="text"]').value;
-  const message = document.querySelector('textarea').value;
-  
-  if (!recipientSelect || recipientSelect.value === 'Sélectionner un destinataire') {
-    alert('Veuillez sélectionner un destinataire.');
-    return;
+// Staff Management
+let staff = JSON.parse(localStorage.getItem('staff')) || [
+  {
+    id: 1,
+    name: 'Dr. Mohammed Alami',
+    email: 'admin@cabinet.ma',
+    password: 'admin123',
+    role: 'Admin',
+    phone: '+212 6XX XXX XXX',
+    specialty: 'Chirurgien-Dentiste',
+    avatar: 'DM'
+  },
+  {
+    id: 2,
+    name: 'Hind Alaoui',
+    email: 'assistante@cabinet.ma',
+    password: 'assistante123',
+    role: 'Assistant',
+    phone: '+212 6XX XXX XXX',
+    specialty: 'Assistante Dentaire',
+    avatar: 'HA'
   }
-  if (!subject.trim()) {
-    alert('Veuillez entrer un sujet.');
-    return;
-  }
-  if (!message.trim()) {
-    alert('Veuillez entrer un message.');
-    return;
-  }
-  
-  alert('Message envoyé avec succès à ' + recipientSelect.value + ' !');
-  
-  // Reset form
-  recipientSelect.selectedIndex = 0;
-  document.querySelector('.form-control[type="text"]').value = '';
-  document.querySelector('textarea').value = '';
-  
-  // Add new message to list (simulated)
-  const messageList = document.getElementById('messageList');
-  const now = new Date();
-  const newMessage = document.createElement('div');
-  newMessage.className = 'message-item unread';
-  newMessage.innerHTML = `
-    <div class="message-header">
-      <span>Vous</span>
-      <span class="message-time">Aujourd'hui, ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}</span>
-    </div>
-    <div class="message-content">${message}</div>
-    <div class="message-actions">
-      <button class="btn btn-success">Marquer comme lu</button>
-      <button class="btn btn-primary">Répondre</button>
-      <button class="btn btn-danger">Supprimer</button>
-    </div>
-  `;
-  messageList.insertBefore(newMessage, messageList.firstChild);
-  
-  // Add event listeners to new buttons
-  const successBtn = newMessage.querySelector('.btn-success');
-  const dangerBtn = newMessage.querySelector('.btn-danger');
-  
-  successBtn.addEventListener('click', function() {
-    newMessage.classList.remove('unread');
-    this.textContent = 'Lu';
-    this.disabled = true;
-    this.style.opacity = '0.7';
-  });
-  
-  dangerBtn.addEventListener('click', function() {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce message ?')) {
-      newMessage.style.opacity = '0';
-      setTimeout(() => {
-        newMessage.remove();
-      }, 300);
-    }
-  });
-});
+];
+let editingIndex = -1;
 
-// Update notification badges dynamically
-function updateNotificationBadges() {
-  // Count unread messages for Messagerie interne
-  const unreadMessages = document.querySelectorAll('.message-item.unread').length;
-  const messagingBadge = document.querySelector('a[href="#messaging"] .badge');
-  if (messagingBadge) {
-    messagingBadge.textContent = unreadMessages;
+function showForm() {
+  document.getElementById('addForm').style.display = 'block';
+  document.getElementById('staffForm').reset();
+  editingIndex = -1;
+  document.getElementById('formTitle').textContent = 'Ajouter un membre du personnel';
+}
+
+function hideForm() {
+  document.getElementById('addForm').style.display = 'none';
+}
+
+function saveStaff(e) {
+  e.preventDefault();
+
+  const staffMember = {
+    id: editingIndex >= 0 ? staff[editingIndex].id : Date.now(),
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
+    role: document.getElementById('role').value,
+    phone: document.getElementById('phone').value,
+    specialty: document.getElementById('specialty').value,
+    avatar: document.getElementById('name').value.split(' ').map(n => n[0]).join('').toUpperCase()
+  };
+
+  if (editingIndex >= 0) {
+    staff[editingIndex] = staffMember;
+  } else {
+    staff.push(staffMember);
   }
 
-  // Update messaging header badge
-  const messagingHeaderBadge = document.querySelector('.messaging-header .badge');
-  if (messagingHeaderBadge) {
-    messagingHeaderBadge.innerHTML = unreadMessages + ' nouveaux messages';
-  }
+  localStorage.setItem('staff', JSON.stringify(staff));
+  renderStaff();
+  hideForm();
+}
 
-  // For Assistant IA, set to 0 for now (can be updated based on AI interactions)
-  const aiBadge = document.querySelector('a[href="#ai-agent"] .badge');
-  if (aiBadge) {
-    aiBadge.textContent = '0';
+function editStaff(index) {
+  const member = staff[index];
+  document.getElementById('name').value = member.name;
+  document.getElementById('email').value = member.email;
+  document.getElementById('password').value = member.password;
+  document.getElementById('role').value = member.role;
+  document.getElementById('phone').value = member.phone;
+  document.getElementById('specialty').value = member.specialty;
+
+  editingIndex = index;
+  document.getElementById('addForm').style.display = 'block';
+  document.getElementById('formTitle').textContent = 'Modifier le membre du personnel';
+}
+
+function deleteStaff(index) {
+  if (confirm('Êtes-vous sûr de vouloir supprimer ce membre du personnel ?')) {
+    staff.splice(index, 1);
+    localStorage.setItem('staff', JSON.stringify(staff));
+    renderStaff();
   }
 }
 
-// Initial update
-updateNotificationBadges();
+function renderStaff() {
+  const tbody = document.getElementById('staffTableBody');
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  const roleFilter = document.getElementById('roleFilter').value;
 
-// Update badges when messages are marked as read or deleted
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('btn-success') && e.target.closest('.message-actions')) {
-    setTimeout(updateNotificationBadges, 100);
-  }
-  if (e.target.classList.contains('btn-danger') && e.target.closest('.message-actions')) {
-    setTimeout(updateNotificationBadges, 350); // Wait for animation
-  }
-});
+  tbody.innerHTML = '';
 
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    const targetId = this.getAttribute('href');
-    if (targetId !== '#') {
-      e.preventDefault();
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth' });
-      }
+  staff.forEach((member, index) => {
+    // Filter logic
+    const matchesSearch = member.name.toLowerCase().includes(searchTerm) ||
+                         member.email.toLowerCase().includes(searchTerm) ||
+                         member.specialty.toLowerCase().includes(searchTerm);
+    const matchesRole = !roleFilter || member.role === roleFilter;
+
+    if (matchesSearch && matchesRole) {
+      const row = document.createElement('tr');
+
+      let roleClass = '';
+      if (member.role === 'Admin') roleClass = 'role-admin';
+      else if (member.role === 'Assistant') roleClass = 'role-assistant';
+
+      row.innerHTML = `
+        <td>${member.name}</td>
+        <td>${member.email}</td>
+        <td><span class="role-badge ${roleClass}">${member.role}</span></td>
+        <td>${member.phone || '-'}</td>
+        <td>${member.specialty || '-'}</td>
+        <td class="action-buttons">
+          <button class="btn btn-small btn-success" title="Modifier" onclick="editStaff(${index})"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteStaff(${index})"><i class="fas fa-times"></i></button>
+        </td>
+      `;
+
+      tbody.appendChild(row);
     }
   });
-});
+}
+
+// Event listeners
+document.getElementById('staffForm').addEventListener('submit', saveStaff);
+document.getElementById('searchInput').addEventListener('input', renderStaff);
+document.getElementById('roleFilter').addEventListener('change', renderStaff);
+
+// Initial render
+renderStaff();
 </script>
 </body>
 </html>
-

@@ -30,11 +30,11 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
 
         // Redirect based on role
         const roleRoutes = {
-            'Admin': '../../admin/html/dashboard.html',
-            'Dentist': '../../admin/html/dashboard.html', // Redirect to admin for now
-            'Assistant': '../../assistante/html/dashboard.html',
-            'Accountant': '../../admin/html/dashboard.html', // Redirect to admin for now
-            'Patient': '../../patient/html/dashboard.html'
+            'Admin': 'http://127.0.0.1:5500/hello/admin/html/dashboard.html',
+            'Dentist': 'http://127.0.0.1:5500/hello/admin/html/dashboard.html', // Redirect to admin for now
+            'Assistant': 'http://127.0.0.1:5500/hello/assistante/html/dashboard.html',
+            'Accountant': 'http://127.0.0.1:5500/admin/html/dashboard.html', // Redirect to admin for now
+            'Patient': 'http://127.0.0.1:5500/patient/html/dashboard.html'
         };
 
         const redirectUrl = roleRoutes[user.role] || '../../patient/html/dashboard.html';

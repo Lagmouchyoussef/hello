@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Espace Patient - Mon dossier médical</title>
+<title>Espace Patient - Prendre un rendez-vous</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -423,77 +423,6 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(30, 58, 138, 0.3);
 }
-/* Messages */
-.message-item {
-  padding: 0.875rem;
-  margin-bottom: 0.875rem;
-  border-radius: var(--border-radius);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  transition: var(--transition);
-}
-.message-item.unread {
-  background: var(--unread-bg);
-  border-left: 4px solid var(--success);
-}
-.message-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-.message-time {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-}
-.message-content {
-  font-size: 0.875rem;
-  line-height: 1.4;
-  color: var(--text-primary);
-}
-.message-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 0.875rem;
-}
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-.stat-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 1rem;
-  text-align: center;
-  box-shadow: var(--card-shadow);
-}
-.stat-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--medical-blue);
-  margin: 0.5rem 0;
-}
-.stat-label {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-.appointment-item {
-  padding: 0.875rem;
-  margin-bottom: 0.875rem;
-  border-radius: var(--border-radius);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-}
-.filters {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
 /* Responsive */
 @media (max-width: 992px) {
   .sidebar { width: 250px; }
@@ -532,7 +461,7 @@ body {
       </div>
       <div class="section-content" id="section-rdv-content">
         <div class="sidebar-item">
-          <a href="prendre-rendez-vous.html" class="sidebar-link">
+          <a href="prendre-rendez-vous.html" class="sidebar-link active">
             <span class="sidebar-icon"><i class="fas fa-plus-circle"></i></span>
             Prendre un rendez-vous
           </a>
@@ -568,7 +497,7 @@ body {
       </div>
       <div class="section-content" id="section-docs-content">
         <div class="sidebar-item">
-          <a href="dossier-medical.html" class="sidebar-link active">
+          <a href="dossier-medical.html" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
             Mon dossier médical
           </a>
@@ -644,42 +573,48 @@ body {
 <!-- Main Content -->
 <div class="main-content">
   <div class="content-header">
-    <h1 class="page-title">Mon dossier médical</h1>
+    <h1 class="page-title">Prendre un rendez-vous</h1>
   </div>
 
-  <!-- Informations personnelles -->
   <div class="patient-card">
     <div class="card-header">
-      <h3 class="card-title">Informations personnelles</h3>
+      <h3 class="card-title">Réserver un rendez-vous</h3>
     </div>
-    <div id="personal-info">
-      <p>Informations personnelles non disponibles.</p>
-    </div>
-  </div>
-
-  <!-- Historique médical -->
-  <div class="patient-card">
-    <div class="card-header">
-      <h3 class="card-title">Historique médical</h3>
-    </div>
-    <div id="medical-history">
-      <p>Aucun historique médical disponible.</p>
-    </div>
-  </div>
-
-  <!-- Allergies et médicaments -->
-  <div class="patient-card">
-    <div class="card-header">
-      <h3 class="card-title">Allergies et médicaments</h3>
-    </div>
-    <div id="allergies-medications">
-      <p>Aucune information sur les allergies ou médicaments.</p>
-    </div>
+    <form id="booking-form">
+      <div class="form-group">
+        <label class="form-label">Type de soin</label>
+        <select id="care-type" name="care-type" class="form-control" required>
+          <option value="">Sélectionner</option>
+          <option value="Consultation">Consultation</option>
+          <option value="Traitement">Traitement</option>
+          <option value="Urgence">Urgence</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Dentiste</label>
+        <select id="doctor" name="doctor" class="form-control" required>
+          <option value="">Sélectionner</option>
+          <option value="Dr. Al-Farabi">Dr. Al-Farabi</option>
+          <option value="Dr. Smith">Dr. Smith</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input type="date" id="date" name="date" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Heure</label>
+        <select id="time" name="time" class="form-control" required>
+          <option value="">Sélectionner</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary" id="submit-btn">Réserver</button>
+    </form>
   </div>
 
 </div>
 
-<script src="../js/dossier-medical.js"></script>
+<script src="../js/prendre-rendez-vous.js"></script>
 <script>
 // Theme & Logout
 const themeToggle = document.getElementById('themeToggle');
@@ -728,9 +663,9 @@ document.querySelectorAll('.section-header.clickable').forEach(header => {
   });
 });
 
-// Ouvrir Dossier médical par défaut
-document.getElementById('section-docs-content').classList.remove('collapsed');
-document.getElementById('section-docs-toggle').classList.remove('collapsed');
+// Ouvrir Mes rendez-vous par défaut
+document.getElementById('section-rdv-content').classList.remove('collapsed');
+document.getElementById('section-rdv-toggle').classList.remove('collapsed');
 
 </script>
 </body>

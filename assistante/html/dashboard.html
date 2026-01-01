@@ -1,851 +1,485 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Assistante - DIKRA Centre Dentaire</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../../js/data.js"></script>
-    <style>
-        /* Global box-sizing */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assistante - Cabinet Dentaire Al-Farabi</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============== IDENTIQUE À VOTRE ADMIN ============== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --medical-blue: #1e3a8a;
+  --medical-blue-dark: #1e40af;
+  --medical-blue-darker: #172554;
+  --medical-blue-light: #3b82f6;
+  --success: #059669;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --text-light: #f8fafc;
+  --text-gray: #64748b;
+  --border-radius: 0.5rem;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --ai-purple: #7e22ce;
+  --ai-purple-light: #c084fc;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --unread-bg: #dbeafe;
+}
+.light-mode {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --border-color: #e2e8f0;
+  --card-shadow: var(--shadow);
+  --section-bg: rgba(30, 58, 138, 0.05);
+  --hover-bg: rgba(255, 255, 255, 0.1);
+  --active-bg: rgba(255, 255, 255, 0.2);
+}
+.dark-mode {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --border-color: #334155;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --unread-bg: #1e3a8a;
+  --section-bg: rgba(255, 255, 255, 0.05);
+  --hover-bg: rgba(255, 255, 255, 0.1);
+  --active-bg: rgba(255, 255, 255, 0.2);
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: 0.875rem;
+  transition: var(--transition);
+}
+.sidebar {
+  width: 280px;
+  background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
+  color: var(--text-light);
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 1.5rem 0;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+.cabinet-header {
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.cabinet-logo {
+  width: 64px;
+  height: 64px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: var(--medical-blue);
+  font-weight: 700;
+  font-size: 1.5rem;
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
+}
+.cabinet-name { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; background: linear-gradient(to right, #ffffff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.cabinet-subtitle { font-size: 0.875rem; color: rgba(255, 255, 255, 0.8); }
 
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #1f2937;
-            --card-bg: #f8fafc;
-            --border-color: #e5e7eb;
-            --sidebar-bg: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            --header-bg: #ffffff;
-            --shadow: rgba(0,0,0,0.1);
-        }
+.user-section {
+  padding: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin-top: auto;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+.user-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+.user-name { font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.25rem; color: white; }
+.user-role { font-size: 0.75rem; color: rgba(255, 255, 255, 0.8); }
 
-        [data-theme="dark"] {
-            --bg-color: #1f2937;
-            --text-color: #f9fafb;
-            --card-bg: #374151;
-            --border-color: #4b5563;
-            --sidebar-bg: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-            --header-bg: #374151;
-            --shadow: rgba(0,0,0,0.3);
-        }
+.logout-btn, .theme-toggle {
+  width: 100%;
+  padding: 0.625rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border: none;
+  text-align: left;
+}
+.logout-btn { background: rgba(220, 38, 38, 0.2); color: white; }
+.theme-toggle { background: rgba(255, 255, 255, 0.15); color: white; margin-bottom: 0.75rem; }
 
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
-        }
+.sidebar-menu { list-style: none; padding: 0 1.5rem; flex: 1; }
+.sidebar-item { margin: 0.375rem 0; }
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: var(--transition);
+  border-radius: var(--border-radius);
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.sidebar-link:hover { background: var(--hover-bg); color: white; transform: translateX(4px); }
+.sidebar-link.active { background: var(--active-bg); color: white; border-left: 3px solid var(--medical-blue-light); padding-left: 1rem; transform: translateX(4px); }
+.sidebar-icon { width: 24px; text-align: center; font-size: 1.125rem; display: flex; align-items: center; justify-content: center; }
+.badge {
+  background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
+  color: white;
+  border-radius: 9999px;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: auto;
+  margin-right: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 
+.section-header {
+  padding: 0.75rem 1.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.section-chevron { font-size: 0.75rem; transition: transform 0.3s ease; color: rgba(255, 255, 255, 0.6); }
+.section-header.collapsed .section-chevron { transform: rotate(-90deg); }
+.section-content {
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  max-height: 1000px;
+  opacity: 1;
+}
+.section-content.collapsed { max-height: 0; opacity: 0; }
 
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background: var(--sidebar-bg);
-            color: white;
-            transition: all 0.3s;
-            z-index: 999;
-            box-shadow: 4px 0 20px var(--shadow);
-            border-right: 2px solid #1d4ed8;
-            overflow-y: auto;
-        }
+.main-content {
+  margin-left: 280px;
+  padding: 2rem;
+  min-height: 100vh;
+  transition: var(--transition);
+}
+.content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+.page-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.025em; color: var(--text-primary); }
 
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
+.assistant-card {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  transition: var(--transition);
+}
+.assistant-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.15); }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+.card-title { font-size: 1.125rem; font-weight: 600; color: var(--text-primary); }
 
-        .sidebar.show {
-            transform: translateX(0);
-        }
+.tab-nav { display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+.tab-btn {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition);
+}
+.tab-btn.active { color: var(--medical-blue); border-bottom-color: var(--medical-blue); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
-        .nav-link {
-            color: white !important;
-            padding: 18px 25px;
-            display: block;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+}
+.btn-primary { background: var(--medical-blue); color: white; }
+.btn-primary:hover { background: var(--medical-blue-dark); transform: translateY(-2px); }
+.btn-danger { background: var(--danger); color: white; }
+.btn-danger:hover { background: #b91c1c; transform: translateY(-2px); }
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover { background: #047857; transform: translateY(-2px); }
+.btn-outline {
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-primary);
+}
+.btn-outline:hover { background: var(--bg-primary); transform: translateY(-2px); }
 
-        .nav-link:hover {
-            background: rgba(255,255,255,0.1);
-        }
+.form-group { margin-bottom: 1.25rem; }
+.form-label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary); }
+.form-control {
+  width: 100%;
+  padding: 0.625rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--medical-blue);
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+.btn-send {
+  width: 100%;
+  padding: 0.875rem;
+  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.9375rem;
+}
+.btn-send:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(30, 58, 138, 0.3); }
 
-        .nav-link.active {
-            background: rgba(255,255,255,0.2);
-            font-weight: bold;
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: 280px;
-            padding: 20px 20px 20px 20px;
-            transition: margin-left 0.3s;
-            min-height: 100vh;
-        }
-
-        @media (max-width: 991.98px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.show {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-            }
-        }
-
-        /* Status Indicators */
-        .status-indicators {
-            display: flex;
-            justify-content: space-around;
-            gap: 20px;
-        }
-
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px;
-            background: var(--card-bg);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            flex: 1;
-            text-align: center;
-        }
-
-        .status-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .status-icon.arrived {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .status-icon.waiting {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .status-icon.in-consultation {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .status-count {
-            display: block;
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--text-color);
-        }
-
-        .status-label {
-            display: block;
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 2px;
-        }
-
-        /* Waiting Patients */
-        .waiting-patients-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .waiting-patient-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .waiting-patient-info {
-            flex: 1;
-        }
-
-        .waiting-patient-name {
-            font-weight: 500;
-            color: var(--text-color);
-        }
-
-        .waiting-patient-time {
-            font-size: 12px;
-            color: #6b7280;
-        }
-
-        .waiting-patient-actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .waiting-patient-btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .btn-arrived {
-            background: #16a34a;
-            color: white;
-        }
-
-        .btn-consultation {
-            background: #2563eb;
-            color: white;
-        }
-
-        .no-waiting-patients {
-            text-align: center;
-            color: #6b7280;
-            padding: 20px;
-            font-style: italic;
-        }
-
-        /* Upcoming Appointments */
-        .upcoming-appointments-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .upcoming-appointment-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .upcoming-appointment-info {
-            flex: 1;
-        }
-
-        .upcoming-appointment-name {
-            font-weight: 500;
-            color: var(--text-color);
-        }
-
-        .upcoming-appointment-date {
-            font-size: 12px;
-            color: #6b7280;
-        }
-
-        .no-upcoming-appointments {
-            text-align: center;
-            color: #6b7280;
-            padding: 20px;
-            font-style: italic;
-        }
-    </style>
+@media (max-width: 992px) {
+  .sidebar { width: 250px; }
+  .main-content { margin-left: 250px; padding: 1.5rem; }
+}
+@media (max-width: 768px) {
+  .sidebar { width: 240px; }
+  .main-content { margin-left: 240px; padding: 1.5rem; }
+  .tab-nav { flex-wrap: wrap; }
+}
+@media (max-width: 480px) {
+  .sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
+  .main-content { margin-left: 0; padding: 1rem; }
+}
+</style>
 </head>
-<body>
+<body class="light-mode">
+<!-- ============= SIDEBAR ASSISTANTE ============= -->
+<div class="sidebar">
+  <div class="cabinet-header">
+    <div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
+    <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+    <div class="cabinet-subtitle">Casablanca, Maroc</div>
+  </div>
+  <ul class="sidebar-menu">
+    <li class="sidebar-item"><a href="#dashboard" class="sidebar-link active"><span class="sidebar-icon"><i class="fas fa-home"></i></span> Tableau de bord</a></li>
+    
+    <!-- RENDEZ-VOUS -->
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-rdv-toggle">Rendez-vous <i class="fas fa-chevron-down section-chevron"></i></div>
+      <div class="section-content" id="section-rdv-content">
+        <div class="sidebar-item"><a href="Listes des Rendez-vous.html" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-list"></i></span> Liste des rendez-vous</a></div>
+        <div class="sidebar-item"><a href="Prise en ligne.html" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-globe"></i></span> Prise en ligne</a></div>
+        <div class="sidebar-item"><a href="En présentiel.html" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-building"></i></span> En présentiel</a></div>
+        <div class="sidebar-item"><a href="#rdv-portail" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-shield"></i></span> Via espace patient</a></div>
+      </div>
+    </li>
 
-    <!-- Left Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header" style="padding: 20px; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
-            <img src="../../Photo/Photo.png" alt="Logo" width="60" height="60" style="border-radius: 50%; margin-bottom: 10px;">
-            <h5 style="color: white; margin: 0; font-size: 18px; font-weight: 600; text-align: center;">DIKRA Centre Dentaire</h5>
-            <p style="color: rgba(255,255,255,0.8); margin: 5px 0 0 0; font-size: 14px;">Assistante</p>
-        </div>
-        <nav class="nav flex-column pb-3" style="padding-top: 0;">
-            <a href="dashboard.html" class="nav-link active">
-                <i class="bi bi-house-door me-2"></i>Tableau de bord
-            </a>
-            <div class="dropdown">
-                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
-                    <i class="bi bi-calendar-event me-2"></i>Rendez-vous
-                </button>
-                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
-                    <li><a class="dropdown-item" href="planning.html" style="color: white;"><i class="bi bi-calendar-week me-2"></i>Planning</a></li>
-                    <li><a class="dropdown-item" href="rendez-vous.html" style="color: white;"><i class="bi bi-calendar-event me-2"></i>Rendez-vous</a></li>
-                </ul>
-            </div>
-            <div class="dropdown">
-                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
-                    <i class="bi bi-people me-2"></i>Gestion des Patients
-                </button>
-                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
-                    <li><a class="dropdown-item" href="patients.html" style="color: white;"><i class="bi bi-people me-2"></i>Patients</a></li>
-                    <li><a class="dropdown-item" href="documents.html" style="color: white;"><i class="bi bi-file-earmark me-2"></i>Documents</a></li>
-                </ul>
-            </div>
-            <div class="dropdown">
-                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
-                    <i class="bi bi-cash me-2"></i>Financier
-                </button>
-                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
-                    <li><a class="dropdown-item" href="factures.html" style="color: white;"><i class="bi bi-receipt me-2"></i>Factures</a></li>
-                    <li><a class="dropdown-item" href="mutuelles.html" style="color: white;"><i class="bi bi-shield-check me-2"></i>Mutuelles</a></li>
-                </ul>
-            </div>
-            <div class="dropdown">
-                <button class="btn dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; text-align: left; border: none; background: none; color: white; padding: 18px 25px; font-size: 16px; font-weight: 500;">
-                    <i class="bi bi-chat me-2"></i>Communication
-                </button>
-                <ul class="dropdown-menu" style="background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);">
-                    <li><a class="dropdown-item" href="notifications.html" style="color: white;"><i class="bi bi-bell me-2"></i>Notifications</a></li>
-                    <li><a class="dropdown-item" href="messagerie.html" style="color: white;"><i class="bi bi-envelope me-2"></i>Messagerie</a></li>
-                </ul>
-            </div>
-            <a href="parametres.html" class="nav-link">
-                <i class="bi bi-gear me-2"></i>Paramètres
-            </a>
-        </nav>
-        <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-            <p style="color: white; text-align: center; margin-bottom: 10px; font-weight: bold;">Assistante</p>
-            <button onclick="logout()" style="width: 100%; background: #dc2626; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
-                <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
-            </button>
-        </div>
+    <!-- PATIENTS -->
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-patients-toggle">Patients <i class="fas fa-chevron-down section-chevron"></i></div>
+      <div class="section-content" id="section-patients-content">
+        <div class="sidebar-item"><a href="#fiches-patients" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-injured"></i></span> Fiches patients</a></div>
+        <div class="sidebar-item"><a href="#ajout-patient" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-plus"></i></span> Ajouter patient</a></div>
+      </div>
+    </li>
+
+    <!-- CABINET -->
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-cabinet-toggle">Cabinet <i class="fas fa-chevron-down section-chevron"></i></div>
+      <div class="section-content" id="section-cabinet-content">
+        <div class="sidebar-item"><a href="#salle-attente" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-chair"></i></span> Salle d'attente</a></div>
+      </div>
+    </li>
+
+    <!-- COMPTABILITÉ -->
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-compta-toggle">Comptabilité <i class="fas fa-chevron-down section-chevron"></i></div>
+      <div class="section-content" id="section-compta-content">
+        <div class="sidebar-item"><a href="#paiements" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-credit-card"></i></span> Paiements reçus</a></div>
+      </div>
+    </li>
+
+    <!-- COMMUNICATION -->
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-com-toggle">Communication <i class="fas fa-chevron-down section-chevron"></i></div>
+      <div class="section-content" id="section-com-content">
+        <div class="sidebar-item"><a href="#messagerie" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-comments"></i></span> Messagerie</a></div>
+        <div class="sidebar-item"><a href="#ai-agent" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-robot"></i></span> Assistant IA</a></div>
+        <div class="sidebar-item"><a href="#sms" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-sms"></i></span> Envoi de SMS</a></div>
+      </div>
+    </li>
+
+    <!-- ORGANISATION -->
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-org-toggle">Organisation <i class="fas fa-chevron-down section-chevron"></i></div>
+      <div class="section-content" id="section-org-content">
+        <div class="sidebar-item"><a href="#taches" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-tasks"></i></span> Tâches & rappels</a></div>
+        <div class="sidebar-item"><a href="#notes" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span> Notes personnelles</a></div>
+        <div class="sidebar-item"><a href="#statistiques" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span> Statistiques</a></div>
+      </div>
+    </li>
+
+    <!-- DOCUMENTS -->
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-docs-toggle">Documents & formulaires <i class="fas fa-chevron-down section-chevron"></i></div>
+      <div class="section-content" id="section-docs-content">
+        <div class="sidebar-item"><a href="#ordonnances" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-prescription"></i></span> Ordonnances</a></div>
+        <div class="sidebar-item"><a href="#certificats" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-medical"></i></span> Certificats médicaux</a></div>
+        <div class="sidebar-item"><a href="#feuilles-soins" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span> Feuilles de soins (CNOPS/CNSS)</a></div>
+      </div>
+    </li>
+
+    <!-- UTILISATEURS / PORTAIL -->
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-users-toggle">Portail Patients <i class="fas fa-chevron-down section-chevron"></i></div>
+      <div class="section-content" id="section-users-content">
+        <div class="sidebar-item"><a href="#liste-personnel" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-list"></i></span> Liste du personnel</a></div>
+        <div class="sidebar-item"><a href="#planning" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span> Planning de l'équipe</a></div>
+        <div class="sidebar-item"><a href="#param-portail" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-cog"></i></span> Paramètres espace patient</a></div>
+        <div class="sidebar-item"><a href="#gestion-acces" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-key"></i></span> Gestion des accès</a></div>
+        <div class="sidebar-item"><a href="#messages-patients" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-envelope"></i></span> Messages patients</a></div>
+        <div class="sidebar-item"><a href="#dossiers-medicaux" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-medical"></i></span> Dossiers médicaux</a></div>
+      </div>
+    </li>
+
+    <!-- CONFIGURATION -->
+    <li class="sidebar-section">
+      <div class="section-header clickable" id="section-config-toggle">Configuration <i class="fas fa-chevron-down section-chevron"></i></div>
+      <div class="section-content" id="section-config-content">
+        <div class="sidebar-item"><a href="#profil" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-cog"></i></span> Mon profil</a></div>
+        <div class="sidebar-item"><a href="#notifications" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-bell"></i></span> Notifications</a></div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="user-section">
+    <div class="user-info">
+      <div class="user-avatar">HA</div>
+      <div class="user-details">
+        <div class="user-name">Hind Alaoui</div>
+        <div class="user-role">Assistante Dentaire</div>
+      </div>
     </div>
+    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> <span>Mode Sombre</span></button>
+    <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></button>
+  </div>
+</div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-            <i class="bi bi-list"></i>
-        </button>
+<!-- ============= MAIN CONTENT ============= -->
+<div class="main-content">
+  <div class="content-header">
+    <h1 class="page-title">Interface Assistante — Hind Alaoui</h1>
+  </div>
 
-        <!-- Main Content Area -->
-        <div class="dashboard-grid">
-            <!-- KPI Widgets -->
-            <div class="widget kpi-widget">
-                <div class="widget-header">
-                    <h3>Rendez-vous aujourd'hui</h3>
-                    <i class="bi bi-calendar-event"></i>
-                </div>
-                <div class="widget-content">
-                    <div class="kpi-value" id="kpi-appointments-today">0</div>
-                    <div class="kpi-change positive">+15%</div>
-                </div>
-            </div>
+  <div id="dynamic-content">
+    <!-- Dynamic content will be loaded here -->
+  </div>
 
-            <div class="widget kpi-widget">
-                <div class="widget-header">
-                    <h3>Patients actifs</h3>
-                    <i class="bi bi-person-check"></i>
-                </div>
-                <div class="widget-content">
-                    <div class="kpi-value" id="kpi-active-patients">0</div>
-                    <div class="kpi-change positive">+8%</div>
-                </div>
-            </div>
+</div>
 
-            <div class="widget kpi-widget">
-                <div class="widget-header">
-                    <h3>Rendez-vous cette semaine</h3>
-                    <i class="bi bi-calendar-week"></i>
-                </div>
-                <div class="widget-content">
-                    <div class="kpi-value" id="kpi-appointments-week">0</div>
-                    <div class="kpi-change neutral">0%</div>
-                </div>
-            </div>
+<script>
+// ====== THEME & LOGOUT ======
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+const themeIcon = themeToggle.querySelector('i');
+const themeText = themeToggle.querySelector('span');
+const savedTheme = sessionStorage.getItem('theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+  body.classList.remove('light-mode');
+  body.classList.add('dark-mode');
+  themeIcon.className = 'fas fa-sun';
+  themeText.textContent = 'Mode Clair';
+  sessionStorage.setItem('theme', 'dark');
+}
+themeToggle.addEventListener('click', () => {
+  if (body.classList.contains('light-mode')) {
+    body.classList.remove('light-mode');
+    body.classList.add('dark-mode');
+    themeIcon.className = 'fas fa-sun';
+    themeText.textContent = 'Mode Clair';
+    sessionStorage.setItem('theme', 'dark');
+  } else {
+    body.classList.remove('dark-mode');
+    body.classList.add('light-mode');
+    themeIcon.className = 'fas fa-moon';
+    themeText.textContent = 'Mode Sombre';
+    sessionStorage.setItem('theme', 'light');
+  }
+});
 
-            <div class="widget kpi-widget">
-                <div class="widget-header">
-                    <h3>Tâches en attente</h3>
-                    <i class="bi bi-list-check"></i>
-                </div>
-                <div class="widget-content">
-                    <div class="kpi-value" id="kpi-pending-tasks">0</div>
-                    <div class="kpi-change negative">-5%</div>
-                </div>
-            </div>
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  if (confirm('Déconnexion ?')) alert('Déconnectée.');
+});
 
-            <!-- Chart Widget -->
-            <div class="widget chart-widget">
-                <div class="widget-header">
-                    <h3>Activité hebdomadaire</h3>
-                    <div class="widget-actions">
-                        <button class="widget-action-btn" aria-label="Expand">
-                            <i class="bi bi-arrows-angle-expand"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="widget-content">
-                    <canvas id="activityChart"></canvas>
-                </div>
-            </div>
+// ====== COLLAPSIBLE SECTIONS ======
+document.querySelectorAll('.section-header.clickable').forEach(header => {
+  header.addEventListener('click', () => {
+    const content = header.nextElementSibling;
+    const isCollapsed = content.classList.contains('collapsed');
+    document.querySelectorAll('.section-content').forEach(el => {
+      if (el !== content) el.classList.add('collapsed');
+    });
+    if (isCollapsed) {
+      content.classList.remove('collapsed');
+      header.classList.remove('collapsed');
+    } else {
+      content.classList.add('collapsed');
+      header.classList.add('collapsed');
+    }
+  });
+});
 
-            <!-- Status Indicators Widget -->
-            <div class="widget status-widget">
-                <div class="widget-header">
-                    <h3>Statut des Patients</h3>
-                </div>
-                <div class="widget-content">
-                    <div class="status-indicators">
-                        <div class="status-item" id="status-arrived">
-                            <div class="status-icon arrived">
-                                <i class="bi bi-person-check"></i>
-                            </div>
-                            <div class="status-info">
-                                <span class="status-count">0</span>
-                                <span class="status-label">Patient arrivé</span>
-                            </div>
-                        </div>
-                        <div class="status-item" id="status-waiting">
-                            <div class="status-icon waiting">
-                                <i class="bi bi-clock"></i>
-                            </div>
-                            <div class="status-info">
-                                <span class="status-count">0</span>
-                                <span class="status-label">Patient en attente</span>
-                            </div>
-                        </div>
-                        <div class="status-item" id="status-in-consultation">
-                            <div class="status-icon in-consultation">
-                                <i class="bi bi-person-gear"></i>
-                            </div>
-                            <div class="status-info">
-                                <span class="status-count">0</span>
-                                <span class="status-label">Consultation en cours</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Table Widget -->
-            <div class="widget table-widget">
-                <div class="widget-header">
-                    <h3>Rendez-vous d'aujourd'hui</h3>
-                    <div class="widget-actions">
-                        <button class="widget-action-btn" onclick="viewAllAppointments()">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="widget-content">
-                    <div class="table-responsive">
-                        <table class="table" id="today-appointments-table">
-                            <thead>
-                                <tr>
-                                    <th>Patient</th>
-                                    <th>Heure</th>
-                                    <th>Statut</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Waiting Patients Widget -->
-            <div class="widget waiting-patients-widget">
-                <div class="widget-header">
-                    <h3>Patients en Attente</h3>
-                    <div class="widget-actions">
-                        <button class="widget-action-btn" onclick="refreshWaitingPatients()">
-                            <i class="bi bi-arrow-clockwise"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="widget-content">
-                    <div class="waiting-patients-list" id="waiting-patients-list">
-                        <div class="no-waiting-patients">Aucun patient en attente</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Upcoming Appointments Widget -->
-            <div class="widget upcoming-appointments-widget">
-                <div class="widget-header">
-                    <h3>Rendez-vous à Venir</h3>
-                    <div class="widget-actions">
-                        <button class="widget-action-btn" onclick="viewAllAppointments()">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="widget-content">
-                    <div class="upcoming-appointments-list" id="upcoming-appointments-list">
-                        <div class="no-upcoming-appointments">Aucun rendez-vous à venir</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Actions Widget -->
-            <div class="widget actions-widget">
-                <div class="widget-header">
-                    <h3>Actions rapides</h3>
-                </div>
-                <div class="widget-content">
-                    <a href="rendez-vous.html" class="quick-action-btn">
-                        <i class="bi bi-calendar-plus"></i>
-                        <span>Nouveau RDV</span>
-                    </a>
-                    <a href="patients.html" class="quick-action-btn">
-                        <i class="bi bi-person-plus"></i>
-                        <span>Ajouter Patient</span>
-                    </a>
-                    <a href="planning.html" class="quick-action-btn">
-                        <i class="bi bi-calendar-week"></i>
-                        <span>Voir Planning</span>
-                    </a>
-                    <a href="#" onclick="exportTodaySchedule()" class="quick-action-btn">
-                        <i class="bi bi-download"></i>
-                        <span>Exporter</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Notifications Widget -->
-            <div class="widget notifications-widget">
-                <div class="widget-header">
-                    <h3>Rappels</h3>
-                    <div class="widget-actions">
-                        <button class="widget-action-btn" onclick="markAllRead()">
-                            <i class="bi bi-check-all"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="widget-content">
-                    <div class="notifications-list">
-                        <div class="notification-item unread">
-                            <div class="notification-icon">
-                                <i class="bi bi-calendar-event"></i>
-                            </div>
-                            <div class="notification-content">
-                                <p>Rendez-vous avec M. Dupont dans 30 min</p>
-                                <span class="notification-time">14:30</span>
-                            </div>
-                        </div>
-                        <div class="notification-item">
-                            <div class="notification-icon">
-                                <i class="bi bi-person"></i>
-                            </div>
-                            <div class="notification-content">
-                                <p>Nouveau patient enregistré</p>
-                                <span class="notification-time">2h ago</span>
-                            </div>
-                        </div>
-                        <div class="notification-item">
-                            <div class="notification-icon">
-                                <i class="bi bi-clock"></i>
-                            </div>
-                            <div class="notification-content">
-                                <p>Rappel: Nettoyer les instruments</p>
-                                <span class="notification-time">4h ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/script.js"></script>
-    <script>
-        // Check authentication
-        const currentUser = dataManager.getCurrentUser();
-        if (!currentUser || currentUser.role !== 'Assistant') {
-            window.location.href = '../../LOGING/html/loging.html';
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('show');
-        }
-
-        function logout() {
-            dataManager.logoutUser();
-            window.location.href = '../../LOGING/html/loging.html';
-        }
-
-        // Load dashboard data
-        document.addEventListener('DOMContentLoaded', function() {
-            loadDashboardData();
-            initActivityChart();
-        });
-
-        function loadDashboardData() {
-            const appointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
-            const patients = JSON.parse(localStorage.getItem('dikra_patients') || '[]');
-
-            // Today's appointments
-            const today = new Date().toISOString().split('T')[0];
-            const todayAppointments = appointments.filter(a => a.date.startsWith(today));
-            document.getElementById('kpi-appointments-today').textContent = todayAppointments.length;
-
-            // Active patients (patients with appointments in last 30 days)
-            const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-            const activePatientIds = new Set();
-            appointments.forEach(a => {
-                if (new Date(a.date) >= thirtyDaysAgo) {
-                    activePatientIds.add(a.patientId);
-                }
-            });
-            document.getElementById('kpi-active-patients').textContent = activePatientIds.size;
-
-            // This week's appointments
-            const weekStart = new Date();
-            weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-            const weekAppointments = appointments.filter(a => new Date(a.date) >= weekStart);
-            document.getElementById('kpi-appointments-week').textContent = weekAppointments.length;
-
-            // Pending tasks (simplified)
-            document.getElementById('kpi-pending-tasks').textContent = Math.floor(Math.random() * 10);
-
-            // Load today's appointments table
-            loadTodayAppointments(todayAppointments, patients);
-
-            // Load status indicators
-            loadStatusIndicators();
-
-            // Load waiting patients
-            loadWaitingPatients();
-
-            // Load upcoming appointments
-            loadUpcomingAppointments();
-        }
-
-        function loadTodayAppointments(todayAppointments, patients) {
-            const tbody = document.querySelector('#today-appointments-table tbody');
-            tbody.innerHTML = '';
-
-            if (todayAppointments.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Aucun rendez-vous aujourd\'hui</td></tr>';
-                return;
-            }
-
-            todayAppointments.slice(0, 5).forEach(a => {
-                const patient = patients.find(p => p.id == a.patientId);
-                const time = a.date.includes('T') ? a.date.split('T')[1].substring(0, 5) : '09:00';
-                const statusBadge = getStatusBadge(a.status);
-                const actions = getAppointmentActions(a.id, a.status);
-                const row = `<tr>
-                    <td>${patient ? patient.nom + ' ' + patient.prenom : 'Patient inconnu'}</td>
-                    <td>${time}</td>
-                    <td>${statusBadge}</td>
-                    <td>${actions}</td>
-                </tr>`;
-                tbody.innerHTML += row;
-            });
-        }
-
-        function getStatusBadge(status) {
-            const statusMap = {
-                'Confirmé': 'success',
-                'En attente': 'warning',
-                'Annulé': 'danger',
-                'Terminé': 'secondary',
-                'Patient arrivé': 'info',
-                'Patient en attente': 'warning',
-                'Consultation en cours': 'primary'
-            };
-            const color = statusMap[status] || 'secondary';
-            return `<span class="badge bg-${color}">${status}</span>`;
-        }
-
-        function getAppointmentActions(appointmentId, currentStatus) {
-            let actions = '';
-            if (currentStatus === 'Confirmé') {
-                actions += `<button class="btn btn-sm btn-success" onclick="markPatientArrived(${appointmentId})" title="Marquer arrivé"><i class="bi bi-check-circle"></i></button>`;
-            } else if (currentStatus === 'Patient arrivé' || currentStatus === 'Patient en attente') {
-                actions += `<button class="btn btn-sm btn-primary" onclick="startConsultation(${appointmentId})" title="Commencer consultation"><i class="bi bi-play-circle"></i></button>`;
-            } else if (currentStatus === 'Consultation en cours') {
-                actions += `<button class="btn btn-sm btn-secondary" onclick="endConsultation(${appointmentId})" title="Terminer consultation"><i class="bi bi-stop-circle"></i></button>`;
-            }
-            return actions;
-        }
-
-        function loadStatusIndicators() {
-            const appointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
-            const today = new Date().toISOString().split('T')[0];
-            const todayAppointments = appointments.filter(a => a.date.startsWith(today));
-
-            const statusCounts = {
-                'Patient arrivé': 0,
-                'Patient en attente': 0,
-                'Consultation en cours': 0
-            };
-
-            todayAppointments.forEach(a => {
-                if (statusCounts.hasOwnProperty(a.status)) {
-                    statusCounts[a.status]++;
-                }
-            });
-
-            document.getElementById('status-arrived').querySelector('.status-count').textContent = statusCounts['Patient arrivé'];
-            document.getElementById('status-waiting').querySelector('.status-count').textContent = statusCounts['Patient en attente'];
-            document.getElementById('status-in-consultation').querySelector('.status-count').textContent = statusCounts['Consultation en cours'];
-        }
-
-        function loadWaitingPatients() {
-            const appointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
-            const patients = JSON.parse(localStorage.getItem('dikra_patients') || '[]');
-            const today = new Date().toISOString().split('T')[0];
-            const todayAppointments = appointments.filter(a => a.date.startsWith(today) && (a.status === 'Patient arrivé' || a.status === 'Patient en attente'));
-
-            const list = document.getElementById('waiting-patients-list');
-
-            if (todayAppointments.length === 0) {
-                list.innerHTML = '<div class="no-waiting-patients">Aucun patient en attente</div>';
-                return;
-            }
-
-            list.innerHTML = '';
-            todayAppointments.forEach(a => {
-                const patient = patients.find(p => p.id == a.patientId);
-                const time = a.date.includes('T') ? a.date.split('T')[1].substring(0, 5) : '09:00';
-                const item = document.createElement('div');
-                item.className = 'waiting-patient-item';
-                item.innerHTML = `
-                    <div class="waiting-patient-info">
-                        <div class="waiting-patient-name">${patient ? patient.nom + ' ' + patient.prenom : 'Patient inconnu'}</div>
-                        <div class="waiting-patient-time">${time} - ${a.status}</div>
-                    </div>
-                    <div class="waiting-patient-actions">
-                        ${a.status === 'Patient arrivé' ? `<button class="waiting-patient-btn btn-consultation" onclick="startConsultation(${a.id})">Consulter</button>` : ''}
-                        ${a.status === 'Patient en attente' ? `<button class="waiting-patient-btn btn-arrived" onclick="markPatientArrived(${a.id})">Arrivé</button>` : ''}
-                    </div>
-                `;
-                list.appendChild(item);
-            });
-        }
-
-        function loadUpcomingAppointments() {
-            const appointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
-            const patients = JSON.parse(localStorage.getItem('dikra_patients') || '[]');
-            const today = new Date();
-            const nextWeek = new Date(today);
-            nextWeek.setDate(today.getDate() + 7);
-
-            const upcomingAppointments = appointments.filter(a => {
-                const appointmentDate = new Date(a.date);
-                return appointmentDate > today && appointmentDate <= nextWeek && a.status !== 'Annulé' && a.status !== 'Terminé';
-            }).sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 10);
-
-            const list = document.getElementById('upcoming-appointments-list');
-
-            if (upcomingAppointments.length === 0) {
-                list.innerHTML = '<div class="no-upcoming-appointments">Aucun rendez-vous à venir</div>';
-                return;
-            }
-
-            list.innerHTML = '';
-            upcomingAppointments.forEach(a => {
-                const patient = patients.find(p => p.id == a.patientId);
-                const date = new Date(a.date).toLocaleDateString('fr-FR');
-                const time = a.date.includes('T') ? a.date.split('T')[1].substring(0, 5) : '09:00';
-                const item = document.createElement('div');
-                item.className = 'upcoming-appointment-item';
-                item.innerHTML = `
-                    <div class="upcoming-appointment-info">
-                        <div class="upcoming-appointment-name">${patient ? patient.nom + ' ' + patient.prenom : 'Patient inconnu'}</div>
-                        <div class="upcoming-appointment-date">${date} à ${time}</div>
-                    </div>
-                `;
-                list.appendChild(item);
-            });
-        }
-
-        function markPatientArrived(appointmentId) {
-            updateAppointmentStatus(appointmentId, 'Patient arrivé');
-        }
-
-        function startConsultation(appointmentId) {
-            updateAppointmentStatus(appointmentId, 'Consultation en cours');
-        }
-
-        function endConsultation(appointmentId) {
-            updateAppointmentStatus(appointmentId, 'Terminé');
-        }
-
-        function updateAppointmentStatus(appointmentId, newStatus) {
-            const appointments = JSON.parse(localStorage.getItem('dikra_appointments') || '[]');
-            const index = appointments.findIndex(a => a.id == appointmentId);
-            if (index !== -1) {
-                appointments[index].status = newStatus;
-                localStorage.setItem('dikra_appointments', JSON.stringify(appointments));
-                loadDashboardData();
-                showToast(`Statut mis à jour: ${newStatus}`, 'success');
-            }
-        }
-
-        function refreshWaitingPatients() {
-            loadWaitingPatients();
-        }
-
-        function initActivityChart() {
-            const ctx = document.getElementById('activityChart');
-            if (ctx) {
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-                        datasets: [{
-                            label: 'Rendez-vous',
-                            data: [8, 12, 15, 10, 18, 5, 3],
-                            borderColor: '#06b6d4',
-                            backgroundColor: 'rgba(6, 182, 212, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grid: {
-                                    color: 'rgba(0,0,0,0.05)'
-                                }
-                            },
-                            x: {
-                                grid: {
-                                    display: false
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        function viewAllAppointments() {
-            window.location.href = 'rendez-vous.html';
-        }
-
-        function exportTodaySchedule() {
-            alert('Fonction d\'export en développement');
-        }
-
-        function markAllRead() {
-            alert('Toutes les notifications marquées comme lues');
-        }
-    </script>
-
+// Open Rendez-vous by default
+document.getElementById('section-rdv-content').classList.remove('collapsed');
+document.getElementById('section-rdv-toggle').classList.remove('collapsed');
+</script>
+<script src="../js/assistante.js"></script>
 </body>
 </html>
