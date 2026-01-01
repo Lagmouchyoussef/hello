@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rendez-vous via Espace Patient - Cabinet Dentaire Al-Farabi</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* Styles identiques */
@@ -587,6 +588,15 @@ body {
           <input type="text" class="form-control" id="patient" placeholder="Nom du patient" required>
         </div>
         <div class="form-group">
+          <label class="form-label">Type de rendez-vous</label>
+          <select class="form-control" id="type" required>
+            <option value="Consultation">Consultation</option>
+            <option value="Traitement">Traitement</option>
+            <option value="Urgence">Urgence</option>
+            <option value="Suivi">Suivi</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label class="form-label">Traitement</label>
           <input type="text" class="form-control" id="treatment" placeholder="Type de traitement" required>
         </div>
@@ -625,6 +635,7 @@ body {
           <th>Date</th>
           <th>Heure</th>
           <th>Patient</th>
+          <th>Type</th>
           <th>Traitement</th>
           <th>Statut</th>
           <th>Actions</th>

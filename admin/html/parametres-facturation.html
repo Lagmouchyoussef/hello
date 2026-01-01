@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres de facturation - Admin</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <img src="../images/logo.png" alt="Logo" class="logo">
+                <h1>Paramètres de facturation</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <i class="fas fa-user"></i>
+                    <span id="user-name">Admin</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <nav class="admin-sidebar">
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle"><i class="fas fa-users"></i> Patients <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="fiches-patients.html">Fiches patients</a></li>
+                        <li><a href="Listes des Rendez-vous.html">Listes des Rendez-vous</a></li>
+                        <li><a href="ordonnances.html">Ordonnances</a></li>
+                        <li><a href="certificats-medicaux.html">Certificats médicaux</a></li>
+                        <li><a href="feuilles-de-soins.html">Feuilles de soins</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle"><i class="fas fa-calculator"></i> Comptabilité <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="comptabilite-generale.html">Comptabilité générale</a></li>
+                        <li><a href="paiements-recus.html">Paiements reçus</a></li>
+                        <li><a href="charges-depenses.html">Charges & Dépenses</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle"><i class="fas fa-boxes"></i> Stock <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="materiel-dentaire.html">Matériel dentaire</a></li>
+                        <li><a href="consommables.html">Consommables</a></li>
+                        <li><a href="medicaments.html">Médicaments</a></li>
+                        <li><a href="protheses.html">Prothèses</a></li>
+                        <li><a href="imagerie-medicale.html">Imagerie médicale</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle"><i class="fas fa-cogs"></i> Configuration <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="informations-cabinet.html">Informations cabinet</a></li>
+                        <li><a href="parametres-facturation.html">Paramètres de facturation</a></li>
+                        <li><a href="mon-profil.html">Mon profil</a></li>
+                        <li><a href="notifications.html">Notifications</a></li>
+                    </ul>
+                </li>
+                <li><a href="messagerie-interne.html"><i class="fas fa-envelope"></i> Messagerie interne</a></li>
+                <li><a href="assistant-ia.html"><i class="fas fa-robot"></i> Assistant IA</a></li>
+                <li><a href="envoi-sms.html"><i class="fas fa-sms"></i> Envoi SMS</a></li>
+                <li><a href="taches-rappels.html"><i class="fas fa-tasks"></i> Tâches & Rappels</a></li>
+                <li><a href="notes-personnelles.html"><i class="fas fa-sticky-note"></i> Notes personnelles</a></li>
+                <li><a href="statistiques.html"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
+                <li><a href="Liste du personnel.html"><i class="fas fa-users-cog"></i> Liste du personnel</a></li>
+                <li><a href="roles-permissions.html"><i class="fas fa-user-shield"></i> Rôles & Permissions</a></li>
+                <li><a href="ajouter-un-membre.html"><i class="fas fa-user-plus"></i> Ajouter un membre</a></li>
+                <li><a href="salle-attente.html"><i class="fas fa-clock"></i> Salle d'attente</a></li>
+                <li><a href="via-espace-patient.html"><i class="fas fa-user-injured"></i> Via Espace Patient</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="content-header">
+                <h2>Paramètres de facturation</h2>
+                <p>Configurez les paramètres de facturation pour votre cabinet.</p>
+            </div>
+
+            <div class="form-container">
+                <form id="billing-form">
+                    <div class="form-group">
+                        <label for="tva-rate">Taux TVA (%)</label>
+                        <input type="number" id="tva-rate" name="tva-rate" step="0.01" placeholder="Ex: 20.00">
+                    </div>
+                    <div class="form-group">
+                        <label for="currency">Devise</label>
+                        <select id="currency" name="currency">
+                            <option value="EUR">EUR</option>
+                            <option value="USD">USD</option>
+                            <option value="MAD">MAD</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="payment-terms">Conditions de paiement par défaut</label>
+                        <input type="text" id="payment-terms" name="payment-terms" placeholder="Ex: 30 jours">
+                    </div>
+                    <div class="form-group">
+                        <label for="invoice-prefix">Préfixe des factures</label>
+                        <input type="text" id="invoice-prefix" name="invoice-prefix" placeholder="Ex: FAC">
+                    </div>
+                    <div class="form-group">
+                        <label for="default-discount">Remise par défaut (%)</label>
+                        <input type="number" id="default-discount" name="default-discount" step="0.01" placeholder="Ex: 0.00">
+                    </div>
+                    <div class="form-group">
+                        <label for="bank-details">Détails bancaires</label>
+                        <textarea id="bank-details" name="bank-details" rows="4" placeholder="Entrez les détails bancaires..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Enregistrer</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/admin.js"></script>
+    <script>
+        // Load saved data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedData = localStorage.getItem('billing-params');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                document.getElementById('tva-rate').value = data.tvaRate || '';
+                document.getElementById('currency').value = data.currency || 'EUR';
+                document.getElementById('payment-terms').value = data.paymentTerms || '';
+                document.getElementById('invoice-prefix').value = data.invoicePrefix || '';
+                document.getElementById('default-discount').value = data.defaultDiscount || '';
+                document.getElementById('bank-details').value = data.bankDetails || '';
+            }
+        });
+
+        // Save data on form submit
+        document.getElementById('billing-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const data = {
+                tvaRate: document.getElementById('tva-rate').value,
+                currency: document.getElementById('currency').value,
+                paymentTerms: document.getElementById('payment-terms').value,
+                invoicePrefix: document.getElementById('invoice-prefix').value,
+                defaultDiscount: document.getElementById('default-discount').value,
+                bankDetails: document.getElementById('bank-details').value
+            };
+            localStorage.setItem('billing-params', JSON.stringify(data));
+            alert('Paramètres enregistrés avec succès!');
+        });
+    </script>
+</body>
+</html>
