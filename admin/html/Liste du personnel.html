@@ -772,7 +772,7 @@ function renderStaff() {
         <td>${member.email}</td>
         <td><span class="role-badge ${roleClass}">${member.role}</span></td>
         <td>${member.phone || '-'}</td>
-        <td>-</td>
+        <td>${member.specialty || '-'}</td>
         <td class="action-buttons">
           <button class="btn btn-small btn-success" title="Modifier" onclick="editStaff('${member.id}')"><i class="fas fa-edit"></i></button>
           <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteStaff('${member.id}')"><i class="fas fa-times"></i></button>

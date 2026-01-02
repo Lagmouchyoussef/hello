@@ -514,7 +514,7 @@ flex-direction: column;
 </div>
 </div><script src="../js/navbar.js"></script><script>
 function loadProfile() {
-const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+const profile = JSON.parse(localStorage.getItem('assistantProfile') || '{}');
 document.getElementById('prenom').value = profile.prenom || '';
 document.getElementById('nom').value = profile.nom || '';
 document.getElementById('email').value = profile.email || '';
@@ -536,8 +536,8 @@ numero_ordre: document.getElementById('numero_ordre').value,
 adresse: document.getElementById('adresse').value,
 biographie: document.getElementById('biographie').value
 };
-localStorage.setItem('userProfile', JSON.stringify(profile));
-dentalDataManager.showMessage('Profil enregistré avec succès !', 'success');
+localStorage.setItem('assistantProfile', JSON.stringify(profile));
+dentalDataManager.showMessage('Informations de l\'assistante mises à jour.', 'success');
 loadUserInfo(); // Update the header with new info
 }
 function resetForm() {
@@ -549,7 +549,7 @@ document.getElementById('profileForm').addEventListener('submit', saveProfile);
 loadProfile();
 loadUserInfo();
 function loadUserInfo() {
-   const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+   const profile = JSON.parse(localStorage.getItem('assistantProfile') || '{}');
    const fullName = (profile.prenom || '') + ' ' + (profile.nom || '');
    const displayName = fullName.trim() || 'Nom de l\'utilisateur';
    document.getElementById('profileAvatar').textContent = displayName.charAt(0).toUpperCase() || 'A';
