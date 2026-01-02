@@ -410,10 +410,24 @@ grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 gap: 1rem;
 }
 .btn-group {
-display: flex;
-gap: 1rem;
-margin-top: 2rem;
-justify-content: flex-end ;
+ display: flex;
+ gap: 1rem;
+ margin-top: 2rem;
+ justify-content: flex-end ;
+}
+.message-card {
+ padding: 1rem;
+ border-radius: var(--border-radius);
+ margin-bottom: 1rem;
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
+ font-weight: 500;
+}
+.message-card.success {
+ background: #d1fae5;
+ color: #065f46;
+ border: 1px solid #a7f3d0;
 }
 @media (max-width: 992px) {
 .sidebar { width: 250px; }
@@ -453,6 +467,7 @@ flex-direction: column;
 <script src="../../LOGING/js/data.js"></script>
 </head>
 <body class="light-mode">
+<script>window.profileKey = 'assistant_profile';</script>
 <div id="navbar-container"></div><div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Mon Profil</h1>
@@ -466,6 +481,7 @@ flex-direction: column;
 </div>
 </div>
 <div class="profile-content">
+<div id="messageCard" class="message-card" style="display: none;"></div>
 <form id="profileForm">
 <div class="form-row">
 <div class="form-group">
@@ -514,7 +530,7 @@ flex-direction: column;
 </div>
 </div><script src="../js/navbar.js"></script><script>
 function loadProfile() {
-const profile = JSON.parse(localStorage.getItem('assistantProfile') || '{}');
+const profile = JSON.parse(localStorage.getItem('assistant_profile') || '{}');
 document.getElementById('prenom').value = profile.prenom || '';
 document.getElementById('nom').value = profile.nom || '';
 document.getElementById('email').value = profile.email || '';
@@ -525,20 +541,27 @@ document.getElementById('adresse').value = profile.adresse || '';
 document.getElementById('biographie').value = profile.biographie || '';
 }
 function saveProfile(e) {
-e.preventDefault();
-const profile = {
-prenom: document.getElementById('prenom').value,
-nom: document.getElementById('nom').value,
-email: document.getElementById('email').value,
-telephone: document.getElementById('telephone').value,
-specialite: document.getElementById('specialite').value,
-numero_ordre: document.getElementById('numero_ordre').value,
-adresse: document.getElementById('adresse').value,
-biographie: document.getElementById('biographie').value
-};
-localStorage.setItem('assistantProfile', JSON.stringify(profile));
-dentalDataManager.showMessage('Informations de l\'assistante mises à jour.', 'success');
-loadUserInfo(); // Update the header with new info
+ e.preventDefault();
+ const profile = {
+ prenom: document.getElementById('prenom').value,
+ nom: document.getElementById('nom').value,
+ email: document.getElementById('email').value,
+ telephone: document.getElementById('telephone').value,
+ specialite: document.getElementById('specialite').value,
+ numero_ordre: document.getElementById('numero_ordre').value,
+ adresse: document.getElementById('adresse').value,
+ biographie: document.getElementById('biographie').value
+ };
+ localStorage.setItem('assistant_profile', JSON.stringify(profile));
+ const messageCard = document.getElementById('messageCard');
+ messageCard.innerHTML = '<i class="fas fa-check-circle"></i> Profil sauvegardé !';
+ messageCard.className = 'message-card success';
+ messageCard.style.display = 'flex';
+ setTimeout(() => {
+  messageCard.style.display = 'none';
+ }, 3000);
+ loadUserInfo(); // Update the header with new info
+ updateUserInfo(); // Update the sidebar with new info
 }
 function resetForm() {
 if (confirm('Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les mod ifications non enregistrées seront perd ues.')) {
@@ -549,7 +572,7 @@ document.getElementById('profileForm').addEventListener('submit', saveProfile);
 loadProfile();
 loadUserInfo();
 function loadUserInfo() {
-   const profile = JSON.parse(localStorage.getItem('assistantProfile') || '{}');
+   const profile = JSON.parse(localStorage.getItem('assistant_profile') || '{}');
    const fullName = (profile.prenom || '') + ' ' + (profile.nom || '');
    const displayName = fullName.trim() || 'Nom de l\'utilisateur';
    document.getElementById('profileAvatar').textContent = displayName.charAt(0).toUpperCase() || 'A';

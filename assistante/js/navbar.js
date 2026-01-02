@@ -381,11 +381,15 @@ document.querySelectorAll('.sidebar-link').forEach(link => {
 
 // Update user info dynamically
 function updateUserInfo() {
-   const cabinetInfo = JSON.parse(localStorage.getItem('cabinetInfo')) || {};
+   const profileKey = window.profileKey || 'cabinetInfo';
+   const profile = JSON.parse(localStorage.getItem(profileKey) || '{}');
 
-   document.getElementById('cabinetName').textContent = cabinetInfo.nom_medecin ? `Cabinet Dentaire ${cabinetInfo.nom_medecin}` : 'Cabinet Dentaire Al-Farabi';
-   document.getElementById('userAvatar').textContent = cabinetInfo.nom_medecin ? cabinetInfo.nom_medecin.charAt(0).toUpperCase() : 'D';
-   document.getElementById('userName').textContent = cabinetInfo.nom_medecin || 'Nom du médecin';
-   document.getElementById('userRole').textContent = cabinetInfo.titre_medecin || 'Titre du médecin';
+   const fullName = (profile.prenom || '') + ' ' + (profile.nom || '');
+   const displayName = fullName.trim() || (profile.nom_medecin || 'Nom du médecin');
+
+   document.getElementById('cabinetName').textContent = profile.nom_medecin ? `Cabinet Dentaire ${profile.nom_medecin}` : 'Cabinet Dentaire Al-Farabi';
+   document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase() || 'D';
+   document.getElementById('userName').textContent = displayName;
+   document.getElementById('userRole').textContent = profile.titre_medecin || 'Assistante';
 }
 
