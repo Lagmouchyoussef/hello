@@ -6,7 +6,10 @@ class DentalDataManager {
             patients: 'dental_patients',
             appointments: 'dental_appointments',
             roles: 'dental_roles',
-            currentUser: 'dental_currentUser'
+            currentUser: 'dental_currentUser',
+            profile_admin: 'dental_profile_admin',
+            profile_assistant: 'dental_profile_assistant',
+            profile_patient: 'dental_profile_patient'
         };
         this.initData();
     }
@@ -226,6 +229,55 @@ class DentalDataManager {
         }, 3000);
     }
 
+    // Loader display
+    showLoader() {
+        let loader = document.getElementById('global-loader');
+        if (!loader) {
+            loader = document.createElement('div');
+            loader.id = 'global-loader';
+            loader.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            `;
+            const spinner = document.createElement('div');
+            spinner.style.cssText = `
+                width: 50px;
+                height: 50px;
+                border: 5px solid #f3f3f3;
+                border-top: 5px solid #3498db;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            `;
+            loader.appendChild(spinner);
+            document.body.appendChild(loader);
+
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        loader.style.display = 'flex';
+    }
+
+    hideLoader() {
+        const loader = document.getElementById('global-loader');
+        if (loader) {
+            loader.style.display = 'none';
+        }
+    }
+
     // Permission check
     hasPermission(permission) {
         const currentUser = this.getCurrentUser();
@@ -233,6 +285,46 @@ class DentalDataManager {
         const role = this.getAll('roles').find(r => r.name === currentUser.role);
         if (!role) return false;
         return role.permissions.includes('all') || role.permissions.includes(permission);
+    }
+
+    // Profile management
+    getProfile() {
+        const currentUser = this.getCurrentUser();
+        if (!currentUser) return null;
+        const roleKey = this.getRoleProfileKey(currentUser.role);
+        if (!roleKey) return null;
+        const profiles = this.getAll(roleKey);
+        return profiles.length > 0 ? profiles[0] : null;
+    }
+
+    saveProfile(profileData) {
+        const currentUser = this.getCurrentUser();
+        if (!currentUser) {
+            this.showMessage('Utilisateur non connecté.', 'error');
+            return false;
+        }
+        const roleKey = this.getRoleProfileKey(currentUser.role);
+        if (!roleKey) {
+            this.showMessage('Rôle invalide pour le profil.', 'error');
+            return false;
+        }
+        const existing = this.getAll(roleKey);
+        if (existing.length > 0) {
+            this.update(roleKey, existing[0].id, profileData);
+        } else {
+            this.create(roleKey, profileData);
+        }
+        this.showMessage('Profil sauvegardé avec succès.', 'success');
+        return true;
+    }
+
+    getRoleProfileKey(role) {
+        const roleMap = {
+            'Admin': 'profile_admin',
+            'Assistant': 'profile_assistant',
+            'Patient': 'profile_patient'
+        };
+        return roleMap[role] || null;
     }
 }
 

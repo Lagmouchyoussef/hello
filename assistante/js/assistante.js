@@ -809,7 +809,7 @@ class AssistanteCRUD {
     }
 
     renderProfil() {
-        const profile = this.getAll('profile')[0] || {};
+        const profile = dentalDataManager.getProfile() || {};
         return `
             <div class="assistant-card">
                 <div class="card-header">
@@ -903,13 +903,7 @@ class AssistanteCRUD {
                 e.preventDefault();
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData);
-                const existing = this.getAll('profile');
-                if (existing.length > 0) {
-                    this.update('profile', existing[0].id, data);
-                } else {
-                    this.create('profile', data);
-                }
-                alert('Profil sauvegardé !');
+                dentalDataManager.saveProfile(data);
             });
         }
     }

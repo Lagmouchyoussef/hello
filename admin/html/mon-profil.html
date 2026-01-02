@@ -519,16 +519,17 @@ flex-direction: column;
 </div><script src="../js/navbar.js"></script><script>
 function loadProfile() {
 const currentUser = dentalDataManager.getCurrentUser();
+const profile = dentalDataManager.getProfile() || {};
 if (currentUser) {
     document.getElementById('prenom').value = currentUser.firstName || '';
     document.getElementById('nom').value = currentUser.lastName || '';
     document.getElementById('email').value = currentUser.email || '';
     document.getElementById('telephone').value = currentUser.phone || '';
     document.getElementById('specialite').value = currentUser.specialty || '';
-    // Additional fields can be added to user if needed
-    document.getElementById('numero_ordre').value = currentUser.numero_ordre || '';
-    document.getElementById('adresse').value = currentUser.adresse || '';
-    document.getElementById('biographie').value = currentUser.biographie || '';
+    // Additional fields from profile
+    document.getElementById('numero_ordre').value = profile.numero_ordre || '';
+    document.getElementById('adresse').value = profile.adresse || '';
+    document.getElementById('biographie').value = profile.biographie || '';
 }
 }
 function saveProfile(e) {
@@ -543,12 +544,14 @@ resetBtn.disabled = true;
 
 const currentUser = dentalDataManager.getCurrentUser();
 if (currentUser) {
-    const updatedData = {
+    const userData = {
         firstName: document.getElementById('prenom').value,
         lastName: document.getElementById('nom').value,
         email: document.getElementById('email').value,
         phone: document.getElementById('telephone').value,
-        specialty: document.getElementById('specialite').value,
+        specialty: document.getElementById('specialite').value
+    };
+    const profileData = {
         numero_ordre: document.getElementById('numero_ordre').value,
         adresse: document.getElementById('adresse').value,
         biographie: document.getElementById('biographie').value
@@ -556,10 +559,11 @@ if (currentUser) {
 
     // Simulate async operation
     setTimeout(() => {
-        const success = dentalDataManager.update('users', currentUser.id, updatedData);
-        if (success) {
+        const userSuccess = dentalDataManager.update('users', currentUser.id, userData);
+        const profileSuccess = dentalDataManager.saveProfile(profileData);
+        if (userSuccess && profileSuccess) {
             // Update currentUser in localStorage
-            const updatedUser = { ...currentUser, ...updatedData };
+            const updatedUser = { ...currentUser, ...userData };
             dentalDataManager.loginUser(updatedUser);
             dentalDataManager.showMessage('Profil enregistré avec succès.', 'success');
             updateUserInfo(); // Update navbar

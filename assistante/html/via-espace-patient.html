@@ -943,7 +943,9 @@ body {
             <option value="Traitement">Traitement</option>
             <option value="Urgence">Urgence</option>
             <option value="Suivi">Suivi</option>
+            <option value="Autre">Autre</option>
           </select>
+          <input type="text" id="custom-type" class="form-control" placeholder="Spécifiez le type" style="display: none; margin-top: 0.5rem;">
         </div>
         <div class="form-group">
           <label class="form-label">Traitement</label>
@@ -1042,6 +1044,7 @@ function renderAppointments() {
 function showForm() {
   document.getElementById('addForm').style.display = 'block';
   document.getElementById('appointmentForm').reset();
+  document.getElementById('custom-type').style.display = 'none';
   editingIndex = -1;
   document.querySelector('#addForm .appointments-title').textContent = 'Ajouter un Rendez-vous';
 }
@@ -1052,11 +1055,19 @@ function hideForm() {
 
 function saveAppointment(e) {
   e.preventDefault();
+  let type = document.getElementById('type').value;
+  if (type === 'Autre') {
+    type = document.getElementById('custom-type').value.trim();
+    if (!type) {
+      alert('Veuillez spécifier le type de rendez-vous.');
+      return;
+    }
+  }
   const appointment = {
     date: document.getElementById('date').value,
     time: document.getElementById('time').value,
     patient: document.getElementById('patient').value,
-    treatment: document.getElementById('treatment').value,
+    treatment: type,
     status: document.getElementById('status').value
   };
   if (editingIndex >= 0) {
@@ -1091,6 +1102,17 @@ function cancelAppointment(index) {
 // Event listeners
 document.getElementById('searchInput').addEventListener('input', renderAppointments);
 document.getElementById('statusFilter').addEventListener('change', renderAppointments);
+document.getElementById('type').addEventListener('change', function() {
+  const customInput = document.getElementById('custom-type');
+  if (this.value === 'Autre') {
+    customInput.style.display = 'block';
+    customInput.required = true;
+  } else {
+    customInput.style.display = 'none';
+    customInput.required = false;
+    customInput.value = '';
+  }
+});
 
 // Initial render
 renderAppointments();

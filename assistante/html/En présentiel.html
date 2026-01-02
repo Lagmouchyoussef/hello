@@ -1161,9 +1161,6 @@
                         </label>
                         <select id="doctor" name="doctor" class="form-control" required>
                             <option value="">Sélectionner un médecin</option>
-                            <option value="Dr. Mohammed Alami">Dr. Mohammed Alami</option>
-                            <option value="Dr. Fatima Bennani">Dr. Fatima Bennani</option>
-                            <option value="Dr. Karim Tazi">Dr. Karim Tazi</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1403,8 +1400,22 @@
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('appointmentdate').min = today;
 
+        // Load doctors
+        function loadDoctors() {
+            const doctors = dentalDataManager.getAll('users').filter(u => u.role !== 'Patient');
+            const doctorSelect = document.getElementById('doctor');
+            doctorSelect.innerHTML = '<option value="">Sélectionner un médecin</option>';
+            doctors.forEach(doctor => {
+                const option = document.createElement('option');
+                option.value = `${doctor.firstName} ${doctor.lastName}`;
+                option.textContent = `${doctor.firstName} ${doctor.lastName}`;
+                doctorSelect.appendChild(option);
+            });
+        }
+
         // Load waiting list on page load
         renderWaitingList();
+        loadDoctors();
     </script>
 </body>
 </html>
