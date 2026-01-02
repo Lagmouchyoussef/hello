@@ -356,7 +356,7 @@
         /* Main Content */
         .main-content {
             margin-left: 280px;
-            padding: 2rem;
+            padding: 1.5rem;
             min-height: 100vh;
             transition: var(--transition);
         }
@@ -365,13 +365,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             flex-wrap: wrap;
             gap: 1rem;
         }
 
         .page-title {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 700;
             letter-spacing: -0.025em;
             color: var(--text-primary);
@@ -437,7 +437,7 @@
         }
 
         .online-bookings-header {
-            padding: 1.5rem;
+            padding: 1rem;
             background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
             color: white;
             display: flex;
@@ -451,7 +451,7 @@
         }
 
         .filters-section {
-            padding: 1.5rem;
+            padding: 1rem;
             background: var(--section-bg);
             border-bottom: 1px solid var(--border-color);
             display: flex;
@@ -488,7 +488,7 @@
 
         .online-bookings-table th,
         .online-bookings-table td  {
-            padding: 1rem;
+            padding: 0.75rem;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
         }
@@ -549,7 +549,7 @@
             background: var(--bg-primary);
             border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
-            padding: 1.5rem;
+            padding: 1rem;
             margin-top: 1rem;
             display: none;
         }
@@ -595,33 +595,81 @@
             margin-bottom: 0.5rem;
         }
 
-        .stats-card s {
+        .stats-cards {
             display: grid ;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
         }
 
         .stats-card{
             background: var(--bg-secondary);
             border-radius: var(--border-radius);
-            padding: 1.5rem;
+            padding: 1rem;
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border-color);
             text-align: center;
         }
 
         .stats-number {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         .stats-label {
             color: var(--text-secondary);
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             font-weight: 600;
+        }
+
+        .stats-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .total-card .stats-icon {
+            color: var(--medical-blue);
+        }
+
+        .pending-card .stats-icon {
+            color: var(--warning);
+        }
+
+        .confirmed-card .stats-icon {
+            color: var(--success);
+        }
+
+        .today-card .stats-icon {
+            color: var(--ai-purple);
+        }
+
+        .total-card {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1), rgba(59, 130, 246, 0.1));
+            border-left: 4px solid var(--medical-blue);
+        }
+
+        .pending-card {
+            background: linear-gradient(135deg, rgba(217, 119, 6, 0.1), rgba(251, 191, 36, 0.1));
+            border-left: 4px solid var(--warning);
+        }
+
+        .confirmed-card {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(16, 185, 129, 0.1));
+            border-left: 4px solid var(--success);
+        }
+
+        .today-card {
+            background: linear-gradient(135deg, rgba(126, 34, 206, 0.1), rgba(168, 85, 247, 0.1));
+            border-left: 4px solid var(--ai-purple);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
         }
 
         /* Responsive design */
@@ -1116,19 +1164,31 @@
 
         <!-- Statistics Cards -->
         <div class="stats-cards">
-            <div class="stats-card">
+            <div class="stats-card total-card">
+                <div class="stats-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
                 <div class="stats-number" id="totalBookings">0</div>
                 <div class="stats-label">Total demandes</div>
             </div>
-            <div class="stats-card">
+            <div class="stats-card pending-card">
+                <div class="stats-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
                 <div class="stats-number" id="pendingBookings">0</div>
                 <div class="stats-label">En attente</div>
             </div>
-            <div class="stats-card">
+            <div class="stats-card confirmed-card">
+                <div class="stats-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
                 <div class="stats-number" id="confirmedBookings">0</div>
                 <div class="stats-label">Confirmés</div>
             </div>
-            <div class="stats-card">
+            <div class="stats-card today-card">
+                <div class="stats-icon">
+                    <i class="fas fa-calendar-day"></i>
+                </div>
                 <div class="stats-number" id="todayBookings">0</div>
                 <div class="stats-label">Aujourd'hui</div>
             </div>
