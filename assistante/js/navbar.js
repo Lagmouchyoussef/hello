@@ -6,7 +6,7 @@ const navbarHTML = `
     <div class="cabinet-logo">
       <i class="fas fa-tooth"></i>
     </div>
-    <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+    <div class="cabinet-name" id="cabinetName">Cabinet Dentaire</div>
     <div class="cabinet-subtitle">Casablanca, Maroc</div>
   </div>
   <!-- Navigation Menu -->
@@ -390,12 +390,12 @@ document.querySelectorAll('.sidebar-link').forEach(link => {
 
 // Update user info dynamically
 function updateUserInfo() {
-  const currentUser = dentalDataManager.getCurrentUser();
-  if (currentUser) {
-    document.getElementById('userAvatar').textContent = currentUser.avatar || currentUser.name.charAt(0).toUpperCase();
-    document.getElementById('userName').textContent = currentUser.name;
-    document.getElementById('userRole').textContent = currentUser.role;
-  }
+   const cabinetInfo = JSON.parse(localStorage.getItem('cabinetInfo')) || {};
+
+   document.getElementById('cabinetName').textContent = cabinetInfo.nom_medecin ? `Cabinet Dentaire ${cabinetInfo.nom_medecin}` : 'Cabinet Dentaire';
+   document.getElementById('userAvatar').textContent = cabinetInfo.nom_medecin ? cabinetInfo.nom_medecin.charAt(0).toUpperCase() : 'D';
+   document.getElementById('userName').textContent = cabinetInfo.nom_medecin || 'Nom du médecin';
+   document.getElementById('userRole').textContent = cabinetInfo.titre_medecin || 'Titre du médecin';
 }
 
 // Call updateUserInfo after DOM is loaded

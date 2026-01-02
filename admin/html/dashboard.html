@@ -1693,9 +1693,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Listen for localStorage changes (from other tabs/windows)
 window.addEventListener('storage', function(e) {
-   if (e.key === 'accountingEntries' || e.key === 'appointments') {
-     updateKPIs(); // This will also update the charts
-   }
+    if (e.key === 'accountingEntries') {
+      updateRevenueChart(); // Update revenue chart when accounting entries change
+      updateKPIs(); // Update other KPIs
+    } else if (e.key === 'appointments') {
+      updateKPIs(); // Update KPIs and charts for appointments
+    }
 });
 
 // Listen for cabinet info updates (real-time)
