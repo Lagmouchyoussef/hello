@@ -105,18 +105,6 @@ const navbarHTML = `
       </div>
       <div class="section-content" id="section-compta-content">
         <div class="sidebar-item">
-          <a href="comptabilite-generale.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
-            Comptabilité générale
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="charges-depenses.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-money-bill-wave"></i></span>
-            Charges & dépenses
-          </a>
-        </div>
-        <div class="sidebar-item">
           <a href="paiements-recus.html" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
             Paiements reçus
