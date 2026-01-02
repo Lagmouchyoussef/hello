@@ -4,9 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cabinet dentaire - Logiciel de Gestion Professionnel</title>
+<title>Cabinet dentaire - Tableau de Bord Administrateur</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 * {
   margin: 0;
@@ -403,45 +404,122 @@ body {
   font-weight: 600;
 }
 
-/* dashboard Cards */
-.dashboard-grid{
-  display: grid ;
+/* Dashboard Styles */
+.dashboard-container {
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.dashboard-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin: 0.25rem 0 0 0;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.date-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.date-filter label {
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.date-filter select {
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* KPI Cards */
+.kpi-grid {
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
-.dashboard-card{
+.kpi-card {
   background: var(--bg-secondary);
   border-radius: var(--border-radius);
   padding: 1.5rem;
   box-shadow: var(--card-shadow);
   border: 1px solid var(--border-color);
   transition: var(--transition);
+  position: relative;
+  overflow: hidden;
 }
 
-.dashboard-card:hover {
+.kpi-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.15);
 }
 
-.card-header {
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--medical-blue);
+}
+
+.kpi-card.revenue::before { background: linear-gradient(180deg, #059669, #047857); }
+.kpi-card.patients::before { background: linear-gradient(180deg, #3b82f6, #2563eb); }
+.kpi-card.appointments::before { background: linear-gradient(180deg, #f59e0b, #d97706); }
+.kpi-card.staff::before { background: linear-gradient(180deg, #8b5cf6, #7c3aed); }
+
+.kpi-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.25rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
 }
 
-.card-title {
+.kpi-title {
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.card-icon {
+.kpi-icon {
   width: 48px;
   height: 48px;
-  border-radius: 1.25rem;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -450,19 +528,354 @@ body {
   color: var(--medical-blue);
 }
 
-.card-stats {
-  font-size: 2.25rem;
+.kpi-value {
+  font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
   color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  line-height: 1;
 }
 
-.card-trend{
+.kpi-change {
   display: flex;
   align-items: center;
   gap: 0.25rem;
   font-size: 0.875rem;
   font-weight: 500;
+}
+
+.kpi-change.positive {
+  color: var(--success);
+}
+
+.kpi-change.negative {
+  color: var(--danger);
+}
+
+.kpi-change.neutral {
+  color: var(--text-secondary);
+}
+
+/* Charts Section */
+.charts-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.chart-card {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.chart-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.chart-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin: 0.25rem 0 0 0;
+}
+
+.chart-container {
+  height: 300px;
+  position: relative;
+}
+
+.pie-chart-container {
+  height: 250px;
+  position: relative;
+}
+
+/* Activities Section */
+.activities-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.activity-card {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.activity-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.activity-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-text {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.activity-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status-completed { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+.status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+.status-cancelled { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+/* Quick Actions */
+.quick-actions {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+
+.actions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.actions-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--medical-blue);
+}
+
+.action-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.125rem;
+}
+
+.action-content h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.action-content p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Data Table Widget */
+.data-table-widget {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.table-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dashboard-table th {
+  background: var(--section-bg);
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: sticky;
+  top: 0;
+}
+
+.dashboard-table tbody tr:hover {
+  background: var(--section-bg);
+}
+
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-dot.active { background: var(--success); }
+.status-dot.inactive { background: var(--text-gray); }
+.status-dot.pending { background: var(--warning); }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.5rem;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-section,
+  .activities-section {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-value {
+    font-size: 2rem;
+  }
 }
 
 /* Maroc-Specific Features */
@@ -870,13 +1283,359 @@ body {
 </head>
 <body class="light-mode">
 <div id="navbar-container"></div>
+
 <!-- Main Content -->
 <div class="main-content" id="mainContent">
-  <div class="content-header">
-    <h1 class="page-title">Tableau de bord professionnel</h1>
+  <div class="dashboard-container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <div>
+        <h1 class="dashboard-title">Tableau de Bord Administrateur</h1>
+        <p class="dashboard-subtitle">Vue d'ensemble des performances du cabinet dentaire</p>
+      </div>
+      <div class="dashboard-actions">
+        <div class="date-filter">
+          <label for="dateRange">Période:</label>
+          <select id="dateRange">
+            <option value="today">Aujourd'hui</option>
+            <option value="week">Cette semaine</option>
+            <option value="month" selected>Ce mois</option>
+            <option value="quarter">Ce trimestre</option>
+            <option value="year">Cette année</option>
+          </select>
+        </div>
+        <button class="btn btn-primary">
+          <i class="fas fa-download"></i> Exporter
+        </button>
+        <button class="btn btn-success">
+          <i class="fas fa-sync"></i> Actualiser
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card revenue">
+        <div class="kpi-header">
+          <div>
+            <h3 class="kpi-title">Revenus totaux</h3>
+            <div class="kpi-value" id="totalRevenue">0 DH</div>
+            <div class="kpi-change neutral">
+              <i class="fas fa-minus"></i>
+              <span>Aucune donnée</span>
+            </div>
+          </div>
+          <div class="kpi-icon">
+            <i class="fas fa-euro-sign"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card patients">
+        <div class="kpi-header">
+          <div>
+            <h3 class="kpi-title">Patients actifs</h3>
+            <div class="kpi-value" id="activePatients">1,247</div>
+            <div class="kpi-change positive">
+              <i class="fas fa-arrow-up"></i>
+              <span>+8.2% vs mois dernier</span>
+            </div>
+          </div>
+          <div class="kpi-icon">
+            <i class="fas fa-users"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card appointments">
+        <div class="kpi-header">
+          <div>
+            <h3 class="kpi-title">Rendez-vous</h3>
+            <div class="kpi-value" id="totalAppointments">342</div>
+            <div class="kpi-change positive">
+              <i class="fas fa-arrow-up"></i>
+              <span>+15.3% vs mois dernier</span>
+            </div>
+          </div>
+          <div class="kpi-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card staff">
+        <div class="kpi-header">
+          <div>
+            <h3 class="kpi-title">Équipe active</h3>
+            <div class="kpi-value" id="activeStaff">12</div>
+            <div class="kpi-change neutral">
+              <i class="fas fa-minus"></i>
+              <span>Stable</span>
+            </div>
+          </div>
+          <div class="kpi-icon">
+            <i class="fas fa-user-md"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h3 class="chart-title">Évolution des revenus</h3>
+            <p class="chart-subtitle">Revenus mensuels sur les 12 derniers mois</p>
+          </div>
+          <div class="chart-actions">
+            <button class="btn btn-small">
+              <i class="fas fa-expand"></i>
+            </button>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h3 class="chart-title">Répartition par traitement</h3>
+            <p class="chart-subtitle">Ce mois</p>
+          </div>
+        </div>
+        <div class="pie-chart-container">
+          <canvas id="treatmentChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activities and Quick Actions -->
+    <div class="activities-section">
+      <div class="activity-card">
+        <div class="activity-header">
+          <h3 class="activity-title">Activités récentes</h3>
+          <button class="btn btn-small">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-avatar">MA</div>
+            <div class="activity-content">
+              <div class="activity-text">Dr. Mohammed Alami a confirmé un rendez-vous</div>
+              <div class="activity-time">Il y a 5 min</div>
+            </div>
+            <div class="activity-status status-completed">Confirmé</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-avatar">SB</div>
+            <div class="activity-content">
+              <div class="activity-text">Nouveau patient enregistré: Sarah Benali</div>
+              <div class="activity-time">Il y a 12 min</div>
+            </div>
+            <div class="activity-status status-completed">Enregistré</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-avatar">AI</div>
+            <div class="activity-content">
+              <div class="activity-text">Paiement reçu: 850 DH - Consultation</div>
+              <div class="activity-time">Il y a 18 min</div>
+            </div>
+            <div class="activity-status status-completed">Payé</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-avatar">KT</div>
+            <div class="activity-content">
+              <div class="activity-text">Rendez-vous annulé: Karim Tazi</div>
+              <div class="activity-time">Il y a 25 min</div>
+            </div>
+            <div class="activity-status status-cancelled">Annulé</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-avatar">FR</div>
+            <div class="activity-content">
+              <div class="activity-text">Demande de rendez-vous en attente</div>
+              <div class="activity-time">Il y a 32 min</div>
+            </div>
+            <div class="activity-status status-pending">En attente</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <div class="actions-header">
+          <h3 class="actions-title">Actions rapides</h3>
+        </div>
+        <div class="actions-grid">
+          <a href="fiches-patients.html" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="action-content">
+              <h4>Nouveau patient</h4>
+              <p>Ajouter un patient au système</p>
+            </div>
+          </a>
+          <a href="Listes des Rendez-vous.html" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-calendar-plus"></i>
+            </div>
+            <div class="action-content">
+              <h4>Planifier RDV</h4>
+              <p>Créer un nouveau rendez-vous</p>
+            </div>
+          </a>
+          <a href="messagerie-interne.html" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="action-content">
+              <h4>Envoyer message</h4>
+              <p>Contacter l'équipe médicale</p>
+            </div>
+          </a>
+          <a href="statistiques.html" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <div class="action-content">
+              <h4>Rapports</h4>
+              <p>Générer des rapports détaillés</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Table Widget -->
+    <div class="data-table-widget">
+      <div class="table-header">
+        <h3 class="table-title">Rendez-vous d'aujourd'hui</h3>
+        <div>
+          <button class="btn btn-small">
+            <i class="fas fa-filter"></i> Filtrer
+          </button>
+          <button class="btn btn-small">
+            <i class="fas fa-eye"></i> Voir tout
+          </button>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Traitement</th>
+              <th>Heure</th>
+              <th>Médecin</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="status-indicator">
+                  <span>Fatma Alaoui</span>
+                </div>
+              </td>
+              <td>Consultation générale</td>
+              <td>09:00</td>
+              <td>Dr. Mohammed Alami</td>
+              <td><span class="status-indicator"><span class="status-dot active"></span> Confirmé</span></td>
+              <td>
+                <button class="btn btn-small btn-primary">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-small btn-warning">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="status-indicator">
+                  <span>Youssef Bennani</span>
+                </div>
+              </td>
+              <td>Détartrage</td>
+              <td>10:30</td>
+              <td>Dr. Sara Khalil</td>
+              <td><span class="status-indicator"><span class="status-dot active"></span> Confirmé</span></td>
+              <td>
+                <button class="btn btn-small btn-primary">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-small btn-warning">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="status-indicator">
+                  <span>Amina Tazi</span>
+                </div>
+              </td>
+              <td>Traitement de carie</td>
+              <td>14:00</td>
+              <td>Dr. Mohammed Alami</td>
+              <td><span class="status-indicator"><span class="status-dot pending"></span> En attente</span></td>
+              <td>
+                <button class="btn btn-small btn-primary">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-small btn-warning">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="status-indicator">
+                  <span>Karim El Fassi</span>
+                </div>
+              </td>
+              <td>Contrôle post-opératoire</td>
+              <td>15:30</td>
+              <td>Dr. Sara Khalil</td>
+              <td><span class="status-indicator"><span class="status-dot active"></span> Confirmé</span></td>
+              <td>
+                <button class="btn btn-small btn-primary">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-small btn-warning">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="status-indicator">
+                  <span>Leila Mansouri</span>
+                </div>
+              </td>
+              <td>Orthodontie</td>
+              <td>16:45</td>
+              <td>Dr. Mohammed Alami</td>
+              <td><span class="status-indicator"><span class="status-dot inactive"></span> Annulé</span></td>
+              <td>
+                <button class="btn btn-small btn-primary">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-small btn-warning">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-
-
 </div>
 
 <script src="../../LOGING/js/data.js"></script>
@@ -886,143 +1645,459 @@ body {
 document.getElementById('section-rdv-content').classList.remove('collapsed');
 document.getElementById('section-rdv-toggle').classList.remove('collapsed');
 
-// Message actions
-document.querySelectorAll('.message-actions .btn-success').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const messageItem = this.closest('.message-item');
-    messageItem.classList.remove('unread');
-    this.textContent = 'Lu';
-    this.disabled= true;
-    this.style.opacity = '0.7';
-  });
+// Dashboard Charts and Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  initializeCharts();
+  setupDashboardInteractions();
+  updateKPIs();
+  updateActivityFeed();
 });
 
-document.querySelectorAll('.message-actions .btn-danger').forEach(btn => {
-  btn.addEventListener('click', function() {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce message ?')) {
-      const messageItem = this.closest('.message-item');
-      messageItem.style.opacity = '0';
-      setTimeout(() => {
-        messageItem.remove();
-      }, 300);
-    }
-  });
-});
-
-
-// Send message button
- document.querySelector('.btn-send').addEventListener('click', () => {
-  const recipientSelect = document.querySelector('.form-control');
-  const subject = document.querySelector('.form-control[type="text"]').value;
-  const message = document.querySelector('textarea').value;
-
-  if (!recipientSelect || recipientSelect.value === 'Sélectionner un destinataire') {
-    alert('Veuillez sélectionner un destinataire.');
-    return;
-  }
-  if (!subject.trim()) {
-    alert('Veuillez entrer un sujet.');
-    return;
-  }
-  if (!message.trim()) {
-    alert('Veuillez entrer un message.');
-    return;
-  }
-
-  alert('Message envoyé avec succès à ' + recipientSelect.value + ' !');
-
-  // Reset form
-  recipientSelect.selectedIndex = 0;
-  document.querySelector('.form-control[type="text"]').value = '';
-  document.querySelector('textarea').value = '';
-
-  // Add new message to list (simulated)
-  const messageList = document.querySelector('.message-list');
-  const now = new Date();
-  const newMessage = document.createElement('div');
-  newMessage.className = 'message-item unread';
-  newMessage.innerHTML = `
-   <div class="message-header">
-     <span>Vous</span>
-     <span class="message-time">Aujourd'hui, ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}</span>
-   </div>
-   <div class="message-content">${message}</div>
-   <div class="message-actions">
-     <button class="btn btn-success">Marquer comme lu</button>
-     <button class="btn btn-primary">Répondre</button>
-     <button class="btn btn-danger">Supprimer</button>
-   </div>
- `;
-  messageList.insertBefore(newMessage, messageList.firstChild);
-  
-  // Add  event listeners to new buttons
-  const successBtn = newMessage.querySelector('.btn-success');
-  const dangerBtn = newMessage.querySelector('.btn-danger');
-  
-  successBtn.addEventListener('click', function() {
-    newMessage.classList.remove('unread');
-    this.textContent = 'Lu';
-    this.disabled= true;
-    this.style.opacity = '0.7';
-  });
-  
-  dangerBtn.addEventListener('click', function() {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce message ?')) {
-      newMessage.style.opacity = '0';
-      setTimeout(() => {
-        newMessage.remove();
-      }, 300);
-    }
-  });
-});
-
-// Update notification badges dynamiquement
-function updateNotificationBadges() {
-  // Count unreadMessages for Messagerie interne
-  const unreadMessages = document.querySelectorAll('.message-item.unread').length;
-  const messagingBadge = document.querySelector('a[href="messagerie-interne.html"] .badge');
-  if (messagingBadge) {
-    messagingBadge.textContent = unreadMessages;
-  }
-
-  // Update messaging header badge
-  const messagingHeaderBadge = document.querySelector('.messaging-header .badge');
-  if (messagingHeaderBadge) {
-    messagingHeaderBadge.innerHTML = unreadMessages + ' nouveaux messages';
-  }
-
-  // For Assistant IA, set to 0 for now (can be updated based on AI interactions)
-  const aiBadge = document.querySelector('a[href="assistant-ia.html"] .badge');
-  if (aiBadge) {
-    aiBadge.textContent = '0';
-  }
-}
-
-// Initial update
-updateNotificationBadges();
-
-// Update badges when messages are marked as read or deleted
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('btn-success') && e.target.closest('.message-actions')) {
-    setTimeout(updateNotificationBadges, 100);
-  }
-  if (e.target.classList.contains('btn-danger') && e.target.closest('.message-actions')) {
-    setTimeout(updateNotificationBadges, 350); // Wait for animation
-  }
-});
-
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    const targetId = this.getAttribute('href');
-    if (targetId !== '#') {
-      e.preventDefault();
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth' });
+// Initialize Charts
+function initializeCharts() {
+  // Revenue Chart
+  const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+  const revenueChart = new Chart(revenueCtx, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+      datasets: [{
+        label: 'Revenus (DH)',
+        data: [185000, 192000, 198000, 205000, 212000, 218000, 225000, 232000, 238000, 245000, 252000, 245680],
+        borderColor: '#1e3a8a',
+        backgroundColor: 'rgba(30, 58, 138, 0.1)',
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: '#1e3a8a',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#ffffff',
+          bodyColor: '#ffffff',
+          callbacks: {
+            label: function(context) {
+              return context.parsed.y.toLocaleString('fr-MA') + ' DH';
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) {
+              return (value / 1000).toFixed(0) + 'k DH';
+            }
+          },
+          grid: {
+            color: 'rgba(0, 0, 0, 0.1)'
+          }
+        },
+        x: {
+          grid: {
+            display: false
+          }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
       }
     }
   });
+
+  // Treatment Distribution Chart
+  const treatmentCtx = document.getElementById('treatmentChart').getContext('2d');
+  const treatmentChart = new Chart(treatmentCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Consultation', 'Détartrage', 'Carie', 'Implant', 'Orthodontie', 'Autre'],
+      datasets: [{
+        data: [35, 25, 20, 10, 7, 3],
+        backgroundColor: [
+          '#1e3a8a',
+          '#3b82f6',
+          '#f59e0b',
+          '#059669',
+          '#8b5cf6',
+          '#6b7280'
+        ],
+        borderWidth: 0,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            padding: 20,
+            usePointStyle: true
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const total = context.dataset.data.reduce((a, b) => a + b, 0);
+              const percentage = ((context.parsed / total) * 100).toFixed(1);
+              return context.label + ': ' + percentage + '%';
+            }
+          }
+        }
+      },
+      cutout: '60%'
+    }
+  });
+}
+
+// Setup Dashboard Interactions
+function setupDashboardInteractions() {
+  // Date range filter
+  document.getElementById('dateRange').addEventListener('change', function() {
+    updateKPIs();
+    updateTodaysAppointments();
+    // In a real app, this would trigger chart updates
+  });
+
+  // Refresh button
+  document.querySelector('.btn-success').addEventListener('click', function() {
+    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Actualisation...';
+    setTimeout(() => {
+      this.innerHTML = '<i class="fas fa-sync"></i> Actualiser';
+      updateKPIs();
+      updateTodaysAppointments();
+    }, 1500);
+  });
+
+  // Export button
+  document.querySelector('.btn-primary').addEventListener('click', function() {
+    alert('Fonctionnalité d\'export en cours de développement');
+  });
+
+  // Table row interactions
+  updateTodaysAppointments();
+}
+
+function updateTodaysAppointments() {
+  const tbody = document.querySelector('.dashboard-table tbody');
+  const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+  const patients = JSON.parse(localStorage.getItem('patients')) || [];
+
+  // Get today's date
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+
+  // Filter appointments for today
+  const todaysAppointments = appointments.filter(apt => {
+    const aptDate = new Date(apt.date).toISOString().split('T')[0];
+    return aptDate === todayStr;
+  });
+
+  tbody.innerHTML = '';
+
+  if (todaysAppointments.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align: center; color: var(--text-gray); padding: 2rem;">
+          <i class="fas fa-calendar-times me-2"></i>Aucun rendez-vous prévu pour aujourd'hui
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  todaysAppointments.forEach(appointment => {
+    const patient = patients.find(p => p.id === appointment.patientId);
+    const patientName = patient ? `${patient.nom || patient.firstName} ${patient.prenom || patient.lastName}` : 'Patient inconnu';
+
+    const statusClass = appointment.status === 'confirmed' ? 'active' : appointment.status === 'cancelled' ? 'inactive' : 'pending';
+    const statusText = appointment.status === 'confirmed' ? 'Confirmé' : appointment.status === 'cancelled' ? 'Annulé' : 'En attente';
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>
+        <div class="status-indicator">
+          <span>${patientName}</span>
+        </div>
+      </td>
+      <td>${appointment.treatment || appointment.type || 'Consultation'}</td>
+      <td>${appointment.time || '09:00'}</td>
+      <td>${appointment.doctor || 'Dr. Alami'}</td>
+      <td><span class="status-indicator"><span class="status-dot ${statusClass}"></span> ${statusText}</span></td>
+      <td>
+        <button class="btn btn-small btn-primary" title="Voir">
+          <i class="fas fa-eye"></i>
+        </button>
+        <button class="btn btn-small btn-warning" title="Modifier">
+          <i class="fas fa-edit"></i>
+        </button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+
+  // Add click handlers for table rows
+  document.querySelectorAll('.dashboard-table tbody tr').forEach(row => {
+    row.addEventListener('click', function() {
+      // Remove active class from all rows
+      document.querySelectorAll('.dashboard-table tbody tr').forEach(r => r.classList.remove('active'));
+      // Add active class to clicked row
+      this.classList.add('active');
+    });
+  });
+}
+
+// Update KPI Values
+function updateKPIs() {
+  // Get real data from localStorage
+  const patients = JSON.parse(localStorage.getItem('patients')) || [];
+  const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+
+  // Calculate active staff (non-patient users)
+  const activeStaff = users.filter(user => user.role !== 'Patient').length;
+
+  // Calculate total revenue (if payments exist, otherwise show 0)
+  const payments = JSON.parse(localStorage.getItem('payments')) || [];
+  const totalRevenue = payments.reduce((sum, payment) => sum + (parseFloat(payment.amount) || 0), 0);
+
+  // Update KPI displays
+  document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString('fr-MA') + ' DH';
+  document.getElementById('activePatients').textContent = patients.length.toLocaleString('fr-MA');
+  document.getElementById('totalAppointments').textContent = appointments.length.toLocaleString('fr-MA');
+  document.getElementById('activeStaff').textContent = activeStaff.toString();
+
+  // Update trend indicators based on date range
+  updateTrends();
+}
+
+function updateTrends() {
+  const dateRange = document.getElementById('dateRange').value;
+  const patients = JSON.parse(localStorage.getItem('patients')) || [];
+  const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+
+  // Calculate trends based on date range
+  let patientChange = 0;
+  let appointmentChange = 0;
+
+  if (dateRange === 'month') {
+    // Count patients/appointments from this month vs last month
+    const now = new Date();
+    const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+    const thisMonthPatients = patients.filter(p => new Date(p.createdAt || p.date_naissance) >= thisMonth).length;
+    const lastMonthPatients = patients.filter(p => {
+      const date = new Date(p.createdAt || p.date_naissance);
+      return date >= lastMonth && date < thisMonth;
+    }).length;
+
+    const thisMonthAppointments = appointments.filter(a => new Date(a.date) >= thisMonth).length;
+    const lastMonthAppointments = appointments.filter(a => {
+      const date = new Date(a.date);
+      return date >= lastMonth && date < thisMonth;
+    }).length;
+
+    patientChange = lastMonthPatients > 0 ? ((thisMonthPatients - lastMonthPatients) / lastMonthPatients) * 100 : 0;
+    appointmentChange = lastMonthAppointments > 0 ? ((thisMonthAppointments - lastMonthAppointments) / lastMonthAppointments) * 100 : 0;
+  }
+
+  // Update patient trend
+  const patientTrend = document.querySelector('#activePatients').nextElementSibling;
+  if (patientChange > 0) {
+    patientTrend.className = 'kpi-change positive';
+    patientTrend.innerHTML = '<i class="fas fa-arrow-up"></i><span>+' + patientChange.toFixed(1) + '% vs mois dernier</span>';
+  } else if (patientChange < 0) {
+    patientTrend.className = 'kpi-change negative';
+    patientTrend.innerHTML = '<i class="fas fa-arrow-down"></i><span>' + patientChange.toFixed(1) + '% vs mois dernier</span>';
+  } else {
+    patientTrend.className = 'kpi-change neutral';
+    patientTrend.innerHTML = '<i class="fas fa-minus"></i><span>Stable</span>';
+  }
+
+  // Update appointment trend
+  const appointmentTrend = document.querySelector('#totalAppointments').nextElementSibling;
+  if (appointmentChange > 0) {
+    appointmentTrend.className = 'kpi-change positive';
+    appointmentTrend.innerHTML = '<i class="fas fa-arrow-up"></i><span>+' + appointmentChange.toFixed(1) + '% vs mois dernier</span>';
+  } else if (appointmentChange < 0) {
+    appointmentTrend.className = 'kpi-change negative';
+    appointmentTrend.innerHTML = '<i class="fas fa-arrow-down"></i><span>' + appointmentChange.toFixed(1) + '% vs mois dernier</span>';
+  } else {
+    appointmentTrend.className = 'kpi-change neutral';
+    appointmentTrend.innerHTML = '<i class="fas fa-minus"></i><span>Stable</span>';
+  }
+}
+
+// Real-time updates simulation
+setInterval(() => {
+  // Simulate real-time KPI updates
+  const revenueElement = document.getElementById('totalRevenue');
+  const currentValue = parseInt(revenueElement.textContent.replace(/[^\d]/g, ''));
+
+  // Random small fluctuation
+  const change = Math.floor(Math.random() * 1000) - 500;
+  const newValue = Math.max(0, currentValue + change);
+
+  revenueElement.textContent = newValue.toLocaleString('fr-MA') + ' DH';
+
+  // Update trend indicator
+  const trendElement = revenueElement.nextElementSibling;
+  if (change > 0) {
+    trendElement.className = 'kpi-change positive';
+    trendElement.innerHTML = '<i class="fas fa-arrow-up"></i><span>+' + Math.abs(change) + ' DH</span>';
+  } else if (change < 0) {
+    trendElement.className = 'kpi-change negative';
+    trendElement.innerHTML = '<i class="fas fa-arrow-down"></i><span>-' + Math.abs(change) + ' DH</span>';
+  }
+}, 30000); // Update every 30 seconds
+
+// Activity feed updates
+function updateActivityFeed() {
+  const activityList = document.querySelector('.activity-list');
+  const patients = JSON.parse(localStorage.getItem('patients')) || [];
+  const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+
+  // Create activities from recent data
+  const activities = [];
+
+  // Recent patients (last 5)
+  const recentPatients = patients
+    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+    .slice(0, 3);
+
+  recentPatients.forEach(patient => {
+    activities.push({
+      text: `Nouveau patient: ${patient.nom || patient.firstName} ${patient.prenom || patient.lastName}`,
+      time: formatTimeAgo(patient.createdAt),
+      avatar: (patient.nom || patient.firstName || 'P').charAt(0).toUpperCase(),
+      status: 'completed',
+      type: 'patient'
+    });
+  });
+
+  // Recent appointments (last 3)
+  const recentAppointments = appointments
+    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+    .slice(0, 2);
+
+  recentAppointments.forEach(appointment => {
+    const patient = patients.find(p => p.id === appointment.patientId);
+    const patientName = patient ? `${patient.nom || patient.firstName} ${patient.prenom || patient.lastName}` : 'Patient';
+    activities.push({
+      text: `RDV ${appointment.status === 'confirmed' ? 'confirmé' : 'planifié'}: ${patientName}`,
+      time: formatTimeAgo(appointment.createdAt),
+      avatar: 'RDV',
+      status: appointment.status === 'confirmed' ? 'completed' : 'pending',
+      type: 'appointment'
+    });
+  });
+
+  // Sort by time (most recent first)
+  activities.sort((a, b) => {
+    // Simple sort - newer items first
+    if (a.time.includes('instant') || a.time.includes('min')) return -1;
+    if (b.time.includes('instant') || b.time.includes('min')) return 1;
+    return 0;
+  });
+
+  // Limit to 6 activities
+  const displayActivities = activities.slice(0, 6);
+
+  activityList.innerHTML = '';
+
+  if (displayActivities.length === 0) {
+    activityList.innerHTML = `
+      <div class="activity-item">
+        <div class="activity-avatar">?</div>
+        <div class="activity-content">
+          <div class="activity-text">Aucune activité récente</div>
+          <div class="activity-time">Aucune donnée</div>
+        </div>
+        <div class="activity-status status-pending">Vide</div>
+      </div>
+    `;
+    return;
+  }
+
+  displayActivities.forEach(activity => {
+    const item = document.createElement('div');
+    item.className = 'activity-item';
+    item.innerHTML = `
+      <div class="activity-avatar">${activity.avatar}</div>
+      <div class="activity-content">
+        <div class="activity-text">${activity.text}</div>
+        <div class="activity-time">${activity.time}</div>
+      </div>
+      <div class="activity-status status-${activity.status}">${activity.status === 'completed' ? 'Terminé' : 'En cours'}</div>
+    `;
+    activityList.appendChild(item);
+  });
+}
+
+function formatTimeAgo(dateString) {
+  if (!dateString) return 'Récemment';
+
+  const now = new Date();
+  const date = new Date(dateString);
+  const diffMs = now - date;
+  const diffMins = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffMins < 1) return 'À l\'instant';
+  if (diffMins < 60) return `Il y a ${diffMins} min`;
+  if (diffHours < 24) return `Il y a ${diffHours} h`;
+  if (diffDays < 7) return `Il y a ${diffDays} j`;
+  return date.toLocaleDateString('fr-FR');
+}
+
+// Update activity feed on load and periodically
+document.addEventListener('DOMContentLoaded', updateActivityFeed);
+setInterval(updateActivityFeed, 30000); // Update every 30 seconds
+
+// Theme toggle functionality
+document.getElementById('themeToggle').addEventListener('click', function() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+
+  const icon = this.querySelector('i');
+  const text = this.querySelector('span');
+
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+    text.textContent = 'Mode Clair';
+  } else {
+    icon.className = 'fas fa-moon';
+    text.textContent = 'Mode Sombre';
+  }
+});
+
+// Responsive chart handling
+window.addEventListener('resize', function() {
+  // Re-render charts on window resize for responsiveness
+  setTimeout(() => {
+    if (window.Chart) {
+      Chart.helpers.each(Chart.instances, function(instance) {
+        instance.resize();
+      });
+    }
+  }, 250);
 });
 </script>
 </body>
