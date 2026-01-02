@@ -876,6 +876,159 @@ body {
     <h1 class="page-title">Tableau de bord professionnel</h1>
   </div>
 
+  <!-- Dashboard Cards -->
+  <div class="dashboard-grid">
+    <div class="dashboard-card">
+      <div class="card-header">
+        <div class="card-title">Patients actifs</div>
+        <div class="card-icon">
+          <i class="fas fa-users"></i>
+        </div>
+      </div>
+      <div class="card-stats" id="activePatients">0</div>
+      <div class="card-trend">
+        <i class="fas fa-arrow-up" style="color: var(--success);"></i>
+        <span style="color: var(--success);">+12%</span>
+        <span>ce mois</span>
+      </div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="card-header">
+        <div class="card-title">Rendez-vous aujourd'hui</div>
+        <div class="card-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+      </div>
+      <div class="card-stats" id="todayAppointments">0</div>
+      <div class="card-trend">
+        <i class="fas fa-clock" style="color: var(--warning);"></i>
+        <span style="color: var(--warning);">3 en attente</span>
+      </div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="card-header">
+        <div class="card-title">Rendez-vous total</div>
+        <div class="card-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+      </div>
+      <div class="card-stats" id="totalAppointments">0</div>
+      <div class="card-trend">
+        <i class="fas fa-arrow-up" style="color: var(--success);"></i>
+        <span style="color: var(--success);">+8%</span>
+        <span>cette semaine</span>
+      </div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="card-header">
+        <div class="card-title">Messages non lus</div>
+        <div class="card-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+      </div>
+      <div class="card-stats" id="unreadMessages">0</div>
+      <div class="card-trend">
+        <i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i>
+        <span style="color: var(--danger);">À traiter</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Maroc-Specific Features -->
+  <div class="maroc-features">
+    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Fonctionnalités Maroc</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-file-medical"></i>
+        </div>
+        <div class="feature-title">Dossiers médicaux</div>
+        <div class="feature-desc">Gestion conforme aux normes marocaines</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-prescription"></i>
+        </div>
+        <div class="feature-title">Ordonnances</div>
+        <div class="feature-desc">Modèles adaptés au Maroc</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-sms"></i>
+        </div>
+        <div class="feature-title">SMS patients</div>
+        <div class="feature-desc">Rappels automatiques</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-certificate"></i>
+        </div>
+        <div class="feature-title">Certificats médicaux</div>
+        <div class="feature-desc">Génération instantanée</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messaging Section -->
+  <div class="messaging-container">
+    <div class="messaging-header">
+      <div class="messaging-title">Messagerie interne</div>
+      <div class="badge">0 nouveaux messages</div>
+    </div>
+    <div class="message-list">
+      <!-- Messages will be loaded here -->
+    </div>
+    <div class="message-compose">
+      <div class="form-group">
+        <label class="form-label">Destinataire</label>
+        <select class="form-control">
+          <option>Sélectionner un destinataire</option>
+          <option>Admin</option>
+          <option>Dr. Ahmed</option>
+          <option>Assistante Fatima</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Sujet</label>
+        <input type="text" class="form-control" placeholder="Sujet du message">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-control" rows="4" placeholder="Votre message..."></textarea>
+      </div>
+      <button class="btn-send">Envoyer le message</button>
+    </div>
+  </div>
+
+  <!-- AI Assistant -->
+  <div class="ai-assistant">
+    <div class="ai-header">
+      <div class="ai-avatar">AI</div>
+      <div>
+        <div class="ai-title">Assistant IA Médical</div>
+        <div class="ai-status">En ligne - Prêt à aider</div>
+      </div>
+    </div>
+    <div class="ai-chat">
+      Bonjour ! Je suis votre assistant IA. Comment puis-je vous aider aujourd'hui ?
+    </div>
+    <div class="ai-actions">
+      <button class="ai-btn">Poser une question</button>
+      <button class="ai-btn">Analyser un dossier</button>
+    </div>
+  </div>
+
+  <!-- Compliance Notice -->
+  <div class="compliance-notice">
+    <h3>Conformité RGPD & Normes Marocaines</h3>
+    <p>
+      Cette application respecte les normes de protection des données personnelles (RGPD) et les réglementations médicales marocaines.
+      Toutes les données sont chiffrées et stockées de manière sécurisée. <strong>Confidentialité garantie.</strong>
+    </p>
+  </div>
 
 </div>
 

@@ -679,7 +679,21 @@ body {
 
 </div>
 
+<script src="../../LOGING/js/data.js"></script>
 <script>
+// ====== LOAD CURRENT USER ======
+const currentUser = getCurrentUser();
+if (currentUser) {
+  // Update sidebar user info
+  document.querySelector('.user-name').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+  document.querySelector('.user-role').textContent = 'Patient';
+  const initials = `${currentUser.firstName.charAt(0)}${currentUser.lastName.charAt(0)}`.toUpperCase();
+  document.querySelector('.user-avatar').textContent = initials;
+
+  // Update main content greeting
+  document.querySelector('.page-title').textContent = `Bonjour, ${currentUser.firstName} ${currentUser.lastName} 👋`;
+}
+
 // ====== THEME & LOGOUT ======
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
