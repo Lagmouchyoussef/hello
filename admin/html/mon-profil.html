@@ -506,39 +506,74 @@ flex-direction: column;
 <textarea class="form-control" id="biographie" rows="4" placeholder="Courte biographie professionnelle"></textarea>
 </div>
 <div class="btn-group">
-<button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-<button type="button" class="btn btn-danger" onclick="resetForm()">Réinitialiser</button>
+<button type="submit" class="btn btn-primary" id="saveBtn">
+  <i class="fas fa-save"></i> Enregistrer les modifications
+</button>
+<button type="button" class="btn btn-danger" onclick="resetForm()" id="resetBtn">
+  <i class="fas fa-undo"></i> Réinitialiser
+</button>
 </div>
 </form>
 </div>
 </div>
 </div><script src="../js/navbar.js"></script><script>
 function loadProfile() {
-const profile = JSON.parse(localStorage.getItem('admin_profile') || '{}');
-document.getElementById('prenom').value = profile.prenom || '';
-document.getElementById('nom').value = profile.nom || '';
-document.getElementById('email').value = profile.email || '';
-document.getElementById('telephone').value = profile.telephone || '';
-document.getElementById('specialite').value = profile.specialite || '';
-document.getElementById('numero_ordre').value = profile.numero_ordre || '';
-document.getElementById('adresse').value = profile.adresse || '';
-document.getElementById('biographie').value = profile.biographie || '';
+const currentUser = dentalDataManager.getCurrentUser();
+if (currentUser) {
+    document.getElementById('prenom').value = currentUser.firstName || '';
+    document.getElementById('nom').value = currentUser.lastName || '';
+    document.getElementById('email').value = currentUser.email || '';
+    document.getElementById('telephone').value = currentUser.phone || '';
+    document.getElementById('specialite').value = currentUser.specialty || '';
+    // Additional fields can be added to user if needed
+    document.getElementById('numero_ordre').value = currentUser.numero_ordre || '';
+    document.getElementById('adresse').value = currentUser.adresse || '';
+    document.getElementById('biographie').value = currentUser.biographie || '';
+}
 }
 function saveProfile(e) {
 e.preventDefault();
-const profile = {
-prenom: document.getElementById('prenom').value,
-nom: document.getElementById('nom').value,
-email: document.getElementById('email').value,
-telephone: document.getElementById('telephone').value,
-specialite: document.getElementById('specialite').value,
-numero_ordre: document.getElementById('numero_ordre').value,
-adresse: document.getElementById('adresse').value,
-biographie: document.getElementById('biographie').value
-};
-localStorage.setItem('admin_profile', JSON.stringify(profile));
-dentalDataManager.showMessage('Profil administrateur enregistré avec succès.', 'success');
-loadUserInfo(); // Update the header with new info
+const saveBtn = document.getElementById('saveBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+// Show loader
+saveBtn.disabled = true;
+saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
+resetBtn.disabled = true;
+
+const currentUser = dentalDataManager.getCurrentUser();
+if (currentUser) {
+    const updatedData = {
+        firstName: document.getElementById('prenom').value,
+        lastName: document.getElementById('nom').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('telephone').value,
+        specialty: document.getElementById('specialite').value,
+        numero_ordre: document.getElementById('numero_ordre').value,
+        adresse: document.getElementById('adresse').value,
+        biographie: document.getElementById('biographie').value
+    };
+
+    // Simulate async operation
+    setTimeout(() => {
+        const success = dentalDataManager.update('users', currentUser.id, updatedData);
+        if (success) {
+            // Update currentUser in localStorage
+            const updatedUser = { ...currentUser, ...updatedData };
+            dentalDataManager.loginUser(updatedUser);
+            dentalDataManager.showMessage('Profil enregistré avec succès.', 'success');
+            updateUserInfo(); // Update navbar
+            loadUserInfo(); // Update profile display
+        } else {
+            dentalDataManager.showMessage('Erreur lors de la sauvegarde.', 'error');
+        }
+
+        // Hide loader
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fas fa-save"></i> Enregistrer les modifications';
+        resetBtn.disabled = false;
+    }, 1000); // 1 second delay for demo
+}
 }
 function resetForm() {
 if (confirm('Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les mod ifications non enregistrées seront perd ues.')) {
@@ -549,12 +584,20 @@ document.getElementById('profileForm').addEventListener('submit', saveProfile);
 loadProfile();
 loadUserInfo();
 function loadUserInfo() {
-   const profile = JSON.parse(localStorage.getItem('admin_profile') || '{}');
-   const fullName = (profile.prenom || '') + ' ' + (profile.nom || '');
-   const displayName = fullName.trim() || 'Nom du médecin';
-   document.getElementById('profileAvatar').textContent = displayName.charAt(0).toUpperCase() || 'D';
-   document.getElementById('profileName').textContent = displayName;
-   document.getElementById('profileTitle').textContent = 'Administrateur';
+   const currentUser = dentalDataManager.getCurrentUser();
+   if (currentUser) {
+       const fullName = (currentUser.firstName || '') + ' ' + (currentUser.lastName || '');
+       const displayName = fullName.trim() || currentUser.name || 'Utilisateur';
+       const roleDisplay = {
+           'Admin': 'Administrateur',
+           'Assistant': 'Assistante',
+           'Patient': 'Patient'
+       }[currentUser.role] || currentUser.role;
+
+       document.getElementById('profileAvatar').textContent = displayName.charAt(0).toUpperCase() || 'U';
+       document.getElementById('profileName').textContent = displayName;
+       document.getElementById('profileTitle').textContent = roleDisplay;
+   }
 }
 </script>
 </body>

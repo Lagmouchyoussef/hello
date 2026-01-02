@@ -494,24 +494,26 @@ document.querySelectorAll('.sidebar-link').forEach(link => {
 
 // Update user info dynamically
 function updateUserInfo() {
-   // Detect interface based on port
-   let profileKey;
-   const port = window.location.port;
-   if (port === '5500') {
-       profileKey = 'admin_profile';
-   } else if (port === '7000') {
-       profileKey = 'assistant_profile';
+   const currentUser = dentalDataManager.getCurrentUser();
+   if (currentUser) {
+       const fullName = (currentUser.firstName || '') + ' ' + (currentUser.lastName || '').trim();
+       const displayName = fullName || currentUser.name || 'Utilisateur';
+       const roleDisplay = {
+           'Admin': 'Administrateur',
+           'Assistant': 'Assistante',
+           'Patient': 'Patient'
+       }[currentUser.role] || currentUser.role;
+
+       document.getElementById('cabinetName').textContent = 'Cabinet Dentaire Al-Farabi';
+       document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase() || 'U';
+       document.getElementById('userName').textContent = displayName;
+       document.getElementById('userRole').textContent = roleDisplay;
    } else {
-       profileKey = 'patient_profile'; // For future patient interface
+       // Fallback if no user
+       document.getElementById('cabinetName').textContent = 'Cabinet Dentaire Al-Farabi';
+       document.getElementById('userAvatar').textContent = 'U';
+       document.getElementById('userName').textContent = 'Utilisateur';
+       document.getElementById('userRole').textContent = 'Non connecté';
    }
-
-   const profile = JSON.parse(localStorage.getItem(profileKey) || '{}');
-   const fullName = (profile.prenom || '') + ' ' + (profile.nom || '').trim();
-   const displayName = fullName || 'Utilisateur';
-
-   document.getElementById('cabinetName').textContent = 'Cabinet Dentaire Al-Farabi';
-   document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase() || 'U';
-   document.getElementById('userName').textContent = displayName;
-   document.getElementById('userRole').textContent = profileKey === 'admin_profile' ? 'Administrateur' : profileKey === 'assistant_profile' ? 'Assistante' : 'Patient';
 }
 

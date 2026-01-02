@@ -22,31 +22,9 @@ class DentalDataManager {
         }
 
         // Initialize default users if they don't exist
-        const users = this.getAll('users');
-        if (!users.find(u => u.email === 'admin@cabinet.ma')) {
-            users.push({
-                id: '1',
-                email: 'admin@cabinet.ma',
-                password: 'admin123',
-                role: 'Admin',
-                name: 'Admin',
-                avatar: 'A',
-                createdAt: new Date().toISOString()
-            });
-        }
-        if (!users.find(u => u.email === 'assistante@cabinet.ma')) {
-            users.push({
-                id: '2',
-                email: 'assistante@cabinet.ma',
-                password: 'assistante123',
-                role: 'Assistant',
-                name: 'Hind Alaoui',
-                avatar: 'HA',
-                createdAt: new Date().toISOString()
-            });
-        }
-        if (users.length > 0) {
-            this.save('users', users);
+        if (!this.getAll('users').length) {
+            this.create('users', { email: 'admin@cabinet.com', password: 'admin123', role: 'Admin', firstName: 'Admin', lastName: 'Principal', phone: '0123456789', specialty: 'Administration' });
+            this.create('users', { email: 'amina@cabinet.com', password: 'amina123', role: 'Assistant', firstName: 'Amina', lastName: 'Benali', phone: '0987654321', specialty: 'Assistante médicale' });
         }
     }
 
@@ -131,7 +109,7 @@ class DentalDataManager {
     }
 
     // User management (Admin only)
-    createUser(email, password, role, name) {
+    createUser(email, password, role, name, phone = '', specialty = '') {
         const currentUser = this.getCurrentUser();
         if (currentUser?.role !== 'Admin') {
             this.showMessage('Action refusée : seul l\'Admin peut créer des comptes.', 'error');
@@ -147,24 +125,17 @@ class DentalDataManager {
             this.showMessage('Rôle invalide.', 'error');
             return null;
         }
-        const id = this.create('users', { email, password, role, name, avatar: name.charAt(0).toUpperCase() });
+        const id = this.create('users', { email, password, role, firstName: name.split(' ')[0] || '', lastName: name.split(' ').slice(1).join(' ') || '', phone, specialty, avatar: (name.split(' ')[0] || 'U').charAt(0).toUpperCase() });
         this.showMessage('Utilisateur créé avec succès.', 'success');
         return id;
     }
 
     // Patient management
     createPatient(patientData) {
-        const patients = this.getAll('patients');
-        // Check for uniqueness - assuming firstName + lastName + birthDate + phone is unique
-        const existing = patients.find(p =>
-            p.firstName === patientData.firstName &&
-            p.lastName === patientData.lastName &&
-            p.birthDate === patientData.birthDate &&
-            p.phone === patientData.phone
-        );
-        if (existing) {
-            this.showMessage('Ce patient existe déjà. Impossible de le recréer.', 'error');
-            return null;
+        // Always create new patient, no check for existing
+        // Add status if not provided
+        if (!patientData.status) {
+            patientData.status = 'active';
         }
         const id = this.create('patients', patientData);
         this.showMessage('Patient ajouté avec succès.', 'success');
@@ -182,6 +153,38 @@ class DentalDataManager {
             this.showMessage('Patient supprimé définitivement.', 'success');
         }
         return result;
+    }
+
+    deactivatePatient(id) {
+        const patients = this.getAll('patients');
+        const patient = patients.find(p => p.id === id);
+        if (patient) {
+            patient.status = 'inactive';
+            this.save('patients', patients);
+            this.showMessage('Patient désactivé.', 'success');
+            return true;
+        }
+        return false;
+    }
+
+    activatePatient(id) {
+        const patients = this.getAll('patients');
+        const patient = patients.find(p => p.id === id);
+        if (patient) {
+            patient.status = 'active';
+            this.save('patients', patients);
+            this.showMessage('Patient réactivé.', 'success');
+            return true;
+        }
+        return false;
+    }
+
+    getActivePatients() {
+        return this.getAll('patients').filter(p => p.status === 'active');
+    }
+
+    getAllPatients() {
+        return this.getAll('patients');
     }
 
     // Appointment management

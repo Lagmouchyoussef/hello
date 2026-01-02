@@ -78,21 +78,59 @@
         .back-button:hover {
             background: #5a6268;
         }
+        .tab-button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            background: #f0f0f0;
+            color: #333;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .tab-button.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-button:hover {
+            background: #5a6268;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div class="portal-container">
         <h1>Portail Patient</h1>
-        <p>Connectez-vous à votre compte patient</p>
-        <form id="patientLoginForm">
-            <input type="email" id="patientEmail" placeholder="Email" required>
-            <input type="password" id="patientPassword " placeholder="Mot de passe" required>
-            <button type="submit" class="role-button">Se connecter</button>
-        </form>
-        <div id="patientError" class="error"></div>
-        <p style="text-align: center; margin-top: 20px;">
-            <a href="../LOGING/html/reset-password .html" style="color: #667eea; text-decoration: none;">Mot de passe oublié ?</a>
-        </p>
+        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+            <button id="loginTab" class="tab-button active" onclick="showLogin()">Se connecter</button>
+            <button id="registerTab" class="tab-button" onclick="showRegister()">Créer un compte</button>
+        </div>
+        <div id="loginForm">
+            <p>Connectez-vous à votre compte patient</p>
+            <form id="patientLoginForm">
+                <input type="email" id="patientEmail" placeholder="Email" required>
+                <input type="password" id="patientPassword" placeholder="Mot de passe" required>
+                <button type="submit" class="role-button">Se connecter</button>
+            </form>
+            <div id="patientError" class="error"></div>
+            <p style="text-align: center; margin-top: 20px;">
+                <a href="../LOGING/html/reset-password.html" style="color: #667eea; text-decoration: none;">Mot de passe oublié ?</a>
+            </p>
+        </div>
+        <div id="registerForm" style="display: none;">
+            <p>Créez votre compte patient</p>
+            <form id="patientRegisterForm">
+                <input type="text" id="regFirstName" placeholder="Prénom" required>
+                <input type="text" id="regLastName" placeholder="Nom" required>
+                <input type="date" id="regBirthDate" required>
+                <input type="tel" id="regPhone" placeholder="Téléphone" required>
+                <input type="email" id="regEmail" placeholder="Email" required>
+                <input type="password" id="regPassword" placeholder="Mot de passe" required>
+                <textarea id="regAddress" placeholder="Adresse" rows="3" required></textarea>
+                <button type="submit" class="role-button">Créer le compte</button>
+            </form>
+            <div id="registerError" class="error"></div>
+        </div>
         <button class="back-button" onclick="goBack()">Retour</button>
     </div>
     <script src="../../js/d ata.js"></script>

@@ -381,15 +381,26 @@ document.querySelectorAll('.sidebar-link').forEach(link => {
 
 // Update user info dynamically
 function updateUserInfo() {
-   const profileKey = window.profileKey || 'cabinetInfo';
-   const profile = JSON.parse(localStorage.getItem(profileKey) || '{}');
+   const currentUser = dentalDataManager.getCurrentUser();
+   if (currentUser) {
+       const fullName = (currentUser.firstName || '') + ' ' + (currentUser.lastName || '').trim();
+       const displayName = fullName || currentUser.name || 'Utilisateur';
+       const roleDisplay = {
+           'Admin': 'Administrateur',
+           'Assistant': 'Assistante',
+           'Patient': 'Patient'
+       }[currentUser.role] || currentUser.role;
 
-   const fullName = (profile.prenom || '') + ' ' + (profile.nom || '');
-   const displayName = fullName.trim() || (profile.nom_medecin || 'Nom du médecin');
-
-   document.getElementById('cabinetName').textContent = profile.nom_medecin ? `Cabinet Dentaire ${profile.nom_medecin}` : 'Cabinet Dentaire Al-Farabi';
-   document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase() || 'D';
-   document.getElementById('userName').textContent = displayName;
-   document.getElementById('userRole').textContent = profile.titre_medecin || 'Assistante';
+       document.getElementById('cabinetName').textContent = 'Cabinet Dentaire Al-Farabi';
+       document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase() || 'U';
+       document.getElementById('userName').textContent = displayName;
+       document.getElementById('userRole').textContent = roleDisplay;
+   } else {
+       // Fallback if no user
+       document.getElementById('cabinetName').textContent = 'Cabinet Dentaire Al-Farabi';
+       document.getElementById('userAvatar').textContent = 'U';
+       document.getElementById('userName').textContent = 'Utilisateur';
+       document.getElementById('userRole').textContent = 'Non connecté';
+   }
 }
 

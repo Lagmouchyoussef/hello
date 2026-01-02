@@ -388,44 +388,44 @@ padding: 0.375rem 0.75rem;
 font-size: 0.75rem;
 border-radius: 0.375rem;
 }
-.record -details {
-background: var(--bg-primary);
-border: 1px solid var(--border-color);
-border-radius: var(--border-radius);
-padding: 1.5rem;
-margin-top: 1rem;
-}
-.record -section {
-margin-bottom: 1.5rem;
-}
-.record-section h4 {
-font-size: 1.125rem;
-font-weight: 600;
-margin-bottom: 0.5rem;
-color: var(--text-primary);
-}
-.record -grid{
-display: grid ;
-grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-gap: 1rem;
-}
-.record -item {
-background: var(--section-bg);
-padding: 0.75rem;
-border-radius: var(--border-radius);
-}
-.record -label {
-font-size: 0.75rem;
-font-weight: 600;
-color: var(--text-secondary);
-text-transform: uppercase;
-letter-spacing: 0.05em;
-margin-bottom: 0.25rem;
-}
-.record -value {
-font-size: 0.875rem;
-color: var(--text-primary);
-}
+.record-details {
+ background: var(--bg-primary);
+ border: 1px solid var(--border-color);
+ border-radius: var(--border-radius);
+ padding: 1.5rem;
+ margin-top: 1rem;
+ }
+ .record-section {
+ margin-bottom: 1.5rem;
+ }
+ .record-section h4 {
+ font-size: 1.125rem;
+ font-weight: 600;
+ margin-bottom: 0.5rem;
+ color: var(--text-primary);
+ }
+ .record-grid{
+ display: grid ;
+ grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+ gap: 1rem;
+ }
+ .record-item {
+ background: var(--section-bg);
+ padding: 0.75rem;
+ border-radius: var(--border-radius);
+ }
+ .record-label {
+ font-size: 0.75rem;
+ font-weight: 600;
+ color: var(--text-secondary);
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+ margin-bottom: 0.25rem;
+ }
+ .record-value {
+ font-size: 0.875rem;
+ color: var(--text-primary);
+ }
 @media (max-width: 992px) {
 .sidebar { width: 250px; }
 .main-content { margin-left: 250px; padding: 1.5rem; }
@@ -495,8 +495,12 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 <body class="light-mode">
 <div id="navbar-container"></div><div class="main-content">
 <div class="content-header">
-<h1 class="page-title">dossiers médicaux</h1>
-</div>
+ <h1 class="page-title">Dossiers médicaux</h1>
+ <button class="btn btn-primary" onclick="showForm()">
+  <i class="fas fa-plus"></i>
+  Ajouter un dossier
+ </button>
+ </div>
 <div class="appointments-container">
 <div class="appointments-header">
 <h2 class="appointments-title">Liste des dossiers médicaux</h2>
@@ -518,37 +522,89 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 </tbody>
 </table>
 </div>
-<div id="record details" style="display: none;">
-<div class="record -details">
-<div class="record -section">
+
+<!-- Add/Edit Medical Record Form -->
+<div class="appointments-container" id="recordForm" style="display: none; margin-top: 2rem;">
+ <div class="appointments-header">
+  <h2 class="appointments-title" id="formTitle">Ajouter un dossier médical</h2>
+ </div>
+ <form id="medicalRecordForm" style="padding: 1.5rem;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+   <div class="form-group">
+    <label class="form-label">Patient</label>
+    <select class="form-control" id="patientSelect" required>
+     <option value="">Sélectionner un patient</option>
+    </select>
+   </div>
+   <div class="form-group">
+    <label class="form-label">Dernière consultation</label>
+    <input type="date" class="form-control" id="lastConsultation">
+   </div>
+   <div class="form-group">
+    <label class="form-label">Médecin traitant</label>
+    <input type="text" class="form-control" id="doctor" placeholder="Nom du médecin">
+   </div>
+   <div class="form-group">
+    <label class="form-label">Statut</label>
+    <select class="form-control" id="status">
+     <option value="Nouveau">Nouveau</option>
+     <option value="En cours">En cours</option>
+     <option value="Terminé">Terminé</option>
+    </select>
+   </div>
+   <div class="form-group">
+    <label class="form-label">Groupe sanguin</label>
+    <input type="text" class="form-control" id="bloodType" placeholder="ex: A+">
+   </div>
+   <div class="form-group">
+    <label class="form-label">Allergies</label>
+    <input type="text" class="form-control" id="allergies" placeholder="Liste des allergies">
+   </div>
+   <div class="form-group" style="grid-column: span 2;">
+    <label class="form-label">Antécédents médicaux</label>
+    <textarea class="form-control" id="medicalHistory" rows="3" placeholder="Historique médical"></textarea>
+   </div>
+  </div>
+  <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+   <button type="submit" class="btn btn-primary">Enregistrer</button>
+   <button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
+  </div>
+ </form>
+</div>
+
+<div id="recordDetails" style="display: none;">
+<div class="record-details">
+<div class="record-section">
 <h4>Informations générales</h4>
-<div class="record -grid " id="generalInfo">
-<!-- General info will be loaded  here -->
+<div class="record-grid" id="generalInfo">
+<!-- General info will be loaded here -->
 </div>
 </div>
-<div class="record -section">
+<div class="record-section">
 <h4>Historique des consultations</h4>
 <div id="consultationHistory">
-<!-- Consultation history will be loaded  here -->
+<!-- Consultation history will be loaded here -->
 </div>
 </div>
-<div class="record -section">
+<div class="record-section">
 <h4>Traitements en cours</h4>
 <div id="currentTreatments">
-<!-- Current treatments will be loaded  here -->
+<!-- Current treatments will be loaded here -->
 </div>
 </div>
-<div class="record -section">
+<div class="record-section">
 <h4>Allergies et antécédents</h4>
-<div class="record -grid " id="allergiesHistory">
-<!-- Allergies and  history will be loaded  here -->
+<div class="record-grid" id="allergiesHistory">
+<!-- Allergies and history will be loaded here -->
 </div>
 </div>
 </div>
 </div>
 </div><script src="../js/navbar.js"></script><script>
-let medicalRecords = JSON.parse(localStorage.getItem('med ical_record s')) || [];
-function loAddossiers() {
+let medicalRecords = JSON.parse(localStorage.getItem('medical_records')) || [];
+let editingPatientId = null;
+
+function loadDossiers() {
 const tbody = document.getElementById('dossiersTablebody');
 const searchTerm = document.getElementById('searchInput').value.toLowerCase();
 tbody.innerHTML = '';
@@ -556,7 +612,7 @@ const patients = JSON.parse(localStorage.getItem('patients')) || [];
 patients.forEach(patient => {
 const matchesSearch = patient.name.toLowerCase().includes(searchTerm);
 if (matchesSearch) {
-const record  = medicalRecords.find (r => r.patient_id  == patient.id) || {
+const record = medicalRecords.find(r => r.patient_id == patient.id) || {
 last_consultation: 'Aucune',
 doctor: 'Non assigné',
 status: 'Nouveau'
@@ -566,69 +622,149 @@ row.innerHTML = `
 <td >${patient.name}</td >
 <td >${record .last_consultation}</td >
 <td >${record .doctor}</td >
-<td ><span class="status-bad ge status-actif">${record .status}</span></td >
-<td  class="action-buttons">
-<button class="btn btn-small btn-success" title="Voir le dossier" onclick="viewRecord(${patient.id })"><i class="fas fa-eye"></i></button>
-<button class="btn btn-small btn-primary" title="Modifier" onclick="editRecord (${patient.id })"><i class="fas fa-edit"></i></button>
-</td >
+<td><span class="status-badge status-actif">${record.status}</span></td>
+<td class="action-buttons">
+<button class="btn btn-small btn-success" title="Voir le dossier" onclick="viewRecord(${patient.id})"><i class="fas fa-eye"></i></button>
+<button class="btn btn-small btn-primary" title="Modifier" onclick="editRecord(${patient.id})"><i class="fas fa-edit"></i></button>
+<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteRecord(${patient.id})"><i class="fas fa-times"></i></button>
+</td>
 `;
 tbody.appendChild(row);
 }
 });
 }
 function viewRecord(patientId) {
-const patients = JSON.parse(localStorage.getItem('patients')) || [];
-const patient = patients.find (p => p.id  == patientId);
-const record  = medicalRecords.find (r => r.patient_id  == patientId) || {};
-document.getElementById('generalInfo').innerHTML = `
-<div class="record -item">
-<div class="record -label">Nom complet</div>
-<div class="record -value">${patient ? patient.name : 'N/A'}</div>
-</div>
-<div class="record -item">
-<div class="record -label">date de naissance</div>
-<div class="record -value">${patient ? patient.birth_date || 'N/A' : 'N/A'}</div>
-</div>
-<div class="record -item">
-<div class="record -label">Téléphone</div>
-<div class="record -value">${patient ? patient.phone || 'N/A' : 'N/A'}</div>
-</div>
-<div class="record -item">
-<div class="record -label">Groupe sanguin</div>
-<div class="record -value">${record .blood_type || 'N/A'}</div>
-</div>
-`;
-document.getElementById('consultationHistory').innerHTML = record .consultations ? record .consultations.map(c => `
-<div class="record -item" style="margin-bottom: 0.5rem;">
-<div class="record -label">${c.date} - ${c.doctor}</div>
-<div class="record -value">${c.notes}</div>
-</div>
-`).join('') : '<p>Aucune consultation enregistrée</p>';
-document.getElementById('currentTreatments').innerHTML = record .treatments ? record .treatments.map(t => `
-<div class="record -item" style="margin-bottom: 0.5rem;">
-<div class="record -label">${t.name}</div>
-<div class="record -value">${t.description}</div>
-</div>
-`).join('') : '<p>Aucun traitement en cours</p>';
-document.getElementById('allergiesHistory').innerHTML = `
-<div class="record -item">
-<div class="record -label">Allergies</div>
-<div class="record -value">${record .allergies || 'Aucune'}</div>
-</div>
-<div class="record -item">
-<div class="record -label">Antécédents médicaux</div>
-<div class="record -value">${record .medical_history || 'Aucun'}</div>
-</div>
-`;
-document.getElementById('record details').style.display = 'block';
-document.getElementById('record details').scrollIntoView({ behavior: 'smooth' });
+ const patients = JSON.parse(localStorage.getItem('patients')) || [];
+ const patient = patients.find(p => p.id == patientId);
+ const record = medicalRecords.find(r => r.patient_id == patientId) || {};
+ document.getElementById('generalInfo').innerHTML = `
+ <div class="record-item">
+ <div class="record-label">Nom complet</div>
+ <div class="record-value">${patient ? patient.name : 'N/A'}</div>
+ </div>
+ <div class="record-item">
+ <div class="record-label">Date de naissance</div>
+ <div class="record-value">${patient ? patient.birth_date || 'N/A' : 'N/A'}</div>
+ </div>
+ <div class="record-item">
+ <div class="record-label">Téléphone</div>
+ <div class="record-value">${patient ? patient.phone || 'N/A' : 'N/A'}</div>
+ </div>
+ <div class="record-item">
+ <div class="record-label">Groupe sanguin</div>
+ <div class="record-value">${record.blood_type || 'N/A'}</div>
+ </div>
+ `;
+ document.getElementById('consultationHistory').innerHTML = record.consultations ? record.consultations.map(c => `
+ <div class="record-item" style="margin-bottom: 0.5rem;">
+ <div class="record-label">${c.date} - ${c.doctor}</div>
+ <div class="record-value">${c.notes}</div>
+ </div>
+ `).join('') : '<p>Aucune consultation enregistrée</p>';
+ document.getElementById('currentTreatments').innerHTML = record.treatments ? record.treatments.map(t => `
+ <div class="record-item" style="margin-bottom: 0.5rem;">
+ <div class="record-label">${t.name}</div>
+ <div class="record-value">${t.description}</div>
+ </div>
+ `).join('') : '<p>Aucun traitement en cours</p>';
+ document.getElementById('allergiesHistory').innerHTML = `
+ <div class="record-item">
+ <div class="record-label">Allergies</div>
+ <div class="record-value">${record.allergies || 'Aucune'}</div>
+ </div>
+ <div class="record-item">
+ <div class="record-label">Antécédents médicaux</div>
+ <div class="record-value">${record.medical_history || 'Aucun'}</div>
+ </div>
+ `;
+ document.getElementById('recordDetails').style.display = 'block';
+ document.getElementById('recordDetails').scrollIntoView({ behavior: 'smooth' });
 }
-function editRecord (patientId) {
-// For now, just alert - could implement editing functionality
-alert('Fonctionnalité d \'édition à implémenter');
+function showForm() {
+ document.getElementById('recordForm').style.display = 'block';
+ document.getElementById('medicalRecordForm').reset();
+ editingPatientId = null;
+ document.getElementById('formTitle').textContent = 'Ajouter un dossier médical';
+ loadPatientSelect();
 }
-document.getElementById('searchInput').addEventListener('input', loAddossiers);
-loAddossiers();
+
+function hideForm() {
+ document.getElementById('recordForm').style.display = 'none';
+}
+
+function loadPatientSelect() {
+ const select = document.getElementById('patientSelect');
+ select.innerHTML = '<option value="">Sélectionner un patient</option>';
+ const patients = JSON.parse(localStorage.getItem('patients')) || [];
+ patients.forEach(patient => {
+  const option = document.createElement('option');
+  option.value = patient.id;
+  option.textContent = patient.name;
+  select.appendChild(option);
+ });
+}
+
+function saveRecord(e) {
+ e.preventDefault();
+ const patientId = document.getElementById('patientSelect').value;
+ const lastConsultation = document.getElementById('lastConsultation').value;
+ const doctor = document.getElementById('doctor').value;
+ const status = document.getElementById('status').value;
+ const bloodType = document.getElementById('bloodType').value;
+ const allergies = document.getElementById('allergies').value;
+ const medicalHistory = document.getElementById('medicalHistory').value;
+
+ if (!patientId) {
+  alert('Veuillez sélectionner un patient.');
+  return;
+ }
+
+ let record = medicalRecords.find(r => r.patient_id == patientId);
+ if (!record) {
+  record = { patient_id: patientId };
+  medicalRecords.push(record);
+ }
+
+ record.last_consultation = lastConsultation || 'Aucune';
+ record.doctor = doctor || 'Non assigné';
+ record.status = status;
+ record.blood_type = bloodType;
+ record.allergies = allergies;
+ record.medical_history = medicalHistory;
+
+ localStorage.setItem('medical_records', JSON.stringify(medicalRecords));
+ loadDossiers();
+ hideForm();
+}
+
+function editRecord(patientId) {
+ const record = medicalRecords.find(r => r.patient_id == patientId);
+ if (record) {
+  document.getElementById('patientSelect').value = patientId;
+  document.getElementById('lastConsultation').value = record.last_consultation !== 'Aucune' ? record.last_consultation : '';
+  document.getElementById('doctor').value = record.doctor !== 'Non assigné' ? record.doctor : '';
+  document.getElementById('status').value = record.status;
+  document.getElementById('bloodType').value = record.blood_type || '';
+  document.getElementById('allergies').value = record.allergies || '';
+  document.getElementById('medicalHistory').value = record.medical_history || '';
+  editingPatientId = patientId;
+  document.getElementById('recordForm').style.display = 'block';
+  document.getElementById('formTitle').textContent = 'Modifier le dossier médical';
+  loadPatientSelect();
+ }
+}
+
+function deleteRecord(patientId) {
+ if (confirm('Êtes-vous sûr de vouloir supprimer ce dossier médical ?')) {
+  medicalRecords = medicalRecords.filter(r => r.patient_id != patientId);
+  localStorage.setItem('medical_records', JSON.stringify(medicalRecords));
+  loadDossiers();
+ }
+}
+
+document.getElementById('medicalRecordForm').addEventListener('submit', saveRecord);
+document.getElementById('searchInput').addEventListener('input', loadDossiers);
+loadDossiers();
 </script>
 </body>
 </html>

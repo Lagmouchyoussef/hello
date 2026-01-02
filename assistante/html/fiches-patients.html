@@ -539,29 +539,29 @@ Nouveau Patient
 <form id="patientForm" style="padding: 1.5rem;">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
 <div class="form-group">
-<label class="form-label">Nom</label>
-<input type="text" class="form-control" id="nom" required>
-</div>
-<div class="form-group">
-<label class="form-label">Prénom</label>
-<input type="text" class="form-control" id="prenom" required>
-</div>
-<div class="form-group">
-<label class="form-label">date de naissance</label>
-<input type="date" class="form-control" id="date_naissance" required>
-</div>
-<div class="form-group">
-<label class="form-label">Téléphone</label>
-<input type="tel" class="form-control" id="telephone" required>
-</div>
-<div class="form-group">
-<label class="form-label">Email</label>
-<input type="email" class="form-control" id="email" required>
-</div>
-<div class="form-group">
-<label class="form-label">Adresse</label>
-<textarea class="form-control" id="ad resse" rows="3" required></textarea>
-</div>
+ <label class="form-label">Prénom</label>
+ <input type="text" class="form-control" id="firstName" required>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Nom</label>
+ <input type="text" class="form-control" id="lastName" required>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Date de naissance</label>
+ <input type="date" class="form-control" id="birthDate" required>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Téléphone</label>
+ <input type="tel" class="form-control" id="phone" required>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Email</label>
+ <input type="email" class="form-control" id="email" required>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Adresse</label>
+ <textarea class="form-control" id="address" rows="3" required></textarea>
+ </div>
 </div>
 <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
 <button type="submit" class="btn btn-primary">Ajouter</button>
@@ -579,12 +579,13 @@ Nouveau Patient
 <table class="appointments-table">
 <thead >
 <tr>
-<th>Nom</th>
 <th>Prénom</th>
-<th>date de naissance</th>
+<th>Nom</th>
+<th>Date de naissance</th>
 <th>Téléphone</th>
 <th>Email</th>
-<th>Ad resse</th>
+<th>Adresse</th>
+<th>Statut</th>
 <th>Actions</th>
 </tr>
 </thead >
@@ -592,125 +593,11 @@ Nouveau Patient
 </tbody>
 </table>
 </div>
-</div><script src="../js/navbar.js"></script><script>
-// DataManager for unified data management
-class DataManager {
-    static getUsers() {
-        return JSON.parse(localStorage.getItem('users')) || [];
-    }
-
-    static saveUsers(users) {
-        localStorage.setItem('users', JSON.stringify(users));
-    }
-
-    static getPatients() {
-        return JSON.parse(localStorage.getItem('patients')) || [];
-    }
-
-    static savePatients(patients) {
-        localStorage.setItem('patients', JSON.stringify(patients));
-    }
-
-    static getAppointments() {
-        return JSON.parse(localStorage.getItem('appointments')) || [];
-    }
-
-    static saveAppointments(appointments) {
-        localStorage.setItem('appointments', JSON.stringify(appointments));
-    }
-
-    static getRoles() {
-        return JSON.parse(localStorage.getItem('roles')) || [];
-    }
-
-    static saveRoles(roles) {
-        localStorage.setItem('roles', JSON.stringify(roles));
-    }
-
-    static getCurrentUser() {
-        return JSON.parse(localStorage.getItem('currentUser'));
-    }
-
-    static setCurrentUser(user) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-    }
-
-    static showMessage(message, type = 'info') {
-        // Create message element
-        const messageEl = document.createElement('div');
-        messageEl.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            color: white;
-            font-weight: 500;
-            z-index: 10000;
-            max-width: 400px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.3s ease-out;
-        `;
-
-        if (type === 'success') {
-            messageEl.style.backgroundColor = '#059669';
-        } else if (type === 'error') {
-            messageEl.style.backgroundColor = '#dc2626';
-        } else if (type === 'warning') {
-            messageEl.style.backgroundColor = '#d97706';
-        } else {
-            messageEl.style.backgroundColor = '#3b82f6';
-        }
-
-        messageEl.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'}"></i>
-                <span>${message}</span>
-            </div>
-        `;
-
-        document.body.appendChild(messageEl);
-
-        // Add animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Remove after 5 seconds
-        setTimeout(() => {
-            messageEl.style.animation = 'slideOut 0.3s ease-in';
-            setTimeout(() => {
-                if (messageEl.parentNode) {
-                    messageEl.parentNode.removeChild(messageEl);
-                }
-            }, 300);
-        }, 5000);
-
-        // Add slideOut animation
-        style.textContent += `
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-    }
-
-    static checkPermission(action) {
-        const currentUser = this.getCurrentUser();
-        if (!currentUser) return false;
-
-        const userRole = this.getRoles().find(role => role.id === currentUser.roleId);
-        if (!userRole) return false;
-
-        return userRole.permissions.includes(action);
-    }
-}
-
+</div>
+<script src="../js/navbar.js"></script>
+<script src="../../../LOGING/js/data.js"></script>
+<script src="../../../LOGING/js/data.js"></script>
+<script>
 // Open "Patients" by default
 document.getElementById("section-patients-content").classList.remove("collapsed");
 document.getElementById("section-patients-toggle").classList.remove("collapsed");
@@ -718,8 +605,8 @@ document.getElementById("section-patients-toggle").classList.remove("collapsed")
 let editingPatientId = null;
 
 function showForm() {
-    if (!DataManager.checkPermission('manage_patients')) {
-        DataManager.showMessage('Action refusée : seul l\'Admin peut gérer les patients.', 'error');
+    if (!dentalDataManager.hasPermission('write_patients')) {
+        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
         return;
     }
     document.getElementById('addForm').style.display = 'block';
@@ -735,49 +622,32 @@ function hideForm() {
 function savePatient(e) {
     e.preventDefault();
 
-    if (!DataManager.checkPermission('manage_patients')) {
-        DataManager.showMessage('Action refusée : seul l\'Admin peut gérer les patients.', 'error');
+    if (!dentalDataManager.hasPermission('write_patients')) {
+        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
         return;
     }
 
     const patientData = {
-        nom: document.getElementById('nom').value.trim(),
-        prenom: document.getElementById('prenom').value.trim(),
-        date_naissance: document.getElementById('date_naissance').value,
-        telephone: document.getElementById('telephone').value.trim(),
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName: document.getElementById('lastName').value.trim(),
+        birthDate: document.getElementById('birthDate').value,
+        phone: document.getElementById('phone').value.trim(),
         email: document.getElementById('email').value.trim(),
-        adresse: document.getElementById('adresse').value.trim()
+        address: document.getElementById('address').value.trim()
     };
-
-    const patients = DataManager.getPatients();
 
     if (editingPatientId) {
         // Editing existing patient
-        const index = patients.findIndex(p => p.id === editingPatientId);
-        if (index !== -1) {
-            patients[index] = { ...patients[index], ...patientData };
-            DataManager.savePatients(patients);
-            DataManager.showMessage('Patient modifié avec succès et données synchronisées.', 'success');
+        const success = dentalDataManager.update('patients', editingPatientId, patientData);
+        if (success) {
+            dentalDataManager.showMessage('Patient modifié avec succès et données synchronisées.', 'success');
         }
     } else {
-        // Adding new patient - check uniqueness
-        const existingPatient = patients.find(p =>
-            p.nom.toLowerCase() === patientData.nom.toLowerCase() &&
-            p.prenom.toLowerCase() === patientData.prenom.toLowerCase() &&
-            p.date_naissance === patientData.date_naissance
-        );
-
-        if (existingPatient) {
-            DataManager.showMessage('Ce patient existe déjà. Impossible de le recréer.', 'warning');
-            return;
+        // Adding new patient
+        const patientId = dentalDataManager.createPatient(patientData);
+        if (patientId) {
+            dentalDataManager.showMessage('Patient ajouté avec succès et données synchronisées.', 'success');
         }
-
-        // Generate new ID
-        const newId = Date.now() + Math.random();
-        patientData.id = newId;
-        patients.push(patientData);
-        DataManager.savePatients(patients);
-        DataManager.showMessage('Patient ajouté avec succès et données synchronisées.', 'success');
     }
 
     renderPatients();
@@ -785,37 +655,55 @@ function savePatient(e) {
 }
 
 function editPatient(patientId) {
-    if (!DataManager.checkPermission('manage_patients')) {
-        DataManager.showMessage('Action refusée : seul l\'Admin peut gérer les patients.', 'error');
+    if (!dentalDataManager.hasPermission('write_patients')) {
+        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
         return;
     }
 
-    const patients = DataManager.getPatients();
-    const patient = patients.find(p => p.id === patientId);
+    const patient = dentalDataManager.read('patients', patientId);
     if (!patient) return;
 
-    document.getElementById('nom').value = patient.nom;
-    document.getElementById('prenom').value = patient.prenom;
-    document.getElementById('date_naissance').value = patient.date_naissance;
-    document.getElementById('telephone').value = patient.telephone;
-    document.getElementById('email').value = patient.email;
-    document.getElementById('adresse').value = patient.adresse;
+    document.getElementById('firstName').value = patient.firstName || '';
+    document.getElementById('lastName').value = patient.lastName || '';
+    document.getElementById('birthDate').value = patient.birthDate || '';
+    document.getElementById('phone').value = patient.phone || '';
+    document.getElementById('email').value = patient.email || '';
+    document.getElementById('address').value = patient.address || '';
     editingPatientId = patientId;
     document.getElementById('addForm').style.display = 'block';
     document.querySelector('#addForm .appointments-title').textContent = 'Modifier le Patient';
 }
 
-function deletePatient(patientId) {
-    if (!DataManager.checkPermission('manage_patients')) {
-        DataManager.showMessage('Action refusée : seul l\'Admin peut gérer les patients.', 'error');
+function deactivatePatient(patientId) {
+    if (!dentalDataManager.hasPermission('write_patients')) {
+        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
         return;
     }
 
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce patient ? Cette action est irréversible.')) {
-        const patients = DataManager.getPatients();
-        const filteredPatients = patients.filter(p => p.id !== patientId);
-        DataManager.savePatients(filteredPatients);
-        DataManager.showMessage('Patient supprimé avec succès et données synchronisées.', 'success');
+    if (confirm('Êtes-vous sûr de vouloir désactiver ce patient ?')) {
+        dentalDataManager.deactivatePatient(patientId);
+        renderPatients();
+    }
+}
+
+function activatePatient(patientId) {
+    if (!dentalDataManager.hasPermission('write_patients')) {
+        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
+        return;
+    }
+
+    dentalDataManager.activatePatient(patientId);
+    renderPatients();
+}
+
+function deletePatient(patientId) {
+    if (!dentalDataManager.hasPermission('write_patients')) {
+        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
+        return;
+    }
+
+    if (confirm('Êtes-vous sûr de vouloir supprimer définitivement ce patient ? Cette action est irréversible.')) {
+        dentalDataManager.deletePatient(patientId);
         renderPatients();
     }
 }
@@ -823,37 +711,58 @@ function deletePatient(patientId) {
 function renderPatients() {
     const tbody = document.getElementById('patientsTablebody');
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const patients = DataManager.getPatients();
+    const patients = dentalDataManager.getAllPatients();
 
     tbody.innerHTML = '';
 
     patients.forEach((patient) => {
-        const matchesSearch = patient.nom.toLowerCase().includes(searchTerm) ||
-            patient.prenom.toLowerCase().includes(searchTerm) ||
-            patient.email.toLowerCase().includes(searchTerm);
+        const matchesSearch = (patient.firstName || '').toLowerCase().includes(searchTerm) ||
+            (patient.lastName || '').toLowerCase().includes(searchTerm) ||
+            (patient.email || '').toLowerCase().includes(searchTerm);
 
         if (matchesSearch) {
+            let statusBadge = '';
+            let actionButtons = '';
+
+            if (patient.status === 'active') {
+                statusBadge = '<span class="status-badge status-confirmed">Actif</span>';
+                actionButtons = `
+                    <button class="btn btn-small btn-success" title="Modifier" onclick="editPatient('${patient.id}')"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-small btn-warning" title="Désactiver" onclick="deactivatePatient('${patient.id}')"><i class="fas fa-pause"></i></button>
+                    <button class="btn btn-small btn-danger" title="Supprimer" onclick="deletePatient('${patient.id}')"><i class="fas fa-times"></i></button>
+                `;
+            } else if (patient.status === 'inactive') {
+                statusBadge = '<span class="status-badge status-pending">Inactif</span>';
+                actionButtons = `
+                    <button class="btn btn-small btn-success" title="Réactiver" onclick="activatePatient('${patient.id}')"><i class="fas fa-play"></i></button>
+                    <button class="btn btn-small btn-danger" title="Supprimer" onclick="deletePatient('${patient.id}')"><i class="fas fa-times"></i></button>
+                `;
+            } else if (patient.status === 'deleted') {
+                statusBadge = '<span class="status-badge status-cancelled">Supprimé</span>';
+                actionButtons = '<span class="text-gray">Aucune action disponible</span>';
+            }
+
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${patient.nom}</td>
-                <td>${patient.prenom}</td>
-                <td>${formatDate(patient.date_naissance)}</td>
-                <td>${patient.telephone}</td>
-                <td>${patient.email}</td>
-                <td>${patient.adresse}</td>
-                <td class="action-buttons">
-                    <button class="btn btn-small btn-success" title="Modifier" onclick="editPatient(${patient.id})"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-small btn-danger" title="Supprimer" onclick="deletePatient(${patient.id})"><i class="fas fa-times"></i></button>
-                </td>
+                <td>${patient.firstName || ''}</td>
+                <td>${patient.lastName || ''}</td>
+                <td>${patient.birthDate ? formatDate(patient.birthDate) : ''}</td>
+                <td>${patient.phone || ''}</td>
+                <td>${patient.email || ''}</td>
+                <td>${patient.address || ''}</td>
+                <td>${statusBadge}</td>
+                <td class="action-buttons">${actionButtons}</td>
             `;
             tbody.appendChild(row);
         }
     });
 }
+
 function formatDate(dateString) {
-const date = new Date(dateString);
-return date.toLocaleDateString('fr-FR');
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR');
 }
+
 document.getElementById('patientForm').addEventListener('submit', savePatient);
 document.getElementById('searchInput').addEventListener('input', renderPatients);
 renderPatients();
