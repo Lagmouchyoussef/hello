@@ -2067,6 +2067,49 @@ function setupDashboardInteractions() {
     document.getElementById('exportModal').style.display = 'none';
   });
 
+  // Reset data button
+  document.getElementById('resetDataBtn').addEventListener('click', function() {
+    if (confirm('Êtes-vous sûr de vouloir réinitialiser toutes les données ? Cette action est irréversible.')) {
+      // Clear all data from localStorage
+      localStorage.removeItem('accountingEntries');
+      localStorage.removeItem('appointments');
+      localStorage.removeItem('patients');
+      localStorage.removeItem('users');
+      localStorage.removeItem('cabinetInfo');
+
+      // Reset KPIs to 0
+      document.getElementById('totalRevenue').textContent = '0 DH';
+      document.getElementById('activePatients').textContent = '0';
+      document.getElementById('totalAppointments').textContent = '0';
+      document.getElementById('activeStaff').textContent = '0';
+
+      // Update trend indicators
+      const revenueTrend = document.querySelector('#totalRevenue').nextElementSibling;
+      revenueTrend.className = 'kpi-change neutral';
+      revenueTrend.innerHTML = '<i class="fas fa-minus"></i><span>Aucune donnée</span>';
+
+      const patientTrend = document.querySelector('#activePatients').nextElementSibling;
+      patientTrend.className = 'kpi-change neutral';
+      patientTrend.innerHTML = '<i class="fas fa-minus"></i><span>Aucune donnée</span>';
+
+      const appointmentTrend = document.querySelector('#totalAppointments').nextElementSibling;
+      appointmentTrend.className = 'kpi-change neutral';
+      appointmentTrend.innerHTML = '<i class="fas fa-minus"></i><span>Aucune donnée</span>';
+
+      // Update charts with empty data
+      updateRevenueChart();
+      updateTreatmentChart();
+
+      // Update activity feed
+      updateActivityFeed();
+
+      // Update today's appointments table
+      updateTodaysAppointments();
+
+      alert('Toutes les données ont été réinitialisées.');
+    }
+  });
+
   // Close modal when clicking outside
   window.addEventListener('click', function(event) {
     const modal = document.getElementById('exportModal');
