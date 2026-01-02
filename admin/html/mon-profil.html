@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mon Profil - dikra Centre dentaire</title>
+<title>Mon Profil - Dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -450,6 +450,7 @@ flex-direction: column;
 }
 }
 </style>
+<script src="../../LOGING/js/data.js"></script>
 </head>
 <body class="light-mode">
 <div id="navbar-container"></div><div class="main-content">
@@ -493,12 +494,12 @@ flex-direction: column;
 </div>
 <div class="form-group">
 <label class="form-label">Numéro d'ordre</label>
-<input type="text" class="form-control" id="numero_ord re" placeholder="Numéro d'ordre des médecins">
+<input type="text" class="form-control" id="numero_ordre" placeholder="Numéro d'ordre des médecins">
 </div>
 </div>
 <div class="form-group">
 <label class="form-label">Adresse</label>
-<textarea class="form-control" id="ad resse" rows="3" placeholder="Votre adresse professionnelle"></textarea>
+<textarea class="form-control" id="adresse" rows="3" placeholder="Votre adresse professionnelle"></textarea>
 </div>
 <div class="form-group">
 <label class="form-label">Biographie</label>
@@ -519,7 +520,7 @@ document.getElementById('nom').value = profile.nom || '';
 document.getElementById('email').value = profile.email || '';
 document.getElementById('telephone').value = profile.telephone || '';
 document.getElementById('specialite').value = profile.specialite || '';
-document.getElementById('numero_ord re').value = profile.numero_ordre || '';
+document.getElementById('numero_ordre').value = profile.numero_ordre || '';
 document.getElementById('adresse').value = profile.adresse || '';
 document.getElementById('biographie').value = profile.biographie || '';
 }
@@ -536,7 +537,8 @@ adresse: document.getElementById('adresse').value,
 biographie: document.getElementById('biographie').value
 };
 localStorage.setItem('userProfile', JSON.stringify(profile));
-alert('Profil enregistré avec succès !');
+dentalDataManager.showMessage('Profil enregistré avec succès !', 'success');
+loadUserInfo(); // Update the header with new info
 }
 function resetForm() {
 if (confirm('Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les mod ifications non enregistrées seront perd ues.')) {
@@ -545,12 +547,14 @@ document.getElementById('profileForm').reset();
 }
 document.getElementById('profileForm').addEventListener('submit', saveProfile);
 loadProfile();
-loadCabinetInfo();
-function loadCabinetInfo() {
-   const cabinetInfo = JSON.parse(localStorage.getItem('cabinetInfo')) || {};
-   document.getElementById('profileAvatar').textContent = cabinetInfo.nom_medecin ? cabinetInfo.nom_medecin.charAt(0).toUpperCase() : 'D';
-   document.getElementById('profileName').textContent = cabinetInfo.nom_medecin || 'Nom du médecin';
-   document.getElementById('profileTitle').textContent = cabinetInfo.titre_medecin || 'Titre du médecin';
+loadUserInfo();
+function loadUserInfo() {
+   const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+   const fullName = (profile.prenom || '') + ' ' + (profile.nom || '');
+   const displayName = fullName.trim() || 'Nom du médecin';
+   document.getElementById('profileAvatar').textContent = displayName.charAt(0).toUpperCase() || 'D';
+   document.getElementById('profileName').textContent = displayName;
+   document.getElementById('profileTitle').textContent = 'Administrateur';
 }
 </script>
 </body>

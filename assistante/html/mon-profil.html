@@ -537,7 +537,7 @@ adresse: document.getElementById('adresse').value,
 biographie: document.getElementById('biographie').value
 };
 localStorage.setItem('userProfile', JSON.stringify(profile));
-alert('Profil enregistré avec succès !');
+dentalDataManager.showMessage('Profil enregistré avec succès !', 'success');
 loadUserInfo(); // Update the header with new info
 }
 function resetForm() {
