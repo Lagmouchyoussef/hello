@@ -392,6 +392,7 @@ const navbarHTML = `
 </div>
 `;
 
+// Insert navbar HTML
 document.getElementById('navbar-container').innerHTML = navbarHTML;
 
 // Update user info after navbar is inserted
@@ -501,5 +502,3 @@ function updateUserInfo() {
    document.getElementById('userRole').textContent = cabinetInfo.titre_medecin || 'Titre du médecin';
 }
 
-// Listen for cabinet info updates
-window.addEventListener('cabinetInfoUpdated', updateUserInfo);

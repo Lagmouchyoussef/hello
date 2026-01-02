@@ -468,6 +468,7 @@ border-color: var(--medical-blue);
 box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
 </style>
+<script src="../../LOGING/js/data.js"></script>
 </head>
 <body class="light-mode">
 <div id="navbar-container"></div><div class="main-content">
@@ -486,7 +487,9 @@ Nouveau Message
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
 <div class="form-group">
 <label class="form-label">destinataire</label>
-<input type="text" class="form-control" id="destinataire" placeholder="Nom d u destinataire" required>
+<select class="form-control" id="destinataire" required>
+<option value="">Sélectionner un destinataire</option>
+</select>
 </div>
 <div class="form-group">
 <label class="form-label">Sujet</label>
@@ -527,9 +530,38 @@ Nouveau Message
 </div><script src="../js/navbar.js"></script><script>// Open "Communication" by default\ndocument.getElementById("section-com-content").classList.remove("collapsed");\ndocument.getElementById("section-com-toggle").classList.remove("collapsed");\n
 let messages = JSON.parse(localStorage.getItem('messages')) || [];
 let editingIndex = -1;
+function populateRecipients() {
+    const select = document.getElementById('destinataire');
+    select.innerHTML = '<option value="">Sélectionner un destinataire</option>';
+    const currentUser = dentalDataManager.getCurrentUser();
+    if (!currentUser) return;
+    let recipients = [];
+    // Add all users (admin and assistant)
+    const users = dentalDataManager.getAll('users');
+    users.forEach(u => {
+        if (u.name !== currentUser.name) { // Exclude self
+            recipients.push(u.name);
+        }
+    });
+    // Add all patients
+    const patients = dentalDataManager.getAll('patients');
+    patients.forEach(p => {
+        const patientName = p.firstName + ' ' + p.lastName;
+        if (patientName !== currentUser.name) { // Exclude self if patient
+            recipients.push(patientName);
+        }
+    });
+    recipients.forEach(name => {
+        const option = document.createElement('option');
+        option.value = name;
+        option.textContent = name;
+        select.appendChild(option);
+    });
+}
 function showForm() {
 document.getElementById('addForm').style.display = 'block';
 document.getElementById('messagesForm').reset();
+populateRecipients();
 editingIndex = -1;
 document.querySelector('#addForm .appointments-title').textContent = 'Nouveau Message';
 }
