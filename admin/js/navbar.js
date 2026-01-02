@@ -33,7 +33,7 @@ const navbarHTML = `
           </a>
         </div>
         <div class="sidebar-item">
-          <a href="Prise en ligne.html" class="sidebar-link">
+          <a href="Prise%20en%20ligne.html" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
             Prise en ligne
           </a>

@@ -33,10 +33,10 @@ const navbarHTML = `
           </a>
         </div>
         <div class="sidebar-item">
-          <span class="sidebar-link disabled" title="Cette fonctionnalité n'est pas encore disponible. Elle sera activée ultérieurement.">
+          <a href="Prise%20en%20ligne.html" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
             Prise en ligne
-          </span>
+          </a>
         </div>
         <div class="sidebar-item">
           <a href="En présentiel.html" class="sidebar-link">
