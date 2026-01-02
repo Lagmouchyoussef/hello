@@ -394,6 +394,9 @@ const navbarHTML = `
 
 document.getElementById('navbar-container').innerHTML = navbarHTML;
 
+// Update user info after navbar is inserted
+updateUserInfo();
+
 // Theme Toggle
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
@@ -428,7 +431,7 @@ themeToggle.addEventListener('click', () => {
 // Logout functionality
 document.getElementById('logoutBtn').addEventListener('click', () => {
   if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-    dentalDataManager.logoutUser();
+    localStorage.removeItem('currentUser');
     alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
     window.location.href = '../../LOGING/html/loging.html';
   }
@@ -492,14 +495,11 @@ document.querySelectorAll('.sidebar-link').forEach(link => {
 function updateUserInfo() {
    const cabinetInfo = JSON.parse(localStorage.getItem('cabinetInfo')) || {};
 
-   document.getElementById('cabinetName').textContent = cabinetInfo.nom_medecin ? `Cabinet Dentaire ${cabinetInfo.nom_medecin}` : 'Cabinet Dentaire';
+   document.getElementById('cabinetName').textContent = cabinetInfo.nom_medecin ? `Cabinet Dentaire ${cabinetInfo.nom_medecin}` : 'Cabinet Dentaire Al-Farabi';
    document.getElementById('userAvatar').textContent = cabinetInfo.nom_medecin ? cabinetInfo.nom_medecin.charAt(0).toUpperCase() : 'D';
    document.getElementById('userName').textContent = cabinetInfo.nom_medecin || 'Nom du médecin';
    document.getElementById('userRole').textContent = cabinetInfo.titre_medecin || 'Titre du médecin';
 }
-
-// Call updateUserInfo after DOM is loaded
-document.addEventListener('DOMContentLoaded', updateUserInfo);
 
 // Listen for cabinet info updates
 window.addEventListener('cabinetInfoUpdated', updateUserInfo);

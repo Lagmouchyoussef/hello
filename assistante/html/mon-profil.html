@@ -458,10 +458,10 @@ flex-direction: column;
 </div>
 <div class="profile-container">
 <div class="profile-header">
-<div class="profile-avatar">DM</div>
+<div class="profile-avatar" id="profileAvatar">D</div>
 <div class="profile-info">
-<h2>Dr. Mohammed Alami</h2>
-<p>Chirurgien-dentiste</p>
+<h2 id="profileName">Nom du médecin</h2>
+<p id="profileTitle">Titre du médecin</p>
 </div>
 </div>
 <div class="profile-content">
@@ -545,6 +545,13 @@ document.getElementById('profileForm').reset();
 }
 document.getElementById('profileForm').addEventListener('submit', saveProfile);
 loadProfile();
+loadCabinetInfo();
+function loadCabinetInfo() {
+   const cabinetInfo = JSON.parse(localStorage.getItem('cabinetInfo')) || {};
+   document.getElementById('profileAvatar').textContent = cabinetInfo.nom_medecin ? cabinetInfo.nom_medecin.charAt(0).toUpperCase() : 'D';
+   document.getElementById('profileName').textContent = cabinetInfo.nom_medecin || 'Nom du médecin';
+   document.getElementById('profileTitle').textContent = cabinetInfo.titre_medecin || 'Titre du médecin';
+}
 </script>
 </body>
 </html>

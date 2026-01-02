@@ -434,8 +434,9 @@ text-align: center;
 <div><strong>Titre du médecin:</strong> <span id="display_titre_medecin"></span></div>
 <div><strong>description:</strong> <span id="display_description"></span></div>
 </div>
-<div style="margin-top: 1.5rem;">
+<div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
 <button class="btn btn-primary" onclick="showForm()">Modifier</button>
+<button class="btn btn-danger" onclick="deleteCabinet()">Supprimer</button>
 </div>
 </div>
 <div id="infoForm" style="padding: 1.5rem;">
@@ -509,6 +510,14 @@ function canceledit() {
 if (Object.keys(cabinetInfo).length === 0) {
 document.getElementById('infoForm').style.display = 'block';
 } else {
+displayInfo();
+}
+}
+function deleteCabinet() {
+if (confirm('Êtes-vous sûr de vouloir supprimer toutes les informations du cabinet ? Cette action est irréversible.')) {
+localStorage.removeItem('cabinetInfo');
+cabinetInfo = {};
+window.dispatchEvent(new CustomEvent('cabinetInfoUpdated', { detail: cabinetInfo }));
 displayInfo();
 }
 }
