@@ -523,8 +523,9 @@ Nouveau Paiement
 </tbody>
 </table>
 </div>
-</div><script src="../js/navbar.js"></script><script>// Open "Comptabilité" by default\ndocument.getElementById("section-compta-content").classList.remove("collapsed");\ndocument.getElementById("section-compta-toggle").classList.remove("collapsed");\n
-let payments = JSON.parse(localStorage.getItem('payments')) || [];
+</div><script src="../js/navbar.js"></script><script>// Open "Comptabilitï¿½" by default\ndocument.getElementById("section-compta-content").classList.remove("collapsed");\ndocument.getElementById("section-compta-toggle").classList.remove("collapsed");\n
+let payments = [];
+localStorage.setItem('payments', JSON.stringify(payments));
 let editingIndex = -1;
 function showForm() {
 document.getElementById('addForm').style.display = 'block';

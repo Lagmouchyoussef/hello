@@ -509,7 +509,8 @@ Nouvelle Statistique
 </table>
 </div>
 </div><script src="../js/navbar.js"></script><script>// Open "Organisation" by default\ndocument.getElementById("section-org-content").classList.remove("collapsed");\ndocument.getElementById("section-org-toggle").classList.remove("collapsed");\n
-let stats = JSON.parse(localStorage.getItem('stats')) || [];
+let stats = [];
+localStorage.setItem('stats', JSON.stringify(stats));
 let editingIndex = -1;
 function showForm() {
 document.getElementById('addForm').style.display = 'block';

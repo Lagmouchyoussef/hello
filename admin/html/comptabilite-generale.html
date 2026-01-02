@@ -513,8 +513,9 @@ Nouvelle EntrÃ©e
 </tbody>
 </table>
 </div>
-</div><script src="../js/navbar.js"></script><script>// Open "Comptabilité" by default\ndocument.getElementById("section-compta-content").classList.remove("collapsed");\ndocument.getElementById("section-compta-toggle").classList.remove("collapsed");\n
-let accountingEntries = JSON.parse(localStorage.getItem('accountingEntries')) || [];
+</div><script src="../js/navbar.js"></script><script>// Open "Comptabilitï¿½" by default\ndocument.getElementById("section-compta-content").classList.remove("collapsed");\ndocument.getElementById("section-compta-toggle").classList.remove("collapsed");\n
+let accountingEntries = [];
+localStorage.setItem('accountingEntries', JSON.stringify(accountingEntries));
 let editingIndex = -1;
 function showForm() {
 document.getElementById('addForm').style.display = 'block';

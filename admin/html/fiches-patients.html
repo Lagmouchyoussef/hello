@@ -596,7 +596,12 @@ Nouveau Patient
 // DataManager for unified data management
 class DataManager {
     static getUsers() {
-        return JSON.parse(localStorage.getItem('users')) || [];
+        let users = JSON.parse(localStorage.getItem('users'));
+        if (!users) {
+            users = [];
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+        return users;
     }
 
     static saveUsers(users) {
@@ -604,7 +609,12 @@ class DataManager {
     }
 
     static getPatients() {
-        return JSON.parse(localStorage.getItem('patients')) || [];
+        let patients = JSON.parse(localStorage.getItem('patients'));
+        if (!patients) {
+            patients = [];
+            localStorage.setItem('patients', JSON.stringify(patients));
+        }
+        return patients;
     }
 
     static savePatients(patients) {
@@ -612,7 +622,12 @@ class DataManager {
     }
 
     static getAppointments() {
-        return JSON.parse(localStorage.getItem('appointments')) || [];
+        let appointments = JSON.parse(localStorage.getItem('appointments'));
+        if (!appointments) {
+            appointments = [];
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+        }
+        return appointments;
     }
 
     static saveAppointments(appointments) {
@@ -620,7 +635,12 @@ class DataManager {
     }
 
     static getRoles() {
-        return JSON.parse(localStorage.getItem('roles')) || [];
+        let roles = JSON.parse(localStorage.getItem('roles'));
+        if (!roles) {
+            roles = [];
+            localStorage.setItem('roles', JSON.stringify(roles));
+        }
+        return roles;
     }
 
     static saveRoles(roles) {
