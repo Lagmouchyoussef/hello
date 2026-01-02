@@ -376,8 +376,8 @@ const navbarHTML = `
     <div class="user-info">
       <div class="user-avatar" id="userAvatar">DM</div>
       <div class="user-details">
-        <div class="user-name" id="userName">Dr. Mohammed Alami</div>
-        <div class="user-role" id="userRole">Chirurgien-Dentiste</div>
+        <div class="user-name" id="userName"></div>
+        <div class="user-role" id="userRole"></div>
       </div>
     </div>
     <button class="theme-toggle" id="themeToggle">
@@ -490,13 +490,22 @@ document.querySelectorAll('.sidebar-link').forEach(link => {
 
 // Update user info dynamically
 function updateUserInfo() {
-  const currentUser = dentalDataManager.getCurrentUser();
-  if (currentUser) {
-    document.getElementById('userAvatar').textContent = currentUser.avatar || currentUser.name.charAt(0).toUpperCase();
-    document.getElementById('userName').textContent = currentUser.name;
-    document.getElementById('userRole').textContent = currentUser.role;
-  }
+   const currentUser = dentalDataManager.getCurrentUser();
+   const cabinetInfo = JSON.parse(localStorage.getItem('cabinetInfo')) || {};
+
+   if (currentUser) {
+     document.getElementById('userAvatar').textContent = currentUser.avatar || currentUser.name.charAt(0).toUpperCase();
+     document.getElementById('userName').textContent = cabinetInfo.nom_medecin || currentUser.name || '';
+     document.getElementById('userRole').textContent = cabinetInfo.titre_medecin || currentUser.role || '';
+   } else {
+     // Use cabinet info if no user logged in
+     document.getElementById('userName').textContent = cabinetInfo.nom_medecin || '';
+     document.getElementById('userRole').textContent = cabinetInfo.titre_medecin || '';
+   }
 }
 
 // Call updateUserInfo after DOM is loaded
 document.addEventListener('DOMContentLoaded', updateUserInfo);
+
+// Listen for cabinet info updates
+window.addEventListener('cabinetInfoUpdated', updateUserInfo);

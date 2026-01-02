@@ -430,6 +430,8 @@ text-align: center;
 <div><strong>Site web:</strong> <span id="display_site_web"></span></div>
 <div><strong>Numéro fiscal:</strong> <span id="display_numero_fiscal"></span></div>
 <div><strong>Numéro CNSS:</strong> <span id="display_numero_cnss"></span></div>
+<div><strong>Nom du médecin:</strong> <span id="display_nom_medecin"></span></div>
+<div><strong>Titre du médecin:</strong> <span id="display_titre_medecin"></span></div>
 <div><strong>description:</strong> <span id="display_description"></span></div>
 </div>
 <div style="margin-top: 1.5rem;">
@@ -467,6 +469,14 @@ text-align: center;
 <label class="form-label">Numéro CNSS</label>
 <input type="text" class="form-control" id="numero_cnss" placeholder="Numéro CNSS">
 </div>
+<div class="form-group">
+<label class="form-label">Nom du médecin</label>
+<input type="text" class="form-control" id="nom_medecin" placeholder="Nom du médecin principal">
+</div>
+<div class="form-group">
+<label class="form-label">Titre du médecin</label>
+<input type="text" class="form-control" id="titre_medecin" placeholder="Ex: Chirurgien-dentiste">
+</div>
 <div class="form-group" style="grid-column: span 2;">
 <label class="form-label">description</label>
 <textarea class="form-control" id="description" rows="3" placeholder="description d u cabinet"></textarea>
@@ -491,6 +501,8 @@ document.getElementById('email').value = cabinetInfo.email || '';
 document.getElementById('site_web').value = cabinetInfo.site_web || '';
 document.getElementById('numero_fiscal').value = cabinetInfo.numero_fiscal || '';
 document.getElementById('numero_cnss').value = cabinetInfo.numero_cnss || '';
+document.getElementById('nom_medecin').value = cabinetInfo.nom_medecin || '';
+document.getElementById('titre_medecin').value = cabinetInfo.titre_medecin || '';
 document.getElementById('description').value = cabinetInfo.description || '';
 }
 function canceledit() {
@@ -510,9 +522,15 @@ email: document.getElementById('email').value,
 site_web: document.getElementById('site_web').value,
 numero_fiscal: document.getElementById('numero_fiscal').value,
 numero_cnss: document.getElementById('numero_cnss').value,
+nom_medecin: document.getElementById('nom_medecin').value,
+titre_medecin: document.getElementById('titre_medecin').value,
 description: document.getElementById('description').value
 };
 localStorage.setItem('cabinetInfo', JSON.stringify(cabinetInfo));
+
+// Dispatch custom event for real-time updates
+window.dispatchEvent(new CustomEvent('cabinetInfoUpdated', { detail: cabinetInfo }));
+
 displayInfo();
 }
 function displayInfo() {
@@ -527,6 +545,8 @@ document.getElementById('display_email').textContent = cabinetInfo.email || '';
 document.getElementById('display_site_web').textContent = cabinetInfo.site_web || '';
 document.getElementById('display_numero_fiscal').textContent = cabinetInfo.numero_fiscal || '';
 document.getElementById('display_numero_cnss').textContent = cabinetInfo.numero_cnss || '';
+document.getElementById('display_nom_medecin').textContent = cabinetInfo.nom_medecin || '';
+document.getElementById('display_titre_medecin').textContent = cabinetInfo.titre_medecin || '';
 document.getElementById('display_description').textContent = cabinetInfo.description || '';
 document.getElementById('infodisplay').style.display = 'block';
 document.getElementById('infoForm').style.display = 'none';
