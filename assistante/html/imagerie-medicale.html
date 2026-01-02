@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ajouter un Membre - Dikra Centre dentaire</title>
+<title>Imagerie médicale - Dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -358,6 +358,55 @@ align-items: center;
 font-size: 1.25rem;
 font-weight: 600;
 }
+.appointments-table {
+width: 100%;
+border-collapse: collapse;
+}
+.appointments-table th,
+.appointments-table td  {
+padding: 1rem;
+text-align: left;
+border-bottom: 1px solid var(--border-color);
+}
+.appointments-table th {
+background: var(--section-bg);
+font-weight: 600;
+color: var(--text-secondary);
+font-size: 0.875rem;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+}
+.appointments-table tbody tr:hover {
+background: var(--section-bg);
+}
+.status-badge {
+padding: 0.25rem 0.75rem;
+border-radius: 9999px;
+font-size: 0.75rem;
+font-weight: 600;
+text-align: center;
+}
+.status-confirmed{
+background: rgba(5, 150, 105, 0.1);
+color: var(--success);
+}
+.status-pending {
+background: rgba(217, 119, 6, 0.1);
+color: var(--warning);
+}
+.status-cancelled{
+background: rgba(220, 38, 38, 0.1);
+color: var(--danger);
+}
+.action-buttons {
+display: flex;
+gap: 0.5rem;
+}
+.btn-small {
+padding: 0.375rem 0.75rem;
+font-size: 0.75rem;
+border-radius: 0.375rem;
+}
 @media (max-width: 992px) {
 .sidebar { width: 250px; }
 .main-content { margin-left: 250px; padding: 1.5rem; }
@@ -365,6 +414,13 @@ font-weight: 600;
 @media (max-width: 768px) {
 .sidebar { width: 240px; }
 .main-content { margin-left: 240px; padding: 1.5rem; }
+.appointments-table {
+font-size: 0.8rem;
+}
+.appointments-table th,
+.appointments-table td  {
+padding: 0.75rem 0.5rem;
+}
 }
 @media (max-width: 480px) {
 .sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
@@ -384,6 +440,11 @@ align-items: flex-start;
 flex-direction: column;
 gap: 1rem;
 text-align: center;
+}
+.appointments-table {
+display: block;
+overflow-x: auto;
+white-space: nowrap;
 }
 }
 .form-group {
@@ -415,77 +476,192 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 <body class="light-mode">
 <div id="navbar-container"></div><div class="main-content">
 <div class="content-header">
-<h1 class="page-title">Ajouter un Membre d u Personnel</h1>
+<h1 class="page-title">Imagerie médicale</h1>
+<button class="btn btn-primary" onclick="showForm()">
+<i class="fas fa-plus"></i>
+Nouvelle Imagerie
+</button>
 </div>
-<div class="appointments-container">
+<div class="appointments-container" id="addForm" style="display: none; margin-bottom: 2rem;">
 <div class="appointments-header">
-<h2 class="appointments-title">Nouveau Membre</h2>
+<h2 class="appointments-title">Ajouter une Imagerie médicale</h2>
 </div>
-<form id="staffForm" style="padding: 1.5rem;">
+<form id="imagerieForm" style="padding: 1.5rem;">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
 <div class="form-group">
-<label class="form-label">Nom complet</label>
-<input type="text" class="form-control" id="name" placeholder="Nom complet" required>
+<label class="form-label">Nom du patient</label>
+<input type="text" class="form-control" id="nom_patient" placeholder="Nom du patient" required>
 </div>
 <div class="form-group">
-<label class="form-label">Email</label>
-<input type="email" class="form-control" id="email" placeholder="email@example.com" required>
-</div>
-<div class="form-group">
-<label class="form-label">Mot de passe</label>
-<input type="password" class="form-control" id="password" placeholder="Mot de passe" required>
-</div>
-<div class="form-group">
-<label class="form-label">Rôle</label>
-<select class="form-control" id="role" required>
-<option value="">Sélectionner un rôle</option>
-<option value="Admin">Admin</option>
-<option value="Assistant">Assistant</option>
-<option value="Médecin">Médecin</option>
+<label class="form-label">Type d'imagerie</label>
+<select class="form-control" id="type_imagerie" required>
+<option value="">Sélectionner un type</option>
+<option value="Radiographie panoramique">Radiographie panoramique</option>
+<option value="Radiographie intra-orale">Radiographie intra-orale</option>
+<option value="CBCT">CBCT</option>
+<option value="Scanner">Scanner</option>
+<option value="IRM">IRM</option>
+<option value="Autre">Autre</option>
 </select>
 </div>
 <div class="form-group">
-<label class="form-label">Téléphone</label>
-<input type="tel" class="form-control" id="phone" placeholder="+212 XXX XXX XXX">
+<label class="form-label">Date de l'examen</label>
+<input type="date" class="form-control" id="date_examen" required>
 </div>
 <div class="form-group">
-<label class="form-label">Spécialité</label>
-<input type="text" class="form-control" id="specialty" placeholder="ex: Chirurgien-dentiste">
+<label class="form-label">Médecin radiologue</label>
+<input type="text" class="form-control" id="medecin_radiologue" placeholder="Médecin radiologue" required>
 </div>
 <div class="form-group">
-<label class="form-label">Ad resse</label>
-<input type="text" class="form-control" id="Add ress" placeholder="Ad resse">
+<label class="form-label">Zone examinée</label>
+<input type="text" class="form-control" id="zone_examinee" placeholder="Zone examinée" required>
 </div>
 <div class="form-group">
-<label class="form-label">date de naissance</label>
-<input type="date" class="form-control" id="birthdate">
+<label class="form-label">Indication</label>
+<input type="text" class="form-control" id="indication" placeholder="Indication" required>
+</div>
+<div class="form-group">
+<label class="form-label">Résultats</label>
+<textarea class="form-control" id="resultats" rows="3" placeholder="Résultats de l'examen" required></textarea>
+</div>
+<div class="form-group">
+<label class="form-label">Observations</label>
+<textarea class="form-control" id="observations" rows="3" placeholder="Observations" required></textarea>
+</div>
+<div class="form-group">
+<label class="form-label">Fichier image</label>
+<input type="file" class="form-control" id="fichier_image" accept="image/*,.dcm">
 </div>
 </div>
 <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-<button type="submit" class="btn btn-primary">Ajouter le Membre</button>
-<button type="button" class="btn btn-danger" onclick="window.location.href='Liste d u personnel.html'">Annuler</button>
+<button type="submit" class="btn btn-primary">Ajouter</button>
+<button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
 </div>
 </form>
 </div>
+<div class="appointments-container">
+<div class="appointments-header">
+<h2 class="appointments-title">Liste des Imagerie médicale</h2>
+<div>
+<input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
 </div>
-<script src="../../LOGING/js/data.js"></script>
-<script src="../js/navbar.js"></script>
-<script>
-document.getElementById('staffForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const role = document.getElementById('role').value;
-    // Note: Additional fields like phone, specialty are not used in createUser, but could be extended
-    const result = dentalDataManager.createUser(email, password, role, name);
-    if (result) {
-        window.location.href = 'Liste%20du%20personnel.html';
-    }
+</div>
+<table class="appointments-table">
+<thead >
+<tr>
+<th>Patient</th>
+<th>Type d'imagerie</th>
+<th>date</th>
+<th>Médecin radiologue</th>
+<th>Zone examinée</th>
+<th>Indication</th>
+<th>Résultats</th>
+<th>Observations</th>
+<th>Actions</th>
+</tr>
+</thead >
+<tbody id="imagerieTablebody">
+</tbody>
+</table>
+</div>
+</div><script src="../js/navbar.js"></script><script>// Open "Patients" by default\ndocument.getElementById("section-patients-content").classList.remove("collapsed");\ndocument.getElementById("section-patients-toggle").classList.remove("collapsed");\n
+let imageries = JSON.parse(localStorage.getItem('imageries')) || [];
+let editingIndex = -1;
+function showForm() {
+document.getElementById('addForm').style.display = 'block';
+document.getElementById('imagerieForm').reset();
+editingIndex = -1;
+document.querySelector('#addForm .appointments-title').textContent = 'Ajouter une Imagerie médicale';
+}
+function hideForm() {
+document.getElementById('addForm').style.display = 'none';
+}
+function saveImagerie(e) {
+e.preventDefault();
+const imagerie = {
+nom_patient: document.getElementById('nom_patient').value,
+type_imagerie: document.getElementById('type_imagerie').value,
+date_examen: document.getElementById('date_examen').value,
+medecin_radiologue: document.getElementById('medecin_radiologue').value,
+zone_examinee: document.getElementById('zone_examinee').value,
+indication: document.getElementById('indication').value,
+resultats: document.getElementById('resultats').value,
+observations: document.getElementById('observations').value,
+fichier_image: document.getElementById('fichier_image').files[0] ? document.getElementById('fichier_image').files[0].name : ''
+};
+if (editingIndex >= 0) {
+imageries[editingIndex] = imagerie;
+} else {
+imageries.push(imagerie);
+}
+localStorage.setItem('imageries', JSON.stringify(imageries));
+renderImageries();
+hideForm();
+}
+function editImagerie(index) {
+const imagerie = imageries[index];
+document.getElementById('nom_patient').value = imagerie.nom_patient;
+document.getElementById('type_imagerie').value = imagerie.type_imagerie;
+document.getElementById('date_examen').value = imagerie.date_examen;
+document.getElementById('medecin_radiologue').value = imagerie.medecin_radiologue;
+document.getElementById('zone_examinee').value = imagerie.zone_examinee;
+document.getElementById('indication').value = imagerie.indication;
+document.getElementById('resultats').value = imagerie.resultats;
+document.getElementById('observations').value = imagerie.observations;
+editingIndex = index;
+document.getElementById('addForm').style.display = 'block';
+document.querySelector('#addForm .appointments-title').textContent = 'Modifier l\'Imagerie médicale';
+}
+function deleteImagerie(index) {
+if (confirm('Êtes-vous sûr de vouloir supprimer cette imagerie ?')) {
+imageries.splice(index, 1);
+localStorage.setItem('imageries', JSON.stringify(imageries));
+renderImageries();
+}
+}
+function renderImageries() {
+const tbody = document.getElementById('imagerieTablebody');
+const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+tbody.innerHTML = '';
+imageries.forEach((imagerie, index) => {
+const matchesSearch = imagerie.nom_patient.toLowerCase().includes(searchTerm) ||
+imagerie.type_imagerie.toLowerCase().includes(searchTerm) ||
+imagerie.medecin_radiologue.toLowerCase().includes(searchTerm) ||
+imagerie.zone_examinee.toLowerCase().includes(searchTerm) ||
+imagerie.indication.toLowerCase().includes(searchTerm) ||
+imagerie.resultats.toLowerCase().includes(searchTerm) ||
+imagerie.observations.toLowerCase().includes(searchTerm);
+if (matchesSearch) {
+const row = document.createElement('tr');
+row.innerHTML = `
+<td >${imagerie.nom_patient}</td >
+<td >${imagerie.type_imagerie}</td >
+<td >${formatDate(imagerie.date_examen)}</td >
+<td >${imagerie.medecin_radiologue}</td >
+<td >${imagerie.zone_examinee}</td >
+<td >${imagerie.indication}</td >
+<td >${imagerie.resultats}</td >
+<td >${imagerie.observations}</td >
+<td  class="action-buttons">
+<button class="btn btn-small btn-success" title="Modifier" onclick="editImagerie(${index})"><i class="fas fa-edit"></i></button>
+<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteImagerie(${index})"><i class="fas fa-times"></i></button>
+</td >
+`;
+tbody.appendChild(row);
+}
 });
+}
+function formatDate(dateString) {
+const date = new Date(dateString);
+return date.toLocaleDateString('fr-FR');
+}
+document.getElementById('imagerieForm').addEventListener('submit', saveImagerie);
+document.getElementById('searchInput').addEventListener('input', renderImageries);
+renderImageries();
 </script>
 </body>
 </html>
+
 
 
 

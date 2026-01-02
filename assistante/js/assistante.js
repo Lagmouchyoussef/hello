@@ -1,57 +1,49 @@
-// Assistant Space CRUD Operations using localStorage
+// Assistant Space Operations using unified DentalDataManager
 class AssistanteCRUD {
     constructor() {
-        this.storagePrefix = 'assistante_';
         this.init();
     }
 
     init() {
+        // Check authentication
+        const currentUser = dentalDataManager.getCurrentUser();
+        if (!currentUser) {
+            window.location.href = '../../LOGING/html/loging.html';
+            return;
+        }
         this.loadContent();
         this.bindEvents();
     }
 
-    // Generic CRUD methods
+    // Wrapper methods for dentalDataManager
     create(section, data) {
-        const items = this.getAll(section);
-        const id = Date.now().toString();
-        data.id = id;
-        data.createdAt = new Date().toISOString();
-        items.push(data);
-        this.save(section, items);
-        return id;
+        if (section === 'patients') {
+            return dentalDataManager.createPatient(data);
+        } else if (section === 'appointments') {
+            return dentalDataManager.createAppointment(data);
+        } else {
+            return dentalDataManager.create(section, data);
+        }
     }
 
     read(section, id) {
-        const items = this.getAll(section);
-        return items.find(item => item.id === id);
+        return dentalDataManager.read(section, id);
     }
 
     update(section, id, data) {
-        const items = this.getAll(section);
-        const index = items.findIndex(item => item.id === id);
-        if (index !== -1) {
-            data.updatedAt = new Date().toISOString();
-            items[index] = { ...items[index], ...data };
-            this.save(section, items);
-            return true;
-        }
-        return false;
+        return dentalDataManager.update(section, id, data);
     }
 
     delete(section, id) {
-        const items = this.getAll(section);
-        const filtered = items.filter(item => item.id !== id);
-        this.save(section, filtered);
-        return filtered.length !== items.length;
+        if (section === 'patients') {
+            return dentalDataManager.deletePatient(id);
+        } else {
+            return dentalDataManager.delete(section, id);
+        }
     }
 
     getAll(section) {
-        const data = localStorage.getItem(this.storagePrefix + section);
-        return data ? JSON.parse(data) : [];
-    }
-
-    save(section, items) {
-        localStorage.setItem(this.storagePrefix + section, JSON.stringify(items));
+        return dentalDataManager.getAll(section);
     }
 
     // Dynamic content loading
@@ -165,9 +157,14 @@ class AssistanteCRUD {
 
     // Render methods for each section
     renderDashboard() {
-        const todayAppointments = this.getAll('appointments').filter(a =>
-            new Date(a.date).toDateString() === new Date().toDateString()
-        );
+        const appointments = this.getAll('appointments');
+        const today = new Date().toDateString();
+        const todayAppointments = appointments.filter(a =>
+            new Date(a.date).toDateString() === today
+        ).map(a => {
+            const patient = this.read('patients', a.patientId);
+            return { ...a, patientName: patient ? `${patient.firstName} ${patient.lastName}` : 'Patient inconnu' };
+        });
         const pendingPayments = this.getAll('payments').filter(p => p.status === 'pending');
         const unreadMessages = this.getAll('messages').filter(m => !m.read);
         const waitingRoom = this.getAll('waiting_room');
@@ -218,7 +215,10 @@ class AssistanteCRUD {
     }
 
     renderRendezVousList() {
-        const appointments = this.getAll('appointments');
+        const appointments = this.getAll('appointments').map(a => {
+            const patient = this.read('patients', a.patientId);
+            return { ...a, patientName: patient ? `${patient.firstName} ${patient.lastName}` : 'Patient inconnu' };
+        });
         return `
             <div class="assistant-card">
                 <div class="card-header">
@@ -887,10 +887,11 @@ class AssistanteCRUD {
                 e.preventDefault();
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData);
-                this.create('patients', data);
-                alert('Patient ajouté avec succès !');
-                form.reset();
-                window.location.hash = '#fiches-patients';
+                const result = this.create('patients', data);
+                if (result) {
+                    form.reset();
+                    window.location.hash = '#fiches-patients';
+                }
             });
         }
     }
@@ -932,13 +933,25 @@ class AssistanteCRUD {
 
     // CRUD methods for various sections
     showAddAppointmentForm() {
-        const patientName = prompt('Nom du patient:');
+        const patients = this.getAll('patients');
+        if (patients.length === 0) {
+            alert('Aucun patient disponible. Veuillez ajouter un patient d\'abord.');
+            return;
+        }
+        const patientOptions = patients.map(p => `${p.id}: ${p.firstName} ${p.lastName}`).join('\n');
+        const patientId = prompt(`Sélectionnez un patient (ID: Nom):\n${patientOptions}`);
+        if (!patientId) return;
+        const patient = patients.find(p => p.id === patientId.split(':')[0].trim());
+        if (!patient) {
+            alert('Patient invalide.');
+            return;
+        }
         const type = prompt('Type de rendez-vous:');
         const date = prompt('Date (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
         const time = prompt('Heure (HH:MM):');
-        if (patientName && type) {
+        if (type && date && time) {
             this.create('appointments', {
-                patientName,
+                patientId: patient.id,
                 type,
                 date,
                 time,

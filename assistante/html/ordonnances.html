@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cabinet dentaire - Logiciel de Gestion Professionnel</title>
+<title>Ordonnances - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -402,14 +401,7 @@ body {
   margin-right: 0.5rem;
   font-weight: 600;
 }
-
-/* dashboard Cards */
-.dashboard-grid{
-  display: grid ;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
+/* Dashboard Cards */
 
 .dashboard-card{
   background: var(--bg-secondary);
@@ -456,8 +448,8 @@ body {
   margin-bottom: 0.5rem;
   color: var(--text-primary);
 }
+.card-trend {
 
-.card-trend{
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -866,182 +858,245 @@ body {
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
+/* Additional styles for Ordonnances */
+
+.appointments-container {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.appointments-header {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.appointments-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.appointments-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.appointments-table th,
+.appointments-table td  {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.appointments-table th {
+  background: var(--section-bg);
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.appointments-table tbody tr:hover {
+  background: var(--section-bg);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-small {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  border-radius: 0.375rem;
+}
 </style>
 </head>
 <body class="light-mode">
 <div id="navbar-container"></div>
-<!-- Main Content -->
-<div class="main-content" id="mainContent">
-  <div class="content-header">
-    <h1 class="page-title">Tableau de bord professionnel</h1>
-  </div>
-
-
+<div class="main-content">
+<div class="content-header">
+<h1 class="page-title">Ordonnances</h1>
+<button class="btn btn-primary" onclick="showForm()">
+<i class="fas fa-plus"></i>
+Nouvelle ordonnance
+</button>
 </div>
-
-<script src="../../LOGING/js/data.js"></script>
-<script src="../js/navbar.js"></script>
-<script>
-// Open "Rendez-vous" by default
-document.getElementById('section-rdv-content').classList.remove('collapsed');
-document.getElementById('section-rdv-toggle').classList.remove('collapsed');
-
-// Message actions
-document.querySelectorAll('.message-actions .btn-success').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const messageItem = this.closest('.message-item');
-    messageItem.classList.remove('unread');
-    this.textContent = 'Lu';
-    this.disabled= true;
-    this.style.opacity = '0.7';
-  });
-});
-
-document.querySelectorAll('.message-actions .btn-danger').forEach(btn => {
-  btn.addEventListener('click', function() {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce message ?')) {
-      const messageItem = this.closest('.message-item');
-      messageItem.style.opacity = '0';
-      setTimeout(() => {
-        messageItem.remove();
-      }, 300);
-    }
-  });
-});
-
-
-// Send message button
- document.querySelector('.btn-send').addEventListener('click', () => {
-  const recipientSelect = document.querySelector('.form-control');
-  const subject = document.querySelector('.form-control[type="text"]').value;
-  const message = document.querySelector('textarea').value;
-
-  if (!recipientSelect || recipientSelect.value === 'Sélectionner un destinataire') {
-    alert('Veuillez sélectionner un destinataire.');
-    return;
-  }
-  if (!subject.trim()) {
-    alert('Veuillez entrer un sujet.');
-    return;
-  }
-  if (!message.trim()) {
-    alert('Veuillez entrer un message.');
-    return;
-  }
-
-  alert('Message envoyé avec succès à ' + recipientSelect.value + ' !');
-
-  // Reset form
-  recipientSelect.selectedIndex = 0;
-  document.querySelector('.form-control[type="text"]').value = '';
-  document.querySelector('textarea').value = '';
-
-  // Add new message to list (simulated)
-  const messageList = document.querySelector('.message-list');
-  const now = new Date();
-  const newMessage = document.createElement('div');
-  newMessage.className = 'message-item unread';
-  newMessage.innerHTML = `
-   <div class="message-header">
-     <span>Vous</span>
-     <span class="message-time">Aujourd'hui, ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}</span>
-   </div>
-   <div class="message-content">${message}</div>
-   <div class="message-actions">
-     <button class="btn btn-success">Marquer comme lu</button>
-     <button class="btn btn-primary">Répondre</button>
-     <button class="btn btn-danger">Supprimer</button>
-   </div>
- `;
-  messageList.insertBefore(newMessage, messageList.firstChild);
-  
-  // Add  event listeners to new buttons
-  const successBtn = newMessage.querySelector('.btn-success');
-  const dangerBtn = newMessage.querySelector('.btn-danger');
-  
-  successBtn.addEventListener('click', function() {
-    newMessage.classList.remove('unread');
-    this.textContent = 'Lu';
-    this.disabled= true;
-    this.style.opacity = '0.7';
-  });
-  
-  dangerBtn.addEventListener('click', function() {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce message ?')) {
-      newMessage.style.opacity = '0';
-      setTimeout(() => {
-        newMessage.remove();
-      }, 300);
-    }
-  });
-});
-
-// Update notification badges dynamiquement
-function updateNotificationBadges() {
-  // Count unreadMessages for Messagerie interne
-  const unreadMessages = document.querySelectorAll('.message-item.unread').length;
-  const messagingBadge = document.querySelector('a[href="messagerie-interne.html"] .badge');
-  if (messagingBadge) {
-    messagingBadge.textContent = unreadMessages;
-  }
-
-  // Update messaging header badge
-  const messagingHeaderBadge = document.querySelector('.messaging-header .badge');
-  if (messagingHeaderBadge) {
-    messagingHeaderBadge.innerHTML = unreadMessages + ' nouveaux messages';
-  }
-
-  // For Assistant IA, set to 0 for now (can be updated based on AI interactions)
-  const aiBadge = document.querySelector('a[href="assistant-ia.html"] .badge');
-  if (aiBadge) {
-    aiBadge.textContent = '0';
-  }
+<div class="appointments-container" id="addForm" style="display: none; margin-bottom: 2rem;">
+<div class="appointments-header">
+<h2 class="appointments-title">Ajouter une ordonnance</h2>
+</div>
+<form id="ordonnanceForm" style="padding: 1.5rem;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+<div class="form-group">
+<label class="form-label">Nom du patient</label>
+<input type="text" class="form-control" id="nom_patient" placeholder="Nom du patient" required>
+</div>
+<div class="form-group">
+<label class="form-label">Médicament</label>
+<input type="text" class="form-control" id="medicament" placeholder="Médicament" required>
+</div>
+<div class="form-group">
+<label class="form-label">Dosage</label>
+<input type="text" class="form-control" id="dosage" placeholder="Dosage (ex: 500mg)" required>
+</div>
+<div class="form-group">
+<label class="form-label">Fréquence</label>
+<input type="text" class="form-control" id="frequence" placeholder="Fréquence (ex: 3x/jour)" required>
+</div>
+<div class="form-group">
+<label class="form-label">Durée</label>
+<input type="text" class="form-control" id="duree" placeholder="Durée (ex: 7 jours)" required>
+</div>
+<div class="form-group">
+<label class="form-label">Date de prescription</label>
+<input type="date" class="form-control" id="date_prescription" required>
+</div>
+<div class="form-group">
+<label class="form-label">Instructions spéciales</label>
+<textarea class="form-control" id="instructions" rows="3" placeholder="Instructions spéciales"></textarea>
+</div>
+</div>
+<div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+<button type="submit" class="btn btn-primary">Ajouter</button>
+<button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
+</div>
+</form>
+</div>
+<div class="appointments-container">
+<div class="appointments-header">
+<h2 class="appointments-title">Liste des Ordonnances</h2>
+<div>
+<input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
+</div>
+</div>
+<table class="appointments-table">
+<thead >
+<tr>
+<th>Patient</th>
+<th>Médicament</th>
+<th>Dosage</th>
+<th>Fréquence</th>
+<th>Durée</th>
+<th>Date</th>
+<th>Instructions</th>
+<th>Actions</th>
+</tr>
+</thead >
+<tbody id="OrdonnancesTablebody">
+</tbody>
+</table>
+</div>
+</div>
+<script src="../js/navbar.js"></script><script>
+document.getElementById('section-docs-content').classList.remove('collapsed');
+document.getElementById('section-docs-toggle').classList.remove('collapsed');
+let Ordonnances = localStorage.getItem('Ordonnances') ? localStorage.getItem('Ordonnances').split('||').map(s => {
+    const parts = s.split('|');
+    return {
+        nom_patient: parts[0] || '',
+        medicament: parts[1] || '',
+        dosage: parts[2] || '',
+        frequence: parts[3] || '',
+        duree: parts[4] || '',
+        date_prescription: parts[5] || '',
+        instructions: parts[6] || ''
+    };
+}) : [];
+let editingIndex = -1;
+function showForm() {
+document.getElementById('addForm').style.display = 'block';
+document.getElementById('ordonnanceForm').reset();
+editingIndex = -1;
+document.querySelector('#addForm .appointments-title').textContent = 'Ajouter une ordonnance';
 }
-
-// Initial update
-updateNotificationBadges();
-
-// Update badges when messages are marked as read or deleted
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('btn-success') && e.target.closest('.message-actions')) {
-    setTimeout(updateNotificationBadges, 100);
-  }
-  if (e.target.classList.contains('btn-danger') && e.target.closest('.message-actions')) {
-    setTimeout(updateNotificationBadges, 350); // Wait for animation
-  }
-});
-
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    const targetId = this.getAttribute('href');
-    if (targetId !== '#') {
-      e.preventDefault();
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth' });
-      }
+function hideForm() {
+document.getElementById('addForm').style.display = 'none';
+}
+function saveordonnance(e) {
+e.preventDefault();
+const ordonnance = {
+nom_patient: document.getElementById('nom_patient').value,
+medicament: document.getElementById('medicament').value,
+dosage: document.getElementById('dosage').value,
+frequence: document.getElementById('frequence').value,
+duree: document.getElementById('duree').value,
+date_prescription: document.getElementById('date_prescription').value,
+instructions: document.getElementById('instructions').value
+};
+if (editingIndex >= 0) {
+Ordonnances[editingIndex] = ordonnance;
+} else {
+Ordonnances.push(ordonnance);
+}
+localStorage.setItem('Ordonnances', Ordonnances.map(o => [o.nom_patient, o.medicament, o.dosage, o.frequence, o.duree, o.date_prescription, o.instructions].join('|')).join('||'));
+renderOrdonnances();
+hideForm();
+}
+function editordonnance(index) {
+const ordonnance = Ordonnances[index];
+document.getElementById('nom_patient').value = ordonnance.nom_patient;
+document.getElementById('medicament').value = ordonnance.medicament;
+document.getElementById('dosage').value = ordonnance.dosage;
+document.getElementById('frequence').value = ordonnance.frequence;
+document.getElementById('duree').value = ordonnance.duree;
+document.getElementById('date_prescription').value = ordonnance.date_prescription;
+document.getElementById('instructions').value = ordonnance.instructions;
+editingIndex = index;
+document.getElementById('addForm').style.display = 'block';
+document.querySelector('#addForm .appointments-title').textContent = 'Modifier l\'ordonnance';
+}
+function deleteordonnance(index) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette ordonnance ?')) {
+        Ordonnances.splice(index, 1);
+        localStorage.setItem('Ordonnances', Ordonnances.map(o => [o.nom_patient, o.medicament, o.dosage, o.frequence, o.duree, o.date_prescription, o.instructions].join('|')).join('||'));
+        renderOrdonnances();
     }
-  });
+}
+function renderOrdonnances() {
+const tbody = document.getElementById('OrdonnancesTablebody');
+const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+tbody.innerHTML = '';
+Ordonnances.forEach((ordonnance, index) => {
+const matchesSearch = ordonnance.nom_patient.toLowerCase().includes(searchTerm) ||
+ordonnance.medicament.toLowerCase().includes(searchTerm) ||
+ordonnance.dosage.toLowerCase().includes(searchTerm) ||
+ordonnance.frequence.toLowerCase().includes(searchTerm) ||
+ordonnance.duree.toLowerCase().includes(searchTerm) ||
+ordonnance.instructions.toLowerCase().includes(searchTerm);
+if (matchesSearch) {
+const row = document.createElement('tr');
+row.innerHTML = `
+<td >${ordonnance.nom_patient}</td >
+<td >${ordonnance.medicament}</td >
+<td >${ordonnance.dosage} </td >
+<td >${ordonnance.frequence}</td >
+<td >${ordonnance.duree}</td >
+<td >${formatDate(ordonnance.date_prescription)}</td >
+<td >${ordonnance.instructions}</td >
+<td  class="action-buttons">
+<button class="btn btn-small btn-success" title="Modifier" onclick="editordonnance(${index})"><i class="fas fa-edit"></i></button>
+<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteordonnance(${index})"><i class="fas fa-times"></i></button>
+</td >
+`;
+tbody.appendChild(row);
+}
 });
+}
+function formatDate(dateString) {
+const date = new Date(dateString);
+return date.toLocaleDateString('fr-FR');
+}
+document.getElementById('ordonnanceForm').addEventListener('submit', saveordonnance);
+document.getElementById('searchInput').addEventListener('input', renderOrdonnances);
+renderOrdonnances();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

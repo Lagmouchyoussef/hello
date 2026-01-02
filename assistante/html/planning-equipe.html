@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ajouter un Membre - Dikra Centre dentaire</title>
+<title>Planning de l'Équipe - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -358,6 +358,36 @@ align-items: center;
 font-size: 1.25rem;
 font-weight: 600;
 }
+.appointments-table {
+width: 100%;
+border-collapse: collapse;
+}
+.appointments-table th,
+.appointments-table td  {
+padding: 1rem;
+text-align: left;
+border-bottom: 1px solid var(--border-color);
+}
+.appointments-table th {
+background: var(--section-bg);
+font-weight: 600;
+color: var(--text-secondary);
+font-size: 0.875rem;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+}
+.appointments-table tbody tr:hover {
+background: var(--section-bg);
+}
+.action-buttons {
+display: flex;
+gap: 0.5rem;
+}
+.btn-small {
+padding: 0.375rem 0.75rem;
+font-size: 0.75rem;
+border-radius: 0.375rem;
+}
 @media (max-width: 992px) {
 .sidebar { width: 250px; }
 .main-content { margin-left: 250px; padding: 1.5rem; }
@@ -365,6 +395,13 @@ font-weight: 600;
 @media (max-width: 768px) {
 .sidebar { width: 240px; }
 .main-content { margin-left: 240px; padding: 1.5rem; }
+.appointments-table {
+font-size: 0.8rem;
+}
+.appointments-table th,
+.appointments-table td  {
+padding: 0.75rem 0.5rem;
+}
 }
 @media (max-width: 480px) {
 .sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
@@ -384,6 +421,11 @@ align-items: flex-start;
 flex-direction: column;
 gap: 1rem;
 text-align: center;
+}
+.appointments-table {
+display: block;
+overflow-x: auto;
+white-space: nowrap;
 }
 }
 .form-group {
@@ -415,74 +457,180 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 <body class="light-mode">
 <div id="navbar-container"></div><div class="main-content">
 <div class="content-header">
-<h1 class="page-title">Ajouter un Membre d u Personnel</h1>
+<h1 class="page-title">Planning de l'Équipe</h1>
+<button class="btn btn-primary" onclick="showForm()">
+<i class="fas fa-plus"></i>
+Ajouter un Shift
+</button>
 </div>
-<div class="appointments-container">
+<div class="appointments-container" id="addForm" style="display: none; margin-bottom: 2rem;">
 <div class="appointments-header">
-<h2 class="appointments-title">Nouveau Membre</h2>
+<h2 class="appointments-title">Ajouter un Shift</h2>
 </div>
-<form id="staffForm" style="padding: 1.5rem;">
+<form id="shiftForm" style="padding: 1.5rem;">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
 <div class="form-group">
-<label class="form-label">Nom complet</label>
-<input type="text" class="form-control" id="name" placeholder="Nom complet" required>
-</div>
-<div class="form-group">
-<label class="form-label">Email</label>
-<input type="email" class="form-control" id="email" placeholder="email@example.com" required>
-</div>
-<div class="form-group">
-<label class="form-label">Mot de passe</label>
-<input type="password" class="form-control" id="password" placeholder="Mot de passe" required>
-</div>
-<div class="form-group">
-<label class="form-label">Rôle</label>
-<select class="form-control" id="role" required>
-<option value="">Sélectionner un rôle</option>
-<option value="Admin">Admin</option>
-<option value="Assistant">Assistant</option>
-<option value="Médecin">Médecin</option>
+<label class="form-label">Membre d u personnel</label>
+<select class="form-control" id="staff_member" required>
+<option value="">Sélectionner un membre</option>
 </select>
 </div>
 <div class="form-group">
-<label class="form-label">Téléphone</label>
-<input type="tel" class="form-control" id="phone" placeholder="+212 XXX XXX XXX">
+<label class="form-label">date</label>
+<input type="date" class="form-control" id="shift_date" required>
 </div>
 <div class="form-group">
-<label class="form-label">Spécialité</label>
-<input type="text" class="form-control" id="specialty" placeholder="ex: Chirurgien-dentiste">
+<label class="form-label">Heure de d ébut</label>
+<input type="time" class="form-control" id="start_time" required>
 </div>
 <div class="form-group">
-<label class="form-label">Ad resse</label>
-<input type="text" class="form-control" id="Add ress" placeholder="Ad resse">
+<label class="form-label">Heure de fin</label>
+<input type="time" class="form-control" id="end _time" required>
 </div>
 <div class="form-group">
-<label class="form-label">date de naissance</label>
-<input type="date" class="form-control" id="birthdate">
+<label class="form-label">Type de shift</label>
+<select class="form-control" id="shift_type" required>
+<option value="">Sélectionner un type</option>
+<option value="Matin">Matin</option>
+<option value="Après-mid i">Après-mid i</option>
+<option value="Nuit">Nuit</option>
+<option value="Garde">Garde</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">Notes</label>
+<textarea class="form-control" id="notes" rows="3" placeholder="Notes supplémentaires"></textarea>
 </div>
 </div>
 <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-<button type="submit" class="btn btn-primary">Ajouter le Membre</button>
-<button type="button" class="btn btn-danger" onclick="window.location.href='Liste d u personnel.html'">Annuler</button>
+<button type="submit" class="btn btn-primary">Ajouter</button>
+<button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
 </div>
 </form>
 </div>
+<div class="appointments-container">
+<div class="appointments-header">
+<h2 class="appointments-title">Planning de l'Équipe</h2>
+<div>
+<input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
+<select id="filterdate" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary);">
+<option value="">Toutes les dates</option>
+</select>
 </div>
-<script src="../../LOGING/js/data.js"></script>
-<script src="../js/navbar.js"></script>
-<script>
-document.getElementById('staffForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const role = document.getElementById('role').value;
-    // Note: Additional fields like phone, specialty are not used in createUser, but could be extended
-    const result = dentalDataManager.createUser(email, password, role, name);
-    if (result) {
-        window.location.href = 'Liste%20du%20personnel.html';
-    }
+</div>
+<table class="appointments-table">
+<thead >
+<tr>
+<th>Membre</th>
+<th>date</th>
+<th>Heure de d ébut</th>
+<th>Heure de fin</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Actions</th>
+</tr>
+</thead >
+<tbody id="shiftsTablebody">
+</tbody>
+</table>
+</div>
+</div><script src="../js/navbar.js"></script><script>
+let shifts = JSON.parse(localStorage.getItem('shifts')) || [];
+let editingIndex = -1;
+function loadStaffOptions() {
+const staff = JSON.parse(localStorage.getItem('staff')) || [];
+const select = document.getElementById('staff_member');
+select.innerHTML = '<option value="">Sélectionner un membre</option>';
+staff.forEach(member => {
+const option = document.createElement('option');
+option.value = member.id ;
+option.textContent = member.name;
+select.appendChild(option);
 });
+}
+function showForm() {
+loadStaffOptions();
+document.getElementById('addForm').style.display = 'block';
+document.getElementById('shiftForm').reset();
+editingIndex = -1;
+document.querySelector('#addForm .appointments-title').textContent = 'Ajouter un Shift';
+}
+function hideForm() {
+document.getElementById('addForm').style.display = 'none';
+}
+function saveShift(e) {
+e.preventDefault();
+const shift = {
+staff_member: document.getElementById('staff_member').value,
+shift_date: document.getElementById('shift_date').value,
+start_time: document.getElementById('start_time').value,
+end_time: document.getElementById('end _time').value,
+shift_type: document.getElementById('shift_type').value,
+notes: document.getElementById('notes').value
+};
+if (editingIndex >= 0) {
+shifts[editingIndex] = shift;
+} else {
+shifts.push(shift);
+}
+localStorage.setItem('shifts', JSON.stringify(shifts));
+renderShifts();
+hideForm();
+}
+function editShift(index) {
+const shift = shifts[index];
+document.getElementById('staff_member').value = shift.staff_member;
+document.getElementById('shift_date').value = shift.shift_date;
+document.getElementById('start_time').value = shift.start_time;
+document.getElementById('end _time').value = shift.end_time;
+document.getElementById('shift_type').value = shift.shift_type;
+document.getElementById('notes').value = shift.notes;
+editingIndex = index;
+document.getElementById('addForm').style.display = 'block';
+document.querySelector('#addForm .appointments-title').textContent = 'Modifier le Shift';
+}
+function deleteShift(index) {
+if (confirm('Êtes-vous sûr de vouloir supprimer ce shift ?')) {
+shifts.splice(index, 1);
+localStorage.setItem('shifts', JSON.stringify(shifts));
+renderShifts();
+}
+}
+function renderShifts() {
+const tbody = document.getElementById('shiftsTablebody');
+const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+tbody.innerHTML = '';
+const staff = JSON.parse(localStorage.getItem('staff')) || [];
+shifts.forEach((shift, index) => {
+const member = staff.find (m => m.id  == shift.staff_member);
+const memberName = member ? member.name : 'Inconnu';
+const matchesSearch = memberName.toLowerCase().includes(searchTerm) ||
+shift.shift_type.toLowerCase().includes(searchTerm);
+if (matchesSearch) {
+const row = document.createElement('tr');
+row.innerHTML = `
+<td >${memberName}</td >
+<td >${formatDate(shift.shift_date)}</td >
+<td >${shift.start_time}</td >
+<td >${shift.end_time}</td >
+<td >${shift.shift_type}</td >
+<td >${shift.notes}</td >
+<td  class="action-buttons">
+<button class="btn btn-small btn-success" title="Modifier" onclick="editShift(${index})"><i class="fas fa-edit"></i></button>
+<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteShift(${index})"><i class="fas fa-times"></i></button>
+</td >
+`;
+tbody.appendChild(row);
+}
+});
+}
+function formatDate(dateString) {
+const date = new Date(dateString);
+return date.toLocaleDateString('fr-FR');
+}
+document.getElementById('shiftForm').addEventListener('submit', saveShift);
+document.getElementById('searchInput').addEventListener('input', renderShifts);
+renderShifts();
 </script>
 </body>
 </html>

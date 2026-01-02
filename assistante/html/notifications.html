@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ajouter un Membre - Dikra Centre dentaire</title>
+<title>Notifications - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -358,6 +358,90 @@ align-items: center;
 font-size: 1.25rem;
 font-weight: 600;
 }
+.form-group {
+margin-bottom: 1rem;
+}
+.form-label {
+display: block;
+font-size: 0.875rem;
+font-weight: 500;
+color: var(--text-secondary);
+margin-bottom: 0.5rem;
+}
+.form-control {
+width: 100%;
+padding: 0.5rem;
+border: 1px solid var(--border-color);
+border-radius: var(--border-radius);
+background: var(--bg-primary);
+color: var(--text-primary);
+font-size: 0.875rem;
+}
+.form-control:focus {
+outline: none;
+border-color: var(--medical-blue);
+box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+.switch {
+position: relative;
+display: inline-block;
+width: 50px;
+height: 24px;
+}
+.switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+transition: .4s;
+border-radius: 24px;
+}
+.slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+input:checked  + .slider {
+background-color: var(--medical-blue);
+}
+input:checked  + .slider:before {
+transform: translateX(26px);
+}
+.notification-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 1rem;
+border-bottom: 1px solid var(--border-color);
+}
+.notification-item:last-child  {
+border-bottom: none;
+}
+.notification-content {
+flex: 1;
+}
+.notification-title {
+font-weight: 600;
+margin-bottom: 0.25rem;
+}
+.notification-description {
+color: var(--text-secondary);
+font-size: 0.875rem;
+}
 @media (max-width: 992px) {
 .sidebar { width: 250px; }
 .main-content { margin-left: 250px; padding: 1.5rem; }
@@ -386,103 +470,133 @@ gap: 1rem;
 text-align: center;
 }
 }
-.form-group {
-margin-bottom: 1rem;
-}
-.form-label {
-display: block;
-font-size: 0.875rem;
-font-weight: 500;
-color: var(--text-secondary);
-margin-bottom: 0.5rem;
-}
-.form-control {
-width: 100%;
-padding: 0.5rem;
-border: 1px solid var(--border-color);
-border-radius: var(--border-radius);
-background: var(--bg-primary);
-color: var(--text-primary);
-font-size: 0.875rem;
-}
-.form-control:focus {
-outline: none;
-border-color: var(--medical-blue);
-box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
-}
 </style>
 </head>
 <body class="light-mode">
 <div id="navbar-container"></div><div class="main-content">
 <div class="content-header">
-<h1 class="page-title">Ajouter un Membre d u Personnel</h1>
+<h1 class="page-title">Notifications</h1>
 </div>
 <div class="appointments-container">
 <div class="appointments-header">
-<h2 class="appointments-title">Nouveau Membre</h2>
+<h2 class="appointments-title">Paramètres de Notifications</h2>
 </div>
-<form id="staffForm" style="padding: 1.5rem;">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-<div class="form-group">
-<label class="form-label">Nom complet</label>
-<input type="text" class="form-control" id="name" placeholder="Nom complet" required>
+<div style="padding: 1.5rem;">
+<form id="notificationsForm">
+<div class="notification-item">
+<div class="notification-content">
+<div class="notification-title">Notifications par Email</div>
+<div class="notification-description">Recevoir des notifications par email pour les nouveaux rendez-vous et rappels</div>
 </div>
-<div class="form-group">
-<label class="form-label">Email</label>
-<input type="email" class="form-control" id="email" placeholder="email@example.com" required>
+<label class="switch">
+<input type="checkbox" id="email_notifications" checked >
+<span class="slider"></span>
+</label>
 </div>
-<div class="form-group">
-<label class="form-label">Mot de passe</label>
-<input type="password" class="form-control" id="password" placeholder="Mot de passe" required>
+<div class="notification-item">
+<div class="notification-content">
+<div class="notification-title">Notifications SMS</div>
+<div class="notification-description">Recevoir des notifications SMS pour les urgences et confirmations</div>
 </div>
-<div class="form-group">
-<label class="form-label">Rôle</label>
-<select class="form-control" id="role" required>
-<option value="">Sélectionner un rôle</option>
-<option value="Admin">Admin</option>
-<option value="Assistant">Assistant</option>
-<option value="Médecin">Médecin</option>
-</select>
+<label class="switch">
+<input type="checkbox" id="sms_notifications">
+<span class="slider"></span>
+</label>
 </div>
-<div class="form-group">
-<label class="form-label">Téléphone</label>
-<input type="tel" class="form-control" id="phone" placeholder="+212 XXX XXX XXX">
+<div class="notification-item">
+<div class="notification-content">
+<div class="notification-title">Rappels de rendez-vous</div>
+<div class="notification-description">Envoyer automatiquement des rappels 24h avant les rendez-vous</div>
 </div>
-<div class="form-group">
-<label class="form-label">Spécialité</label>
-<input type="text" class="form-control" id="specialty" placeholder="ex: Chirurgien-dentiste">
+<label class="switch">
+<input type="checkbox" id="appointment_reminders" checked >
+<span class="slider"></span>
+</label>
 </div>
-<div class="form-group">
-<label class="form-label">Ad resse</label>
-<input type="text" class="form-control" id="Add ress" placeholder="Ad resse">
+<div class="notification-item">
+<div class="notification-content">
+<div class="notification-title">Notifications de paiement</div>
+<div class="notification-description">Recevoir des notifications pour les paiements reçus et en attente</div>
 </div>
-<div class="form-group">
-<label class="form-label">date de naissance</label>
-<input type="date" class="form-control" id="birthdate">
+<label class="switch">
+<input type="checkbox" id="payment_notifications" checked >
+<span class="slider"></span>
+</label>
 </div>
+<div class="notification-item">
+<div class="notification-content">
+<div class="notification-title">Alertes d'urgence</div>
+<div class="notification-description">Notifications immédiates pour les cas d'urgence médicale</div>
 </div>
-<div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-<button type="submit" class="btn btn-primary">Ajouter le Membre</button>
-<button type="button" class="btn btn-danger" onclick="window.location.href='Liste d u personnel.html'">Annuler</button>
+<label class="switch">
+<input type="checkbox" id="emergency_alerts" checked >
+<span class="slider"></span>
+</label>
+</div>
+<div class="notification-item">
+<div class="notification-content">
+<div class="notification-title">Notifications de stock</div>
+<div class="notification-description">Alertes lorsque le stock de médicaments ou consommables est faible</div>
+</div>
+<label class="switch">
+<input type="checkbox" id="stock_alerts">
+<span class="slider"></span>
+</label>
+</div>
+<div style="margin-top: 2rem; display: flex; gap: 1rem;">
+<button type="submit" class="btn btn-primary">Enregistrer les paramètres</button>
+<button type="button" class="btn btn-danger" onclick="resetSettings()">Réinitialiser</button>
 </div>
 </form>
 </div>
 </div>
-<script src="../../LOGING/js/data.js"></script>
-<script src="../js/navbar.js"></script>
-<script>
-document.getElementById('staffForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const role = document.getElementById('role').value;
-    // Note: Additional fields like phone, specialty are not used in createUser, but could be extended
-    const result = dentalDataManager.createUser(email, password, role, name);
-    if (result) {
-        window.location.href = 'Liste%20du%20personnel.html';
-    }
-});
+</div><script src="../js/navbar.js"></script><script>
+let notificationSettings = JSON.parse(localStorage.getItem('notificationSettings')) || {
+email_notifications: true,
+sms_notifications: false,
+appointment_reminders: true,
+payment_notifications: true,
+emergency_alerts: true,
+stock_alerts: false
+};
+function loadSettings() {
+document.getElementById('email_notifications').checked = notificationSettings.email_notifications;
+document.getElementById('sms_notifications').checked = notificationSettings.sms_notifications;
+document.getElementById('appointment_reminders').checked = notificationSettings.appointment_reminders;
+document.getElementById('payment_notifications').checked = notificationSettings.payment_notifications;
+document.getElementById('emergency_alerts').checked = notificationSettings.emergency_alerts;
+document.getElementById('stock_alerts').checked = notificationSettings.stock_alerts;
+}
+function saveSettings(e) {
+e.preventDefault();
+notificationSettings = {
+email_notifications: document.getElementById('email_notifications').checked,
+sms_notifications: document.getElementById('sms_notifications').checked,
+appointment_reminders: document.getElementById('appointment_reminders').checked,
+payment_notifications: document.getElementById('payment_notifications').checked,
+emergency_alerts: document.getElementById('emergency_alerts').checked,
+stock_alerts: document.getElementById('stock_alerts').checked
+};
+localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
+alert('Paramètres de notifications enregistrés avec succès !');
+}
+function resetSettings() {
+if (confirm('Êtes-vous sûr de vouloir réinitialiser tous les paramètres de notifications ?')) {
+localStorage.removeItem('notificationSettings');
+notificationSettings = {
+email_notifications: true,
+sms_notifications: false,
+appointment_reminders: true,
+payment_notifications: true,
+emergency_alerts: true,
+stock_alerts: false
+};
+loadSettings();
+alert('Paramètres réinitialisés aux valeurs par défaut.');
+}
+}
+document.getElementById('notificationsForm').addEventListener('submit', saveSettings);
+loadSettings();
 </script>
 </body>
 </html>

@@ -33,10 +33,10 @@ const navbarHTML = `
           </a>
         </div>
         <div class="sidebar-item">
-          <a href="Prise en ligne.html" class="sidebar-link">
+          <span class="sidebar-link disabled" title="Cette fonctionnalité n'est pas encore disponible. Elle sera activée ultérieurement.">
             <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
             Prise en ligne
-          </a>
+          </span>
         </div>
         <div class="sidebar-item">
           <a href="En présentiel.html" class="sidebar-link">
@@ -105,21 +105,9 @@ const navbarHTML = `
       </div>
       <div class="section-content" id="section-compta-content">
         <div class="sidebar-item">
-          <a href="comptabilite-generale.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
-            Comptabilité générale
-          </a>
-        </div>
-        <div class="sidebar-item">
           <a href="paiements-recus.html" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
             Paiements reçus
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="charges-depenses.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-            Charges & dépenses
           </a>
         </div>
       </div>
@@ -239,99 +227,17 @@ const navbarHTML = `
       </div>
     </li>
 
-    <!-- UTILISATEURS -->
+    <!-- DOSSIERS MÉDICAUX -->
     <li class="sidebar-section">
-      <div class="section-header clickable" id="section-users-toggle">
-        Utilisateurs
+      <div class="section-header clickable" id="section-dossiers-toggle">
+        Dossiers médicaux
         <i class="fas fa-chevron-down section-chevron"></i>
       </div>
-      <div class="section-content" id="section-users-content">
-        <div class="sidebar-item">
-          <a href="Liste du personnel.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-list"></i></span>
-            Liste du personnel
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="ajouter-un-membre.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
-            Ajouter un membre
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="roles-permissions.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
-            Rôles & permissions
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="planning-equipe.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-            Planning de l'équipe
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="parametres-espace-patient.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
-            Paramètres espace patient
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="gestion-des-acces.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-key"></i></span>
-            Gestion des accès
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="messages-patients.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
-            Messages patients
-          </a>
-        </div>
+      <div class="section-content" id="section-dossiers-content">
         <div class="sidebar-item">
           <a href="dossiers-medicaux.html" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
             Dossiers médicaux
-          </a>
-        </div>
-      </div>
-    </li>
-
-    <!-- SITE WEB -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-website-toggle">
-        Site web
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-website-content">
-        <div class="sidebar-item">
-          <a href="contenu-articles.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
-            Contenu & articles
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="design-theme.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
-            Design & thème
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="referencement-seo.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-search"></i></span>
-            Référencement (SEO)
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="formulaire-contact.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
-            Formulaire de contact
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="statistiques-visite.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
-            Statistiques de visite
           </a>
         </div>
       </div>
@@ -350,34 +256,16 @@ const navbarHTML = `
             Mon profil
           </a>
         </div>
-        <div class="sidebar-item">
-          <a href="informations-cabinet.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
-            Informations cabinet
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="parametres-facturation.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
-            Paramètres de facturation
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="notifications.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
-            Notifications
-          </a>
-        </div>
       </div>
     </li>
   </ul>
   <!-- User Section -->
   <div class="user-section">
     <div class="user-info">
-      <div class="user-avatar" id="userAvatar">DM</div>
+      <div class="user-avatar" id="userAvatar">AM</div>
       <div class="user-details">
-        <div class="user-name" id="userName">Dr. Mohammed Alami</div>
-        <div class="user-role" id="userRole">Chirurgien-Dentiste</div>
+        <div class="user-name" id="userName">Assistante Médicale</div>
+        <div class="user-role" id="userRole">Assistante</div>
       </div>
     </div>
     <button class="theme-toggle" id="themeToggle">
