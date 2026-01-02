@@ -430,7 +430,7 @@ body {
 
 .dashboard-subtitle {
   color: var(--text-secondary);
-  font-size: 0.875rem;
+<div> <strong>Nom du médecin:</strong> <span id="display_nom_medecin"></span></div>
   margin: 0.25rem 0 0 0;
 }
 
@@ -1310,6 +1310,9 @@ body {
         </button>
         <button class="btn btn-success">
           <i class="fas fa-sync"></i> Actualiser
+        </button>
+        <button class="btn btn-danger" id="resetDataBtn">
+          <i class="fas fa-trash"></i> Réinitialiser les données
         </button>
       </div>
     </div>
