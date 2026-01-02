@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comptabilité Générale - Cabinet Dentaire Al-Farabi</title>
+<title>Comptabilité Générale - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -19,7 +19,7 @@ box-sizing: border-box;
 --medical-blue-light: #3b82f6;
 --success: #059669;
 --warning: #d97706;
---danger: #dc2626;
+--danger: #cbd5e1;
 --text-light: #f8fafc;
 --text-gray: #64748b;
 --border-radius: 0.5rem;
@@ -264,7 +264,7 @@ justify-content: space-between;
 align-items: center;
 border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
-.section-header:first-child {
+.section-header:first-child  {
 margin-top: 0;
 }
 .section-header::after {
@@ -281,7 +281,7 @@ font-size: 0.75rem;
 transition: transform 0.3s ease;
 color: rgba(255, 255, 255, 0.6);
 }
-.section-header.collapsed .section-chevron {
+.section-header.collapsed.section-chevron {
 transform: rotate(-90deg);
 }
 .section-content {
@@ -290,7 +290,7 @@ transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 max-height: 1000px;
 opacity: 1;
 }
-.section-content.collapsed {
+.section-content.collapsed{
 max-height: 0;
 opacity: 0;
 }
@@ -363,7 +363,7 @@ width: 100%;
 border-collapse: collapse;
 }
 .appointments-table th,
-.appointments-table td {
+.appointments-table td  {
 padding: 1rem;
 text-align: left;
 border-bottom: 1px solid var(--border-color);
@@ -399,7 +399,7 @@ border-radius: 0.375rem;
 font-size: 0.8rem;
 }
 .appointments-table th,
-.appointments-table td {
+.appointments-table td  {
 padding: 0.75rem 0.5rem;
 }
 }
@@ -455,137 +455,7 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 </style>
 </head>
 <body class="light-mode">
-<div class="sidebar">
-<div class="cabinet-header">
-<div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
-<div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
-<div class="cabinet-subtitle">Casablanca, Maroc</div>
-</div>
-<ul class="sidebar-menu">
-<li class="sidebar-item">
-<a href="dashboard.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-home"></i></span>
-Tableau de bord
-</a>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-rdv-toggle">
-Rendez-vous
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-rdv-content">
-<div class="sidebar-item">
-<a href="Listes des Rendez-vous.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-Liste des rendez-vous
-</a>
-</div>
-<div class="sidebar-item">
-<a href="Prise en ligne.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-globe"></i></span>
-Prise en ligne
-</a>
-</div>
-<div class="sidebar-item">
-<a href="En présentiel.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-building"></i></span>
-En présentiel
-</a>
-</div>
-<div class="sidebar-item">
-<a href="via-espace-patient.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
-Via espace patient
-</a>
-</div>
-</div>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-patients-toggle">
-Patients
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-patients-content">
-<div class="sidebar-item">
-<a href="fiches-patients.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
-Fiches patients
-</a>
-</div>
-<div class="sidebar-item">
-<a href="ordonnances.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
-Ordonnances
-</a>
-</div>
-<div class="sidebar-item">
-<a href="protheses.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
-Prothèses
-</a>
-</div>
-<div class="sidebar-item">
-<a href="imagerie-medicale.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
-Imagerie médicale
-</a>
-</div>
-</div>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-cabinet-toggle">
-Cabinet
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-cabinet-content">
-<div class="sidebar-item">
-<a href="salle-attente.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-chair"></i></span>
-Salle d'attente
-</a>
-</div>
-</div>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-compta-toggle">
-Comptabilité
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-compta-content">
-<div class="sidebar-item">
-<a href="comptabilite-generale.html" class="sidebar-link active">
-<span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
-Comptabilité générale
-</a>
-</div>
-<div class="sidebar-item">
-<a href="paiements-recus.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
-Paiements reçus
-</a>
-</div>
-</div>
-</li>
-</ul>
-<div class="user-section">
-<div class="user-info">
-<div class="user-avatar">DM</div>
-<div class="user-details">
-<div class="user-name">Dr. Mohammed Alami</div>
-<div class="user-role">Chirurgien-Dentiste</div>
-</div>
-</div>
-<button class="theme-toggle" id="themeToggle">
-<i class="fas fa-moon"></i>
-<span>Mode Sombre</span>
-</button>
-<button class="logout-btn" id="logoutBtn">
-<i class="fas fa-sign-out-alt"></i>
-<span>Déconnexion</span>
-</button>
-</div>
-</div>
-<div class="main-content">
+<div id="navbar-container"></div><div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Comptabilité Générale</h1>
 <button class="btn btn-primary" onclick="showForm()">
@@ -600,15 +470,15 @@ Nouvelle Entrée
 <form id="accountingForm" style="padding: 1.5rem;">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
 <div class="form-group">
-<label class="form-label">Date</label>
+<label class="form-label">date</label>
 <input type="date" class="form-control" id="date" required>
 </div>
 <div class="form-group">
-<label class="form-label">Description</label>
-<input type="text" class="form-control" id="description" placeholder="Description de l'entrée" required>
+<label class="form-label">description</label>
+<input type="text" class="form-control" id="description" placeholder="description de l'entrée" required>
 </div>
 <div class="form-group">
-<label class="form-label">Débit</label>
+<label class="form-label">d ébit</label>
 <input type="number" class="form-control" id="debit" step="0.01" placeholder="0.00" required>
 </div>
 <div class="form-group">
@@ -630,71 +500,20 @@ Nouvelle Entrée
 </div>
 </div>
 <table class="appointments-table">
-<thead>
+<thead >
 <tr>
-<th>Date</th>
-<th>Description</th>
-<th>Débit</th>
+<th>date</th>
+<th>description</th>
+<th>d ébit</th>
 <th>Crédit</th>
 <th>Actions</th>
 </tr>
-</thead>
-<tbody id="accountingTableBody">
+</thead >
+<tbody id="accountingTablebody">
 </tbody>
 </table>
 </div>
-</div>
-<script>
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
-const themeIcon = themeToggle.querySelector('i');
-const themeText = themeToggle.querySelector('span');
-const savedTheme = sessionStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-body.classList.remove('light-mode');
-body.classList.add('dark-mode');
-themeIcon.className = 'fas fa-sun';
-themeText.textContent = 'Mode Clair';
-}
-themeToggle.addEventListener('click', () => {
-if (body.classList.contains('light-mode')) {
-body.classList.remove('light-mode');
-body.classList.add('dark-mode');
-themeIcon.className = 'fas fa-sun';
-themeText.textContent = 'Mode Clair';
-sessionStorage.setItem('theme', 'dark');
-} else {
-body.classList.remove('dark-mode');
-body.classList.add('light-mode');
-themeIcon.className = 'fas fa-moon';
-themeText.textContent = 'Mode Sombre';
-sessionStorage.setItem('theme', 'light');
-}
-});
-document.getElementById('logoutBtn').addEventListener('click', () => {
-if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-}
-});
-document.querySelectorAll('.section-header.clickable').forEach(header => {
-header.addEventListener('click', () => {
-const content = header.nextElementSibling;
-const isCollapsed = content.classList.contains('collapsed');
-document.querySelectorAll('.section-content').forEach(el => {
-if (el !== content) el.classList.add('collapsed');
-});
-if (isCollapsed) {
-content.classList.remove('collapsed');
-header.classList.remove('collapsed');
-} else {
-content.classList.add('collapsed');
-header.classList.add('collapsed');
-}
-});
-});
-document.getElementById('section-compta-content').classList.remove('collapsed');
-document.getElementById('section-compta-toggle').classList.remove('collapsed');
+</div><script src="../js/navbar.js"></script><script>// Open "Comptabilit�" by default\ndocument.getElementById("section-compta-content").classList.remove("collapsed");\ndocument.getElementById("section-compta-toggle").classList.remove("collapsed");\n
 let accountingEntries = JSON.parse(localStorage.getItem('accountingEntries')) || [];
 let editingIndex = -1;
 function showForm() {
@@ -741,7 +560,7 @@ renderAccounting();
 }
 }
 function renderAccounting() {
-const tbody = document.getElementById('accountingTableBody');
+const tbody = document.getElementById('accountingTablebody');
 const searchTerm = document.getElementById('searchInput').value.toLowerCase();
 tbody.innerHTML = '';
 accountingEntries.forEach((entry, index) => {
@@ -749,14 +568,14 @@ const matchesSearch = entry.description.toLowerCase().includes(searchTerm);
 if (matchesSearch) {
 const row = document.createElement('tr');
 row.innerHTML = `
-<td>${formatDate(entry.date)}</td>
-<td>${entry.description}</td>
-<td>${entry.debit.toFixed(2)} €</td>
-<td>${entry.credit.toFixed(2)} €</td>
-<td class="action-buttons">
+<td >${formatDate(entry.date)}</td >
+<td >${entry.description}</td >
+<td >${entry.debit.toFixed(2)} €</td >
+<td >${entry.credit.toFixed(2)} €</td >
+<td  class="action-buttons">
 <button class="btn btn-small btn-success" title="Modifier" onclick="editAccounting(${index})"><i class="fas fa-edit"></i></button>
 <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteAccounting(${index})"><i class="fas fa-times"></i></button>
-</td>
+</td >
 `;
 tbody.appendChild(row);
 }
@@ -772,3 +591,24 @@ renderAccounting();
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

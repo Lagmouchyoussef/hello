@@ -4,11 +4,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Assistante - Cabinet Dentaire Al-Farabi</title>
+<title>Assistante - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ============== IDENTIQUE À VOTRE ADMIN ============== */
+/* ============== IdeNTIQUE À VOTRE Ad MIN ============== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --medical-blue: #1e3a8a;
@@ -17,7 +17,7 @@
   --medical-blue-light: #3b82f6;
   --success: #059669;
   --warning: #d97706;
-  --danger: #dc2626;
+  --danger: #cbd5e1;
   --text-light: #f8fafc;
   --text-gray: #64748b;
   --border-radius: 0.5rem;
@@ -134,7 +134,7 @@ body {
   text-align: left;
 }
 .logout-btn { background: rgba(220, 38, 38, 0.2); color: white; }
-.theme-toggle { background: rgba(255, 255, 255, 0.15); color: white; margin-bottom: 0.75rem; }
+.theme-toggle { background: rgba(255, 255, 255, 0.25); color: #ffffff; margin-bottom: 0.75rem; }
 
 .sidebar-menu { list-style: none; padding: 0 1.5rem; flex: 1; }
 .sidebar-item { margin: 0.375rem 0; }
@@ -185,14 +185,14 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 .section-chevron { font-size: 0.75rem; transition: transform 0.3s ease; color: rgba(255, 255, 255, 0.6); }
-.section-header.collapsed .section-chevron { transform: rotate(-90deg); }
+.section-header.collapsed.section-chevron { transform: rotate(-90deg); }
 .section-content {
   overflow: hidden;
   transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
   max-height: 1000px;
   opacity: 1;
 }
-.section-content.collapsed { max-height: 0; opacity: 0; }
+.section-content.collapsed{ max-height: 0; opacity: 0; }
 
 .main-content {
   margin-left: 280px;
@@ -203,7 +203,7 @@ body {
 .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
 .page-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.025em; color: var(--text-primary); }
 
-.assistant-card {
+.assistant-card{
   background: var(--bg-secondary);
   border-radius: var(--border-radius);
   padding: 1.5rem;
@@ -269,7 +269,7 @@ body {
   border-color: var(--medical-blue);
   box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
-.btn-send {
+.btn-send{
   width: 100%;
   padding: 0.875rem;
   background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
@@ -299,17 +299,17 @@ body {
 </style>
 </head>
 <body class="light-mode">
-<!-- ============= SIDEBAR ASSISTANTE ============= -->
+<!-- ============= SIdeBAR ASSISTANTE ============= -->
 <div class="sidebar">
   <div class="cabinet-header">
     <div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
-    <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+    <div class="cabinet-name">dikra Centre dentaire</div>
     <div class="cabinet-subtitle">Casablanca, Maroc</div>
   </div>
   <ul class="sidebar-menu">
-    <li class="sidebar-item"><a href="#dashboard" class="sidebar-link active"><span class="sidebar-icon"><i class="fas fa-home"></i></span> Tableau de bord</a></li>
+    <li class="sidebar-item"><a href="#dashboard" class="sidebar-link active"><span class="sidebar-icon"><i class="fas fa-home"></i></span> Tableau de bord </a></li>
     
-    <!-- RENDEZ-VOUS -->
+    <!-- RENdeZ-VOUS -->
     <li class="sidebar-section">
       <div class="section-header clickable" id="section-rdv-toggle">Rendez-vous <i class="fas fa-chevron-down section-chevron"></i></div>
       <div class="section-content" id="section-rdv-content">
@@ -365,11 +365,11 @@ body {
       </div>
     </li>
 
-    <!-- DOCUMENTS -->
+    <!-- documents -->
     <li class="sidebar-section">
-      <div class="section-header clickable" id="section-docs-toggle">Documents & formulaires <i class="fas fa-chevron-down section-chevron"></i></div>
+      <div class="section-header clickable" id="section-docs-toggle">documents & formulaires <i class="fas fa-chevron-down section-chevron"></i></div>
       <div class="section-content" id="section-docs-content">
-        <div class="sidebar-item"><a href="#ordonnances" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-prescription"></i></span> Ordonnances</a></div>
+        <div class="sidebar-item"><a href="#Ordonnances" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-prescription"></i></span> Ordonnances</a></div>
         <div class="sidebar-item"><a href="#certificats" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-medical"></i></span> Certificats médicaux</a></div>
         <div class="sidebar-item"><a href="#feuilles-soins" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span> Feuilles de soins (CNOPS/CNSS)</a></div>
       </div>
@@ -384,7 +384,7 @@ body {
         <div class="sidebar-item"><a href="#param-portail" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-cog"></i></span> Paramètres espace patient</a></div>
         <div class="sidebar-item"><a href="#gestion-acces" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-key"></i></span> Gestion des accès</a></div>
         <div class="sidebar-item"><a href="#messages-patients" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-envelope"></i></span> Messages patients</a></div>
-        <div class="sidebar-item"><a href="#dossiers-medicaux" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-medical"></i></span> Dossiers médicaux</a></div>
+        <div class="sidebar-item"><a href="#dossiers-medicaux" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-medical"></i></span> dossiers médicaux</a></div>
       </div>
     </li>
 
@@ -403,7 +403,7 @@ body {
       <div class="user-avatar">HA</div>
       <div class="user-details">
         <div class="user-name">Hind Alaoui</div>
-        <div class="user-role">Assistante Dentaire</div>
+        <div class="user-role">Assistante dentaire</div>
       </div>
     </div>
     <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> <span>Mode Sombre</span></button>
@@ -418,7 +418,7 @@ body {
   </div>
 
   <div id="dynamic-content">
-    <!-- Dynamic content will be loaded here -->
+    <!-- dynamic content will be loaded here -->
   </div>
 
 </div>
@@ -430,7 +430,7 @@ const body = document.body;
 const themeIcon = themeToggle.querySelector('i');
 const themeText = themeToggle.querySelector('span');
 const savedTheme = sessionStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const prefersdark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
   body.classList.remove('light-mode');
   body.classList.add('dark-mode');
@@ -483,3 +483,20 @@ document.getElementById('section-rdv-toggle').classList.remove('collapsed');
 <script src="../js/assistante.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

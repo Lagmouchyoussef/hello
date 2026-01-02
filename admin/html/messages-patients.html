@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Messages Patients - Cabinet Dentaire Al-Farabi</title>
+<title>Messages Patients - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -19,7 +19,7 @@ box-sizing: border-box;
 --medical-blue-light: #3b82f6;
 --success: #059669;
 --warning: #d97706;
---danger: #dc2626;
+--danger: #cbd5e1;
 --text-light: #f8fafc;
 --text-gray: #64748b;
 --border-radius: 0.5rem;
@@ -264,7 +264,7 @@ justify-content: space-between;
 align-items: center;
 border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
-.section-header:first-child {
+.section-header:first-child  {
 margin-top: 0;
 }
 .section-header::after {
@@ -281,7 +281,7 @@ font-size: 0.75rem;
 transition: transform 0.3s ease;
 color: rgba(255, 255, 255, 0.6);
 }
-.section-header.collapsed .section-chevron {
+.section-header.collapsed.section-chevron {
 transform: rotate(-90deg);
 }
 .section-content {
@@ -290,7 +290,7 @@ transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 max-height: 1000px;
 opacity: 1;
 }
-.section-content.collapsed {
+.section-content.collapsed{
 max-height: 0;
 opacity: 0;
 }
@@ -353,7 +353,7 @@ width: 35%;
 border-right: 1px solid var(--border-color);
 overflow-y: auto;
 }
-.message-thread {
+.message-thread  {
 flex: 1;
 display: flex;
 flex-direction: column;
@@ -367,7 +367,7 @@ transition: var(--transition);
 .message-item:hover {
 background: var(--section-bg);
 }
-.message-item.unread {
+.message-item.unread{
 background: var(--unread-bg);
 font-weight: 600;
 }
@@ -388,25 +388,25 @@ font-size: 0.875rem;
 line-height: 1.4;
 color: var(--text-primary);
 }
-.message-thread-header {
+.message-thread -header {
 padding: 1rem;
 border-bottom: 1px solid var(--border-color);
 background: var(--section-bg);
 }
-.thread-messages {
+.thread -messages {
 flex: 1;
 overflow-y: auto;
 padding: 1rem;
 }
-.thread-message {
+.thread -message {
 margin-bottom: 1rem;
 max-width: 70%;
 }
-.thread-message.sent {
+.thread -message.sent {
 margin-left: auto;
 text-align: right;
 }
-.thread-message.received {
+.thread -message.received  {
 margin-right: auto;
 }
 .message-bubble {
@@ -415,7 +415,7 @@ border-radius: var(--border-radius);
 background: var(--bg-primary);
 border: 1px solid var(--border-color);
 }
-.thread-message.sent .message-bubble {
+.thread -message.sent .message-bubble {
 background: var(--medical-blue);
 color: white;
 border-color: var(--medical-blue);
@@ -448,7 +448,7 @@ outline: none;
 border-color: var(--medical-blue);
 box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
-.btn-send {
+.btn-send{
 width: 100%;
 padding: 0.875rem;
 background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
@@ -504,196 +504,20 @@ height: 250px;
 </style>
 </head>
 <body class="light-mode">
-<div class="sidebar">
-<div class="cabinet-header">
-<div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
-<div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
-<div class="cabinet-subtitle">Casablanca, Maroc</div>
-</div>
-<ul class="sidebar-menu">
-<li class="sidebar-item">
-<a href="dashboard.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-home"></i></span>
-Tableau de bord
-</a>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-rdv-toggle">
-Rendez-vous
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-rdv-content">
-<div class="sidebar-item">
-<a href="Listes des Rendez-vous.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-Liste des rendez-vous
-</a>
-</div>
-<div class="sidebar-item">
-<a href="Prise en ligne.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-globe"></i></span>
-Prise en ligne
-</a>
-</div>
-<div class="sidebar-item">
-<a href="En présentiel.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-building"></i></span>
-En présentiel
-</a>
-</div>
-<div class="sidebar-item">
-<a href="via-espace-patient.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
-Via espace patient
-</a>
-</div>
-</div>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-patients-toggle">
-Patients
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-patients-content">
-<div class="sidebar-item">
-<a href="fiches-patients.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
-Fiches patients
-</a>
-</div>
-<div class="sidebar-item">
-<a href="protheses.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
-Prothèses
-</a>
-</div>
-<div class="sidebar-item">
-<a href="materiel-dentaire.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-tools"></i></span>
-Matériel dentaire
-</a>
-</div>
-<div class="sidebar-item">
-<a href="consommables.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-box"></i></span>
-Consommables
-</a>
-</div>
-<div class="sidebar-item">
-<a href="medicaments.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-pills"></i></span>
-Médicaments
-</a>
-</div>
-<div class="sidebar-item">
-<a href="ordonnances.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
-Ordonnances
-</a>
-</div>
-<div class="sidebar-item">
-<a href="certificats-medicaux.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-Certificats médicaux
-</a>
-</div>
-<div class="sidebar-item">
-<a href="feuilles-de-soins.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-Feuilles de soins
-</a>
-</div>
-</div>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-users-toggle">
-Utilisateurs
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-users-content">
-<div class="sidebar-item">
-<a href="Liste du personnel.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-list"></i></span>
-Liste du personnel
-</a>
-</div>
-<div class="sidebar-item">
-<a href="ajouter-un-membre.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
-Ajouter un membre
-</a>
-</div>
-<div class="sidebar-item">
-<a href="roles-permissions.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
-Rôles & permissions
-</a>
-</div>
-<div class="sidebar-item">
-<a href="planning-equipe.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-Planning de l'équipe
-</a>
-</div>
-<div class="sidebar-item">
-<a href="parametres-espace-patient.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-cog"></i></span>
-Paramètres espace patient
-</a>
-</div>
-<div class="sidebar-item">
-<a href="gestion-des-acces.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-key"></i></span>
-Gestion des accès
-</a>
-</div>
-<div class="sidebar-item">
-<a href="messages-patients.html" class="sidebar-link active">
-<span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
-Messages patients
-</a>
-</div>
-<div class="sidebar-item">
-<a href="dossiers-medicaux.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-Dossiers médicaux
-</a>
-</div>
-</div>
-</li>
-</ul>
-<div class="user-section">
-<div class="user-info">
-<div class="user-avatar">DM</div>
-<div class="user-details">
-<div class="user-name">Dr. Mohammed Alami</div>
-<div class="user-role">Chirurgien-Dentiste</div>
-</div>
-</div>
-<button class="theme-toggle" id="themeToggle">
-<i class="fas fa-moon"></i>
-<span>Mode Sombre</span>
-</button>
-<button class="logout-btn" id="logoutBtn">
-<i class="fas fa-sign-out-alt"></i>
-<span>Déconnexion</span>
-</button>
-</div>
-</div>
-<div class="main-content">
+<div id="navbar-container"></div><div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Messages Patients</h1>
 </div>
 <div class="messaging-container">
 <div class="message-list" id="messageList">
-<!-- Messages will be loaded here -->
+<!-- Messages will be loaded  here -->
 </div>
-<div class="message-thread" id="messageThread" style="display: none;">
-<div class="message-thread-header" id="threadHeader">
-<h3 id="threadPatient">Patient Name</h3>
+<div class="message-thread " id="messageThread " style="display: none;">
+<div class="message-thread -header" id="thread Header">
+<h3 id="thread Patient">Patient Name</h3>
 </div>
-<div class="thread-messages" id="threadMessages">
-<!-- Thread messages will be loaded here -->
+<div class="thread -messages" id="thread Messages">
+<!-- Thread  messages will be loaded  here -->
 </div>
 <div class="message-compose">
 <form id="messageForm">
@@ -701,65 +525,14 @@ Dossiers médicaux
 <label class="form-label">Nouveau message</label>
 <textarea class="form-control" id="messageContent" rows="3" placeholder="Tapez votre message..." required></textarea>
 </div>
-<button type="submit" class="btn-send">Envoyer</button>
+<button type="submit" class="btn-send ">Envoyer</button>
 </form>
 </div>
 </div>
 </div>
-</div>
-<script>
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
-const themeIcon = themeToggle.querySelector('i');
-const themeText = themeToggle.querySelector('span');
-const savedTheme = sessionStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-body.classList.remove('light-mode');
-body.classList.add('dark-mode');
-themeIcon.className = 'fas fa-sun';
-themeText.textContent = 'Mode Clair';
-}
-themeToggle.addEventListener('click', () => {
-if (body.classList.contains('light-mode')) {
-body.classList.remove('light-mode');
-body.classList.add('dark-mode');
-themeIcon.className = 'fas fa-sun';
-themeText.textContent = 'Mode Clair';
-sessionStorage.setItem('theme', 'dark');
-} else {
-body.classList.remove('dark-mode');
-body.classList.add('light-mode');
-themeIcon.className = 'fas fa-moon';
-themeText.textContent = 'Mode Sombre';
-sessionStorage.setItem('theme', 'light');
-}
-});
-document.getElementById('logoutBtn').addEventListener('click', () => {
-if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-}
-});
-document.querySelectorAll('.section-header.clickable').forEach(header => {
-header.addEventListener('click', () => {
-const content = header.nextElementSibling;
-const isCollapsed = content.classList.contains('collapsed');
-document.querySelectorAll('.section-content').forEach(el => {
-if (el !== content) el.classList.add('collapsed');
-});
-if (isCollapsed) {
-content.classList.remove('collapsed');
-header.classList.remove('collapsed');
-} else {
-content.classList.add('collapsed');
-header.classList.add('collapsed');
-}
-});
-});
-document.getElementById('section-users-content').classList.remove('collapsed');
-document.getElementById('section-users-toggle').classList.remove('collapsed');
+</div><script src="../js/navbar.js"></script><script>
 let patientMessages = JSON.parse(localStorage.getItem('patient_messages')) || [];
-let currentPatientId = null;
+let currentPatientId  = null;
 function loadMessages() {
 const messageList = document.getElementById('messageList');
 messageList.innerHTML = '';
@@ -768,41 +541,41 @@ patients.forEach(patient => {
 const patientMessages = getPatientMessages(patient.id);
 if (patientMessages.length > 0) {
 const lastMessage = patientMessages[patientMessages.length - 1];
-const unreadCount = patientMessages.filter(m => !m.read && m.sender === 'patient').length;
+const unreadCount = patientMessages.filter(m => !m.read  && m.sender === 'patient').length;
 const messageItem = document.createElement('div');
 messageItem.className = 'message-item' + (unreadCount > 0 ? ' unread' : '');
-messageItem.onclick = () => openThread(patient.id);
+messageItem.onclick = () => openThread (patient.id);
 messageItem.innerHTML = `
 <div class="message-header">
 <span>${patient.name}</span>
 <span class="message-time">${formatTime(lastMessage.timestamp)}</span>
 </div>
 <div class="message-content">${lastMessage.content.substring(0, 50)}${lastMessage.content.length > 50 ? '...' : ''}</div>
-${unreadCount > 0 ? `<div class="badge">${unreadCount}</div>` : ''}
+${unreadCount > 0 ? `<div class="bad ge">${unreadCount}</div>` : ''}
 `;
 messageList.appendChild(messageItem);
 }
 });
 }
 function getPatientMessages(patientId) {
-return patientMessages.filter(m => m.patient_id === patientId);
+return patientMessages.filter(m => m.patient_id  === patientId);
 }
-function openThread(patientId) {
-currentPatientId = patientId;
+function openThread (patientId) {
+currentPatientId  = patientId ;
 const patients = JSON.parse(localStorage.getItem('patients')) || [];
-const patient = patients.find(p => p.id == patientId);
-document.getElementById('threadPatient').textContent = patient ? patient.name : 'Patient';
+const patient = patients.find (p => p.id  == patientId);
+document.getElementById('thread Patient').textContent = patient ? patient.name : 'Patient';
 document.getElementById('messageThread').style.display = 'flex';
 loadThreadMessages();
 }
 function loadThreadMessages() {
-const threadMessages = document.getElementById('threadMessages');
+const threadMessages = document.getElementById('thread Messages');
 threadMessages.innerHTML = '';
-const messages = getPatientMessages(currentPatientId);
+const messages = getPatientMessages(currentpatientId);
 messages.forEach(message => {
-const messageDiv = document.createElement('div');
-messageDiv.className = 'thread-message ' + (message.sender === 'patient' ? 'received' : 'sent');
-messageDiv.innerHTML = `
+const messagediv = document.createElement('div');
+messagediv.className = 'thread -message ' + (message.sender === 'patient' ? 'received' : 'sent');
+messagediv.innerHTML = `
 <div class="message-bubble">
 ${message.content}
 </div>
@@ -810,14 +583,14 @@ ${message.content}
 ${formatTime(message.timestamp)}
 </div>
 `;
-threadMessages.appendChild(messageDiv);
-if (message.sender === 'patient' && !message.read) {
-message.read = true;
+threadMessages.appendChild(messagediv);
+if (message.sender === 'patient' && !message.read ) {
+message.read  = true;
 }
 });
 localStorage.setItem('patient_messages', JSON.stringify(patientMessages));
 threadMessages.scrollTop = threadMessages.scrollHeight;
-loadMessages(); // Refresh unread counts
+loadMessages(); // Refresh unreadcounts
 }
 function formatTime(timestamp) {
 const date = new Date(timestamp);
@@ -831,14 +604,14 @@ return date.toLocaleDateString('fr-FR');
 document.getElementById('messageForm').addEventListener('submit', function(e) {
 e.preventDefault();
 const content = document.getElementById('messageContent').value;
-if (!content.trim() || !currentPatientId) return;
+if (!content.trim() || !currentpatientId) return;
 const message = {
-id: Date.now(),
-patient_id: currentPatientId,
+id : date.now(),
+patient_id : currentPatientId ,
 sender: 'staff',
 content: content,
 timestamp: new Date().toISOString(),
-read: true
+read : true
 };
 patientMessages.push(message);
 localStorage.setItem('patient_messages', JSON.stringify(patientMessages));
@@ -849,3 +622,5 @@ loadMessages();
 </script>
 </body>
 </html>
+<div class="detail-label">Date souhaitée</div>
+<option value="submittedAt">date de demande</option><option value="submittedAt">date de demande</option>

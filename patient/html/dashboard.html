@@ -4,11 +4,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Espace Patient - Cabinet Dentaire Al-Farabi</title>
+<title>Espace Patient - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ============== IDENTIQUE À VOTRE ADMIN ============== */
+/* ============== IdeNTIQUE À VOTRE Ad MIN ============== */
 * {
   margin: 0;
   padding: 0;
@@ -21,7 +21,7 @@
   --medical-blue-light: #3b82f6;
   --success: #059669;
   --warning: #d97706;
-  --danger: #dc2626;
+  --danger: #cbd5e1;
   --text-light: #f8fafc;
   --text-gray: #64748b;
   --border-radius: 0.5rem;
@@ -43,7 +43,7 @@
   --hover-bg: rgba(255, 255, 255, 0.1);
   --active-bg: rgba(255, 255, 255, 0.2);
 }
-/* Dark mode */
+/* dark mode */
 .dark-mode {
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;
@@ -270,7 +270,7 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-.section-header:first-child {
+.section-header:first-child  {
   margin-top: 0;
 }
 .section-header::after {
@@ -287,7 +287,7 @@ body {
   transition: transform 0.3s ease;
   color: rgba(255, 255, 255, 0.6);
 }
-.section-header.collapsed .section-chevron {
+.section-header.collapsed.section-chevron {
   transform: rotate(-90deg);
 }
 .section-content {
@@ -296,7 +296,7 @@ body {
   max-height: 1000px;
   opacity: 1;
 }
-.section-content.collapsed {
+.section-content.collapsed{
   max-height: 0;
   opacity: 0;
 }
@@ -334,8 +334,8 @@ body {
   margin-top: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
-/* Cards */
-.patient-card {
+/* Card s */
+.patient-card{
   background: var(--bg-secondary);
   border-radius: var(--border-radius);
   padding: 1.5rem;
@@ -408,7 +408,7 @@ body {
   border-color: var(--medical-blue);
   box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
-.btn-send {
+.btn-send{
   width: 100%;
   padding: 0.875rem;
   background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
@@ -433,7 +433,7 @@ body {
   border: 1px solid var(--border-color);
   transition: var(--transition);
 }
-.message-item.unread {
+.message-item.unread{
   background: var(--unread-bg);
   border-left: 4px solid var(--success);
 }
@@ -458,14 +458,14 @@ body {
   gap: 0.75rem;
   margin-top: 0.875rem;
 }
-/* Stats Grid */
-.stats-grid {
-  display: grid;
+/* Stats Grid  */
+.stats-grid{
+  display: grid ;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
 }
-.stat-card {
+.stat-card{
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
@@ -491,7 +491,7 @@ body {
 @media (max-width: 768px) {
   .sidebar { width: 240px; }
   .main-content { margin-left: 240px; padding: 1.5rem; }
-  .stats-grid { grid-template-columns: 1fr; }
+  .stats-grid{ grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
   .sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
@@ -500,18 +500,18 @@ body {
 </style>
 </head>
 <body class="light-mode">
-<!-- =============== SIDEBAR IDENTIQUE =============== -->
+<!-- =============== SIdeBAR IdeNTIQUE =============== -->
 <div class="sidebar">
   <div class="cabinet-header">
-    <div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
-    <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+    <div class="cabinet-logo">D</div>
+    <div class="cabinet-name">dikra Centre dentaire</div>
     <div class="cabinet-subtitle">Casablanca, Maroc</div>
   </div>
   <ul class="sidebar-menu">
     <li class="sidebar-item">
       <a href="dashboard.html" class="sidebar-link active">
         <span class="sidebar-icon"><i class="fas fa-home"></i></span>
-        Tableau de bord
+        Tableau de bord 
       </a>
     </li>
     
@@ -553,7 +553,7 @@ body {
 
     <li class="sidebar-section">
       <div class="section-header clickable" id="section-docs-toggle">
-        Dossier médical
+        dossier médical
         <i class="fas fa-chevron-down section-chevron"></i>
       </div>
       <div class="section-content" id="section-docs-content">
@@ -637,28 +637,28 @@ body {
     <h1 class="page-title">Bonjour, Youssef Belkadi 👋</h1>
   </div>
 
-  <!-- Stats Grid -->
-  <div class="stats-grid">
-    <div class="stat-card">
+  <!-- Stats Grid  -->
+  <div class="stats-grid ">
+    <div class="stat-card ">
       <div class="stat-value" id="next-appointment">Aucun</div>
       <div class="stat-label">Prochain rendez-vous</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card ">
       <div class="stat-value" id="last-care">Aucun</div>
       <div class="stat-label">Dernier soin effectué</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card ">
       <div class="stat-value" id="ongoing-treatments">0</div>
       <div class="stat-label">Traitements en cours</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card ">
       <div class="stat-value" id="pending-payments">0 DH</div>
       <div class="stat-label">Paiements en attente</div>
     </div>
   </div>
 
   <!-- Alertes importantes -->
-  <div class="patient-card">
+  <div class="patient-card ">
     <div class="card-header">
       <h3 class="card-title">Alertes importantes</h3>
     </div>
@@ -668,7 +668,7 @@ body {
   </div>
 
   <!-- Notifications rapides -->
-  <div class="patient-card">
+  <div class="patient-card ">
     <div class="card-header">
       <h3 class="card-title">Notifications rapides</h3>
     </div>
@@ -686,7 +686,7 @@ const body = document.body;
 const themeIcon = themeToggle.querySelector('i');
 const savedTheme = sessionStorage.getItem('theme');
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+if (savedTheme === 'dark' || (!savedTheme && prefersdark)) {
   body.classList.remove('light-mode');
   body.classList.add('dark-mode');
   themeIcon.className = 'fas fa-sun';
@@ -699,7 +699,7 @@ themeToggle.addEventListener('click', () => {
     sessionStorage.setItem('theme', 'dark');
   } else {
     body.classList.remove('dark-mode');
-    body.classList.add('light-mode');
+    body.classList.Add ('light-mode');
     themeIcon.className = 'fas fa-moon';
     sessionStorage.setItem('theme', 'light');
   }
@@ -722,7 +722,7 @@ document.querySelectorAll('.section-header.clickable').forEach(header => {
       header.classList.remove('collapsed');
     } else {
       content.classList.add('collapsed');
-      header.classList.add('collapsed');
+      header.classList.Add ('collapsed');
     }
   });
 });
@@ -731,7 +731,7 @@ document.querySelectorAll('.section-header.clickable').forEach(header => {
 document.getElementById('section-rdv-content').classList.remove('collapsed');
 document.getElementById('section-rdv-toggle').classList.remove('collapsed');
 
-// Prendre RDV
+// Prendre rdv
 document.getElementById('btn-prendre-rdv').addEventListener('click', () => {
   alert('✅ Votre demande a été envoyée. L’assistante vous contactera sous 24h pour confirmer.');
 });
@@ -759,3 +759,20 @@ document.querySelectorAll('.btn-danger').forEach(btn => {
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

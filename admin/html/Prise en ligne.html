@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Prises de Rendez-vous en Ligne - Cabinet Dentaire Al-Farabi</title>
+    <title>Gestion des Prises de Rendez-vous en Ligne - dikra Centre dentaire</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -20,7 +20,7 @@
             --medical-blue-light: #3b82f6;
             --success: #059669;
             --warning: #d97706;
-            --danger: #dc2626;
+            --danger: #cbd5e1;
             --text-light: #f8fafc;
             --text-gray: #64748b;
             --border-radius: 0.5rem;
@@ -44,7 +44,7 @@
             --active-bg: rgba(255, 255, 255, 0.2);
         }
 
-        /* Dark mode */
+        /* dark mode */
         .dark-mode {
             --bg-primary: #0f172a;
             --bg-secondary: #1e293b;
@@ -311,7 +311,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .section-header:first-child {
+        .section-header:first-child  {
             margin-top: 0;
         }
 
@@ -331,7 +331,7 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        .section-header.collapsed .section-chevron {
+        .section-header.collapsed.section-chevron {
             transform: rotate(-90deg);
         }
 
@@ -343,7 +343,7 @@
             opacity: 1;
         }
 
-        .section-content.collapsed {
+        .section-content.collapsed{
             max-height: 0;
             opacity: 0;
         }
@@ -487,7 +487,7 @@
         }
 
         .online-bookings-table th,
-        .online-bookings-table td {
+        .online-bookings-table td  {
             padding: 1rem;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
@@ -519,17 +519,17 @@
             color: var(--warning);
         }
 
-        .status-confirmed {
+        .status-confirmed{
             background: rgba(5, 150, 105, 0.1);
             color: var(--success);
         }
 
-        .status-cancelled {
+        .status-cancelled{
             background: rgba(220, 38, 38, 0.1);
             color: var(--danger);
         }
 
-        .status-completed {
+        .status-completed  {
             background: rgba(59, 130, 246, 0.1);
             color: var(--medical-blue);
         }
@@ -558,8 +558,8 @@
             display: block;
         }
 
-        .details-grid {
-            display: grid;
+        .details-grid{
+            display: grid ;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1rem;
             margin-bottom: 1rem;
@@ -595,14 +595,14 @@
             margin-bottom: 0.5rem;
         }
 
-        .stats-cards {
-            display: grid;
+        .stats-card s {
+            display: grid ;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
         }
 
-        .stats-card {
+        .stats-card{
             background: var(--bg-secondary);
             border-radius: var(--border-radius);
             padding: 1.5rem;
@@ -624,7 +624,7 @@
             font-weight: 600;
         }
 
-        /* Responsive Design */
+        /* Responsive design */
         @media (max-width: 992px) {
             .sidebar {
                 width: 250px;
@@ -647,7 +647,7 @@
                 font-size: 0.8rem;
             }
             .online-bookings-table th,
-            .online-bookings-table td {
+            .online-bookings-table td  {
                 padding: 0.75rem 0.5rem;
             }
             .filters-section {
@@ -691,7 +691,7 @@
                 overflow-x: auto;
                 white-space: nowrap;
             }
-            .stats-cards {
+            .stats-card s {
                 grid-template-columns: 1fr;
             }
         }
@@ -714,22 +714,22 @@
         <!-- Cabinet Header -->
         <div class="cabinet-header">
             <div class="cabinet-logo">
-                <i class="fas fa-tooth"></i>
+                d 
             </div>
-            <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+            <div class="cabinet-name">dikra Centre dentaire</div>
             <div class="cabinet-subtitle">Casablanca, Maroc</div>
         </div>
         <!-- Navigation Menu -->
         <ul class="sidebar-menu">
-            <!-- DASHBOARD -->
+            <!-- d ASHBOARd  -->
             <li class="sidebar-item">
                 <a href="dashboard.html" class="sidebar-link">
                     <span class="sidebar-icon"><i class="fas fa-home"></i></span>
-                    Tableau de bord
+                    Tableau de bord 
                 </a>
             </li>
 
-            <!-- RENDEZ-VOUS -->
+            <!-- RENdeZ-VOUS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-rdv-toggle">
                     Rendez-vous
@@ -750,7 +750,7 @@
                     </div>
                     <div class="sidebar-item">
                         <a href="En présentiel.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            <span class="sidebar-icon"><i class="fas fa-build ing"></i></span>
                             En présentiel
                         </a>
                     </div>
@@ -772,7 +772,7 @@
                 <div class="section-content" id="section-patients-content">
                     <div class="sidebar-item">
                         <a href="#patients" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                            <span class="sidebar-icon"><i class="fas fa-user-injured "></i></span>
                             Fiches patients
                         </a>
                     </div>
@@ -785,7 +785,7 @@
                     <div class="sidebar-item">
                         <a href="#imagerie" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
-                            Imagerie médicale
+                            Imagerie méd icale
                         </a>
                     </div>
                 </div>
@@ -829,7 +829,7 @@
                     <div class="sidebar-item">
                         <a href="#charges" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-                            Charges & dépenses
+                            Charges & d épenses
                         </a>
                     </div>
                 </div>
@@ -893,7 +893,7 @@
                 </div>
             </li>
 
-            <!-- GESTION DES STOCKS -->
+            <!-- GESTION deS STOCKS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-stock-toggle">
                     Gestion des stocks
@@ -915,21 +915,21 @@
                     <div class="sidebar-item">
                         <a href="#stock-medicaments" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
-                            Médicaments
+                            Méd icaments
                         </a>
                     </div>
                 </div>
             </li>
 
-            <!-- DOCUMENTS & FORMULAIRES -->
+            <!-- documentS & FORMULAIRES -->
             <li class="sidebar-section">
-                <div class="section-header clickable" id="section-docs-toggle">
-                    Documents & formulaires
+                <div class="section-header clickable" id="section-d ocs-toggle">
+                    documents & formulaires
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-docs-content">
+                <div class="section-content" id="section-d ocs-content">
                     <div class="sidebar-item">
-                        <a href="#ordonnances" class="sidebar-link">
+                        <a href="#Ordonnances" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
                             Ordonnances
                         </a>
@@ -959,23 +959,23 @@
                     <div class="sidebar-item">
                         <a href="#staff-list" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-list"></i></span>
-                            Liste du personnel
+                            Liste d u personnel
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="#staff-add" class="sidebar-link">
+                        <a href="#staff-Add " class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
                             Ajouter un membre
                         </a>
                     </div>
                     <div class="sidebar-item">
                         <a href="#staff-permissions" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                            <span class="sidebar-icon"><i class="fas fa-shield -alt"></i></span>
                             Rôles & permissions
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="#staff-schedule" class="sidebar-link">
+                        <a href="#staff-sched ule" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
                             Planning de l'équipe
                         </a>
@@ -999,9 +999,9 @@
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="#portal-records" class="sidebar-link">
+                        <a href="#portal-record s" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-                            Dossiers médicaux
+                            dossiers médicaux
                         </a>
                     </div>
                 </div>
@@ -1023,7 +1023,7 @@
                     <div class="sidebar-item">
                         <a href="#website-design" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
-                            Design & thème
+                            design & thème
                         </a>
                     </div>
                     <div class="sidebar-item">
@@ -1062,13 +1062,13 @@
                     </div>
                     <div class="sidebar-item">
                         <a href="#cabinet-settings" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            <span class="sidebar-icon"><i class="fas fa-build ing"></i></span>
                             Informations cabinet
                         </a>
                     </div>
                     <div class="sidebar-item">
                         <a href="#facturation" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice-d ollar"></i></span>
                             Paramètres de facturation
                         </a>
                     </div>
@@ -1084,10 +1084,10 @@
         <!-- User Section -->
         <div class="user-section">
             <div class="user-info">
-                <div class="user-avatar">DM</div>
+                <div class="user-avatar">d M</div>
                 <div class="user-details">
-                    <div class="user-name">Dr. Mohammed Alami</div>
-                    <div class="user-role">Chirurgien-Dentiste</div>
+                    <div class="user-name">d r. Mohammed  Alami</div>
+                    <div class="user-role">Chirurgien-dentiste</div>
                 </div>
             </div>
             <button class="theme-toggle" id="themeToggle">
@@ -1096,7 +1096,7 @@
             </button>
             <button class="logout-btn" id="logoutBtn">
                 <i class="fas fa-sign-out-alt"></i>
-                <span>Déconnexion</span>
+                <span>déconnexion</span>
             </button>
         </div>
     </div>
@@ -1142,11 +1142,11 @@
 
             <div class="filters-section">
                 <div class="filter-group">
-                    <label class="filter-label">Rechercher:</label>
+                    <label class="filter-label" for="searchInput">Rechercher:</label>
                     <input type="text" id="searchInput" class="filter-control" placeholder="Nom, email, téléphone...">
                 </div>
                 <div class="filter-group">
-                    <label class="filter-label">Statut:</label>
+                    <label class="filter-label" for="statusFilter">Statut:</label>
                     <select id="statusFilter" class="filter-control">
                         <option value="">Tous</option>
                         <option value="En attente">En attente</option>
@@ -1156,131 +1156,60 @@
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label class="filter-label">Traitement:</label>
+                    <label class="filter-label" for="treatmentFilter">Traitement:</label>
                     <select id="treatmentFilter" class="filter-control">
                         <option value="">Tous</option>
                         <option value="Consultation générale">Consultation générale</option>
-                        <option value="Détartrage">Détartrage</option>
+                        <option value="d étartrage">d étartrage</option>
                         <option value="Traitement de carie">Traitement de carie</option>
                         <option value="Extraction dentaire">Extraction dentaire</option>
                         <option value="Implant dentaire">Implant dentaire</option>
-                        <option value="Orthodontie">Orthodontie</option>
+                        <option value="Orthod ontie">Orthod ontie</option>
                         <option value="Prothèse dentaire">Prothèse dentaire</option>
                         <option value="Urgence dentaire">Urgence dentaire</option>
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label class="filter-label">Trier par:</label>
+                    <label class="filter-label" for="sortBy">Trier par:</label>
                     <select id="sortBy" class="filter-control">
-                        <option value="submittedAt">Date de demande</option>
-                        <option value="preferredDate">Date souhaitée</option>
+                        <option value="submittedAt">date de demande</option>
+                        <option value="preferredDate">date souhaitée</option>
                         <option value="lastName">Nom</option>
                     </select>
                 </div>
             </div>
 
             <table class="online-bookings-table">
-                <thead>
+                <thead >
                     <tr>
                         <th>Patient</th>
                         <th>Contact</th>
                         <th>Traitement</th>
-                        <th>Date souhaitée</th>
+                        <th>date souhaitée</th>
                         <th>Heure souhaitée</th>
                         <th>Statut</th>
-                        <th>Date demande</th>
+                        <th>date demande</th>
                         <th>Actions</th>
                     </tr>
-                </thead>
-                <tbody id="bookingsTableBody">
-                    <!-- Bookings will be loaded here -->
+                </thead >
+                <tbody id="bookingsTablebody">
+                    <!-- Bookings will be loaded  here -->
                 </tbody>
             </table>
         </div>
 
-        <!-- Booking Details Modal (simplified) -->
-        <div id="bookingDetails" class="booking-details">
+        <!-- Booking details Modal (simplified) -->
+        <div id="bookingdetails" class="booking-details">
             <h3>Détails de la demande</h3>
             <div class="details-grid" id="detailsContent">
-                <!-- Details will be populated here -->
+                <!-- details will be populated here -->
             </div>
             <div class="booking-message" id="bookingMessage">
                 <!-- Message will be shown here -->
             </div>
         </div>
-    </div>
-
-    <script>
+    </div><script src="../js/navbar.js"></script><script>// Open "Rendez-vous" by default\ndocument.getElementById("section-rdv-content").classList.remove("collapsed");\ndocument.getElementById("section-rdv-toggle").classList.remove("collapsed");\n
         // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        const themeIcon = themeToggle.querySelector('i');
-        const themeText = themeToggle.querySelector('span');
-
-        // Using sessionStorage instead of localStorage
-        const savedTheme = sessionStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-            body.classList.remove('light-mode');
-            body.classList.add('dark-mode');
-            themeIcon.className = 'fas fa-sun';
-            themeText.textContent = 'Mode Clair';
-        }
-
-        themeToggle.addEventListener('click', () => {
-            if (body.classList.contains('light-mode')) {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-                themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'Mode Clair';
-                sessionStorage.setItem('theme', 'dark');
-            } else {
-                body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
-                themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'Mode Sombre';
-                sessionStorage.setItem('theme', 'light');
-            }
-        });
-
-        // Logout functionality
-        const logoutBtn = document.getElementById('logoutBtn');
-        logoutBtn.addEventListener('click', () => {
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-            }
-        });
-
-        // Collapsible section headers
-        document.querySelectorAll('.section-header.clickable').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const isCollapsed = content.classList.contains('collapsed');
-
-                // Close all other sections
-                document.querySelectorAll('.section-content').forEach(el => {
-                    if (el !== content) {
-                        el.classList.add('collapsed');
-                        el.previousElementSibling.classList.add('collapsed');
-                    }
-                });
-
-                // Toggle current section
-                if (isCollapsed) {
-                    content.classList.remove('collapsed');
-                    header.classList.remove('collapsed');
-                } else {
-                    content.classList.add('collapsed');
-                    header.classList.add('collapsed');
-                }
-            });
-        });
-
-        // Open "Rendez-vous" by default
-        document.getElementById('section-rdv-content').classList.remove('collapsed');
-        document.getElementById('section-rdv-toggle').classList.remove('collapsed');
-
         // Online Bookings Management
         let onlineBookings = [];
         let currentBookingId = null;
@@ -1292,7 +1221,7 @@
         }
 
         function renderBookings() {
-            const tbody = document.getElementById('bookingsTableBody');
+            const tbody = document.getElementById('bookingsTablebody');
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const statusFilter = document.getElementById('statusFilter').value;
             const treatmentFilter = document.getElementById('treatmentFilter').value;
@@ -1333,46 +1262,46 @@
                 else if (booking.status === 'Terminé') statusClass = 'status-completed';
 
                 row.innerHTML = `
-                    <td>${booking.firstName} ${booking.lastName}</td>
-                    <td>
+                    <td >${booking.firstName} ${booking.lastName}</td >
+                    <td >
                         <div>${booking.email}</div>
                         <div style="font-size: 0.8rem; color: var(--text-secondary);">${booking.phone}</div>
-                    </td>
-                    <td>${booking.treatment}</td>
-                    <td>${formatDate(booking.preferredDate)}</td>
-                    <td>${booking.preferredTime || 'Indifférent'}</td>
-                    <td><span class="status-badge ${statusClass}">${booking.status}</span></td>
-                    <td>${formatDateTime(booking.submittedAt)}</td>
-                    <td class="action-buttons">
-                        <button class="btn btn-small btn-success" title="Voir détails" onclick="viewBooking(${booking.id})">
+                    </td >
+                    <td >${booking.treatment}</td >
+                    <td >${formatDate(booking.preferredDate)}</td >
+                    <td >${booking.preferredTime || 'Indifférent'}</td >
+                    <td ><span class="status-badge ${statusClass}">${booking.status}</span></td >
+                    <td >${formatDateTime(booking.submittedAt)}</td >
+                    <td  class="action-buttons">
+                        <button class="btn btn-small btn-success" title="Voir les détails" onclick="viewBooking(${booking.id })">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button class="btn btn-small btn-primary" title="Confirmer" onclick="confirmBooking(${booking.id})">
+                        <button class="btn btn-small btn-primary" title="Confirmer" onclick="confirmBooking(${booking.id })">
                             <i class="fas fa-check"></i>
                         </button>
-                        <button class="btn btn-small btn-warning" title="Modifier statut" onclick="changeStatus(${booking.id})">
+                        <button class="btn btn-small btn-warning" title="Modifier statut" onclick="changeStatus(${booking.id })">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteBooking(${booking.id})">
+                        <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteBooking(${booking.id })">
                             <i class="fas fa-times"></i>
                         </button>
-                    </td>
+                    </td >
                 `;
 
                 tbody.appendChild(row);
             });
 
-            document.getElementById('bookingCount').textContent = `${filteredBookings.length} demandes`;
+            document.getElementById('bookingCount').textContent = `${filteredBookings.length} demandes`; 
         }
 
         function updateStats() {
             const total = onlineBookings.length;
             const pending = onlineBookings.filter(b => b.status === 'En attente').length;
-            const confirmed = onlineBookings.filter(b => b.status === 'Confirmé').length;
+            const confirmed  = onlineBookings.filter(b => b.status === 'Confirmé').length;
             const today = onlineBookings.filter(b => {
                 const bookingDate = new Date(b.preferredDate);
-                const today = new Date();
-                return bookingDate.toDateString() === today.toDateString();
+                const todayDate = new Date();
+                return bookingDate.toDateString() === todayDate.toDateString();
             }).length;
 
             document.getElementById('totalBookings').textContent = total;
@@ -1381,13 +1310,13 @@
             document.getElementById('todayBookings').textContent = today;
         }
 
-        function viewBooking(id) {
-            const booking = onlineBookings.find(b => b.id === id);
+        function viewBooking(id ) {
+            const booking = onlineBookings.find (b => b.id  === id );
             if (!booking) return;
 
-            const detailsDiv = document.getElementById('bookingDetails');
+            const detailsdiv = document.getElementById('bookingdetails');
             const detailsContent = document.getElementById('detailsContent');
-            const messageDiv = document.getElementById('bookingMessage');
+            const messagediv = document.getElementById('bookingMessage');
 
             detailsContent.innerHTML = `
                 <div class="detail-item">
@@ -1403,8 +1332,8 @@
                     <div class="detail-value">${booking.phone}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Date de naissance</div>
-                    <div class="detail-value">${booking.birthDate ? formatDate(booking.birthDate) : 'Non spécifiée'}</div>
+                    <div class="detail-label">date de naissance</div>
+                    <div class="detail-value">${booking.birthdate ? formatDate(booking.birthdate) : 'Non spécifiée'}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Assurance</div>
@@ -1429,30 +1358,30 @@
                 <div class="detail-item">
                     <div class="detail-label">Date de demande</div>
                     <div class="detail-value">${formatDateTime(booking.submittedAt)}</div>
-                </div>
+                </div> 
             `;
 
             if (booking.message) {
-                messageDiv.innerHTML = `
+                messagediv.innerHTML = `
                     <div class="detail-label">Message du patient</div>
                     <div class="detail-value">${booking.message}</div>
                 `;
-                messageDiv.style.display = 'block';
+                messagediv.style.display = 'block';
             } else {
-                messageDiv.style.display = 'none';
+                messagediv.style.display = 'none';
             }
 
-            detailsDiv.classList.toggle('show');
-            currentBookingId = id;
+            detailsdiv.classList.toggle('show');
+            currentBookingId  = id ;
         }
 
-        function confirmBooking(id) {
-            const booking = onlineBookings.find(b => b.id === id);
+        function confirmBooking(id ) {
+            const booking = onlineBookings.find (b => b.id  === id );
             if (!booking) return;
 
             if (confirm(`Confirmer le rendez-vous pour ${booking.firstName} ${booking.lastName} ?`)) {
                 booking.status = 'Confirmé';
-                // Also add to regular appointments
+                // Also Add  to regular appointments
                 const regularAppointment = {
                     date: booking.preferredDate,
                     time: booking.preferredTime || '09:00',
@@ -1474,8 +1403,8 @@
             }
         }
 
-        function changeStatus(id) {
-            const booking = onlineBookings.find(b => b.id === id);
+        function changeStatus(id ) {
+            const booking = onlineBookings.find (b => b.id  === id );
             if (!booking) return;
 
             const newStatus = prompt('Nouveau statut (En attente/Confirmé/Annulé/Terminé):', booking.status);
@@ -1487,9 +1416,9 @@
             }
         }
 
-        function deleteBooking(id) {
+        function deleteBooking(id ) {
             if (confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')) {
-                onlineBookings = onlineBookings.filter(b => b.id !== id);
+                onlineBookings = onlineBookings.filter(b => b.id  !== id );
                 localStorage.setItem('onlineBookings', JSON.stringify(onlineBookings));
                 renderBookings();
                 updateStats();
@@ -1502,18 +1431,18 @@
 
         function exportBookings() {
             // Simple CSV export
-            let csv = 'Nom,Prénom,Email,Téléphone,Traitement,Date souhaitée,Heure souhaitée,Statut,Date demande\n';
+            let csv = 'Nom,Prénom,Email,Téléphone,Traitement,date souhaitée,Heure souhaitée,Statut,date demande\n';
             onlineBookings.forEach(booking => {
                 csv += `"${booking.lastName}","${booking.firstName}","${booking.email}","${booking.phone}","${booking.treatment}","${booking.preferredDate}","${booking.preferredTime || ''}","${booking.status}","${booking.submittedAt}"\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
+            const url = globalThis.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = 'demandes-rendez-vous.csv';
             a.click();
-            window.URL.revokeObjectURL(url);
+            globalThis.URL.revokeObjectURL(url);
         }
 
         function formatDate(dateString) {
@@ -1532,8 +1461,29 @@
         document.getElementById('treatmentFilter').addEventListener('change', renderBookings);
         document.getElementById('sortBy').addEventListener('change', renderBookings);
 
-        // Initial load
+        // Initial load 
         loadBookings();
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

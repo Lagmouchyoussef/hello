@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liste des Rendez-vous - Cabinet Dentaire Al-Farabi</title>
+<title>Liste des Rendez-vous - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -19,7 +19,7 @@
   --medical-blue-light: #3b82f6;
   --success: #059669;
   --warning: #d97706;
-  --danger: #dc2626;
+  --danger: #cbd5e1;
   --text-light: #f8fafc;
   --text-gray: #64748b;
   --border-radius: 0.5rem;
@@ -43,7 +43,7 @@
   --active-bg: rgba(255, 255, 255, 0.2);
 }
 
-/* Dark mode */
+/* dark mode */
 .dark-mode {
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;
@@ -310,7 +310,7 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.section-header:first-child {
+.section-header:first-child  {
   margin-top: 0;
 }
 
@@ -330,7 +330,7 @@ body {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.section-header.collapsed .section-chevron {
+.section-header.collapsed.section-chevron {
   transform: rotate(-90deg);
 }
 
@@ -342,7 +342,7 @@ body {
   opacity: 1;
 }
 
-.section-content.collapsed {
+.section-content.collapsed{
   max-height: 0;
   opacity: 0;
 }
@@ -445,7 +445,7 @@ body {
 }
 
 .appointments-table th,
-.appointments-table td {
+.appointments-table td  {
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid var(--border-color);
@@ -472,7 +472,7 @@ body {
   text-align: center;
 }
 
-.status-confirmed {
+.status-confirmed{
   background: rgba(5, 150, 105, 0.1);
   color: var(--success);
 }
@@ -482,7 +482,7 @@ body {
   color: var(--warning);
 }
 
-.status-cancelled {
+.status-cancelled{
   background: rgba(220, 38, 38, 0.1);
   color: var(--danger);
 }
@@ -498,7 +498,7 @@ body {
   border-radius: 0.375rem;
 }
 
-/* Responsive Design */
+/* Responsive design */
 @media (max-width: 992px) {
   .sidebar {
     width: 250px;
@@ -521,7 +521,7 @@ body {
     font-size: 0.8rem;
   }
   .appointments-table th,
-  .appointments-table td {
+  .appointments-table td  {
     padding: 0.75rem 0.5rem;
   }
 }
@@ -578,22 +578,22 @@ body {
   <!-- Cabinet Header -->
   <div class="cabinet-header">
     <div class="cabinet-logo">
-      <i class="fas fa-tooth"></i>
+      d 
     </div>
-    <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+    <div class="cabinet-name">dikra Centre dentaire</div>
     <div class="cabinet-subtitle">Casablanca, Maroc</div>
   </div>
   <!-- Navigation Menu -->
   <ul class="sidebar-menu">
-    <!-- DASHBOARD -->
+    <!-- d ASHBOARd  -->
     <li class="sidebar-item">
       <a href="dashboard.html" class="sidebar-link">
         <span class="sidebar-icon"><i class="fas fa-home"></i></span>
-        Tableau de bord
+        Tableau de bord 
       </a>
     </li>
 
-    <!-- RENDEZ-VOUS -->
+    <!-- RENdeZ-VOUS -->
     <li class="sidebar-section">
       <div class="section-header clickable" id="section-rdv-toggle">
         Rendez-vous
@@ -614,7 +614,7 @@ body {
         </div>
         <div class="sidebar-item">
           <a href="En présentiel.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+            <span class="sidebar-icon"><i class="fas fa-build ing"></i></span>
             En présentiel
           </a>
         </div>
@@ -636,7 +636,7 @@ body {
       <div class="section-content" id="section-patients-content">
         <div class="sidebar-item">
           <a href="#patients" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+            <span class="sidebar-icon"><i class="fas fa-user-injured "></i></span>
             Fiches patients
           </a>
         </div>
@@ -649,7 +649,7 @@ body {
         <div class="sidebar-item">
           <a href="#imagerie" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
-            Imagerie médicale
+            Imagerie méd icale
           </a>
         </div>
       </div>
@@ -693,7 +693,7 @@ body {
         <div class="sidebar-item">
           <a href="#charges" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-            Charges & dépenses
+            Charges & d épenses
           </a>
         </div>
       </div>
@@ -757,7 +757,7 @@ body {
       </div>
     </li>
 
-    <!-- GESTION DES STOCKS -->
+    <!-- GESTION deS STOCKS -->
     <li class="sidebar-section">
       <div class="section-header clickable" id="section-stock-toggle">
         Gestion des stocks
@@ -779,21 +779,21 @@ body {
         <div class="sidebar-item">
           <a href="#stock-medicaments" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
-            Médicaments
+            Méd icaments
           </a>
         </div>
       </div>
     </li>
 
-    <!-- DOCUMENTS & FORMULAIRES -->
+    <!-- documentS & FORMULAIRES -->
     <li class="sidebar-section">
-      <div class="section-header clickable" id="section-docs-toggle">
-        Documents & formulaires
+      <div class="section-header clickable" id="section-d ocs-toggle">
+        documents & formulaires
         <i class="fas fa-chevron-down section-chevron"></i>
       </div>
-      <div class="section-content" id="section-docs-content">
+      <div class="section-content" id="section-d ocs-content">
         <div class="sidebar-item">
-          <a href="#ordonnances" class="sidebar-link">
+          <a href="#Ordonnances" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
             Ordonnances
           </a>
@@ -823,23 +823,23 @@ body {
         <div class="sidebar-item">
           <a href="#staff-list" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-list"></i></span>
-            Liste du personnel
+            Liste d u personnel
           </a>
         </div>
         <div class="sidebar-item">
-          <a href="#staff-add" class="sidebar-link">
+          <a href="#staff-Add " class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
             Ajouter un membre
           </a>
         </div>
         <div class="sidebar-item">
           <a href="#staff-permissions" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+            <span class="sidebar-icon"><i class="fas fa-shield -alt"></i></span>
             Rôles & permissions
           </a>
         </div>
         <div class="sidebar-item">
-          <a href="#staff-schedule" class="sidebar-link">
+          <a href="#staff-sched ule" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
             Planning de l'équipe
           </a>
@@ -863,9 +863,9 @@ body {
           </a>
         </div>
         <div class="sidebar-item">
-          <a href="#portal-records" class="sidebar-link">
+          <a href="#portal-record s" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-            Dossiers médicaux
+            dossiers médicaux
           </a>
         </div>
       </div>
@@ -887,7 +887,7 @@ body {
         <div class="sidebar-item">
           <a href="#website-design" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
-            Design & thème
+            design & thème
           </a>
         </div>
         <div class="sidebar-item">
@@ -926,13 +926,13 @@ body {
         </div>
         <div class="sidebar-item">
           <a href="#cabinet-settings" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+            <span class="sidebar-icon"><i class="fas fa-build ing"></i></span>
             Informations cabinet
           </a>
         </div>
         <div class="sidebar-item">
           <a href="#facturation" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+            <span class="sidebar-icon"><i class="fas fa-file-invoice-d ollar"></i></span>
             Paramètres de facturation
           </a>
         </div>
@@ -948,10 +948,10 @@ body {
   <!-- User Section -->
   <div class="user-section">
     <div class="user-info">
-      <div class="user-avatar">DM</div>
+      <div class="user-avatar">d M</div>
       <div class="user-details">
-        <div class="user-name">Dr. Mohammed Alami</div>
-        <div class="user-role">Chirurgien-Dentiste</div>
+        <div class="user-name">d r. Mohammed  Alami</div>
+        <div class="user-role">Chirurgien-dentiste</div>
       </div>
     </div>
     <button class="theme-toggle" id="themeToggle">
@@ -960,7 +960,7 @@ body {
     </button>
     <button class="logout-btn" id="logoutBtn">
       <i class="fas fa-sign-out-alt"></i>
-      <span>Déconnexion</span>
+      <span>déconnexion</span>
     </button>
   </div>
 </div>
@@ -974,7 +974,7 @@ body {
     </button>
   </div>
 
-  <!-- Add Appointment Form -->
+  <!-- Add  Appointment Form -->
   <div class="appointments-container" id="addForm" style="display: none; margin-bottom: 2rem;">
     <div class="appointments-header">
       <h2 class="appointments-title">Ajouter un Rendez-vous</h2>
@@ -982,7 +982,7 @@ body {
     <form id="appointmentForm" style="padding: 1.5rem;">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
         <div class="form-group">
-          <label class="form-label">Date</label>
+          <label class="form-label">date</label>
           <input type="date" class="form-control" id="date" required>
         </div>
         <div class="form-group">
@@ -995,7 +995,7 @@ body {
         </div>
         <div class="form-group">
           <label class="form-label">Médecin</label>
-          <input type="text" class="form-control" id="doctor" placeholder="Nom du médecin" required>
+          <input type="text" class="form-control" id="doctor" placeholder="Nom d u médecin" required>
         </div>
         <div class="form-group">
           <label class="form-label">Traitement</label>
@@ -1041,9 +1041,9 @@ body {
       </div>
     </div>
     <table class="appointments-table">
-      <thead>
+      <thead >
         <tr>
-          <th>Date</th>
+          <th>date</th>
           <th>Heure</th>
           <th>Patient</th>
           <th>Médecin</th>
@@ -1052,85 +1052,14 @@ body {
           <th>Statut</th>
           <th>Actions</th>
         </tr>
-      </thead>
-      <tbody id="appointmentsTableBody">
-        <!-- Appointments will be loaded here -->
+      </thead >
+      <tbody id="appointmentsTablebody">
+        <!-- Appointments will be loaded  here -->
       </tbody>
     </table>
   </div>
-</div>
-
-<script>
+</div><script src="../js/navbar.js"></script><script>// Open "Rendez-vous" by default\ndocument.getElementById("section-rdv-content").classList.remove("collapsed");\ndocument.getElementById("section-rdv-toggle").classList.remove("collapsed");\n
 // Theme Toggle
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
-const themeIcon = themeToggle.querySelector('i');
-const themeText = themeToggle.querySelector('span');
-
-// Using sessionStorage instead of localStorage
-const savedTheme = sessionStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-  body.classList.remove('light-mode');
-  body.classList.add('dark-mode');
-  themeIcon.className = 'fas fa-sun';
-  themeText.textContent = 'Mode Clair';
-}
-
-themeToggle.addEventListener('click', () => {
-  if (body.classList.contains('light-mode')) {
-    body.classList.remove('light-mode');
-    body.classList.add('dark-mode');
-    themeIcon.className = 'fas fa-sun';
-    themeText.textContent = 'Mode Clair';
-    sessionStorage.setItem('theme', 'dark');
-  } else {
-    body.classList.remove('dark-mode');
-    body.classList.add('light-mode');
-    themeIcon.className = 'fas fa-moon';
-    themeText.textContent = 'Mode Sombre';
-    sessionStorage.setItem('theme', 'light');
-  }
-});
-
-// Logout functionality
-const logoutBtn = document.getElementById('logoutBtn');
-logoutBtn.addEventListener('click', () => {
-  if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-    alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-  }
-});
-
-// Collapsible section headers
-document.querySelectorAll('.section-header.clickable').forEach(header => {
-  header.addEventListener('click', () => {
-    const content = header.nextElementSibling;
-    const isCollapsed = content.classList.contains('collapsed');
-    
-    // Close all other sections
-    document.querySelectorAll('.section-content').forEach(el => {
-      if (el !== content) {
-        el.classList.add('collapsed');
-        el.previousElementSibling.classList.add('collapsed');
-      }
-    });
-    
-    // Toggle current section
-    if (isCollapsed) {
-      content.classList.remove('collapsed');
-      header.classList.remove('collapsed');
-    } else {
-      content.classList.add('collapsed');
-      header.classList.add('collapsed');
-    }
-  });
-});
-
-// Open "Rendez-vous" by default
-document.getElementById('section-rdv-content').classList.remove('collapsed');
-document.getElementById('section-rdv-toggle').classList.remove('collapsed');
-
 // Appointments Management
 let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
 let editingIndex = -1;
@@ -1194,7 +1123,7 @@ function deleteAppointment(index) {
 }
 
 function renderAppointments() {
-  const tbody = document.getElementById('appointmentsTableBody');
+  const tbody = document.getElementById('appointmentsTablebody');
   const searchTerm = document.getElementById('searchInput').value.toLowerCase();
   const statusFilter = document.getElementById('statusFilter').value;
 
@@ -1216,17 +1145,17 @@ function renderAppointments() {
       else if (appointment.status === 'Annulé') statusClass = 'status-cancelled';
 
       row.innerHTML = `
-        <td>${formatDate(appointment.date)}</td>
-        <td>${appointment.time}</td>
-        <td>${appointment.patient}</td>
-        <td>${appointment.doctor}</td>
-        <td>${appointment.treatment}</td>
-        <td>${appointment.mode}</td>
-        <td><span class="status-badge ${statusClass}">${appointment.status}</span></td>
-        <td class="action-buttons">
+        <td >${formatDate(appointment.date)}</td >
+        <td >${appointment.time}</td >
+        <td >${appointment.patient}</td >
+        <td >${appointment.doctor}</td >
+        <td >${appointment.treatment}</td >
+        <td >${appointment.mode}</td >
+        <td ><span class="status-badge ${statusClass}">${appointment.status}</span></td >
+        <td  class="action-buttons">
           <button class="btn btn-small btn-success" title="Modifier" onclick="editAppointment(${index})"><i class="fas fa-edit"></i></button>
           <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteAppointment(${index})"><i class="fas fa-times"></i></button>
-        </td>
+        </td >
       `;
 
       tbody.appendChild(row);
@@ -1249,3 +1178,24 @@ renderAppointments();
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

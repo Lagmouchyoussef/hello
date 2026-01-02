@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ajouter un Membre - Cabinet Dentaire Al-Farabi</title>
+<title>Ajouter un Membre - Dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -19,7 +19,7 @@ box-sizing: border-box;
 --medical-blue-light: #3b82f6;
 --success: #059669;
 --warning: #d97706;
---danger: #dc2626;
+--danger: #cbd5e1;
 --text-light: #f8fafc;
 --text-gray: #64748b;
 --border-radius: 0.5rem;
@@ -264,7 +264,7 @@ justify-content: space-between;
 align-items: center;
 border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
-.section-header:first-child {
+.section-header:first-child  {
 margin-top: 0;
 }
 .section-header::after {
@@ -281,7 +281,7 @@ font-size: 0.75rem;
 transition: transform 0.3s ease;
 color: rgba(255, 255, 255, 0.6);
 }
-.section-header.collapsed .section-chevron {
+.section-header.collapsed.section-chevron {
 transform: rotate(-90deg);
 }
 .section-content {
@@ -290,7 +290,7 @@ transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 max-height: 1000px;
 opacity: 1;
 }
-.section-content.collapsed {
+.section-content.collapsed{
 max-height: 0;
 opacity: 0;
 }
@@ -413,167 +413,9 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 </style>
 </head>
 <body class="light-mode">
-<div class="sidebar">
-<div class="cabinet-header">
-<div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
-<div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
-<div class="cabinet-subtitle">Casablanca, Maroc</div>
-</div>
-<ul class="sidebar-menu">
-<li class="sidebar-item">
-<a href="dashboard.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-home"></i></span>
-Tableau de bord
-</a>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-rdv-toggle">
-Rendez-vous
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-rdv-content">
-<div class="sidebar-item">
-<a href="Listes des Rendez-vous.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-Liste des rendez-vous
-</a>
-</div>
-<div class="sidebar-item">
-<a href="Prise en ligne.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-globe"></i></span>
-Prise en ligne
-</a>
-</div>
-<div class="sidebar-item">
-<a href="En présentiel.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-building"></i></span>
-En présentiel
-</a>
-</div>
-<div class="sidebar-item">
-<a href="via-espace-patient.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
-Via espace patient
-</a>
-</div>
-</div>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-patients-toggle">
-Patients
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-patients-content">
-<div class="sidebar-item">
-<a href="fiches-patients.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
-Fiches patients
-</a>
-</div>
-<div class="sidebar-item">
-<a href="protheses.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
-Prothèses
-</a>
-</div>
-<div class="sidebar-item">
-<a href="materiel-dentaire.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-tools"></i></span>
-Matériel dentaire
-</a>
-</div>
-<div class="sidebar-item">
-<a href="consommables.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-box"></i></span>
-Consommables
-</a>
-</div>
-<div class="sidebar-item">
-<a href="medicaments.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-pills"></i></span>
-Médicaments
-</a>
-</div>
-<div class="sidebar-item">
-<a href="ordonnances.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
-Ordonnances
-</a>
-</div>
-<div class="sidebar-item">
-<a href="certificats-medicaux.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-Certificats médicaux
-</a>
-</div>
-<div class="sidebar-item">
-<a href="feuilles-de-soins.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-Feuilles de soins
-</a>
-</div>
-</div>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-users-toggle">
-Utilisateurs
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-users-content">
-<div class="sidebar-item">
-<a href="Liste du personnel.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-list"></i></span>
-Liste du personnel
-</a>
-</div>
-<div class="sidebar-item">
-<a href="ajouter-un-membre.html" class="sidebar-link active">
-<span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
-Ajouter un membre
-</a>
-</div>
-<div class="sidebar-item">
-<a href="roles-permissions.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
-Rôles & permissions
-</a>
-</div>
-<div class="sidebar-item">
-<a href="planning-equipe.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-Planning de l'équipe
-</a>
-</div>
-<div class="sidebar-item">
-<a href="parametres-espace-patient.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-cog"></i></span>
-Paramètres espace patient
-</a>
-</div>
-</div>
-</li>
-</ul>
-<div class="user-section">
-<div class="user-info">
-<div class="user-avatar">DM</div>
-<div class="user-details">
-<div class="user-name">Dr. Mohammed Alami</div>
-<div class="user-role">Chirurgien-Dentiste</div>
-</div>
-</div>
-<button class="theme-toggle" id="themeToggle">
-<i class="fas fa-moon"></i>
-<span>Mode Sombre</span>
-</button>
-<button class="logout-btn" id="logoutBtn">
-<i class="fas fa-sign-out-alt"></i>
-<span>Déconnexion</span>
-</button>
-</div>
-</div>
-<div class="main-content">
+<div id="navbar-container"></div><div class="main-content">
 <div class="content-header">
-<h1 class="page-title">Ajouter un Membre du Personnel</h1>
+<h1 class="page-title">Ajouter un Membre d u Personnel</h1>
 </div>
 <div class="appointments-container">
 <div class="appointments-header">
@@ -608,86 +450,35 @@ Paramètres espace patient
 </div>
 <div class="form-group">
 <label class="form-label">Spécialité</label>
-<input type="text" class="form-control" id="specialty" placeholder="ex: Chirurgien-Dentiste">
+<input type="text" class="form-control" id="specialty" placeholder="ex: Chirurgien-dentiste">
 </div>
 <div class="form-group">
-<label class="form-label">Adresse</label>
-<input type="text" class="form-control" id="address" placeholder="Adresse">
+<label class="form-label">Ad resse</label>
+<input type="text" class="form-control" id="Add ress" placeholder="Ad resse">
 </div>
 <div class="form-group">
-<label class="form-label">Date de naissance</label>
+<label class="form-label">date de naissance</label>
 <input type="date" class="form-control" id="birthdate">
 </div>
 </div>
 <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
 <button type="submit" class="btn btn-primary">Ajouter le Membre</button>
-<button type="button" class="btn btn-danger" onclick="window.location.href='Liste du personnel.html'">Annuler</button>
+<button type="button" class="btn btn-danger" onclick="window.location.href='Liste d u personnel.html'">Annuler</button>
 </div>
 </form>
 </div>
-</div>
-<script>
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
-const themeIcon = themeToggle.querySelector('i');
-const themeText = themeToggle.querySelector('span');
-const savedTheme = sessionStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-body.classList.remove('light-mode');
-body.classList.add('dark-mode');
-themeIcon.className = 'fas fa-sun';
-themeText.textContent = 'Mode Clair';
-}
-themeToggle.addEventListener('click', () => {
-if (body.classList.contains('light-mode')) {
-body.classList.remove('light-mode');
-body.classList.add('dark-mode');
-themeIcon.className = 'fas fa-sun';
-themeText.textContent = 'Mode Clair';
-sessionStorage.setItem('theme', 'dark');
-} else {
-body.classList.remove('dark-mode');
-body.classList.add('light-mode');
-themeIcon.className = 'fas fa-moon';
-themeText.textContent = 'Mode Sombre';
-sessionStorage.setItem('theme', 'light');
-}
-});
-document.getElementById('logoutBtn').addEventListener('click', () => {
-if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-}
-});
-document.querySelectorAll('.section-header.clickable').forEach(header => {
-header.addEventListener('click', () => {
-const content = header.nextElementSibling;
-const isCollapsed = content.classList.contains('collapsed');
-document.querySelectorAll('.section-content').forEach(el => {
-if (el !== content) el.classList.add('collapsed');
-});
-if (isCollapsed) {
-content.classList.remove('collapsed');
-header.classList.remove('collapsed');
-} else {
-content.classList.add('collapsed');
-header.classList.add('collapsed');
-}
-});
-});
-document.getElementById('section-users-content').classList.remove('collapsed');
-document.getElementById('section-users-toggle').classList.remove('collapsed');
+</div><script src="../js/navbar.js"></script><script>
 document.getElementById('staffForm').addEventListener('submit', function(e) {
 e.preventDefault();
 const staffMember = {
-id: Date.now(),
+id : date.now(),
 name: document.getElementById('name').value,
 email: document.getElementById('email').value,
-password: document.getElementById('password').value,
+password : document.getElementById('password').value,
 role: document.getElementById('role').value,
 phone: document.getElementById('phone').value,
 specialty: document.getElementById('specialty').value,
-address: document.getElementById('address').value,
+Address: document.getElementById('Add ress').value,
 birthdate: document.getElementById('birthdate').value,
 avatar: document.getElementById('name').value.split(' ').map(n => n[0]).join('').toUpperCase()
 };
@@ -695,8 +486,28 @@ let staff = JSON.parse(localStorage.getItem('staff')) || [];
 staff.push(staffMember);
 localStorage.setItem('staff', JSON.stringify(staff));
 alert('Membre ajouté avec succès !');
-window.location.href = 'Liste du personnel.html';
+window.location.href = 'Liste d u personnel.html';
 });
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

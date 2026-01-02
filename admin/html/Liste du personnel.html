@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liste du personnel - Cabinet Dentaire Al-Farabi</title>
+<title>Liste d u personnel - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -19,7 +19,7 @@
   --medical-blue-light: #3b82f6;
   --success: #059669;
   --warning: #d97706;
-  --danger: #dc2626;
+  --danger: #cbd5e1;
   --text-light: #f8fafc;
   --text-gray: #64748b;
   --border-radius: 0.5rem;
@@ -43,7 +43,7 @@
   --active-bg: rgba(255, 255, 255, 0.2);
 }
 
-/* Dark mode */
+/* dark mode */
 .dark-mode {
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;
@@ -310,7 +310,7 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.section-header:first-child {
+.section-header:first-child  {
   margin-top: 0;
 }
 
@@ -330,7 +330,7 @@ body {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.section-header.collapsed .section-chevron {
+.section-header.collapsed.section-chevron {
   transform: rotate(-90deg);
 }
 
@@ -342,7 +342,7 @@ body {
   opacity: 1;
 }
 
-.section-content.collapsed {
+.section-content.collapsed{
   max-height: 0;
   opacity: 0;
 }
@@ -445,7 +445,7 @@ body {
 }
 
 .staff-table th,
-.staff-table td {
+.staff-table td  {
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid var(--border-color);
@@ -464,7 +464,7 @@ body {
   background: var(--section-bg);
 }
 
-.role-badge {
+.role-bad ge {
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.75rem;
@@ -472,7 +472,7 @@ body {
   text-align: center;
 }
 
-.role-admin {
+.role-ad min {
   background: rgba(30, 58, 138, 0.1);
   color: var(--medical-blue);
 }
@@ -521,7 +521,7 @@ body {
   box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
 
-/* Responsive Design */
+/* Responsive design */
 @media (max-width: 992px) {
   .sidebar {
     width: 250px;
@@ -544,7 +544,7 @@ body {
     font-size: 0.8rem;
   }
   .staff-table th,
-  .staff-table td {
+  .staff-table td  {
     padding: 0.75rem 0.5rem;
   }
 }
@@ -596,411 +596,21 @@ body {
 </style>
 </head>
 <body class="light-mode">
-<!-- Professional Sidebar Navigation -->
-<div class="sidebar">
-  <!-- Cabinet Header -->
-  <div class="cabinet-header">
-    <div class="cabinet-logo">
-      <i class="fas fa-tooth"></i>
-    </div>
-    <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
-    <div class="cabinet-subtitle">Casablanca, Maroc</div>
-  </div>
-  <!-- Navigation Menu -->
-  <ul class="sidebar-menu">
-    <!-- DASHBOARD -->
-    <li class="sidebar-item">
-      <a href="dashboard.html" class="sidebar-link">
-        <span class="sidebar-icon"><i class="fas fa-home"></i></span>
-        Tableau de bord
-      </a>
-    </li>
-
-    <!-- RENDEZ-VOUS -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-rdv-toggle">
-        Rendez-vous
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-rdv-content">
-        <div class="sidebar-item">
-          <a href="Listes des Rendez-vous.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-            Liste des rendez-vous
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="Prise en ligne.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
-            Prise en ligne
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="En présentiel.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
-            En présentiel
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="via-espace-patient.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
-            Via espace patient
-          </a>
-        </div>
-      </div>
-    </li>
-
-    <!-- PATIENTS -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-patients-toggle">
-        Patients
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-patients-content">
-        <div class="sidebar-item">
-          <a href="#patients" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
-            Fiches patients
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#prothese" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
-            Prothèses
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#imagerie" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
-            Imagerie médicale
-          </a>
-        </div>
-      </div>
-    </li>
-
-    <!-- CABINET -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-cabinet-toggle">
-        Cabinet
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-cabinet-content">
-        <div class="sidebar-item">
-          <a href="#salle-attente" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
-            Salle d'attente
-          </a>
-        </div>
-      </div>
-    </li>
-
-    <!-- COMPTABILITÉ -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-compta-toggle">
-        Comptabilité
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-compta-content">
-        <div class="sidebar-item">
-          <a href="#comptabilite" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
-            Comptabilité générale
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#paiements" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
-            Paiements reçus
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#charges" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-            Charges & dépenses
-          </a>
-        </div>
-      </div>
-    </li>
-
-    <!-- COMMUNICATION -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-com-toggle">
-        Communication
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-com-content">
-        <div class="sidebar-item">
-          <a href="#messaging" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
-            Messagerie interne
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#ai-agent" class="sidebar-link">
-            <span class="sidebar-icon">
-              <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
-            </span>
-            Assistant IA
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#sms" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
-            Envoi de SMS
-          </a>
-        </div>
-      </div>
-    </li>
-
-    <!-- ORGANISATION -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-org-toggle">
-        Organisation
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-org-content">
-        <div class="sidebar-item">
-          <a href="#taches" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
-            Tâches & rappels
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#remarques" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
-            Notes personnelles
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#statistiques" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
-            Statistiques
-          </a>
-        </div>
-      </div>
-    </li>
-
-    <!-- GESTION DES STOCKS -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-stock-toggle">
-        Gestion des stocks
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-stock-content">
-        <div class="sidebar-item">
-          <a href="#stock-materiel" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-box"></i></span>
-            Matériel dentaire
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#stock-consommables" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
-            Consommables
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#stock-medicaments" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
-            Médicaments
-          </a>
-        </div>
-      </div>
-    </li>
-
-    <!-- DOCUMENTS & FORMULAIRES -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-docs-toggle">
-        Documents & formulaires
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-docs-content">
-        <div class="sidebar-item">
-          <a href="#ordonnances" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
-            Ordonnances
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#certificats" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-            Certificats médicaux
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#feuilles-soins" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-            Feuilles de soins (CNOPS/CNSS)
-          </a>
-        </div>
-      </div>
-    </li>
-
-    <!-- UTILISATEURS -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-users-toggle">
-        Utilisateurs
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-users-content">
-        <div class="sidebar-item">
-          <a href="Liste du personnel.html" class="sidebar-link active">
-            <span class="sidebar-icon"><i class="fas fa-list"></i></span>
-            Liste du personnel
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#staff-add" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
-            Ajouter un membre
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#staff-permissions" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
-            Rôles & permissions
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#staff-schedule" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-            Planning de l'équipe
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#portal-settings" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
-            Paramètres espace patient
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#portal-access" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-key"></i></span>
-            Gestion des accès
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#portal-messages" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
-            Messages patients
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#portal-records" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-            Dossiers médicaux
-          </a>
-        </div>
-      </div>
-    </li>
-
-    <!-- SITE WEB -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-website-toggle">
-        Site web
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-website-content">
-        <div class="sidebar-item">
-          <a href="#website-content" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
-            Contenu & articles
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#website-design" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
-            Design & thème
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#website-seo" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-search"></i></span>
-            Référencement (SEO)
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#website-contact" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
-            Formulaire de contact
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#website-analytics" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
-            Statistiques de visite
-          </a>
-        </div>
-      </div>
-    </li>
-
-    <!-- CONFIGURATION -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-config-toggle">
-        Configuration
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-config-content">
-        <div class="sidebar-item">
-          <a href="#profil" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
-            Mon profil
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#cabinet-settings" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
-            Informations cabinet
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#facturation" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
-            Paramètres de facturation
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#notifications" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
-            Notifications
-          </a>
-        </div>
-      </div>
-    </li>
-  </ul>
-  <!-- User Section -->
-  <div class="user-section">
-    <div class="user-info">
-      <div class="user-avatar">DM</div>
-      <div class="user-details">
-        <div class="user-name">Dr. Mohammed Alami</div>
-        <div class="user-role">Chirurgien-Dentiste</div>
-      </div>
-    </div>
-    <button class="theme-toggle" id="themeToggle">
-      <i class="fas fa-moon"></i>
-      <span>Mode Sombre</span>
-    </button>
-    <button class="logout-btn" id="logoutBtn">
-      <i class="fas fa-sign-out-alt"></i>
-      <span>Déconnexion</span>
-    </button>
-  </div>
-</div>
+<div id="navbar-container"></div>
 <!-- Main Content -->
 <div class="main-content">
   <div class="content-header">
-    <h1 class="page-title">Liste du personnel</h1>
+    <h1 class="page-title">Liste d u personnel</h1>
     <button class="btn btn-primary" onclick="showForm()">
       <i class="fas fa-plus"></i>
       Ajouter un membre
     </button>
   </div>
 
-  <!-- Add Staff Form -->
+  <!-- Add  Staff Form -->
   <div class="staff-container" id="addForm" style="display: none; margin-bottom: 2rem;">
     <div class="staff-header">
-      <h2 class="staff-title" id="formTitle">Ajouter un membre du personnel</h2>
+      <h2 class="staff-title" id="formTitle">Ajouter un membre d u personnel</h2>
     </div>
     <form id="staffForm" style="padding: 1.5rem;">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
@@ -1014,12 +624,12 @@ body {
         </div>
         <div class="form-group">
           <label class="form-label">Mot de passe</label>
-          <input type="password" class="form-control" id="password" required>
+          <input type="password" class="form-control" id="password " required>
         </div>
         <div class="form-group">
           <label class="form-label">Rôle</label>
           <select class="form-control" id="role" required>
-            <option value="Admin">Admin</option>
+            <option value="Ad min">Ad min</option>
             <option value="Assistant">Assistant</option>
           </select>
         </div>
@@ -1029,7 +639,7 @@ body {
         </div>
         <div class="form-group">
           <label class="form-label">Spécialité</label>
-          <input type="text" class="form-control" id="specialty" placeholder="ex: Chirurgien-Dentiste">
+          <input type="text" class="form-control" id="specialty" placeholder="ex: Chirurgien-dentiste">
         </div>
       </div>
       <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
@@ -1041,18 +651,18 @@ body {
 
   <div class="staff-container">
     <div class="staff-header">
-      <h2 class="staff-title">Membres du personnel</h2>
+      <h2 class="staff-title">Membres d u personnel</h2>
       <div>
         <input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
         <select id="roleFilter" title="Filtrer par rôle" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary);">
           <option value="">Tous les rôles</option>
-          <option value="Admin">Admin</option>
+          <option value="Ad min">Ad min</option>
           <option value="Assistant">Assistant</option>
         </select>
       </div>
     </div>
     <table class="staff-table">
-      <thead>
+      <thead >
         <tr>
           <th>Nom</th>
           <th>Email</th>
@@ -1061,81 +671,13 @@ body {
           <th>Spécialité</th>
           <th>Actions</th>
         </tr>
-      </thead>
-      <tbody id="staffTableBody">
-        <!-- Staff will be loaded here -->
+      </thead >
+      <tbody id="staffTablebody">
+        <!-- Staff will be loaded  here -->
       </tbody>
     </table>
   </div>
-</div>
-
-<script>
-// Theme Toggle
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
-const themeIcon = themeToggle.querySelector('i');
-const themeText = themeToggle.querySelector('span');
-
-// Using sessionStorage instead of localStorage
-const savedTheme = sessionStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-  body.classList.remove('light-mode');
-  body.classList.add('dark-mode');
-  themeIcon.className = 'fas fa-sun';
-  themeText.textContent = 'Mode Clair';
-}
-
-themeToggle.addEventListener('click', () => {
-  if (body.classList.contains('light-mode')) {
-    body.classList.remove('light-mode');
-    body.classList.add('dark-mode');
-    themeIcon.className = 'fas fa-sun';
-    themeText.textContent = 'Mode Clair';
-    sessionStorage.setItem('theme', 'dark');
-  } else {
-    body.classList.remove('dark-mode');
-    body.classList.add('light-mode');
-    themeIcon.className = 'fas fa-moon';
-    themeText.textContent = 'Mode Sombre';
-    sessionStorage.setItem('theme', 'light');
-  }
-});
-
-// Logout functionality
-const logoutBtn = document.getElementById('logoutBtn');
-logoutBtn.addEventListener('click', () => {
-  if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-    alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-  }
-});
-
-// Collapsible section headers
-document.querySelectorAll('.section-header.clickable').forEach(header => {
-  header.addEventListener('click', () => {
-    const content = header.nextElementSibling;
-    const isCollapsed = content.classList.contains('collapsed');
-
-    // Close all other sections
-    document.querySelectorAll('.section-content').forEach(el => {
-      if (el !== content) {
-        el.classList.add('collapsed');
-        el.previousElementSibling.classList.add('collapsed');
-      }
-    });
-
-    // Toggle current section
-    if (isCollapsed) {
-      content.classList.remove('collapsed');
-      header.classList.remove('collapsed');
-    } else {
-      content.classList.add('collapsed');
-      header.classList.add('collapsed');
-    }
-  });
-});
-
+</div><script src="../js/navbar.js"></script><script>
 // Open "Utilisateurs" by default
 document.getElementById('section-users-content').classList.remove('collapsed');
 document.getElementById('section-users-toggle').classList.remove('collapsed');
@@ -1143,23 +685,23 @@ document.getElementById('section-users-toggle').classList.remove('collapsed');
 // Staff Management
 let staff = JSON.parse(localStorage.getItem('staff')) || [
   {
-    id: 1,
-    name: 'Dr. Mohammed Alami',
-    email: 'admin@cabinet.ma',
-    password: 'admin123',
-    role: 'Admin',
+    id : 1,
+    name: 'd r. Mohammed  Alami',
+    email: 'ad min@cabinet.ma',
+    password : 'ad min123',
+    role: 'Ad min',
     phone: '+212 6XX XXX XXX',
-    specialty: 'Chirurgien-Dentiste',
-    avatar: 'DM'
+    specialty: 'Chirurgien-dentiste',
+    avatar: 'd M'
   },
   {
-    id: 2,
-    name: 'Hind Alaoui',
+    id : 2,
+    name: 'Hind  Alaoui',
     email: 'assistante@cabinet.ma',
-    password: 'assistante123',
+    password : 'assistante123',
     role: 'Assistant',
     phone: '+212 6XX XXX XXX',
-    specialty: 'Assistante Dentaire',
+    specialty: 'Assistante dentaire',
     avatar: 'HA'
   }
 ];
@@ -1169,7 +711,7 @@ function showForm() {
   document.getElementById('addForm').style.display = 'block';
   document.getElementById('staffForm').reset();
   editingIndex = -1;
-  document.getElementById('formTitle').textContent = 'Ajouter un membre du personnel';
+  document.getElementById('formTitle').textContent = 'Ajouter un membre d u personnel';
 }
 
 function hideForm() {
@@ -1180,10 +722,10 @@ function saveStaff(e) {
   e.preventDefault();
 
   const staffMember = {
-    id: editingIndex >= 0 ? staff[editingIndex].id : Date.now(),
+    id : editingIndex >= 0 ? staff[editingIndex].id  : date.now(),
     name: document.getElementById('name').value,
     email: document.getElementById('email').value,
-    password: document.getElementById('password').value,
+    password : document.getElementById('password').value,
     role: document.getElementById('role').value,
     phone: document.getElementById('phone').value,
     specialty: document.getElementById('specialty').value,
@@ -1205,18 +747,18 @@ function editStaff(index) {
   const member = staff[index];
   document.getElementById('name').value = member.name;
   document.getElementById('email').value = member.email;
-  document.getElementById('password').value = member.password;
+  document.getElementById('password').value = member.password ;
   document.getElementById('role').value = member.role;
   document.getElementById('phone').value = member.phone;
   document.getElementById('specialty').value = member.specialty;
 
   editingIndex = index;
   document.getElementById('addForm').style.display = 'block';
-  document.getElementById('formTitle').textContent = 'Modifier le membre du personnel';
+  document.getElementById('formTitle').textContent = 'Modifier le membre d u personnel';
 }
 
 function deleteStaff(index) {
-  if (confirm('Êtes-vous sûr de vouloir supprimer ce membre du personnel ?')) {
+  if (confirm('Êtes-vous sûr de vouloir supprimer ce membre d u personnel ?')) {
     staff.splice(index, 1);
     localStorage.setItem('staff', JSON.stringify(staff));
     renderStaff();
@@ -1224,7 +766,7 @@ function deleteStaff(index) {
 }
 
 function renderStaff() {
-  const tbody = document.getElementById('staffTableBody');
+  const tbody = document.getElementById('staffTablebody');
   const searchTerm = document.getElementById('searchInput').value.toLowerCase();
   const roleFilter = document.getElementById('roleFilter').value;
 
@@ -1241,19 +783,19 @@ function renderStaff() {
       const row = document.createElement('tr');
 
       let roleClass = '';
-      if (member.role === 'Admin') roleClass = 'role-admin';
+      if (member.role === 'Ad min') roleClass = 'role-ad min';
       else if (member.role === 'Assistant') roleClass = 'role-assistant';
 
       row.innerHTML = `
-        <td>${member.name}</td>
-        <td>${member.email}</td>
-        <td><span class="role-badge ${roleClass}">${member.role}</span></td>
-        <td>${member.phone || '-'}</td>
-        <td>${member.specialty || '-'}</td>
-        <td class="action-buttons">
+        <td >${member.name}</td >
+        <td >${member.email}</td >
+        <td ><span class="role-bad ge ${roleClass}">${member.role}</span></td >
+        <td >${member.phone || '-'}</td >
+        <td >${member.specialty || '-'}</td >
+        <td  class="action-buttons">
           <button class="btn btn-small btn-success" title="Modifier" onclick="editStaff(${index})"><i class="fas fa-edit"></i></button>
           <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteStaff(${index})"><i class="fas fa-times"></i></button>
-        </td>
+        </td >
       `;
 
       tbody.appendChild(row);
@@ -1271,3 +813,23 @@ renderStaff();
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

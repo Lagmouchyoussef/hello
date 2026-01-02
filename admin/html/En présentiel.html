@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rendez-vous en Présentiel - Cabinet Dentaire Al-Farabi</title>
+    <title>Rendez-vous en Présentiel - Dikra Centre dentaire</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -20,7 +20,7 @@
             --medical-blue-light: #3b82f6;
             --success: #059669;
             --warning: #d97706;
-            --danger: #dc2626;
+            --danger: #cbd5e1;
             --text-light: #f8fafc;
             --text-gray: #64748b;
             --border-radius: 0.5rem;
@@ -44,7 +44,7 @@
             --active-bg: rgba(255, 255, 255, 0.2);
         }
 
-        /* Dark mode */
+        /* dark mode */
         .dark-mode {
             --bg-primary: #0f172a;
             --bg-secondary: #1e293b;
@@ -311,7 +311,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .section-header:first-child {
+        .section-header:first-child  {
             margin-top: 0;
         }
 
@@ -331,7 +331,7 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        .section-header.collapsed .section-chevron {
+        .section-header.collapsed.section-chevron {
             transform: rotate(-90deg);
         }
 
@@ -343,7 +343,7 @@
             opacity: 1;
         }
 
-        .section-content.collapsed {
+        .section-content.collapsed{
             max-height: 0;
             opacity: 0;
         }
@@ -446,7 +446,7 @@
         }
 
         .form-row {
-            display: grid;
+            display: grid ;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
@@ -537,7 +537,7 @@
         }
 
         .waiting-list {
-            display: grid;
+            display: grid ;
             gap: 1rem;
         }
 
@@ -591,7 +591,7 @@
         }
 
         .quick-buttons {
-            display: grid;
+            display: grid ;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
         }
@@ -620,7 +620,7 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Responsive Design */
+        /* Responsive design */
         @media (max-width: 992px) {
             .sidebar {
                 width: 250px;
@@ -695,22 +695,22 @@
         <!-- Cabinet Header -->
         <div class="cabinet-header">
             <div class="cabinet-logo">
-                <i class="fas fa-tooth"></i>
+                D
             </div>
-            <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+            <div class="cabinet-name">dikra Centre dentaire</div>
             <div class="cabinet-subtitle">Casablanca, Maroc</div>
         </div>
         <!-- Navigation Menu -->
         <ul class="sidebar-menu">
-            <!-- DASHBOARD -->
+            <!-- d ASHBOARd  -->
             <li class="sidebar-item">
                 <a href="dashboard.html" class="sidebar-link">
                     <span class="sidebar-icon"><i class="fas fa-home"></i></span>
-                    Tableau de bord
+                    Tableau de bord 
                 </a>
             </li>
 
-            <!-- RENDEZ-VOUS -->
+            <!-- RENdeZ-VOUS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-rdv-toggle">
                     Rendez-vous
@@ -874,7 +874,7 @@
                 </div>
             </li>
 
-            <!-- GESTION DES STOCKS -->
+            <!-- GESTION deS STOCKS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-stock-toggle">
                     Gestion des stocks
@@ -902,7 +902,7 @@
                 </div>
             </li>
 
-            <!-- DOCUMENTS & FORMULAIRES -->
+            <!-- documentS & FORMULAIRES -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-docs-toggle">
                     Documents & formulaires
@@ -910,7 +910,7 @@
                 </div>
                 <div class="section-content" id="section-docs-content">
                     <div class="sidebar-item">
-                        <a href="#ordonnances" class="sidebar-link">
+                        <a href="#Ordonnances" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
                             Ordonnances
                         </a>
@@ -956,7 +956,7 @@
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="#staff-schedule" class="sidebar-link">
+                        <a href="#staff-sched ule" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
                             Planning de l'équipe
                         </a>
@@ -1068,7 +1068,7 @@
                 <div class="user-avatar">DM</div>
                 <div class="user-details">
                     <div class="user-name">Dr. Mohammed Alami</div>
-                    <div class="user-role">Chirurgien-Dentiste</div>
+                    <div class="user-role">Chirurgien-dentiste</div>
                 </div>
             </div>
             <button class="theme-toggle" id="themeToggle">
@@ -1087,7 +1087,7 @@
             <h1 class="page-title">Rendez-vous en Présentiel</h1>
             <div>
                 <button class="btn btn-primary" onclick="showBookingForm()">
-                    <i class="fas fa-plus"></i> Nouveau RDV
+                    <i class="fas fa-plus"></i> Nouveau rdv
                 </button>
                 <button class="btn btn-success" onclick="showWaitingList()">
                     <i class="fas fa-users"></i> Salle d'attente
@@ -1118,7 +1118,7 @@
             </div>
         </div>
 
-        <!-- Booking Form (Hidden by default) -->
+        <!-- Booking Form (hidden by default) -->
         <div class="booking-container" id="bookingForm" style="display: none;">
             <div class="booking-header">
                 <h2 class="booking-title">Nouveau Rendez-vous en Présentiel</h2>
@@ -1129,7 +1129,7 @@
                         <label class="form-label" for="patientName">
                             <i class="fas fa-user"></i> Nom du patient *
                         </label>
-                        <input type="text" id="patientName" name="patientName" class="form-control" required placeholder="Nom complet">
+                        <input type="text" id="patientName" name="patientName" class="form-control" required  placeholder="Nom complet">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="patientPhone">
@@ -1141,10 +1141,10 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="appointmentDate">
+                        <label class="form-label" for="appointmentdate">
                             <i class="fas fa-calendar"></i> Date *
                         </label>
-                        <input type="date" id="appointmentDate" name="appointmentDate" class="form-control" required>
+                        <input type="date" id="appointmentdate" name="appointmentdate" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="appointmentTime">
@@ -1168,7 +1168,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="treatment">
-                            <i class="fas fa-tooth"></i> Traitement *
+                            Traitement *
                         </label>
                         <select id="treatment" name="treatment" class="form-control" required>
                             <option value="">Sélectionner un traitement</option>
@@ -1221,7 +1221,7 @@
                 </button>
             </div>
             <div class="waiting-list" id="waitingList">
-                <!-- Waiting patients will be displayed here -->
+                <!-- Waiting patients will be displayed  here -->
             </div>
         </div>
 
@@ -1230,79 +1230,8 @@
             <h3>Rendez-vous programmé avec succès !</h3>
             <p>Le patient a été ajouté au planning.</p>
         </div>
-    </div>
-
-    <script>
+    </div><script src="../js/navbar.js"></script><script>// Open "Rendez-vous" by default\ndocument.getElementById("section-rdv-content").classList.remove("collapsed");\ndocument.getElementById("section-rdv-toggle").classList.remove("collapsed");\n
         // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        const themeIcon = themeToggle.querySelector('i');
-        const themeText = themeToggle.querySelector('span');
-
-        // Using sessionStorage instead of localStorage
-        const savedTheme = sessionStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-            body.classList.remove('light-mode');
-            body.classList.add('dark-mode');
-            themeIcon.className = 'fas fa-sun';
-            themeText.textContent = 'Mode Clair';
-        }
-
-        themeToggle.addEventListener('click', () => {
-            if (body.classList.contains('light-mode')) {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-                themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'Mode Clair';
-                sessionStorage.setItem('theme', 'dark');
-            } else {
-                body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
-                themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'Mode Sombre';
-                sessionStorage.setItem('theme', 'light');
-            }
-        });
-
-        // Logout functionality
-        const logoutBtn = document.getElementById('logoutBtn');
-        logoutBtn.addEventListener('click', () => {
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-            }
-        });
-
-        // Collapsible section headers
-        document.querySelectorAll('.section-header.clickable').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const isCollapsed = content.classList.contains('collapsed');
-
-                // Close all other sections
-                document.querySelectorAll('.section-content').forEach(el => {
-                    if (el !== content) {
-                        el.classList.add('collapsed');
-                        el.previousElementSibling.classList.add('collapsed');
-                    }
-                });
-
-                // Toggle current section
-                if (isCollapsed) {
-                    content.classList.remove('collapsed');
-                    header.classList.remove('collapsed');
-                } else {
-                    content.classList.add('collapsed');
-                    header.classList.add('collapsed');
-                }
-            });
-        });
-
-        // Open "Rendez-vous" by default
-        document.getElementById('section-rdv-content').classList.remove('collapsed');
-        document.getElementById('section-rdv-toggle').classList.remove('collapsed');
-
         // In-Person Booking Management
         let waitingList = JSON.parse(localStorage.getItem('waitingList')) || [];
 
@@ -1314,7 +1243,7 @@
 
             // Set default date to today
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('appointmentDate').value = today;
+            document.getElementById('appointmentdate').value = today;
         }
 
         function showWaitingList() {
@@ -1325,22 +1254,22 @@
         }
 
         function renderWaitingList() {
-            const waitingListDiv = document.getElementById('waitingList');
-            waitingListDiv.innerHTML = '';
+            const waitingListdiv = document.getElementById('waitingList');
+            waitingListdiv.innerHTML = '';
 
             if (waitingList.length === 0) {
-                waitingListDiv.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">Aucun patient en salle d\'attente</p>';
+                waitingListdiv.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">Aucun patient en salle d\'attente</p>';
                 return;
             }
 
             waitingList.forEach((patient, index) => {
-                const patientDiv = document.createElement('div');
-                patientDiv.className = 'waiting-patient';
+                const patientdiv = document.createElement('div');
+                patientdiv.className = 'waiting-patient';
 
                 const arrivalTime = new Date(patient.arrivalTime);
                 const waitTime = Math.floor((new Date() - arrivalTime) / (1000 * 60)); // minutes
 
-                patientDiv.innerHTML = `
+                patientdiv.innerHTML = `
                     <div class="patient-info">
                         <h4>${patient.name}</h4>
                         <div class="patient-details">
@@ -1354,7 +1283,7 @@
                             <i class="fas fa-user-check"></i> Appeler
                         </button>
                         <button class="btn btn-small btn-primary" onclick="scheduleFromWaiting(${index})">
-                            <i class="fas fa-calendar-plus"></i> RDV
+                            <i class="fas fa-calendar-plus"></i> rdv
                         </button>
                         <button class="btn btn-small btn-danger" onclick="removeFromWaiting(${index})">
                             <i class="fas fa-times"></i> Retirer
@@ -1362,7 +1291,7 @@
                     </div>
                 `;
 
-                waitingListDiv.appendChild(patientDiv);
+                waitingListdiv.appendChild(patientdiv);
             });
         }
 
@@ -1387,7 +1316,7 @@
         function callPatient(index) {
             const patient = waitingList[index];
             alert(`Appel du patient: ${patient.name}`);
-            // In a real system, this could trigger audio alerts, screen notifications, etc.
+            // In a real system, this could  trigger aud io alerts, screen notifications, etc.
         }
 
         function scheduleFromWaiting(index) {
@@ -1439,7 +1368,7 @@
 
             // Create appointment object
             const appointment = {
-                date: appointmentData.appointmentDate,
+                date: appointmentData.appointmentdate,
                 time: appointmentData.appointmentTime,
                 patient: appointmentData.patientName,
                 doctor: appointmentData.doctor,
@@ -1472,10 +1401,31 @@
 
         // Set minimum date to today
         const today = new Date().toISOString().split('T')[0];
-        document.getElementById('appointmentDate').min = today;
+        document.getElementById('appointmentdate').min = today;
 
         // Load waiting list on page load
         renderWaitingList();
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

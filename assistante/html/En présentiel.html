@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ============== IDENTIQUE À VOTRE ADMIN ============== */
+        /* ============== IdeNTIQUE À VOTRE Ad MIN ============== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --medical-blue: #1e3a8a;
@@ -16,7 +16,7 @@
             --medical-blue-light: #3b82f6;
             --success: #059669;
             --warning: #d97706;
-            --danger: #dc2626;
+            --danger: #cbd5e1;
             --text-light: #f8fafc;
             --text-gray: #64748b;
             --border-radius: 0.5rem;
@@ -133,7 +133,7 @@
             text-align: left;
         }
         .logout-btn { background: rgba(220, 38, 38, 0.2); color: white; }
-        .theme-toggle { background: rgba(255, 255, 255, 0.15); color: white; margin-bottom: 0.75rem; }
+        .theme-toggle { background: rgba(255, 255, 255, 0.25); color: #ffffff; margin-bottom: 0.75rem; }
 
         .sidebar-menu { list-style: none; padding: 0 1.5rem; flex: 1; }
         .sidebar-item { margin: 0.375rem 0; }
@@ -184,14 +184,14 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
         .section-chevron { font-size: 0.75rem; transition: transform 0.3s ease; color: rgba(255, 255, 255, 0.6); }
-        .section-header.collapsed .section-chevron { transform: rotate(-90deg); }
+        .section-header.collapsed.section-chevron { transform: rotate(-90deg); }
         .section-content {
             overflow: hidden;
             transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
             max-height: 1000px;
             opacity: 1;
         }
-        .section-content.collapsed { max-height: 0; opacity: 0; }
+        .section-content.collapsed{ max-height: 0; opacity: 0; }
 
         .main-content {
             margin-left: 280px;
@@ -202,7 +202,7 @@
         .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
         .page-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.025em; color: var(--text-primary); }
 
-        .assistant-card {
+        .assistant-card{
             background: var(--bg-secondary);
             border-radius: var(--border-radius);
             padding: 1.5rem;
@@ -269,7 +269,7 @@
             border-color: var(--medical-blue);
             box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
-        .btn-send {
+        .btn-send{
             width: 100%;
             padding: 0.875rem;
             background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
@@ -312,7 +312,7 @@
         }
 
         .form-row {
-            display: grid;
+            display: grid ;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
@@ -371,7 +371,7 @@
 
         .success-message {
             display: none;
-            background: #d1fae5;
+            background:#d1fae5;
             color: #065f46;
             padding: 1rem;
             border-radius: var(--border-radius);
@@ -403,7 +403,7 @@
         }
 
         .waiting-list {
-            display: grid;
+            display: grid ;
             gap: 1rem;
         }
 
@@ -457,7 +457,7 @@
         }
 
         .quick-buttons {
-            display: grid;
+            display: grid ;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
         }
@@ -530,23 +530,23 @@
     </style>
 </head>
 <body class="light-mode">
-    <!-- ============= SIDEBAR ASSISTANTE ============= -->
+    <!-- ============= SIdeBAR ASSISTANTE ============= -->
     <div class="sidebar">
         <div class="cabinet-header">
-            <div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
-            <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+            <div class="cabinet-logo">d </div>
+            <div class="cabinet-name">dikra Centre dentaire</div>
             <div class="cabinet-subtitle">Casablanca, Maroc</div>
         </div>
         <ul class="sidebar-menu">
-            <li class="sidebar-item"><a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-home"></i></span> Tableau de bord</a></li>
+            <li class="sidebar-item"><a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-home"></i></span> Tableau de bord </a></li>
 
-            <!-- RENDEZ-VOUS -->
+            <!-- RENdeZ-VOUS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-rdv-toggle">Rendez-vous <i class="fas fa-chevron-down section-chevron"></i></div>
                 <div class="section-content" id="section-rdv-content">
                     <div class="sidebar-item"><a href="Listes des Rendez-vous.html" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-list"></i></span> Liste des rendez-vous</a></div>
                     <div class="sidebar-item"><a href="Prise en ligne.html" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-globe"></i></span> Prise en ligne</a></div>
-                    <div class="sidebar-item"><a href="En présentiel.html" class="sidebar-link active"><span class="sidebar-icon"><i class="fas fa-building"></i></span> En présentiel</a></div>
+                    <div class="sidebar-item"><a href="En présentiel.html" class="sidebar-link active"><span class="sidebar-icon"><i class="fas fa-build ing"></i></span> En présentiel</a></div>
                     <div class="sidebar-item"><a href="#rdv-portail" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-shield"></i></span> Via espace patient</a></div>
                 </div>
             </li>
@@ -555,7 +555,7 @@
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-patients-toggle">Patients <i class="fas fa-chevron-down section-chevron"></i></div>
                 <div class="section-content" id="section-patients-content">
-                    <div class="sidebar-item"><a href="#fiches-patients" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-injured"></i></span> Fiches patients</a></div>
+                    <div class="sidebar-item"><a href="#fiches-patients" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-injured "></i></span> Fiches patients</a></div>
                     <div class="sidebar-item"><a href="#ajout-patient" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-user-plus"></i></span> Ajouter patient</a></div>
                 </div>
             </li>
@@ -596,11 +596,11 @@
                 </div>
             </li>
 
-            <!-- DOCUMENTS -->
+            <!-- documentS -->
             <li class="sidebar-section">
-                <div class="section-header clickable" id="section-docs-toggle">Documents & formulaires <i class="fas fa-chevron-down section-chevron"></i></div>
-                <div class="section-content" id="section-docs-content">
-                    <div class="sidebar-item"><a href="#ordonnances" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-prescription"></i></span> Ordonnances</a></div>
+                <div class="section-header clickable" id="section-d ocs-toggle">documents & formulaires <i class="fas fa-chevron-down section-chevron"></i></div>
+                <div class="section-content" id="section-d ocs-content">
+                    <div class="sidebar-item"><a href="#Ordonnances" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-prescription"></i></span> Ordonnances</a></div>
                     <div class="sidebar-item"><a href="#certificats" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-medical"></i></span> Certificats médicaux</a></div>
                     <div class="sidebar-item"><a href="#feuilles-soins" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span> Feuilles de soins (CNOPS/CNSS)</a></div>
                 </div>
@@ -610,12 +610,12 @@
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-users-toggle">Portail Patients <i class="fas fa-chevron-down section-chevron"></i></div>
                 <div class="section-content" id="section-users-content">
-                    <div class="sidebar-item"><a href="#liste-personnel" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-list"></i></span> Liste du personnel</a></div>
+                    <div class="sidebar-item"><a href="#liste-personnel" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-list"></i></span> Liste d u personnel</a></div>
                     <div class="sidebar-item"><a href="#planning" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span> Planning de l'équipe</a></div>
                     <div class="sidebar-item"><a href="#param-portail" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-cog"></i></span> Paramètres espace patient</a></div>
                     <div class="sidebar-item"><a href="#gestion-acces" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-key"></i></span> Gestion des accès</a></div>
                     <div class="sidebar-item"><a href="#messages-patients" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-envelope"></i></span> Messages patients</a></div>
-                    <div class="sidebar-item"><a href="#dossiers-medicaux" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-medical"></i></span> Dossiers médicaux</a></div>
+                    <div class="sidebar-item"><a href="#dossiers-med icaux" class="sidebar-link"><span class="sidebar-icon"><i class="fas fa-file-medical"></i></span> dossiers médicaux</a></div>
                 </div>
             </li>
 
@@ -633,12 +633,12 @@
             <div class="user-info">
                 <div class="user-avatar">HA</div>
                 <div class="user-details">
-                    <div class="user-name">Hind Alaoui</div>
-                    <div class="user-role">Assistante Dentaire</div>
+                    <div class="user-name">Hind  Alaoui</div>
+                    <div class="user-role">Assistante dentaire</div>
                 </div>
             </div>
             <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> <span>Mode Sombre</span></button>
-            <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></button>
+            <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>déconnexion</span></button>
         </div>
     </div>
 
@@ -648,7 +648,7 @@
             <h1 class="page-title">Rendez-vous en Présentiel</h1>
             <div>
                 <button class="btn btn-primary" onclick="showBookingForm()">
-                    <i class="fas fa-plus"></i> Nouveau RDV
+                    <i class="fas fa-plus"></i> Nouveau rdv
                 </button>
                 <button class="btn btn-success" onclick="showWaitingList()">
                     <i class="fas fa-users"></i> Salle d'attente
@@ -672,8 +672,8 @@
                     Consultation
                 </button>
                 <button class="quick-btn" onclick="quickCleaning()">
-                    <i class="fas fa-tooth"></i>
-                    Détartrage
+                    d 
+                    d étartrage
                 </button>
                 <button class="quick-btn" onclick="quickCheckup()">
                     <i class="fas fa-search"></i>
@@ -682,7 +682,7 @@
             </div>
         </div>
 
-        <!-- Booking Form (Hidden by default) -->
+        <!-- Booking Form (hidden by default) -->
         <div class="booking-container" id="bookingForm" style="display: none;">
             <div class="booking-header">
                 <h2 class="booking-title">Nouveau Rendez-vous en Présentiel</h2>
@@ -693,7 +693,7 @@
                         <label class="form-label" for="patientName">
                             <i class="fas fa-user"></i> Nom du patient *
                         </label>
-                        <input type="text" id="patientName" name="patientName" class="form-control" required placeholder="Nom complet">
+                        <input type="text" id="patientName" name="patientName" class="form-control" required  placeholder="Nom complet">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="patientPhone">
@@ -705,10 +705,10 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="appointmentDate">
-                            <i class="fas fa-calendar"></i> Date *
+                        <label class="form-label" for="appointmentdate">
+                            <i class="fas fa-calend ar"></i> date *
                         </label>
-                        <input type="date" id="appointmentDate" name="appointmentDate" class="form-control" required>
+                        <input type="date" id="appointmentdate" name="appointmentdate" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="appointmentTime">
@@ -721,27 +721,27 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label" for="doctor">
-                            <i class="fas fa-user-md"></i> Médecin *
+                            <i class="fas fa-user-md "></i> Médecin *
                         </label>
                         <select id="doctor" name="doctor" class="form-control" required>
                             <option value="">Sélectionner un médecin</option>
-                            <option value="Dr. Mohammed Alami">Dr. Mohammed Alami</option>
-                            <option value="Dr. Fatima Bennani">Dr. Fatima Bennani</option>
-                            <option value="Dr. Karim Tazi">Dr. Karim Tazi</option>
+                            <option value="d r. Mohammed  Alami">d r. Mohammed  Alami</option>
+                            <option value="d r. Fatima Bennani">d r. Fatima Bennani</option>
+                            <option value="d r. Karim Tazi">d r. Karim Tazi</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="treatment">
-                            <i class="fas fa-tooth"></i> Traitement *
+                            d  Traitement *
                         </label>
                         <select id="treatment" name="treatment" class="form-control" required>
                             <option value="">Sélectionner un traitement</option>
                             <option value="Consultation générale">Consultation générale</option>
-                            <option value="Détartrage">Détartrage</option>
+                            <option value="d étartrage">d étartrage</option>
                             <option value="Traitement de carie">Traitement de carie</option>
                             <option value="Extraction dentaire">Extraction dentaire</option>
                             <option value="Implant dentaire">Implant dentaire</option>
-                            <option value="Orthodontie">Orthodontie</option>
+                            <option value="Orthod ontie">Orthod ontie</option>
                             <option value="Prothèse dentaire">Prothèse dentaire</option>
                             <option value="Urgence dentaire">Urgence dentaire</option>
                         </select>
@@ -759,7 +759,7 @@
                     <div class="form-group">
                         <label class="form-control" style="display: flex; align-items: center; gap: 0.5rem;">
                             <input type="checkbox" id="insurance" name="insurance">
-                            <span>Patient assuré (CNOPS/CNSS/RAMED)</span>
+                            <span>Patient assuré (CNOPS/CNSS/RAMEd )</span>
                         </label>
                     </div>
                     <div class="form-group">
@@ -785,7 +785,7 @@
                 </button>
             </div>
             <div class="waiting-list" id="waitingList">
-                <!-- Waiting patients will be displayed here -->
+                <!-- Waiting patients will be displayed  here -->
             </div>
         </div>
 
@@ -803,10 +803,10 @@
         const themeIcon = themeToggle.querySelector('i');
         const themeText = themeToggle.querySelector('span');
         const savedTheme = sessionStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        const prefersdark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersdark)) {
             body.classList.remove('light-mode');
-            body.classList.add('dark-mode');
+            body.classList.Add ('dark-mode');
             themeIcon.className = 'fas fa-sun';
             themeText.textContent = 'Mode Clair';
             sessionStorage.setItem('theme', 'dark');
@@ -828,14 +828,14 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', () => {
-            if (confirm('Déconnexion ?')) alert('Déconnectée.');
+            if (confirm('déconnexion ?')) alert('d éconnectée.');
         });
 
         // ====== COLLAPSIBLE SECTIONS ======
         document.querySelectorAll('.section-header.clickable').forEach(header => {
             header.addEventListener('click', () => {
                 const content = header.nextElementSibling;
-                const isCollapsed = content.classList.contains('collapsed');
+                const iscollapsed= content.classList.contains('collapsed');
                 document.querySelectorAll('.section-content').forEach(el => {
                     if (el !== content) el.classList.add('collapsed');
                 });
@@ -862,9 +862,9 @@
             document.getElementById('successMessage').style.display = 'none';
             document.getElementById('inPersonForm').reset();
 
-            // Set default date to today
+            // Set default date to tod ay
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('appointmentDate').value = today;
+            document.getElementById('appointmentdate').value = today;
         }
 
         function showWaitingList() {
@@ -875,26 +875,26 @@
         }
 
         function renderWaitingList() {
-            const waitingListDiv = document.getElementById('waitingList');
-            waitingListDiv.innerHTML = '';
+            const waitingListdiv = document.getElementById('waitingList');
+            waitingListdiv.innerHTML = '';
 
             if (waitingList.length === 0) {
-                waitingListDiv.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">Aucun patient en salle d\'attente</p>';
+                waitingListdiv.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">Aucun patient en salle d \'attente</p>';
                 return;
             }
 
             waitingList.forEach((patient, index) => {
-                const patientDiv = document.createElement('div');
-                patientDiv.className = 'waiting-patient';
+                const patientdiv = document.createElement('div');
+                patientdiv.className = 'waiting-patient';
 
                 const arrivalTime = new Date(patient.arrivalTime);
                 const waitTime = Math.floor((new Date() - arrivalTime) / (1000 * 60)); // minutes
 
-                patientDiv.innerHTML = `
+                patientdiv.innerHTML = `
                     <div class="patient-info">
                         <h4>${patient.name}</h4>
                         <div class="patient-details">
-                            Arrivée: ${arrivalTime.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                            Arrivée: ${arrivalTime.toLocaleTimeString('fr-FR', { hour: '2-d igit', minute: '2-d igit' })}
                             • Attente: ${waitTime} min
                             ${patient.phone ? `• ${patient.phone}` : ''}
                         </div>
@@ -903,8 +903,8 @@
                         <button class="btn btn-small btn-success" onclick="callPatient(${index})">
                             <i class="fas fa-user-check"></i> Appeler
                         </button>
-                        <button class="btn btn-small btn-primary" onclick="scheduleFromWaiting(${index})">
-                            <i class="fas fa-calendar-plus"></i> RDV
+                        <button class="btn btn-small btn-primary" onclick="sched uleFromWaiting(${index})">
+                            <i class="fas fa-calend ar-plus"></i> rdv
                         </button>
                         <button class="btn btn-small btn-danger" onclick="removeFromWaiting(${index})">
                             <i class="fas fa-times"></i> Retirer
@@ -912,7 +912,7 @@
                     </div>
                 `;
 
-                waitingListDiv.appendChild(patientDiv);
+                waitingListdiv.appendChild(patientdiv);
             });
         }
 
@@ -923,7 +923,7 @@
             const phone = prompt('Téléphone (optionnel):');
 
             const patient = {
-                id: Date.now(),
+                id : date.now(),
                 name: name.trim(),
                 phone: phone ? phone.trim() : '',
                 arrivalTime: new Date().toISOString()
@@ -936,19 +936,19 @@
 
         function callPatient(index) {
             const patient = waitingList[index];
-            alert(`Appel du patient: ${patient.name}`);
-            // In a real system, this could trigger audio alerts, screen notifications, etc.
+            alert(`Appel d u patient: ${patient.name}`);
+            // In a real system, this could  trigger aud io alerts, screen notifications, etc.
         }
 
         function callNextPatient() {
             if (waitingList.length === 0) {
-                alert('Aucun patient en salle d\'attente.');
+                alert('Aucun patient en salle d \'attente.');
                 return;
             }
 
             const nextPatient = waitingList[0];
-            alert(`Appel du prochain patient: ${nextPatient.name}`);
-            // Could automatically remove from waiting list after calling
+            alert(`Appel d u prochain patient: ${nextPatient.name}`);
+            // Could  automatically remove from waiting list after calling
         }
 
         function scheduleFromWaiting(index) {
@@ -962,7 +962,7 @@
         }
 
         function removeFromWaiting(index) {
-            if (confirm('Retirer ce patient de la salle d\'attente ?')) {
+            if (confirm('Retirer ce patient de la salle d \'attente ?')) {
                 waitingList.splice(index, 1);
                 localStorage.setItem('waitingList', JSON.stringify(waitingList));
                 renderWaitingList();
@@ -995,22 +995,22 @@
         document.getElementById('inPersonForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const formData = new FormData(this);
-            const appointmentData = Object.fromEntries(formData.entries());
+            const formdata = new Formdata(this);
+            const appointmentdata = Object.fromEntries(formdata.entries());
 
             // Create appointment object
             const appointment = {
-                date: appointmentData.appointmentDate,
-                time: appointmentData.appointmentTime,
-                patient: appointmentData.patientName,
-                doctor: appointmentData.doctor,
-                treatment: appointmentData.treatment,
+                date: appointmentdata.appointmentdate,
+                time: appointmentdata.appointmentTime,
+                patient: appointmentdata.patientName,
+                doctor: appointmentdata.doctor,
+                treatment: appointmentdata.treatment,
                 mode: 'En présentiel',
                 status: 'Confirmé',
-                phone: appointmentData.patientPhone || '',
-                notes: appointmentData.notes || '',
-                insurance: appointmentData.insurance ? true : false,
-                firstVisit: appointmentData.firstVisit ? true : false
+                phone: appointmentdata.patientPhone || '',
+                notes: appointmentdata.notes || '',
+                insurance: appointmentdata.insurance ? true : false,
+                firstVisit: appointmentdata.firstVisit ? true : false
             };
 
             // Save to appointments
@@ -1025,18 +1025,35 @@
             // Reset form
             this.reset();
 
-            // Hide success message after 3 seconds
+            // Hide success message after 3 second s
             setTimeout(() => {
                 document.getElementById('successMessage').style.display = 'none';
             }, 3000);
         });
 
-        // Set minimum date to today
+        // Set minimum date to tod ay
         const today = new Date().toISOString().split('T')[0];
-        document.getElementById('appointmentDate').min = today;
+        document.getElementById('appointmentdate').min = today;
 
-        // Load waiting list on page load
+        // Load  waiting list on page load 
         renderWaitingList();
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

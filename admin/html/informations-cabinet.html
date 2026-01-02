@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Informations Cabinet - Cabinet Dentaire Al-Farabi</title>
+<title>Informations Cabinet - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -19,7 +19,7 @@ box-sizing: border-box;
 --medical-blue-light: #3b82f6;
 --success: #059669;
 --warning: #d97706;
---danger: #dc2626;
+--danger: #cbd5e1;
 --text-light: #f8fafc;
 --text-gray: #64748b;
 --border-radius: 0.5rem;
@@ -264,7 +264,7 @@ justify-content: space-between;
 align-items: center;
 border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
-.section-header:first-child {
+.section-header:first-child  {
 margin-top: 0;
 }
 .section-header::after {
@@ -281,7 +281,7 @@ font-size: 0.75rem;
 transition: transform 0.3s ease;
 color: rgba(255, 255, 255, 0.6);
 }
-.section-header.collapsed .section-chevron {
+.section-header.collapsed.section-chevron {
 transform: rotate(-90deg);
 }
 .section-content {
@@ -290,7 +290,7 @@ transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 max-height: 1000px;
 opacity: 1;
 }
-.section-content.collapsed {
+.section-content.collapsed{
 max-height: 0;
 opacity: 0;
 }
@@ -413,158 +413,24 @@ text-align: center;
 </style>
 </head>
 <body class="light-mode">
-<div class="sidebar">
-<div class="cabinet-header">
-<div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
-<div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
-<div class="cabinet-subtitle">Casablanca, Maroc</div>
-</div>
-<ul class="sidebar-menu">
-<li class="sidebar-item">
-<a href="dashboard.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-home"></i></span>
-Tableau de bord
-</a>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-rdv-toggle">
-Rendez-vous
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-rdv-content">
-<div class="sidebar-item">
-<a href="Listes des Rendez-vous.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-Liste des rendez-vous
-</a>
-</div>
-<div class="sidebar-item">
-<a href="Prise en ligne.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-globe"></i></span>
-Prise en ligne
-</a>
-</div>
-<div class="sidebar-item">
-<a href="En présentiel.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-building"></i></span>
-En présentiel
-</a>
-</div>
-<div class="sidebar-item">
-<a href="via-espace-patient.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
-Via espace patient
-</a>
-</div>
-</div>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-patients-toggle">
-Patients
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-patients-content">
-<div class="sidebar-item">
-<a href="fiches-patients.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
-Fiches patients
-</a>
-</div>
-<div class="sidebar-item">
-<a href="protheses.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
-Prothèses
-</a>
-</div>
-<div class="sidebar-item">
-<a href="materiel-dentaire.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-tools"></i></span>
-Matériel dentaire
-</a>
-</div>
-<div class="sidebar-item">
-<a href="consommables.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-box"></i></span>
-Consommables
-</a>
-</div>
-<div class="sidebar-item">
-<a href="medicaments.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-pills"></i></span>
-Médicaments
-</a>
-</div>
-</div>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-config-toggle">
-Configuration
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-config-content">
-<div class="sidebar-item">
-<a href="informations-cabinet.html" class="sidebar-link active">
-<span class="sidebar-icon"><i class="fas fa-building"></i></span>
-Informations cabinet
-</a>
-</div>
-<div class="sidebar-item">
-<a href="mon-profil.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user"></i></span>
-Mon profil
-</a>
-</div>
-<div class="sidebar-item">
-<a href="parametres-facturation.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
-Paramètres facturation
-</a>
-</div>
-<div class="sidebar-item">
-<a href="notifications.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-bell"></i></span>
-Notifications
-</a>
-</div>
-</div>
-</li>
-</ul>
-<div class="user-section">
-<div class="user-info">
-<div class="user-avatar">DM</div>
-<div class="user-details">
-<div class="user-name">Dr. Mohammed Alami</div>
-<div class="user-role">Chirurgien-Dentiste</div>
-</div>
-</div>
-<button class="theme-toggle" id="themeToggle">
-<i class="fas fa-moon"></i>
-<span>Mode Sombre</span>
-</button>
-<button class="logout-btn" id="logoutBtn">
-<i class="fas fa-sign-out-alt"></i>
-<span>Déconnexion</span>
-</button>
-</div>
-</div>
-<div class="main-content">
+<div id="navbar-container"></div><div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Informations Cabinet</h1>
 </div>
 <div class="appointments-container">
-<div class="appointments-header">
-<h2 class="appointments-title">Informations du Cabinet</h2>
-</div>
-<div id="infoDisplay" style="padding: 1.5rem; display: none;">
+ <div class="appointments-header">
+ <h2 class="appointments-title">Informations d u Cabinet</h2>
+ </div>
+<div id="infodisplay" style="padding: 1.5rem; display: none;">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-<div><strong>Nom du cabinet:</strong> <span id="display_nom"></span></div>
-<div><strong>Adresse:</strong> <span id="display_adresse"></span></div>
+<div><strong>Nom d u cabinet:</strong> <span id="display_nom"></span></div>
+<div><strong>Ad resse:</strong> <span id="display_ad resse"></span></div>
 <div><strong>Téléphone:</strong> <span id="display_telephone"></span></div>
 <div><strong>Email:</strong> <span id="display_email"></span></div>
 <div><strong>Site web:</strong> <span id="display_site_web"></span></div>
 <div><strong>Numéro fiscal:</strong> <span id="display_numero_fiscal"></span></div>
 <div><strong>Numéro CNSS:</strong> <span id="display_numero_cnss"></span></div>
-<div><strong>Description:</strong> <span id="display_description"></span></div>
+<div><strong>description:</strong> <span id="display_description"></span></div>
 </div>
 <div style="margin-top: 1.5rem;">
 <button class="btn btn-primary" onclick="showForm()">Modifier</button>
@@ -574,12 +440,12 @@ Notifications
 <form id="cabinetForm">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
 <div class="form-group">
-<label class="form-label">Nom du cabinet</label>
-<input type="text" class="form-control" id="nom_cabinet" placeholder="Nom du cabinet" required>
+<label class="form-label">Nom d u cabinet</label>
+<input type="text" class="form-control" id="nom_cabinet" placeholder="Nom d u cabinet" required>
 </div>
 <div class="form-group">
-<label class="form-label">Adresse</label>
-<input type="text" class="form-control" id="adresse" placeholder="Adresse complète" required>
+<label class="form-label">Ad resse</label>
+<input type="text" class="form-control" id="ad resse" placeholder="Ad resse complète" required>
 </div>
 <div class="form-group">
 <label class="form-label">Téléphone</label>
@@ -587,7 +453,7 @@ Notifications
 </div>
 <div class="form-group">
 <label class="form-label">Email</label>
-<input type="email" class="form-control" id="email" placeholder="Adresse email" required>
+<input type="email" class="form-control" id="email" placeholder="Ad resse email" required>
 </div>
 <div class="form-group">
 <label class="form-label">Site web</label>
@@ -602,75 +468,24 @@ Notifications
 <input type="text" class="form-control" id="numero_cnss" placeholder="Numéro CNSS">
 </div>
 <div class="form-group" style="grid-column: span 2;">
-<label class="form-label">Description</label>
-<textarea class="form-control" id="description" rows="3" placeholder="Description du cabinet"></textarea>
+<label class="form-label">description</label>
+<textarea class="form-control" id="description" rows="3" placeholder="description d u cabinet"></textarea>
 </div>
 </div>
 <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
 <button type="submit" class="btn btn-primary">Enregistrer</button>
-<button type="button" class="btn btn-danger" onclick="cancelEdit()">Annuler</button>
+<button type="button" class="btn btn-danger" onclick="canceledit()">Annuler</button>
 </div>
 </form>
 </div>
 </div>
-</div>
-<script>
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
-const themeIcon = themeToggle.querySelector('i');
-const themeText = themeToggle.querySelector('span');
-const savedTheme = sessionStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-body.classList.remove('light-mode');
-body.classList.add('dark-mode');
-themeIcon.className = 'fas fa-sun';
-themeText.textContent = 'Mode Clair';
-}
-themeToggle.addEventListener('click', () => {
-if (body.classList.contains('light-mode')) {
-body.classList.remove('light-mode');
-body.classList.add('dark-mode');
-themeIcon.className = 'fas fa-sun';
-themeText.textContent = 'Mode Clair';
-sessionStorage.setItem('theme', 'dark');
-} else {
-body.classList.remove('dark-mode');
-body.classList.add('light-mode');
-themeIcon.className = 'fas fa-moon';
-themeText.textContent = 'Mode Sombre';
-sessionStorage.setItem('theme', 'light');
-}
-});
-document.getElementById('logoutBtn').addEventListener('click', () => {
-if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-}
-});
-document.querySelectorAll('.section-header.clickable').forEach(header => {
-header.addEventListener('click', () => {
-const content = header.nextElementSibling;
-const isCollapsed = content.classList.contains('collapsed');
-document.querySelectorAll('.section-content').forEach(el => {
-if (el !== content) el.classList.add('collapsed');
-});
-if (isCollapsed) {
-content.classList.remove('collapsed');
-header.classList.remove('collapsed');
-} else {
-content.classList.add('collapsed');
-header.classList.add('collapsed');
-}
-});
-});
-document.getElementById('section-config-content').classList.remove('collapsed');
-document.getElementById('section-config-toggle').classList.remove('collapsed');
+</div><script src="../js/navbar.js"></script><script>
 let cabinetInfo = JSON.parse(localStorage.getItem('cabinetInfo')) || {};
 function showForm() {
-document.getElementById('infoDisplay').style.display = 'none';
+document.getElementById('infodisplay').style.display = 'none';
 document.getElementById('infoForm').style.display = 'block';
 document.getElementById('nom_cabinet').value = cabinetInfo.nom_cabinet || '';
-document.getElementById('adresse').value = cabinetInfo.adresse || '';
+document.getElementById('ad resse').value = cabinetInfo.adresse || '';
 document.getElementById('telephone').value = cabinetInfo.telephone || '';
 document.getElementById('email').value = cabinetInfo.email || '';
 document.getElementById('site_web').value = cabinetInfo.site_web || '';
@@ -678,7 +493,7 @@ document.getElementById('numero_fiscal').value = cabinetInfo.numero_fiscal || ''
 document.getElementById('numero_cnss').value = cabinetInfo.numero_cnss || '';
 document.getElementById('description').value = cabinetInfo.description || '';
 }
-function cancelEdit() {
+function canceledit() {
 if (Object.keys(cabinetInfo).length === 0) {
 document.getElementById('infoForm').style.display = 'block';
 } else {
@@ -689,7 +504,7 @@ function saveCabinet(e) {
 e.preventDefault();
 cabinetInfo = {
 nom_cabinet: document.getElementById('nom_cabinet').value,
-adresse: document.getElementById('adresse').value,
+adresse: document.getElementById('ad resse').value,
 telephone: document.getElementById('telephone').value,
 email: document.getElementById('email').value,
 site_web: document.getElementById('site_web').value,
@@ -702,18 +517,18 @@ displayInfo();
 }
 function displayInfo() {
 if (Object.keys(cabinetInfo).length === 0) {
-document.getElementById('infoDisplay').style.display = 'none';
+document.getElementById('infodisplay').style.display = 'none';
 document.getElementById('infoForm').style.display = 'block';
 } else {
 document.getElementById('display_nom').textContent = cabinetInfo.nom_cabinet || '';
-document.getElementById('display_adresse').textContent = cabinetInfo.adresse || '';
+document.getElementById('display_ad resse').textContent = cabinetInfo.adresse || '';
 document.getElementById('display_telephone').textContent = cabinetInfo.telephone || '';
 document.getElementById('display_email').textContent = cabinetInfo.email || '';
 document.getElementById('display_site_web').textContent = cabinetInfo.site_web || '';
 document.getElementById('display_numero_fiscal').textContent = cabinetInfo.numero_fiscal || '';
 document.getElementById('display_numero_cnss').textContent = cabinetInfo.numero_cnss || '';
 document.getElementById('display_description').textContent = cabinetInfo.description || '';
-document.getElementById('infoDisplay').style.display = 'block';
+document.getElementById('infodisplay').style.display = 'block';
 document.getElementById('infoForm').style.display = 'none';
 }
 }
@@ -722,3 +537,23 @@ displayInfo();
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

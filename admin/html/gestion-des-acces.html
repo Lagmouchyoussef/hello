@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestion des Accès - Cabinet Dentaire Al-Farabi</title>
+<title>Gestion des Accès - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -19,7 +19,7 @@ box-sizing: border-box;
 --medical-blue-light: #3b82f6;
 --success: #059669;
 --warning: #d97706;
---danger: #dc2626;
+--danger: #cbd5e1;
 --text-light: #f8fafc;
 --text-gray: #64748b;
 --border-radius: 0.5rem;
@@ -264,7 +264,7 @@ justify-content: space-between;
 align-items: center;
 border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
-.section-header:first-child {
+.section-header:first-child  {
 margin-top: 0;
 }
 .section-header::after {
@@ -281,7 +281,7 @@ font-size: 0.75rem;
 transition: transform 0.3s ease;
 color: rgba(255, 255, 255, 0.6);
 }
-.section-header.collapsed .section-chevron {
+.section-header.collapsed.section-chevron {
 transform: rotate(-90deg);
 }
 .section-content {
@@ -290,7 +290,7 @@ transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 max-height: 1000px;
 opacity: 1;
 }
-.section-content.collapsed {
+.section-content.collapsed{
 max-height: 0;
 opacity: 0;
 }
@@ -363,7 +363,7 @@ width: 100%;
 border-collapse: collapse;
 }
 .appointments-table th,
-.appointments-table td {
+.appointments-table td  {
 padding: 1rem;
 text-align: left;
 border-bottom: 1px solid var(--border-color);
@@ -394,7 +394,7 @@ color: var(--success);
 background: rgba(220, 38, 38, 0.1);
 color: var(--danger);
 }
-.status-suspendu {
+.status-suspend u {
 background: rgba(217, 119, 6, 0.1);
 color: var(--warning);
 }
@@ -418,7 +418,7 @@ border-radius: 0.375rem;
 font-size: 0.8rem;
 }
 .appointments-table th,
-.appointments-table td {
+.appointments-table td  {
 padding: 0.75rem 0.5rem;
 }
 }
@@ -474,183 +474,7 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 </style>
 </head>
 <body class="light-mode">
-<div class="sidebar">
-<div class="cabinet-header">
-<div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
-<div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
-<div class="cabinet-subtitle">Casablanca, Maroc</div>
-</div>
-<ul class="sidebar-menu">
-<li class="sidebar-item">
-<a href="dashboard.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-home"></i></span>
-Tableau de bord
-</a>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-rdv-toggle">
-Rendez-vous
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-rdv-content">
-<div class="sidebar-item">
-<a href="Listes des Rendez-vous.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-Liste des rendez-vous
-</a>
-</div>
-<div class="sidebar-item">
-<a href="Prise en ligne.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-globe"></i></span>
-Prise en ligne
-</a>
-</div>
-<div class="sidebar-item">
-<a href="En présentiel.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-building"></i></span>
-En présentiel
-</a>
-</div>
-<div class="sidebar-item">
-<a href="via-espace-patient.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
-Via espace patient
-</a>
-</div>
-</div>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-patients-toggle">
-Patients
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-patients-content">
-<div class="sidebar-item">
-<a href="fiches-patients.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
-Fiches patients
-</a>
-</div>
-<div class="sidebar-item">
-<a href="protheses.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
-Prothèses
-</a>
-</div>
-<div class="sidebar-item">
-<a href="materiel-dentaire.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-tools"></i></span>
-Matériel dentaire
-</a>
-</div>
-<div class="sidebar-item">
-<a href="consommables.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-box"></i></span>
-Consommables
-</a>
-</div>
-<div class="sidebar-item">
-<a href="medicaments.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-pills"></i></span>
-Médicaments
-</a>
-</div>
-<div class="sidebar-item">
-<a href="ordonnances.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
-Ordonnances
-</a>
-</div>
-<div class="sidebar-item">
-<a href="certificats-medicaux.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-Certificats médicaux
-</a>
-</div>
-<div class="sidebar-item">
-<a href="feuilles-de-soins.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-Feuilles de soins
-</a>
-</div>
-</div>
-</li>
-<li class="sidebar-section">
-<div class="section-header clickable" id="section-users-toggle">
-Utilisateurs
-<i class="fas fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-content" id="section-users-content">
-<div class="sidebar-item">
-<a href="Liste du personnel.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-list"></i></span>
-Liste du personnel
-</a>
-</div>
-<div class="sidebar-item">
-<a href="ajouter-un-membre.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
-Ajouter un membre
-</a>
-</div>
-<div class="sidebar-item">
-<a href="roles-permissions.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
-Rôles & permissions
-</a>
-</div>
-<div class="sidebar-item">
-<a href="planning-equipe.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-Planning de l'équipe
-</a>
-</div>
-<div class="sidebar-item">
-<a href="parametres-espace-patient.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-cog"></i></span>
-Paramètres espace patient
-</a>
-</div>
-<div class="sidebar-item">
-<a href="gestion-des-acces.html" class="sidebar-link active">
-<span class="sidebar-icon"><i class="fas fa-key"></i></span>
-Gestion des accès
-</a>
-</div>
-<div class="sidebar-item">
-<a href="messages-patients.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
-Messages patients
-</a>
-</div>
-<div class="sidebar-item">
-<a href="dossiers-medicaux.html" class="sidebar-link">
-<span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-Dossiers médicaux
-</a>
-</div>
-</div>
-</li>
-</ul>
-<div class="user-section">
-<div class="user-info">
-<div class="user-avatar">DM</div>
-<div class="user-details">
-<div class="user-name">Dr. Mohammed Alami</div>
-<div class="user-role">Chirurgien-Dentiste</div>
-</div>
-</div>
-<button class="theme-toggle" id="themeToggle">
-<i class="fas fa-moon"></i>
-<span>Mode Sombre</span>
-</button>
-<button class="logout-btn" id="logoutBtn">
-<i class="fas fa-sign-out-alt"></i>
-<span>Déconnexion</span>
-</button>
-</div>
-</div>
-<div class="main-content">
+<div id="navbar-container"></div><div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Gestion des Accès</h1>
 <button class="btn btn-primary" onclick="showForm()">
@@ -666,7 +490,7 @@ Nouveau Accès
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
 <div class="form-group">
 <label class="form-label">Utilisateur</label>
-<select class="form-control" id="user_id" required>
+<select class="form-control" id="user_id " required>
 <option value="">Sélectionner un utilisateur</option>
 </select>
 </div>
@@ -674,14 +498,14 @@ Nouveau Accès
 <label class="form-label">Type d'accès</label>
 <select class="form-control" id="access_type" required>
 <option value="">Sélectionner un type</option>
-<option value="Admin complet">Admin complet</option>
+<option value="Ad min complet">Ad min complet</option>
 <option value="Lecture seule">Lecture seule</option>
-<option value="Édition limitée">Édition limitée</option>
+<option value="Éd ition limitée">Éd ition limitée</option>
 <option value="Patient">Patient</option>
 </select>
 </div>
 <div class="form-group">
-<label class="form-label">Date d'expiration</label>
+<label class="form-label">date d'expiration</label>
 <input type="date" class="form-control" id="expiry_date">
 </div>
 <div class="form-group">
@@ -690,7 +514,7 @@ Nouveau Accès
 <option value="">Sélectionner un statut</option>
 <option value="Actif">Actif</option>
 <option value="Inactif">Inactif</option>
-<option value="Suspendu">Suspendu</option>
+<option value="Suspend u">Suspend u</option>
 </select>
 </div>
 <div class="form-group" style="grid-column: span 2;">
@@ -713,77 +537,26 @@ Nouveau Accès
 <option value="">Tous les statuts</option>
 <option value="Actif">Actif</option>
 <option value="Inactif">Inactif</option>
-<option value="Suspendu">Suspendu</option>
+<option value="Suspend u">Suspend u</option>
 </select>
 </div>
 </div>
 <table class="appointments-table">
-<thead>
+<thead >
 <tr>
 <th>Utilisateur</th>
 <th>Type d'accès</th>
-<th>Date d'expiration</th>
+<th>date d'expiration</th>
 <th>Statut</th>
 <th>Notes</th>
 <th>Actions</th>
 </tr>
-</thead>
-<tbody id="accessTableBody">
+</thead >
+<tbody id="accessTablebody">
 </tbody>
 </table>
 </div>
-</div>
-<script>
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
-const themeIcon = themeToggle.querySelector('i');
-const themeText = themeToggle.querySelector('span');
-const savedTheme = sessionStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-body.classList.remove('light-mode');
-body.classList.add('dark-mode');
-themeIcon.className = 'fas fa-sun';
-themeText.textContent = 'Mode Clair';
-}
-themeToggle.addEventListener('click', () => {
-if (body.classList.contains('light-mode')) {
-body.classList.remove('light-mode');
-body.classList.add('dark-mode');
-themeIcon.className = 'fas fa-sun';
-themeText.textContent = 'Mode Clair';
-sessionStorage.setItem('theme', 'dark');
-} else {
-body.classList.remove('dark-mode');
-body.classList.add('light-mode');
-themeIcon.className = 'fas fa-moon';
-themeText.textContent = 'Mode Sombre';
-sessionStorage.setItem('theme', 'light');
-}
-});
-document.getElementById('logoutBtn').addEventListener('click', () => {
-if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-}
-});
-document.querySelectorAll('.section-header.clickable').forEach(header => {
-header.addEventListener('click', () => {
-const content = header.nextElementSibling;
-const isCollapsed = content.classList.contains('collapsed');
-document.querySelectorAll('.section-content').forEach(el => {
-if (el !== content) el.classList.add('collapsed');
-});
-if (isCollapsed) {
-content.classList.remove('collapsed');
-header.classList.remove('collapsed');
-} else {
-content.classList.add('collapsed');
-header.classList.add('collapsed');
-}
-});
-});
-document.getElementById('section-users-content').classList.remove('collapsed');
-document.getElementById('section-users-toggle').classList.remove('collapsed');
+</div><script src="../js/navbar.js"></script><script>
 let accesses = JSON.parse(localStorage.getItem('accesses')) || [];
 let editingIndex = -1;
 function loadUsers() {
@@ -793,13 +566,13 @@ const select = document.getElementById('user_id');
 select.innerHTML = '<option value="">Sélectionner un utilisateur</option>';
 staff.forEach(member => {
 const option = document.createElement('option');
-option.value = 'staff_' + member.id;
+option.value = 'staff_' + member.id ;
 option.textContent = member.name + ' (Personnel)';
 select.appendChild(option);
 });
 patients.forEach(patient => {
 const option = document.createElement('option');
-option.value = 'patient_' + patient.id;
+option.value = 'patient_' + patient.id ;
 option.textContent = patient.name + ' (Patient)';
 select.appendChild(option);
 });
@@ -817,7 +590,7 @@ document.getElementById('addForm').style.display = 'none';
 function saveAccess(e) {
 e.preventDefault();
 const access = {
-user_id: document.getElementById('user_id').value,
+user_id : document.getElementById('user_id').value,
 access_type: document.getElementById('access_type').value,
 expiry_date: document.getElementById('expiry_date').value,
 status: document.getElementById('status').value,
@@ -834,7 +607,7 @@ hideForm();
 }
 function editAccess(index) {
 const access = accesses[index];
-document.getElementById('user_id').value = access.user_id;
+document.getElementById('user_id').value = access.user_id ;
 document.getElementById('access_type').value = access.access_type;
 document.getElementById('expiry_date').value = access.expiry_date;
 document.getElementById('status').value = access.status;
@@ -851,7 +624,7 @@ renderAccesses();
 }
 }
 function renderAccesses() {
-const tbody = document.getElementById('accessTableBody');
+const tbody = document.getElementById('accessTablebody');
 const searchTerm = document.getElementById('searchInput').value.toLowerCase();
 const statusFilter = document.getElementById('statusFilter').value;
 tbody.innerHTML = '';
@@ -859,11 +632,11 @@ const staff = JSON.parse(localStorage.getItem('staff')) || [];
 const patients = JSON.parse(localStorage.getItem('patients')) || [];
 accesses.forEach((access, index) => {
 let userName = 'Utilisateur inconnu';
-if (access.user_id.startsWith('staff_')) {
-const user = staff.find(s => 'staff_' + s.id === access.user_id);
+if (access.user_id .startsWith('staff_')) {
+const user = staff.find (s => 'staff_' + s.id  === access.user_id );
 if (user) userName = user.name + ' (Personnel)';
-} else if (access.user_id.startsWith('patient_')) {
-const user = patients.find(p => 'patient_' + p.id === access.user_id);
+} else if (access.user_id .startsWith('patient_')) {
+const user = patients.find (p => 'patient_' + p.id  === access.user_id );
 if (user) userName = user.name + ' (Patient)';
 }
 const matchesSearch = userName.toLowerCase().includes(searchTerm) ||
@@ -872,15 +645,15 @@ const matchesStatus = !statusFilter || access.status === statusFilter;
 if (matchesSearch && matchesStatus) {
 const row = document.createElement('tr');
 row.innerHTML = `
-<td>${userName}</td>
-<td>${access.access_type}</td>
-<td>${access.expiry_date ? formatDate(access.expiry_date) : '-'}</td>
-<td><span class="status-badge status-${access.status.toLowerCase()}">${access.status}</span></td>
-<td>${access.notes}</td>
-<td class="action-buttons">
+<td >${userName}</td >
+<td >${access.access_type}</td >
+<td >${access.expiry_date ? formatDate(access.expiry_date) : '-'}</td >
+<td ><span class="status-bad ge status-${access.status.toLowerCase()}">${access.status}</span></td >
+<td >${access.notes}</td >
+<td  class="action-buttons">
 <button class="btn btn-small btn-success" title="Modifier" onclick="editAccess(${index})"><i class="fas fa-edit"></i></button>
 <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteAccess(${index})"><i class="fas fa-times"></i></button>
-</td>
+</td >
 `;
 tbody.appendChild(row);
 }

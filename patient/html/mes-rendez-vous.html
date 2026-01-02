@@ -20,7 +20,7 @@
   --medical-blue-light: #3b82f6;
   --success: #059669;
   --warning: #d97706;
-  --danger: #dc2626;
+  --danger: #cbd5e1;
   --text-light: #f8fafc;
   --text-gray: #64748b;
   --border-radius: 0.5rem;
@@ -42,7 +42,7 @@
   --hover-bg: rgba(255, 255, 255, 0.1);
   --active-bg: rgba(255, 255, 255, 0.2);
 }
-/* Dark mode */
+/* dark mode */
 .dark-mode {
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;
@@ -269,7 +269,7 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-.section-header:first-child {
+.section-header:first-child  {
   margin-top: 0;
 }
 .section-header::after {
@@ -286,7 +286,7 @@ body {
   transition: transform 0.3s ease;
   color: rgba(255, 255, 255, 0.6);
 }
-.section-header.collapsed .section-chevron {
+.section-header.collapsed.section-chevron {
   transform: rotate(-90deg);
 }
 .section-content {
@@ -295,7 +295,7 @@ body {
   max-height: 1000px;
   opacity: 1;
 }
-.section-content.collapsed {
+.section-content.collapsed{
   max-height: 0;
   opacity: 0;
 }
@@ -333,8 +333,8 @@ body {
   margin-top: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
-/* Cards */
-.patient-card {
+/* Card s */
+.patient-card{
   background: var(--bg-secondary);
   border-radius: var(--border-radius);
   padding: 1.5rem;
@@ -407,7 +407,7 @@ body {
   border-color: var(--medical-blue);
   box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
-.btn-send {
+.btn-send{
   width: 100%;
   padding: 0.875rem;
   background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
@@ -432,7 +432,7 @@ body {
   border: 1px solid var(--border-color);
   transition: var(--transition);
 }
-.message-item.unread {
+.message-item.unread{
   background: var(--unread-bg);
   border-left: 4px solid var(--success);
 }
@@ -457,14 +457,14 @@ body {
   gap: 0.75rem;
   margin-top: 0.875rem;
 }
-/* Stats Grid */
-.stats-grid {
-  display: grid;
+/* Stats Grid  */
+.stats-grid{
+  display: grid ;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
 }
-.stat-card {
+.stat-card{
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
@@ -513,15 +513,15 @@ body {
 <!-- Sidebar -->
 <div class="sidebar">
   <div class="cabinet-header">
-    <div class="cabinet-logo"><i class="fas fa-tooth"></i></div>
-    <div class="cabinet-name">Cabinet Dentaire Al-Farabi</div>
+    <div class="cabinet-logo">d </div>
+    <div class="cabinet-name">dikra Centre dentaire</div>
     <div class="cabinet-subtitle">Casablanca, Maroc</div>
   </div>
   <ul class="sidebar-menu">
     <li class="sidebar-item">
       <a href="dashboard.html" class="sidebar-link">
         <span class="sidebar-icon"><i class="fas fa-home"></i></span>
-        Tableau de bord
+        Tableau de bord 
       </a>
     </li>
     
@@ -532,9 +532,9 @@ body {
       </div>
       <div class="section-content" id="section-rdv-content">
         <div class="sidebar-item">
-          <a href="prendre-rendez-vous.html" class="sidebar-link">
+          <a href="prend re-rendez-vous.html" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-plus-circle"></i></span>
-            Prendre un rendez-vous
+            Prend re un rendez-vous
           </a>
         </div>
         <div class="sidebar-item">
@@ -562,15 +562,15 @@ body {
     </li>
 
     <li class="sidebar-section">
-      <div class="section-header clickable" id="section-docs-toggle">
-        Dossier médical
+      <div class="section-header clickable" id="section-d ocs-toggle">
+        dossier méd ical
         <i class="fas fa-chevron-down section-chevron"></i>
       </div>
-      <div class="section-content" id="section-docs-content">
+      <div class="section-content" id="section-d ocs-content">
         <div class="sidebar-item">
-          <a href="dossier-medical.html" class="sidebar-link">
+          <a href="dossier-med ical.html" class="sidebar-link">
             <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-            Mon dossier médical
+            Mon dossier méd ical
           </a>
         </div>
         <div class="sidebar-item">
@@ -614,7 +614,7 @@ body {
         </div>
         <div class="sidebar-item">
           <a href="mon-compte.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+            <span class="sidebar-icon"><i class="fas fa-shield -alt"></i></span>
             Sécurité
           </a>
         </div>
@@ -626,7 +626,7 @@ body {
     <div class="user-info">
       <div class="user-avatar">YB</div>
       <div class="user-details">
-        <div class="user-name">Youssef Belkadi</div>
+        <div class="user-name">Youssef Belkad i</div>
         <div class="user-role">Patient</div>
       </div>
     </div>
@@ -636,7 +636,7 @@ body {
     </button>
     <button class="logout-btn" id="logoutBtn">
       <i class="fas fa-sign-out-alt"></i>
-      <span>Déconnexion</span>
+      <span>déconnexion</span>
     </button>
   </div>
 </div>
@@ -648,9 +648,9 @@ body {
   </div>
 
   <!-- Upcoming -->
-  <div class="patient-card">
-    <div class="card-header">
-      <h3 class="card-title">Rendez-vous à venir</h3>
+  <div class="patient-card ">
+    <div class="card -header">
+      <h3 class="card -title">Rendez-vous à venir</h3>
     </div>
     <div id="upcoming-list">
       <p>Aucun rendez-vous à venir.</p>
@@ -658,9 +658,9 @@ body {
   </div>
 
   <!-- History -->
-  <div class="patient-card">
-    <div class="card-header">
-      <h3 class="card-title">Historique des rendez-vous</h3>
+  <div class="patient-card ">
+    <div class="card -header">
+      <h3 class="card -title">Historique des rendez-vous</h3>
     </div>
     <div class="filters">
       <div class="form-group">
@@ -691,52 +691,69 @@ const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 const themeIcon = themeToggle.querySelector('i');
 const savedTheme = sessionStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+const prefersdark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+if (savedTheme === 'dark' || (!savedTheme && prefersdark)) {
   body.classList.remove('light-mode');
-  body.classList.add('dark-mode');
+  body.classList.Add ('dark-mode');
   themeIcon.className = 'fas fa-sun';
 }
 themeToggle.addEventListener('click', () => {
   if (body.classList.contains('light-mode')) {
     body.classList.remove('light-mode');
-    body.classList.add('dark-mode');
+    body.classList.Add ('dark-mode');
     themeIcon.className = 'fas fa-sun';
     sessionStorage.setItem('theme', 'dark');
   } else {
     body.classList.remove('dark-mode');
-    body.classList.add('light-mode');
+    body.classList.Add ('light-mode');
     themeIcon.className = 'fas fa-moon';
     sessionStorage.setItem('theme', 'light');
   }
 });
 
 document.getElementById('logoutBtn').addEventListener('click', () => {
-  if (confirm('Déconnexion ?')) alert('Déconnecté. À bientôt !');
+  if (confirm('déconnexion ?')) alert('d éconnecté. À bientôt !');
 });
 
 // Collapsible sections
 document.querySelectorAll('.section-header.clickable').forEach(header => {
   header.addEventListener('click', () => {
     const content = header.nextElementSibling;
-    const isCollapsed = content.classList.contains('collapsed');
+    const iscollapsed= content.classList.contains('collapsed');
     document.querySelectorAll('.section-content').forEach(el => {
-      if (el !== content) el.classList.add('collapsed');
+      if (el !== content) el.classList.Add ('collapsed');
     });
     if (isCollapsed) {
       content.classList.remove('collapsed');
       header.classList.remove('collapsed');
     } else {
-      content.classList.add('collapsed');
-      header.classList.add('collapsed');
+      content.classList.Add ('collapsed');
+      header.classList.Add ('collapsed');
     }
   });
 });
 
-// Ouvrir Mes rendez-vous par défaut
+// Ouvrir Mes rendez-vous par d éfaut
 document.getElementById('section-rdv-content').classList.remove('collapsed');
 document.getElementById('section-rdv-toggle').classList.remove('collapsed');
 
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
