@@ -6,6 +6,7 @@
 <title>Matériel dentaire - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -295,7 +289,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -408,12 +402,10 @@ font-size: 0.75rem;
 border-radius: 0.375rem;
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 .appointments-table {
 font-size: 0.8rem;
 }
@@ -423,7 +415,6 @@ padding: 0.75rem 0.5rem;
 }
 }
 @media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
 .main-content { margin-left: 0; padding: 1rem; }
 .cabinet-header,
 .user-section {
@@ -474,7 +465,32 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div>
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+
 <div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Matériel dentaire</h1>
@@ -490,8 +506,8 @@ Nouveau Matériel
 <form id="materialForm" style="padding: 1.5rem;">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
 <div class="form-group">
-<label class="form-label">Nom d u matériel</label>
-<input type="text" class="form-control" id="nom_materiel" placeholder="Nom d u matériel" required>
+<label class="form-label">Nom du matériel</label>
+<input type="text" class="form-control" id="nom_materiel" placeholder="Nom du matériel" required>
 </div>
 <div class="form-group">
 <label class="form-label">Type</label>
@@ -510,8 +526,8 @@ Nouveau Matériel
 <input type="date" class="form-control" id="date_achat" required>
 </div>
 <div class="form-group">
-<label class="form-label">description</label>
-<textarea class="form-control" id="description" rows="3" required></textarea>
+<label class="form-label">Description</label>
+<textarea class="form-control" id="Description" rows="3" required></textarea>
 </div>
 </div>
 <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
@@ -522,7 +538,7 @@ Nouveau Matériel
 </div>
 <div class="appointments-container">
 <div class="appointments-header">
-<h2 class="appointments-title">Liste d u Matériel dentaire</h2>
+<h2 class="appointments-title">Liste du Matériel dentaire</h2>
 <div>
 <input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
 </div>
@@ -535,7 +551,7 @@ Nouveau Matériel
 <th>Quantité</th>
 <th>Fournisseur</th>
 <th>date d'achat</th>
-<th>description</th>
+<th>Description</th>
 <th>Actions</th>
 </tr>
 </thead >
@@ -544,97 +560,26 @@ Nouveau Matériel
 </table>
 </div>
 </div>
-<script src="../js/navbar.js"></script><script>// Open "Gestion des stocks" by default\ndocument.getElementById("section-stock-content").classList.remove("collapsed");\ndocument.getElementById("section-stock-toggle").classList.remove("collapsed");\n
-// Open "Gestion des stocks" by default
-document.getElementById('section-stock-content').classList.remove('collapsed');
-document.getElementById('section-stock-toggle').classList.remove('collapsed');
 
-let materials = JSON.parse(localStorage.getItem('materials')) || [];
-let editingIndex = -1;
-function showForm() {
-document.getElementById('addForm').style.display = 'block';
-document.getElementById('materialForm').reset();
-editingIndex = -1;
-document.querySelector('#addForm .appointments-title').textContent = 'Ajouter un Matériel dentaire';
-}
-function hideForm() {
-document.getElementById('addForm').style.display = 'none';
-}
-function saveMaterial(e) {
-e.preventDefault();
-const material = {
-nom_materiel: document.getElementById('nom_materiel').value,
-type_materiel: document.getElementById('type_materiel').value,
-quantite: document.getElementById('quantite').value,
-fournisseur: document.getElementById('fournisseur').value,
-date_achat: document.getElementById('date_achat').value,
-description: document.getElementById('description').value
-};
-if (editingIndex >= 0) {
-materials[editingIndex] = material;
-} else {
-materials.push(material);
-}
-localStorage.setItem('materials', JSON.stringify(materials));
-renderMaterials();
-hideForm();
-}
-function editMaterial(index) {
-const material = materials[index];
-document.getElementById('nom_materiel').value = material.nom_materiel;
-document.getElementById('type_materiel').value = material.type_materiel;
-document.getElementById('quantite').value = material.quantite;
-document.getElementById('fournisseur').value = material.fournisseur;
-document.getElementById('date_achat').value = material.date_achat;
-document.getElementById('description').value = material.description;
-editingIndex = index;
-document.getElementById('addForm').style.display = 'block';
-document.querySelector('#addForm .appointments-title').textContent = 'Modifier le Matériel dentaire';
-}
-function deleteMaterial(index) {
-if (confirm('Êtes-vous sûr de vouloir supprimer ce matériel ?')) {
-materials.splice(index, 1);
-localStorage.setItem('materials', JSON.stringify(materials));
-renderMaterials();
-}
-}
-function renderMaterials() {
-const tbody = document.getElementById('materialsTablebody');
-const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-tbody.innerHTML = '';
-materials.forEach((material, index) => {
-const matchesSearch = material.nom_materiel.toLowerCase().includes(searchTerm) ||
-material.type_materiel.toLowerCase().includes(searchTerm) ||
-material.fournisseur.toLowerCase().includes(searchTerm) ||
-material.description.toLowerCase().includes(searchTerm);
-if (matchesSearch) {
-const row = document.createElement('tr');
-row.innerHTML = `
-<td >${material.nom_materiel}</td >
-<td >${material.type_materiel}</td >
-<td >${material.quantite}</td >
-<td >${material.fournisseur}</td >
-<td >${formatDate(material.date_achat)}</td >
-<td >${material.description}</td >
-<td  class="action-buttons">
-<button class="btn btn-small btn-success" title="Modifier" onclick="editMaterial(${index})"><i class="fas fa-edit"></i></button>
-<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteMaterial(${index})"><i class="fas fa-times"></i></button>
-</td >
-`;
-tbody.appendChild(row);
-}
-});
-}
-function formatDate(dateString) {
-const date = new Date(dateString);
-return date.toLocaleDateString('fr-FR');
-}
-document.getElementById('materialForm').addEventListener('submit', saveMaterial);
-document.getElementById('searchInput').addEventListener('input', renderMaterials);
-renderMaterials();
-</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

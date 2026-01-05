@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liste d u personnel - dikra Centre dentaire</title>
+<title>Liste du personnel - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
   margin: 0;
@@ -30,331 +31,9 @@
   --unread-bg: #dbeafe;
 }
 
-/* Light mode */
-.light-mode {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --border-color: #e2e8f0;
-  --card-shadow: var(--shadow);
-  --section-bg: rgba(30, 58, 138, 0.05);
-  --hover-bg: rgba(255, 255, 255, 0.1);
-  --active-bg: rgba(255, 255, 255, 0.2);
-}
-
-/* dark mode */
-.dark-mode {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --border-color: #334155;
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-  --unread-bg: #1e3a8a;
-  --section-bg: rgba(255, 255, 255, 0.05);
-  --hover-bg: rgba(255, 255, 255, 0.1);
-  --active-bg: rgba(255, 255, 255, 0.2);
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.5;
-  font-size: 0.875rem;
-  transition: var(--transition);
-}
-
-/* Professional Sidebar Navigation */
-.sidebar {
-  width: 280px;
-  background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
-  color: var(--text-light);
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
-  padding: 1.5rem 0;
-  overflow-y: auto;
-  box-shadow: var(--shadow);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  transition: var(--transition);
-}
-
-.cabinet-header {
-  padding: 0 1.5rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  margin-bottom: 1.5rem;
-  text-align: center;
-  position: relative;
-}
-
-.cabinet-logo {
-  width: 64px;
-  height: 64px;
-  background: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-  color: var(--medical-blue);
-  font-weight: 700;
-  font-size: 1.5rem;
-  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
-  transition: var(--transition);
-}
-
-.cabinet-logo:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
-}
-
-.cabinet-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-  letter-spacing: -0.025em;
-  background: linear-gradient(to right, #ffffff, #cbd5e1);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.cabinet-subtitle {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 400;
-}
-
-/* User Section */
-.user-section {
-  padding: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  margin-top: auto;
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.user-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.user-details {
-  flex: 1;
-}
-
-.user-name {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  color: white;
-}
-
-.user-role {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.logout-btn,
-.theme-toggle {
-  width: 100%;
-  padding: 0.625rem;
-  border-radius: var(--border-radius);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  border: none;
-  text-align: left;
-}
-
-.logout-btn {
-  background: rgba(220, 38, 38, 0.2);
-  color: white;
-}
-
-.logout-btn:hover {
-  background: rgba(220, 38, 38, 0.3);
-  transform: translateY(-1px);
-}
-
-.theme-toggle {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  margin-bottom: 0.75rem;
-}
-
-.theme-toggle:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: translateY(-1px);
-}
-
-.sidebar-menu {
-  list-style: none;
-  padding: 0 1.5rem;
-  flex: 1;
-}
-
-.sidebar-item {
-  margin: 0;
-}
-
-.sidebar-link {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.875rem 1.25rem;
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  transition: var(--transition);
-  border-radius: var(--border-radius);
-  position: relative;
-  width: 100%;
-  text-align: left;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-.sidebar-link:hover {
-  background: var(--hover-bg);
-  color: white;
-  transform: translateX(4px);
-}
-
-.sidebar-link.active {
-  background: var(--active-bg);
-  color: white;
-  border-left: 3px solid var(--medical-blue-light);
-  padding-left: 1rem;
-  transform: translateX(4px);
-}
-
-.sidebar-icon {
-  width: 24px;
-  text-align: center;
-  font-size: 1.125rem;
-  min-width: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.badge {
-  background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-  color: white;
-  border-radius: 9999px;
-  padding: 0.25rem 0.625rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-left: auto;
-  margin-right: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.ai-agent-icon {
-  background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-  color: white;
-  padding: 0.375rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-}
-
-/* Section Headers as dropdown triggers */
-.section-header {
-  padding: 0.75rem 1.25rem 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.6);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-top: 1.5rem;
-  position: relative;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.section-header:first-child  {
-  margin-top: 0;
-}
-
-.section-header::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 1.25rem;
-  right: 1.25rem;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.section-chevron {
-  font-size: 0.75rem;
-  transition: transform 0.3s ease;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.section-header.collapsed.section-chevron {
-  transform: rotate(-90deg);
-}
-
-/* Section content */
-.section-content {
-  overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-  max-height: 1000px;
-  opacity: 1;
-}
-
-.section-content.collapsed{
-  max-height: 0;
-  opacity: 0;
-}
-
-/* Sidebar section wrapper */
-.sidebar-section {
-  list-style: none;
-}
-
 /* Main Content */
 .main-content {
-  margin-left: 280px;
+  margin-left: 0;
   padding: 2rem;
   min-height: 100vh;
   transition: var(--transition);
@@ -523,21 +202,19 @@ body {
 
 /* Responsive design */
 @media (max-width: 992px) {
-  .sidebar {
     width: 250px;
   }
   .main-content {
-    margin-left: 250px;
+    margin-left: 0;
     padding: 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
-  .sidebar {
     width: 240px;
   }
   .main-content {
-    margin-left: 240px;
+    margin-left: 0;
     padding: 1.5rem;
   }
   .staff-table {
@@ -550,7 +227,6 @@ body {
 }
 
 @media (max-width: 480px) {
-  .sidebar {
     width: 100%;
     height: auto;
     position: relative;
@@ -584,7 +260,6 @@ body {
 }
 
 /* Focus states for accessibility */
-.sidebar-link:focus {
   outline: 2px solid var(--medical-blue-light);
   outline-offset: 2px;
 }
@@ -596,11 +271,36 @@ body {
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div>
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+
 <!-- Main Content -->
 <div class="main-content">
   <div class="content-header">
-    <h1 class="page-title">Liste d u personnel</h1>
+    <h1 class="page-title">Liste du personnel</h1>
     <button class="btn btn-primary" onclick="showForm()">
       <i class="fas fa-plus"></i>
       Ajouter un membre
@@ -610,7 +310,7 @@ body {
   <!-- Add  Staff Form -->
   <div class="staff-container" id="addForm" style="display: none; margin-bottom: 2rem;">
     <div class="staff-header">
-      <h2 class="staff-title" id="formTitle">Ajouter un membre d u personnel</h2>
+      <h2 class="staff-title" id="formTitle">Ajouter un membre du personnel</h2>
     </div>
     <form id="staffForm" style="padding: 1.5rem;">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
@@ -651,7 +351,7 @@ body {
 
   <div class="staff-container">
     <div class="staff-header">
-      <h2 class="staff-title">Membres d u personnel</h2>
+      <h2 class="staff-title">Membres du personnel</h2>
       <div>
         <input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
         <select id="roleFilter" title="Filtrer par rôle" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary);">
@@ -678,122 +378,28 @@ body {
     </table>
   </div>
 </div>
-<script src="../../LOGING/js/data.js"></script>
-<script src="../js/navbar.js"></script>
-<script>
-// Open "Utilisateurs" by default
-document.getElementById('section-users-content').classList.remove('collapsed');
-document.getElementById('section-users-toggle').classList.remove('collapsed');
 
-// Staff Management
-let editingId = null;
 
-function getStaff() {
-  return dentalDataManager.getAll('users').filter(u => u.role !== 'Patient');
-}
 
-function showForm() {
-  document.getElementById('addForm').style.display = 'block';
-  document.getElementById('staffForm').reset();
-  editingId = null;
-  document.getElementById('formTitle').textContent = 'Ajouter un membre du personnel';
-}
-
-function hideForm() {
-  document.getElementById('addForm').style.display = 'none';
-}
-
-function saveStaff(e) {
-  e.preventDefault();
-
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const role = document.getElementById('role').value;
-
-  if (editingId) {
-    // Update existing
-    dentalDataManager.update('users', editingId, { name, email, password, role });
-  } else {
-    // Create new
-    dentalDataManager.createUser(email, password, role, name);
-  }
-
-  renderStaff();
-  hideForm();
-}
-
-function editStaff(id) {
-  const member = dentalDataManager.read('users', id);
-  if (member) {
-    document.getElementById('name').value = member.name;
-    document.getElementById('email').value = member.email;
-    document.getElementById('password').value = member.password;
-    document.getElementById('role').value = member.role;
-    document.getElementById('phone').value = member.phone || '';
-    document.getElementById('specialty').value = member.specialty || '';
-
-    editingId = id;
-    document.getElementById('addForm').style.display = 'block';
-    document.getElementById('formTitle').textContent = 'Modifier le membre du personnel';
-  }
-}
-
-function deleteStaff(id) {
-  if (confirm('Êtes-vous sûr de vouloir supprimer ce membre du personnel ?')) {
-    dentalDataManager.delete('users', id);
-    renderStaff();
-  }
-}
-
-function renderStaff() {
-  const tbody = document.getElementById('staffTablebody');
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  const roleFilter = document.getElementById('roleFilter').value;
-  const staff = getStaff();
-
-  tbody.innerHTML = '';
-
-  staff.forEach((member) => {
-    // Filter logic
-    const matchesSearch = member.name.toLowerCase().includes(searchTerm) ||
-                          member.email.toLowerCase().includes(searchTerm);
-    const matchesRole = !roleFilter || member.role === roleFilter;
-
-    if (matchesSearch && matchesRole) {
-      const row = document.createElement('tr');
-
-      let roleClass = '';
-      if (member.role === 'Admin') roleClass = 'role-admin';
-      else if (member.role === 'Assistant') roleClass = 'role-assistant';
-
-      row.innerHTML = `
-        <td>${member.name}</td>
-        <td>${member.email}</td>
-        <td><span class="role-badge ${roleClass}">${member.role}</span></td>
-        <td>${member.phone || '-'}</td>
-        <td>-</td>
-        <td class="action-buttons">
-          <button class="btn btn-small btn-success" title="Modifier" onclick="editStaff('${member.id}')"><i class="fas fa-edit"></i></button>
-          <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteStaff('${member.id}')"><i class="fas fa-times"></i></button>
-        </td>
-      `;
-
-      tbody.appendChild(row);
-    }
-  });
-}
-
-// Event listeners
-document.getElementById('staffForm').addEventListener('submit', saveStaff);
-document.getElementById('searchInput').addEventListener('input', renderStaff);
-document.getElementById('roleFilter').addEventListener('change', renderStaff);
-
-// Initial render
-renderStaff();
-</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

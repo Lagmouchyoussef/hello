@@ -6,454 +6,632 @@
 <title>Mon Profil - Dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../navbar.css">
+
 <style>
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-:root {
---medical-blue: #1e3a8a;
---medical-blue-dark: #1e40af;
---medical-blue-darker: #172554;
---medical-blue-light: #3b82f6;
---success: #059669;
---warning: #d97706;
---danger: #cbd5e1;
---text-light: #f8fafc;
---text-gray: #64748b;
---border-radius: 0.5rem;
---shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
---ai-purple: #7e22ce;
---ai-purple-light: #c084fc;
---transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
---unread-bg: #dbeafe;
-}
-.light-mode {
---bg-primary: #f8fafc;
---bg-secondary: #ffffff;
---text-primary: #0f172a;
---text-secondary: #334155;
---border-color: #e2e8f0;
---card-shadow: var(--shadow);
---section-bg: rgba(30, 58, 138, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
-}
-.dark-mode {
---bg-primary: #0f172a;
---bg-secondary: #1e293b;
---text-primary: #f8fafc;
---text-secondary: #cbd5e1;
---border-color: #334155;
---card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
---unread-bg: #1e3a8a;
---section-bg: rgba(255, 255, 255, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
-}
-body {
-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-background-color: var(--bg-primary);
-color: var(--text-primary);
-line-height: 1.5;
-font-size: 0.875rem;
-transition: var(--transition);
-}
-.sidebar {
-width: 280px;
-background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
-color: var(--text-light);
-height: 100vh;
-position: fixed;
-left: 0;
-top: 0;
-padding: 1.5rem 0;
-overflow-y: auto;
-box-shadow: var(--shadow);
-z-index: 1000;
-display: flex;
-flex-direction: column;
-transition: var(--transition);
-}
-.cabinet-header {
-padding: 0 1.5rem 1.5rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-margin-bottom: 1.5rem;
-text-align: center;
-position: relative;
-}
-.cabinet-logo {
-width: 64px;
-height: 64px;
-background: white;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-margin: 0 auto 1rem;
-color: var(--medical-blue);
-font-weight: 700;
-font-size: 1.5rem;
-box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
-transition: var(--transition);
-}
-.cabinet-logo:hover {
-transform: scale(1.05);
-box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
-}
-.cabinet-name {
-font-size: 1.25rem;
-font-weight: 700;
-margin-bottom: 0.25rem;
-letter-spacing: -0.025em;
-background: linear-gradient(to right, #ffffff, #cbd5e1);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-}
-.cabinet-subtitle {
-font-size: 0.875rem;
-color: rgba(255, 255, 255, 0.8);
-font-weight: 400;
-}
-.user-section {
-padding: 1.5rem;
-border-top: 1px solid rgba(255, 255, 255, 0.15);
-margin-top: auto;
-background: rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(10px);
-}
-.user-info {
-display: flex;
-align-items: center;
-gap: 1rem;
-margin-bottom: 1.25rem;
-padding-bottom: 1rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-.user-avatar {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
-display: flex;
-align-items: center;
-justify-content: center;
-color: white;
-font-weight: 600;
-font-size: 0.9375rem;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-.user-details {
-flex: 1;
-}
-.user-name {
-font-size: 0.9375rem;
-font-weight: 600;
-margin-bottom: 0.25rem;
-color: white;
-}
-.user-role {
-font-size: 0.75rem;
-color: rgba(255, 255, 255, 0.8);
-}
-.logout-btn,
-.theme-toggle {
-width: 100%;
-padding: 0.625rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 0.75rem;
-border: none;
-text-align: left;
-}
-.logout-btn {
-background: rgba(220, 38, 38, 0.2);
-color: white;
-}
-.logout-btn:hover {
-background: rgba(220, 38, 38, 0.3);
-transform: translateY(-1px);
-}
-.theme-toggle {
-background: rgba(255, 255, 255, 0.15);
-color: white;
-margin-bottom: 0.75rem;
-}
-.theme-toggle:hover {
-background: rgba(255, 255, 255, 0.25);
-transform: translateY(-1px);
-}
-.sidebar-menu {
-list-style: none;
-padding: 0 1.5rem;
-flex: 1;
-}
-.sidebar-item {
-margin: 0;
-}
-.sidebar-link {
-display: flex;
-align-items: center;
-gap: 1rem;
-padding: 0.875rem 1.25rem;
-text-decoration: none;
-color: rgba(255, 255, 255, 0.9);
-font-size: 0.9375rem;
-font-weight: 500;
-transition: var(--transition);
-border-radius: var(--border-radius);
-position: relative;
-width: 100%;
-text-align: left;
-border: none;
-background: none;
-cursor: pointer;
-}
-.sidebar-link:hover {
-background: var(--hover-bg);
-color: white;
-transform: translateX(4px);
-}
-.sidebar-link.active {
-background: var(--active-bg);
-color: white;
-border-left: 3px solid var(--medical-blue-light);
-padding-left: 1rem;
-transform: translateX(4px);
-}
-.sidebar-icon {
-width: 24px;
-text-align: center;
-font-size: 1.125rem;
-min-width: 24px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-.badge {
-background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-color: white;
-border-radius: 9999px;
-padding: 0.25rem 0.625rem;
-font-size: 0.75rem;
-font-weight: 600;
-margin-left: auto;
-margin-right: 0.5rem;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-.section-header {
-padding: 0.75rem 1.25rem 0.5rem;
-font-size: 0.75rem;
-font-weight: 600;
-color: rgba(255, 255, 255, 0.6);
-text-transform: uppercase;
-letter-spacing: 0.08em;
-margin-top: 1.5rem;
-position: relative;
-cursor: pointer;
-display: flex;
-justify-content: space-between;
-align-items: center;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-.section-header:first-child  {
-margin-top: 0;
-}
-.section-header::after {
-content: '';
-position: absolute;
-bottom: 0;
-left: 1.25rem;
-right: 1.25rem;
-height: 1px;
-background: rgba(255, 255, 255, 0.1);
-}
-.section-chevron {
-font-size: 0.75rem;
-transition: transform 0.3s ease;
-color: rgba(255, 255, 255, 0.6);
-}
-.section-header.collapsed.section-chevron {
-transform: rotate(-90deg);
-}
-.section-content {
-overflow: hidden;
-transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-max-height: 1000px;
-opacity: 1;
-}
-.section-content.collapsed{
-max-height: 0;
-opacity: 0;
-}
-.main-content {
-margin-left: 280px;
-padding: 2rem;
-min-height: 100vh;
-transition: var(--transition);
-}
-.content-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 2rem;
-flex-wrap: wrap;
-gap: 1rem;
-}
-.page-title {
-font-size: 1.75rem;
-font-weight: 700;
-letter-spacing: -0.025em;
-color: var(--text-primary);
-}
-.btn {
-padding: 0.5rem 1rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-border: none;
-}
-.btn-primary {
-background: var(--medical-blue);
-color: white;
-}
-.btn-primary:hover {
-background: var(--medical-blue-dark);
-transform: translateY(-2px);
-}
-.btn-success {
-background: var(--success);
-color: white;
-}
-.btn-danger {
-background: var(--danger);
-color: white;
-}
+/* Profile Page Specific Styles */
 .profile-container {
-background: var(--bg-secondary);
-border-radius: var(--border-radius);
-box-shadow: var(--card-shadow);
-border: 1px solid var(--border-color);
-overflow: hidden;
+    max-width: 800px;
+    margin: 0 auto;
 }
+
 .profile-header {
-padding: 1.5rem;
-background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-color: white;
-display: flex;
-align-items: center;
-gap: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
 }
+
 .profile-avatar {
-width: 80px;
-height: 80px;
-border-radius: 50%;
-background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
-display: flex;
-align-items: center;
-justify-content: center;
-color: white;
-font-weight: 600;
-font-size: 2rem;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--medical-blue), var(--assistant-green));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3rem;
+    font-weight: 700;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    position: relative;
+    cursor: pointer;
+    transition: var(--transition);
 }
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.profile-avatar::after {
+    content: '📷';
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .profile-info h2 {
-font-size: 1.25rem;
-font-weight: 600;
-margin-bottom: 0.25rem;
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
 }
+
 .profile-info p {
-font-size: 0.875rem;
-opacity: 0.9;
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
 }
+
 .profile-content {
-padding: 2rem;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
 }
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
 .form-group {
-margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
 }
+
 .form-label {
-display: block;
-font-size: 0.875rem;
-font-weight: 500;
-color: var(--text-secondary);
-margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
+
 .form-control {
-width: 100%;
-padding: 0.75rem;
-border: 1px solid var(--border-color);
-border-radius: var(--border-radius);
-background: var(--bg-primary);
-color: var(--text-primary);
-font-size: 0.875rem;
-transition: var(--transition);
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: var(--transition);
 }
+
 .form-control:focus {
-outline: none;
-border-color: var(--medical-blue);
-box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    outline: none;
+    border-color: var(--assistant-green);
+    box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
 }
-.form-row {
-display: grid ;
-grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-gap: 1rem;
+
+.form-control:invalid {
+    border-color: #dc2626;
 }
+
 .btn-group {
-display: flex;
-gap: 1rem;
-margin-top: 2rem;
-justify-content: flex-end ;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
 }
-@media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
+
+.btn-primary {
+    background: var(--medical-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--medical-blue-dark);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+    transform: translateY(-2px);
+}
+
+.success-message {
+    background: rgba(4, 120, 87, 0.1);
+    color: var(--success);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    border: 1px solid rgba(4, 120, 87, 0.2);
+    display: none;
+}
+
+.error-message {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    display: none;
+}
+
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
-.form-row {
-grid-template-columns: 1fr;
-}
-}
-@media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
-.main-content { margin-left: 0; padding: 1rem; }
-.cabinet-header,
-.user-section {
-text-align: left;
-}
-.cabinet-logo {
-margin: 0 0 1rem 1.5rem;
-}
-.content-header {
-flex-direction: column;
-align-items: flex-start;
-}
-.profile-header {
-flex-direction: column;
-text-align: center;
-gap: 1rem;
-}
-.btn-group {
-flex-direction: column;
-}
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+
+    .profile-info h2 {
+        font-size: 1.5rem;
+    }
 }
 </style>
-<script src="../../LOGING/js/data.js"></script>
-</head>
-<body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
+
+<!-- Professional Sidebar Navigation -->
+<div class="sidebar">
+    <!-- Cabinet Header -->
+    <div class="cabinet-header"><div class="cabinet-logo"><img src="../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+        
+        <div class="cabinet-name">DIKRA centre Dentaire</div>
+        <div class="cabinet-subtitle">Casablanca, Maroc</div>
+    </div>
+    <!-- Navigation Menu -->
+    <ul class="sidebar-menu">
+        <!-- d ASHBOARd  -->
+        <li class="sidebar-item">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                Tableau de bord
+            </a>
+        </li>
+
+        <!-- RENdeZ-VOUS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-rdv-toggle">
+                Rendez-vous
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-rdv-content">
+                <div class="sidebar-item">
+                    <a href="Listes des Rendez-vous.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Liste des rendez-vous
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="Prise en ligne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
+                        Prise en ligne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="En présentiel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        En présentiel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="via-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
+                        Via espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- PATIENTS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-patients-toggle">
+                Patients
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-patients-content">
+                <div class="sidebar-item">
+                    <a href="fiches-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                        Fiches patients
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- CABINET -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-cabinet-toggle">
+                Cabinet
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-cabinet-content">
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- COMPTABILITÉ -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-compta-toggle">
+                Comptabilité
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-compta-content">
+                <div class="sidebar-item">
+                    <a href="comptabilite-generale.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
+                        Comptabilité générale
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="paiements-recus.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
+                        Paiements reçus
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="charges-depenses.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                        Charges & dépenses
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- COMMUNICATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-com-toggle">
+                Communication
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-com-content">
+                <div class="sidebar-item">
+                    <a href="messagerie-interne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                        Messagerie interne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="assistant-ia.html" class="sidebar-link">
+                        <span class="sidebar-icon">
+                            <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
+                        </span>
+                        Assistant IA
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="envoi-sms.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
+                        Envoi de SMS
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="messages-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
+                        Messages patients
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- ORGANISATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-org-toggle">
+                Organisation
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-org-content">
+                <div class="sidebar-item">
+                    <a href="taches-rappels.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
+                        Tâches & rappels
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notes-personnelles.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
+                        Notes personnelles
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="statistiques.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                        Statistiques
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- GESTION deS STOCKS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-stock-toggle">
+                Gestion des stocks
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-stock-content">
+                <div class="sidebar-item">
+                    <a href="materiel-dentaire.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-box"></i></span>
+                        Matériel dentaire
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="consommables.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
+                        Consommables
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="medicaments.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
+                        Médicaments
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- documentS & FORMULAIRES -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-docs-toggle">
+                Documents & formulaires
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-docs-content">
+                <div class="sidebar-item">
+                    <a href="ordonnances.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
+                        Ordonnances
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="certificats-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Certificats médicaux
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="feuilles-de-soins.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                        Feuilles de soins (CNOPS/CNSS)
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="imagerie-medicale.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
+                        Imagerie médicale
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="protheses.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                        Prothèses
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- UTILISATEURS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-users-toggle">
+                Utilisateurs
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-users-content">
+                <div class="sidebar-item">
+                    <a href="Liste du personnel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-list"></i></span>
+                        Liste du personnel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="ajouter-un-membre.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
+                        Ajouter un membre
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="roles-permissions.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                        Rôles & permissions
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="parametres-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                        Paramètres espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="gestion-des-acces.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-key"></i></span>
+                        Gestion des accès
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="messages-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
+                        Messages patients
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- SITE WEB -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-website-toggle">
+                Site web
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-website-content">
+                <div class="sidebar-item">
+                    <a href="contenu-articles.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
+                        Contenu & articles
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="design-theme.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
+                        Design & thème
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="referencement-seo.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-search"></i></span>
+                        Référencement (SEO)
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="formulaire-contact.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
+                        Formulaire de contact
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="statistiques-visite.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
+                        Statistiques de visite
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- CONFIGURATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-config-toggle">
+                Configuration
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-config-content">
+                <div class="sidebar-item">
+                    <a href="mon-profil.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                        Mon profil
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="informations-cabinet.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        Informations cabinet
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="parametres-facturation.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                        Paramètres de facturation
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <!-- User Section -->
+    <div class="user-section">
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <div class="user-details">
+                <div class="user-name"></div>
+                <div class="user-role"></div>
+            </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <span>Mode Sombre</span>
+        </button>
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+        </button>
+    </div>
+</div>
+
+
+<div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Mon Profil</h1>
 </div>
@@ -466,6 +644,14 @@ flex-direction: column;
 </div>
 </div>
 <div class="profile-content">
+<div class="success-message" id="successMessage">
+<i class="fas fa-check-circle"></i>
+Profil mis à jour avec succès !
+</div>
+<div class="error-message" id="errorMessage">
+<i class="fas fa-exclamation-triangle"></i>
+Erreur lors de la mise à jour du profil.
+</div>
 <form id="profileForm">
 <div class="form-row">
 <div class="form-group">
@@ -516,93 +702,192 @@ flex-direction: column;
 </form>
 </div>
 </div>
-</div><script src="../js/navbar.js"></script><script>
+</div>
+
+<script>
+// Profile management
+let profileData = {
+    prenom: '',
+    nom: '',
+    email: '',
+    telephone: '',
+    specialite: '',
+    numero_ordre: '',
+    adresse: '',
+    biographie: ''
+};
+
+// Load profile data
 function loadProfile() {
-const currentUser = dentalDataManager.getCurrentUser();
-const profile = dentalDataManager.getProfile() || {};
-if (currentUser) {
-    document.getElementById('prenom').value = currentUser.firstName || '';
-    document.getElementById('nom').value = currentUser.lastName || '';
-    document.getElementById('email').value = currentUser.email || '';
-    document.getElementById('telephone').value = currentUser.phone || '';
-    document.getElementById('specialite').value = currentUser.specialty || '';
-    // Additional fields from profile
-    document.getElementById('numero_ordre').value = profile.numero_ordre || '';
-    document.getElementById('adresse').value = profile.adresse || '';
-    document.getElementById('biographie').value = profile.biographie || '';
-}
-}
-function saveProfile(e) {
-e.preventDefault();
-const saveBtn = document.getElementById('saveBtn');
-const resetBtn = document.getElementById('resetBtn');
+    const saved = localStorage.getItem('profileData');
+    if (saved) {
+        profileData = { ...profileData, ...JSON.parse(saved) };
+    }
 
-// Show loader
-saveBtn.disabled = true;
-saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
-resetBtn.disabled = true;
-
-const currentUser = dentalDataManager.getCurrentUser();
-if (currentUser) {
-    const userData = {
-        firstName: document.getElementById('prenom').value,
-        lastName: document.getElementById('nom').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('telephone').value,
-        specialty: document.getElementById('specialite').value
-    };
-    const profileData = {
-        numero_ordre: document.getElementById('numero_ordre').value,
-        adresse: document.getElementById('adresse').value,
-        biographie: document.getElementById('biographie').value
-    };
-
-    // Simulate async operation
-    setTimeout(() => {
-        const userSuccess = dentalDataManager.update('users', currentUser.id, userData);
-        const profileSuccess = dentalDataManager.saveProfile(profileData);
-        if (userSuccess && profileSuccess) {
-            // Update currentUser in localStorage
-            const updatedUser = { ...currentUser, ...userData };
-            dentalDataManager.loginUser(updatedUser);
-            dentalDataManager.showMessage('Profil enregistré avec succès.', 'success');
-            updateUserInfo(); // Update navbar
-            loadUserInfo(); // Update profile display
-        } else {
-            dentalDataManager.showMessage('Erreur lors de la sauvegarde.', 'error');
+    // Populate form
+    Object.keys(profileData).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+            element.value = profileData[key];
         }
+    });
 
-        // Hide loader
-        saveBtn.disabled = false;
-        saveBtn.innerHTML = '<i class="fas fa-save"></i> Enregistrer les modifications';
-        resetBtn.disabled = false;
-    }, 1000); // 1 second delay for demo
+    updateProfileDisplay();
 }
+
+// Update profile display
+function updateProfileDisplay() {
+    const fullName = `${profileData.prenom} ${profileData.nom}`;
+    const title = profileData.specialite;
+
+    document.getElementById('profileName').textContent = fullName;
+    document.getElementById('profileTitle').textContent = title;
+    document.getElementById('profileAvatar').textContent = profileData.prenom.charAt(0) + profileData.nom.charAt(0);
 }
+
+// Save profile
+function saveProfile() {
+    // Collect form data
+    const formData = new FormData(document.getElementById('profileForm'));
+    const newData = {};
+
+    for (let [key, value] of formData.entries()) {
+        newData[key] = value;
+    }
+
+    // Validate required fields
+    const requiredFields = ['prenom', 'nom', 'email', 'telephone', 'specialite'];
+    let isValid = true;
+
+    requiredFields.forEach(field => {
+        const element = document.getElementById(field);
+        if (!newData[field] || newData[field].trim() === '') {
+            element.style.borderColor = '#dc2626';
+            isValid = false;
+        } else {
+            element.style.borderColor = 'var(--border-color)';
+        }
+    });
+
+    if (!isValid) {
+        showError('Veuillez remplir tous les champs obligatoires.');
+        return;
+    }
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(newData.email)) {
+        document.getElementById('email').style.borderColor = '#dc2626';
+        showError('Adresse email invalide.');
+        return;
+    }
+
+    // Save data
+    profileData = { ...profileData, ...newData };
+    localStorage.setItem('profileData', JSON.stringify(profileData));
+
+    updateProfileDisplay();
+    showSuccess('Profil mis à jour avec succès !');
+}
+
+// Reset form
 function resetForm() {
-if (confirm('Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les mod ifications non enregistrées seront perd ues.')) {
-document.getElementById('profileForm').reset();
+    loadProfile();
+    hideMessages();
 }
-}
-document.getElementById('profileForm').addEventListener('submit', saveProfile);
-loadProfile();
-loadUserInfo();
-function loadUserInfo() {
-   const currentUser = dentalDataManager.getCurrentUser();
-   if (currentUser) {
-       const fullName = (currentUser.firstName || '') + ' ' + (currentUser.lastName || '');
-       const displayName = fullName.trim() || currentUser.name || 'Utilisateur';
-       const roleDisplay = {
-           'Admin': 'Administrateur',
-           'Assistant': 'Assistante',
-           'Patient': 'Patient'
-       }[currentUser.role] || currentUser.role;
 
-       document.getElementById('profileAvatar').textContent = displayName.charAt(0).toUpperCase() || 'U';
-       document.getElementById('profileName').textContent = displayName;
-       document.getElementById('profileTitle').textContent = roleDisplay;
-   }
+// Show success message
+function showSuccess(message) {
+    const successEl = document.getElementById('successMessage');
+    successEl.textContent = message;
+    successEl.style.display = 'block';
+    document.getElementById('errorMessage').style.display = 'none';
+
+    setTimeout(() => {
+        successEl.style.display = 'none';
+    }, 5000);
 }
+
+// Show error message
+function showError(message) {
+    const errorEl = document.getElementById('errorMessage');
+    errorEl.textContent = message;
+    errorEl.style.display = 'block';
+    document.getElementById('successMessage').style.display = 'none';
+
+    setTimeout(() => {
+        errorEl.style.display = 'none';
+    }, 5000);
+}
+
+// Hide messages
+function hideMessages() {
+    document.getElementById('successMessage').style.display = 'none';
+    document.getElementById('errorMessage').style.display = 'none';
+}
+
+// Avatar upload simulation
+document.getElementById('profileAvatar').addEventListener('click', function() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Simulate upload
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // In a real app, you'd upload to server and get URL back
+                showSuccess('Photo de profil mise à jour !');
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    input.click();
+});
+
+// Form validation on input
+document.querySelectorAll('.form-control').forEach(input => {
+    input.addEventListener('input', function() {
+        if (this.style.borderColor === 'rgb(220, 38, 38)') {
+            this.style.borderColor = 'var(--border-color)';
+        }
+        hideMessages();
+    });
+});
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    loadProfile();
+
+    // Form submission
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveProfile();
+    });
+});
 </script>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

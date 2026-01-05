@@ -6,6 +6,7 @@
 <title>Planning de l'Équipe - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -295,7 +289,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -389,12 +383,10 @@ font-size: 0.75rem;
 border-radius: 0.375rem;
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 .appointments-table {
 font-size: 0.8rem;
 }
@@ -404,7 +396,6 @@ padding: 0.75rem 0.5rem;
 }
 }
 @media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
 .main-content { margin-left: 0; padding: 1rem; }
 .cabinet-header,
 .user-section {
@@ -455,7 +446,32 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+<div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Planning de l'Équipe</h1>
 <button class="btn btn-primary" onclick="showForm()">
@@ -470,7 +486,7 @@ Ajouter un Shift
 <form id="shiftForm" style="padding: 1.5rem;">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
 <div class="form-group">
-<label class="form-label">Membre d u personnel</label>
+<label class="form-label">Membre du personnel</label>
 <select class="form-control" id="staff_member" required>
 <option value="">Sélectionner un membre</option>
 </select>
@@ -534,106 +550,26 @@ Ajouter un Shift
 </tbody>
 </table>
 </div>
-</div><script src="../js/navbar.js"></script><script>
-let shifts = JSON.parse(localStorage.getItem('shifts')) || [];
-let editingIndex = -1;
-function loadStaffOptions() {
-const staff = JSON.parse(localStorage.getItem('staff')) || [];
-const select = document.getElementById('staff_member');
-select.innerHTML = '<option value="">Sélectionner un membre</option>';
-staff.forEach(member => {
-const option = document.createElement('option');
-option.value = member.id ;
-option.textContent = member.name;
-select.appendChild(option);
-});
-}
-function showForm() {
-loadStaffOptions();
-document.getElementById('addForm').style.display = 'block';
-document.getElementById('shiftForm').reset();
-editingIndex = -1;
-document.querySelector('#addForm .appointments-title').textContent = 'Ajouter un Shift';
-}
-function hideForm() {
-document.getElementById('addForm').style.display = 'none';
-}
-function saveShift(e) {
-e.preventDefault();
-const shift = {
-staff_member: document.getElementById('staff_member').value,
-shift_date: document.getElementById('shift_date').value,
-start_time: document.getElementById('start_time').value,
-end_time: document.getElementById('end _time').value,
-shift_type: document.getElementById('shift_type').value,
-notes: document.getElementById('notes').value
-};
-if (editingIndex >= 0) {
-shifts[editingIndex] = shift;
-} else {
-shifts.push(shift);
-}
-localStorage.setItem('shifts', JSON.stringify(shifts));
-renderShifts();
-hideForm();
-}
-function editShift(index) {
-const shift = shifts[index];
-document.getElementById('staff_member').value = shift.staff_member;
-document.getElementById('shift_date').value = shift.shift_date;
-document.getElementById('start_time').value = shift.start_time;
-document.getElementById('end _time').value = shift.end_time;
-document.getElementById('shift_type').value = shift.shift_type;
-document.getElementById('notes').value = shift.notes;
-editingIndex = index;
-document.getElementById('addForm').style.display = 'block';
-document.querySelector('#addForm .appointments-title').textContent = 'Modifier le Shift';
-}
-function deleteShift(index) {
-if (confirm('Êtes-vous sûr de vouloir supprimer ce shift ?')) {
-shifts.splice(index, 1);
-localStorage.setItem('shifts', JSON.stringify(shifts));
-renderShifts();
-}
-}
-function renderShifts() {
-const tbody = document.getElementById('shiftsTablebody');
-const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-tbody.innerHTML = '';
-const staff = JSON.parse(localStorage.getItem('staff')) || [];
-shifts.forEach((shift, index) => {
-const member = staff.find (m => m.id  == shift.staff_member);
-const memberName = member ? member.name : 'Inconnu';
-const matchesSearch = memberName.toLowerCase().includes(searchTerm) ||
-shift.shift_type.toLowerCase().includes(searchTerm);
-if (matchesSearch) {
-const row = document.createElement('tr');
-row.innerHTML = `
-<td >${memberName}</td >
-<td >${formatDate(shift.shift_date)}</td >
-<td >${shift.start_time}</td >
-<td >${shift.end_time}</td >
-<td >${shift.shift_type}</td >
-<td >${shift.notes}</td >
-<td  class="action-buttons">
-<button class="btn btn-small btn-success" title="Modifier" onclick="editShift(${index})"><i class="fas fa-edit"></i></button>
-<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteShift(${index})"><i class="fas fa-times"></i></button>
-</td >
-`;
-tbody.appendChild(row);
-}
-});
-}
-function formatDate(dateString) {
-const date = new Date(dateString);
-return date.toLocaleDateString('fr-FR');
-}
-document.getElementById('shiftForm').addEventListener('submit', saveShift);
-document.getElementById('searchInput').addEventListener('input', renderShifts);
-renderShifts();
-</script>
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

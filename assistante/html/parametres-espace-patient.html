@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paramètres Espace Patient - Cabinet Dentaire Al-Farabi</title>
+<title>Paramètres Espace Patient - DIKRA centre Dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -305,7 +299,6 @@ justify-content: center;
 }
 
 /* Sidebar section wrapper */
-.sidebar-section {
   list-style: none;
 }
 .section-header {
@@ -354,7 +347,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -508,18 +501,15 @@ border-color: var(--medical-blue);
 box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 .settings-grid{
 grid-template-columns: 1fr;
 }
 }
 @media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
 .main-content { margin-left: 0; padding: 1rem; }
 .cabinet-header,
 .user-section {
@@ -541,7 +531,32 @@ text-align: center;
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+<div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Paramètres Espace Patient</h1>
 <button class="btn btn-primary" onclick="saveSettings()">
@@ -638,42 +653,26 @@ Sauvegarder
 </div>
 </div>
 </div>
-</div><script src="../js/navbar.js"></script><script>
-function loadSettings() {
-const settings = JSON.parse(localStorage.getItem('patient_portal_settings')) || {};
-document.getElementById('online_booking').checked = settings.online_booking || false;
-document.getElementById('medical_records').checked = settings.medical_records || false;
-document.getElementById('secure_messaging').checked = settings.secure_messaging || false;
-document.getElementById('email_notifications').checked = settings.email_notifications || false;
-document.getElementById('sms_notifications').checked = settings.sms_notifications || false;
-document.getElementById('online_payments').checked = settings.online_payments || false;
-document.getElementById('teleconsultation').checked = settings.teleconsultation || false;
-document.getElementById('document_sharing').checked = settings.document_sharing || false;
-document.getElementById('welcome_message').value = settings.welcome_message || '';
-document.getElementById('privacy_policy').value = settings.privacy_policy || '';
-document.getElementById('opening_hours').value = settings.opening_hours || '';
-}
-function saveSettings() {
-const settings = {
-online_booking: document.getElementById('online_booking').checked,
-medical_records: document.getElementById('medical_records').checked,
-secure_messaging: document.getElementById('secure_messaging').checked,
-email_notifications: document.getElementById('email_notifications').checked,
-sms_notifications: document.getElementById('sms_notifications').checked,
-online_payments: document.getElementById('online_payments').checked,
-teleconsultation: document.getElementById('teleconsultation').checked,
-document_sharing: document.getElementById('document_sharing').checked,
-welcome_message: document.getElementById('welcome_message').value,
-privacy_policy: document.getElementById('privacy_policy').value,
-opening_hours: document.getElementById('opening_hours').value
-};
-localStorage.setItem('patient_portal_settings', JSON.stringify(settings));
-alert('Paramètres sauvegardés avec succès !');
-}
-loadSettings();
-</script>
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

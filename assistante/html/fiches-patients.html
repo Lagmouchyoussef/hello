@@ -6,6 +6,7 @@
 <title>Fiches Patients - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -295,7 +289,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -408,12 +402,10 @@ font-size: 0.75rem;
 border-radius: 0.375rem;
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 .appointments-table {
 font-size: 0.8rem;
 }
@@ -423,7 +415,6 @@ padding: 0.75rem 0.5rem;
 }
 }
 @media (max-width: 480px) {
-  .sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
   .main-content { margin-left: 0; padding: 1rem; }
   .cabinet-header,
   .user-section {
@@ -473,7 +464,6 @@ padding: 0.75rem 0.5rem;
 }
 
 /* Add itional styles for full sidebar */
-.sidebar-section {
   list-style: none;
 }
 .section-header.clickable {
@@ -524,7 +514,32 @@ padding: 0.75rem 0.5rem;
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+<div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Fiches Patients</h1>
 <button class="btn btn-primary" onclick="showForm()">
@@ -594,181 +609,29 @@ Nouveau Patient
 </table>
 </div>
 </div>
-<script src="../js/navbar.js"></script>
-<script src="../../../LOGING/js/data.js"></script>
-<script src="../../../LOGING/js/data.js"></script>
-<script>
-// Open "Patients" by default
-document.getElementById("section-patients-content").classList.remove("collapsed");
-document.getElementById("section-patients-toggle").classList.remove("collapsed");
 
-let editingPatientId = null;
 
-function showForm() {
-    if (!dentalDataManager.hasPermission('write_patients')) {
-        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
-        return;
-    }
-    document.getElementById('addForm').style.display = 'block';
-    document.getElementById('patientForm').reset();
-    editingPatientId = null;
-    document.querySelector('#addForm .appointments-title').textContent = 'Ajouter un Patient';
-}
 
-function hideForm() {
-    document.getElementById('addForm').style.display = 'none';
-}
 
-function savePatient(e) {
-    e.preventDefault();
-
-    if (!dentalDataManager.hasPermission('write_patients')) {
-        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
-        return;
-    }
-
-    const patientData = {
-        firstName: document.getElementById('firstName').value.trim(),
-        lastName: document.getElementById('lastName').value.trim(),
-        birthDate: document.getElementById('birthDate').value,
-        phone: document.getElementById('phone').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        address: document.getElementById('address').value.trim()
-    };
-
-    if (editingPatientId) {
-        // Editing existing patient
-        const success = dentalDataManager.update('patients', editingPatientId, patientData);
-        if (success) {
-            dentalDataManager.showMessage('Patient modifié avec succès et données synchronisées.', 'success');
-        }
-    } else {
-        // Adding new patient
-        const patientId = dentalDataManager.createPatient(patientData);
-        if (patientId) {
-            dentalDataManager.showMessage('Patient ajouté avec succès et données synchronisées.', 'success');
-        }
-    }
-
-    renderPatients();
-    hideForm();
-}
-
-function editPatient(patientId) {
-    if (!dentalDataManager.hasPermission('write_patients')) {
-        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
-        return;
-    }
-
-    const patient = dentalDataManager.read('patients', patientId);
-    if (!patient) return;
-
-    document.getElementById('firstName').value = patient.firstName || '';
-    document.getElementById('lastName').value = patient.lastName || '';
-    document.getElementById('birthDate').value = patient.birthDate || '';
-    document.getElementById('phone').value = patient.phone || '';
-    document.getElementById('email').value = patient.email || '';
-    document.getElementById('address').value = patient.address || '';
-    editingPatientId = patientId;
-    document.getElementById('addForm').style.display = 'block';
-    document.querySelector('#addForm .appointments-title').textContent = 'Modifier le Patient';
-}
-
-function deactivatePatient(patientId) {
-    if (!dentalDataManager.hasPermission('write_patients')) {
-        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
-        return;
-    }
-
-    if (confirm('Êtes-vous sûr de vouloir désactiver ce patient ?')) {
-        dentalDataManager.deactivatePatient(patientId);
-        renderPatients();
-    }
-}
-
-function activatePatient(patientId) {
-    if (!dentalDataManager.hasPermission('write_patients')) {
-        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
-        return;
-    }
-
-    dentalDataManager.activatePatient(patientId);
-    renderPatients();
-}
-
-function deletePatient(patientId) {
-    if (!dentalDataManager.hasPermission('write_patients')) {
-        dentalDataManager.showMessage('Action refusée : permissions insuffisantes.', 'error');
-        return;
-    }
-
-    if (confirm('Êtes-vous sûr de vouloir supprimer définitivement ce patient ? Cette action est irréversible.')) {
-        dentalDataManager.deletePatient(patientId);
-        renderPatients();
-    }
-}
-
-function renderPatients() {
-    const tbody = document.getElementById('patientsTablebody');
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const patients = dentalDataManager.getAllPatients();
-
-    tbody.innerHTML = '';
-
-    patients.forEach((patient) => {
-        const matchesSearch = (patient.firstName || '').toLowerCase().includes(searchTerm) ||
-            (patient.lastName || '').toLowerCase().includes(searchTerm) ||
-            (patient.email || '').toLowerCase().includes(searchTerm);
-
-        if (matchesSearch) {
-            let statusBadge = '';
-            let actionButtons = '';
-
-            if (patient.status === 'active') {
-                statusBadge = '<span class="status-badge status-confirmed">Actif</span>';
-                actionButtons = `
-                    <button class="btn btn-small btn-success" title="Modifier" onclick="editPatient('${patient.id}')"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-small btn-warning" title="Désactiver" onclick="deactivatePatient('${patient.id}')"><i class="fas fa-pause"></i></button>
-                    <button class="btn btn-small btn-danger" title="Supprimer" onclick="deletePatient('${patient.id}')"><i class="fas fa-times"></i></button>
-                `;
-            } else if (patient.status === 'inactive') {
-                statusBadge = '<span class="status-badge status-pending">Inactif</span>';
-                actionButtons = `
-                    <button class="btn btn-small btn-success" title="Réactiver" onclick="activatePatient('${patient.id}')"><i class="fas fa-play"></i></button>
-                    <button class="btn btn-small btn-danger" title="Supprimer" onclick="deletePatient('${patient.id}')"><i class="fas fa-times"></i></button>
-                `;
-            } else if (patient.status === 'deleted') {
-                statusBadge = '<span class="status-badge status-cancelled">Supprimé</span>';
-                actionButtons = '<span class="text-gray">Aucune action disponible</span>';
-            }
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${patient.firstName || ''}</td>
-                <td>${patient.lastName || ''}</td>
-                <td>${patient.birthDate ? formatDate(patient.birthDate) : ''}</td>
-                <td>${patient.phone || ''}</td>
-                <td>${patient.email || ''}</td>
-                <td>${patient.address || ''}</td>
-                <td>${statusBadge}</td>
-                <td class="action-buttons">${actionButtons}</td>
-            `;
-            tbody.appendChild(row);
-        }
-    });
-}
-
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR');
-}
-
-document.getElementById('patientForm').addEventListener('submit', savePatient);
-document.getElementById('searchInput').addEventListener('input', renderPatients);
-renderPatients();
-</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

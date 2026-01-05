@@ -6,6 +6,7 @@
 <title>Imagerie médicale - Dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -295,7 +289,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -408,12 +402,10 @@ font-size: 0.75rem;
 border-radius: 0.375rem;
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 .appointments-table {
 font-size: 0.8rem;
 }
@@ -423,7 +415,6 @@ padding: 0.75rem 0.5rem;
 }
 }
 @media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
 .main-content { margin-left: 0; padding: 1rem; }
 .cabinet-header,
 .user-section {
@@ -474,7 +465,32 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+<div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Imagerie médicale</h1>
 <button class="btn btn-primary" onclick="showForm()">
@@ -564,103 +580,26 @@ Nouvelle Imagerie
 </tbody>
 </table>
 </div>
-</div><script src="../js/navbar.js"></script><script>// Open "Patients" by default\ndocument.getElementById("section-patients-content").classList.remove("collapsed");\ndocument.getElementById("section-patients-toggle").classList.remove("collapsed");\n
-let imageries = JSON.parse(localStorage.getItem('imageries')) || [];
-let editingIndex = -1;
-function showForm() {
-document.getElementById('addForm').style.display = 'block';
-document.getElementById('imagerieForm').reset();
-editingIndex = -1;
-document.querySelector('#addForm .appointments-title').textContent = 'Ajouter une Imagerie médicale';
-}
-function hideForm() {
-document.getElementById('addForm').style.display = 'none';
-}
-function saveImagerie(e) {
-e.preventDefault();
-const imagerie = {
-nom_patient: document.getElementById('nom_patient').value,
-type_imagerie: document.getElementById('type_imagerie').value,
-date_examen: document.getElementById('date_examen').value,
-medecin_radiologue: document.getElementById('medecin_radiologue').value,
-zone_examinee: document.getElementById('zone_examinee').value,
-indication: document.getElementById('indication').value,
-resultats: document.getElementById('resultats').value,
-observations: document.getElementById('observations').value,
-fichier_image: document.getElementById('fichier_image').files[0] ? document.getElementById('fichier_image').files[0].name : ''
-};
-if (editingIndex >= 0) {
-imageries[editingIndex] = imagerie;
-} else {
-imageries.push(imagerie);
-}
-localStorage.setItem('imageries', JSON.stringify(imageries));
-renderImageries();
-hideForm();
-}
-function editImagerie(index) {
-const imagerie = imageries[index];
-document.getElementById('nom_patient').value = imagerie.nom_patient;
-document.getElementById('type_imagerie').value = imagerie.type_imagerie;
-document.getElementById('date_examen').value = imagerie.date_examen;
-document.getElementById('medecin_radiologue').value = imagerie.medecin_radiologue;
-document.getElementById('zone_examinee').value = imagerie.zone_examinee;
-document.getElementById('indication').value = imagerie.indication;
-document.getElementById('resultats').value = imagerie.resultats;
-document.getElementById('observations').value = imagerie.observations;
-editingIndex = index;
-document.getElementById('addForm').style.display = 'block';
-document.querySelector('#addForm .appointments-title').textContent = 'Modifier l\'Imagerie médicale';
-}
-function deleteImagerie(index) {
-if (confirm('Êtes-vous sûr de vouloir supprimer cette imagerie ?')) {
-imageries.splice(index, 1);
-localStorage.setItem('imageries', JSON.stringify(imageries));
-renderImageries();
-}
-}
-function renderImageries() {
-const tbody = document.getElementById('imagerieTablebody');
-const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-tbody.innerHTML = '';
-imageries.forEach((imagerie, index) => {
-const matchesSearch = imagerie.nom_patient.toLowerCase().includes(searchTerm) ||
-imagerie.type_imagerie.toLowerCase().includes(searchTerm) ||
-imagerie.medecin_radiologue.toLowerCase().includes(searchTerm) ||
-imagerie.zone_examinee.toLowerCase().includes(searchTerm) ||
-imagerie.indication.toLowerCase().includes(searchTerm) ||
-imagerie.resultats.toLowerCase().includes(searchTerm) ||
-imagerie.observations.toLowerCase().includes(searchTerm);
-if (matchesSearch) {
-const row = document.createElement('tr');
-row.innerHTML = `
-<td >${imagerie.nom_patient}</td >
-<td >${imagerie.type_imagerie}</td >
-<td >${formatDate(imagerie.date_examen)}</td >
-<td >${imagerie.medecin_radiologue}</td >
-<td >${imagerie.zone_examinee}</td >
-<td >${imagerie.indication}</td >
-<td >${imagerie.resultats}</td >
-<td >${imagerie.observations}</td >
-<td  class="action-buttons">
-<button class="btn btn-small btn-success" title="Modifier" onclick="editImagerie(${index})"><i class="fas fa-edit"></i></button>
-<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteImagerie(${index})"><i class="fas fa-times"></i></button>
-</td >
-`;
-tbody.appendChild(row);
-}
-});
-}
-function formatDate(dateString) {
-const date = new Date(dateString);
-return date.toLocaleDateString('fr-FR');
-}
-document.getElementById('imagerieForm').addEventListener('submit', saveImagerie);
-document.getElementById('searchInput').addEventListener('input', renderImageries);
-renderImageries();
-</script>
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,696 +1,1427 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paramètres Espace Patient - Cabinet Dentaire Al-Farabi</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-:root {
---medical-blue: #1e3a8a;
---medical-blue-dark: #1e40af;
---medical-blue-darker: #172554;
---medical-blue-light: #3b82f6;
---success: #059669;
---warning: #d97706;
---danger: #cbd5e1;
---text-light: #f8fafc;
---text-gray: #64748b;
---border-radius: 0.5rem;
---shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
---ai-purple: #7e22ce;
---ai-purple-light: #c084fc;
---transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
---unread-bg: #dbeafe;
-}
-.light-mode {
---bg-primary: #f8fafc;
---bg-secondary: #ffffff;
---text-primary: #0f172a;
---text-secondary: #334155;
---border-color: #e2e8f0;
---card-shadow: var(--shadow);
---section-bg: rgba(30, 58, 138, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
-}
-.dark-mode {
---bg-primary: #0f172a;
---bg-secondary: #1e293b;
---text-primary: #f8fafc;
---text-secondary: #cbd5e1;
---border-color: #334155;
---card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
---unread-bg: #1e3a8a;
---section-bg: rgba(255, 255, 255, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
-}
-body {
-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-background-color: var(--bg-primary);
-color: var(--text-primary);
-line-height: 1.5;
-font-size: 0.875rem;
-transition: var(--transition);
-}
-.sidebar {
-width: 280px;
-background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
-color: var(--text-light);
-height: 100vh;
-position: fixed;
-left: 0;
-top: 0;
-padding: 1.5rem 0;
-overflow-y: auto;
-box-shadow: var(--shadow);
-z-index: 1000;
-display: flex;
-flex-direction: column;
-transition: var(--transition);
-}
-.cabinet-header {
-padding: 0 1.5rem 1.5rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-margin-bottom: 1.5rem;
-text-align: center;
-position: relative;
-}
-.cabinet-logo {
-width: 64px;
-height: 64px;
-background: white;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-margin: 0 auto 1rem;
-color: var(--medical-blue);
-font-weight: 700;
-font-size: 1.5rem;
-box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
-transition: var(--transition);
-}
-.cabinet-logo:hover {
-transform: scale(1.05);
-box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
-}
-.cabinet-name {
-font-size: 1.25rem;
-font-weight: 700;
-margin-bottom: 0.25rem;
-letter-spacing: -0.025em;
-background: linear-gradient(to right, #ffffff, #cbd5e1);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-}
-.cabinet-subtitle {
-font-size: 0.875rem;
-color: rgba(255, 255, 255, 0.8);
-font-weight: 400;
-}
-.user-section {
-padding: 1.5rem;
-border-top: 1px solid rgba(255, 255, 255, 0.15);
-margin-top: auto;
-background: rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(10px);
-}
-.user-info {
-display: flex;
-align-items: center;
-gap: 1rem;
-margin-bottom: 1.25rem;
-padding-bottom: 1rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-.user-avatar {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
-display: flex;
-align-items: center;
-justify-content: center;
-color: white;
-font-weight: 600;
-font-size: 0.9375rem;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-.user-details {
-flex: 1;
-}
-.user-name {
-font-size: 0.9375rem;
-font-weight: 600;
-margin-bottom: 0.25rem;
-color: white;
-}
-.user-role {
-font-size: 0.75rem;
-color: rgba(255, 255, 255, 0.8);
-}
-.logout-btn,
-.theme-toggle {
-width: 100%;
-padding: 0.625rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 0.75rem;
-border: none;
-text-align: left;
-}
-.logout-btn {
-background: rgba(220, 38, 38, 0.2);
-color: white;
-}
-.logout-btn:hover {
-background: rgba(220, 38, 38, 0.3);
-transform: translateY(-1px);
-}
-.theme-toggle {
-background: rgba(255, 255, 255, 0.15);
-color: white;
-margin-bottom: 0.75rem;
-}
-.theme-toggle:hover {
-background: rgba(255, 255, 255, 0.25);
-transform: translateY(-1px);
-}
-.sidebar-menu {
-list-style: none;
-padding: 0 1.5rem;
-flex: 1;
-}
-.sidebar-item {
-margin: 0;
-}
-.sidebar-link {
-display: flex;
-align-items: center;
-gap: 1rem;
-padding: 0.875rem 1.25rem;
-text-decoration: none;
-color: rgba(255, 255, 255, 0.9);
-font-size: 0.9375rem;
-font-weight: 500;
-transition: var(--transition);
-border-radius: var(--border-radius);
-position: relative;
-width: 100%;
-text-align: left;
-border: none;
-background: none;
-cursor: pointer;
-}
-.sidebar-link:hover {
-background: var(--hover-bg);
-color: white;
-transform: translateX(4px);
-}
-.sidebar-link.active {
-background: var(--active-bg);
-color: white;
-border-left: 3px solid var(--medical-blue-light);
-padding-left: 1rem;
-transform: translateX(4px);
-}
-.sidebar-icon {
-width: 24px;
-text-align: center;
-font-size: 1.125rem;
-min-width: 24px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-.badge {
-  background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-  color: white;
-  border-radius: 9999px;
-  padding: 0.25rem 0.625rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-left: auto;
-  margin-right: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres espace patient - DIKRA centre Dentaire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../navbar.css">
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --medical-blue: #1e3a8a;
+            --medical-blue-dark: #1e40af;
+            --medical-blue-darker: #172554;
+            --medical-blue-light: #3b82f6;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --text-light: #f8fafc;
+            --text-gray: #64748b;
+            --border-radius: 0.5rem;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --ai-purple: #7e22ce;
+            --ai-purple-light: #c084fc;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --unread-bg: #dbeafe;
+            --assistant-green: #047857;
+            --assistant-green-light: #10b981;
+        }
 
-.ai-agent-icon {
-  background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-  color: white;
-  padding: 0.375rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-}
+        /* Light mode */
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --border-color: #e2e8f0;
+            --card-shadow: var(--shadow);
+            --section-bg: rgba(4, 120, 87, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
 
-/* Section Headers as dropdown triggers */
-.section-header.clickable {
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
+        /* Dark mode */
+        .dark-mode {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --unread-bg: #065f46;
+            --section-bg: rgba(255, 255, 255, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
 
-.section-header::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 1.25rem;
-  right: 1.25rem;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-}
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.section-chevron {
-  font-size: 0.75rem;
-  transition: transform 0.3s ease;
-  color: rgba(255, 255, 255, 0.6);
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
 
-.section-header.collapsed.section-chevron {
-  transform: rotate(-90deg);
-}
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            transition: var(--transition);
+        }
 
-/* Section content */
-.section-content {
-  overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-  max-height: 1000px;
-  opacity: 1;
-}
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
 
-.section-content.collapsed{
-  max-height: 0;
-  opacity: 0;
-}
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
 
-/* Sidebar section wrapper */
-.sidebar-section {
-  list-style: none;
-}
-.section-header {
-padding: 0.75rem 1.25rem 0.5rem;
-font-size: 0.75rem;
-font-weight: 600;
-color: rgba(255, 255, 255, 0.6);
-text-transform: uppercase;
-letter-spacing: 0.08em;
-margin-top: 1.5rem;
-position: relative;
-cursor: pointer;
-display: flex;
-justify-content: space-between;
-align-items: center;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-.section-header:first-child  {
-margin-top: 0;
-}
-.section-header::after {
-content: '';
-position: absolute;
-bottom: 0;
-left: 1.25rem;
-right: 1.25rem;
-height: 1px;
-background: rgba(255, 255, 255, 0.1);
-}
-.section-chevron {
-font-size: 0.75rem;
-transition: transform 0.3s ease;
-color: rgba(255, 255, 255, 0.6);
-}
-.section-header.collapsed.section-chevron {
-transform: rotate(-90deg);
-}
-.section-content {
-overflow: hidden;
-transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-max-height: 1000px;
-opacity: 1;
-}
-.section-content.collapsed{
-max-height: 0;
-opacity: 0;
-}
-.main-content {
-margin-left: 280px;
-padding: 2rem;
-min-height: 100vh;
-transition: var(--transition);
-}
-.content-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 2rem;
-flex-wrap: wrap;
-gap: 1rem;
-}
-.page-title {
-font-size: 1.75rem;
-font-weight: 700;
-letter-spacing: -0.025em;
-color: var(--text-primary);
-}
-.btn {
-padding: 0.5rem 1rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-border: none;
-}
-.btn-primary {
-background: var(--medical-blue);
-color: white;
-}
-.btn-primary:hover {
-background: var(--medical-blue-dark);
-transform: translateY(-2px);
-}
-.btn-success {
-background: var(--success);
-color: white;
-}
-.btn-danger {
-background: var(--danger);
-color: white;
-}
-.appointments-container {
-background: var(--bg-secondary);
-border-radius: var(--border-radius);
-box-shadow: var(--card-shadow);
-border: 1px solid var(--border-color);
-overflow: hidden;
-}
-.appointments-header {
-padding: 1.5rem;
-background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-color: white;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.appointments-title {
-font-size: 1.25rem;
-font-weight: 600;
-}
-.settings-grid{
-display: grid ;
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-gap: 1.5rem;
-padding: 1.5rem;
-}
-.setting-item {
-background: var(--bg-primary);
-border: 1px solid var(--border-color);
-border-radius: var(--border-radius);
-padding: 1.5rem;
-transition: var(--transition);
-}
-.setting-item:hover {
-box-shadow: var(--card-shadow);
-}
-.setting-title {
-font-size: 1.125rem;
-font-weight: 600;
-margin-bottom: 0.5rem;
-color: var(--text-primary);
-}
-.setting-desc {
-font-size: 0.875rem;
-color: var(--text-secondary);
-margin-bottom: 1rem;
-}
-.toggle-switch {
-position: relative;
-display: inline-block;
-width: 50px;
-height: 24px;
-}
-.toggle-switch input {
-opacity: 0;
-width: 0;
-height: 0;
-}
-.slider {
-position: absolute;
-cursor: pointer;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background-color: var(--border-color);
-transition: 0.4s;
-border-radius: 24px;
-}
-.slider:before {
-position: absolute;
-content: "";
-height: 18px;
-width: 18px;
-left: 3px;
-bottom: 3px;
-background-color: white;
-transition: 0.4s;
-border-radius: 50%;
-}
-input:checked  + .slider {
-background-color: var(--medical-blue);
-}
-input:checked  + .slider:before {
-transform: translateX(26px);
-}
-.form-group {
-margin-bottom: 1rem;
-}
-.form-label {
-display: block;
-font-size: 0.875rem;
-font-weight: 500;
-color: var(--text-secondary);
-margin-bottom: 0.5rem;
-}
-.form-control {
-width: 100%;
-padding: 0.5rem;
-border: 1px solid var(--border-color);
-border-radius: var(--border-radius);
-background: var(--bg-primary);
-color: var(--text-primary);
-font-size: 0.875rem;
-}
-.form-control:focus {
-outline: none;
-border-color: var(--medical-blue);
-box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
-}
-@media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
-}
-@media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
-.settings-grid{
-grid-template-columns: 1fr;
-}
-}
-@media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
-.main-content { margin-left: 0; padding: 1rem; }
-.cabinet-header,
-.user-section {
-text-align: left;
-}
-.cabinet-logo {
-margin: 0 0 1rem 1.5rem;
-}
-.content-header {
-flex-direction: column;
-align-items: flex-start;
-}
-.appointments-header {
-flex-direction: column;
-gap: 1rem;
-text-align: center;
-}
-}
-</style>
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Content container */
+        .content-container {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .content-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-header-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .content-body {
+            padding: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--medical-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--medical-blue-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--text-gray);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        /* Settings grid */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .settings-section {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .settings-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--section-bg);
+        }
+
+        .settings-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .settings-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .settings-body {
+            padding: 1.5rem;
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Toggle switches */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--text-gray);
+            transition: var(--transition);
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--medical-blue);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            background: var(--bg-primary);
+        }
+
+        .toggle-info {
+            flex: 1;
+        }
+
+        .toggle-title {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .toggle-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Feature cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            border-color: var(--medical-blue);
+            box-shadow: var(--card-shadow);
+        }
+
+        .feature-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .feature-icon.primary {
+            background: rgba(30, 58, 138, 0.1);
+            color: var(--medical-blue);
+        }
+
+        .feature-icon.success {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+
+        .feature-icon.warning {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning);
+        }
+
+        .feature-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Access control */
+        .access-control {
+            margin-top: 1.5rem;
+        }
+
+        .access-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 0.5rem;
+            background: var(--bg-primary);
+        }
+
+        .access-info {
+            flex: 1;
+        }
+
+        .access-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .access-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                margin-left: 250px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 250px;
+                padding: 1.5rem;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .content-header-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 240px;
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .settings-grid {
+                gap: 1rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toggle-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .access-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .content-actions {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
-<div class="content-header">
-<h1 class="page-title">Paramètres Espace Patient</h1>
-<button class="btn btn-primary" onclick="saveSettings()">
-<i class="fas fa-save"></i>
-Sauvegarder
-</button>
-</div>
-<div class="appointments-container">
-<div class="appointments-header">
-<h2 class="appointments-title">Configuration de l'Espace Patient</h2>
-</div>
-<div class="settings-grid ">
-<div class="setting-item">
-<div class="setting-title">Prise de rendez-vous en ligne</div>
-<div class="setting-desc">Permettre aux patients de prendre rendez-vous directement depuis leur espace.</div>
-<label class="toggle-switch">
-<input type="checkbox" id="online_booking">
-<span class="slider"></span>
-</label>
-</div>
-<div class="setting-item">
-<div class="setting-title">Accès aux dossiers médicaux</div>
-<div class="setting-desc">Autoriser les patients à consulter leurs dossiers médicaux.</div>
-<label class="toggle-switch">
-<input type="checkbox" id="medical_records">
-<span class="slider"></span>
-</label>
-</div>
-<div class="setting-item">
-<div class="setting-title">Messagerie sécurisée</div>
-<div class="setting-desc">Activer la messagerie entre patients et cabinet.</div>
-<label class="toggle-switch">
-<input type="checkbox" id="secure_messaging">
-<span class="slider"></span>
-</label>
-</div>
-<div class="setting-item">
-<div class="setting-title">Notifications par email</div>
-<div class="setting-desc">Envoyer des notifications par email pour les rendez-vous et rappels.</div>
-<label class="toggle-switch">
-<input type="checkbox" id="email_notifications">
-<span class="slider"></span>
-</label>
-</div>
-<div class="setting-item">
-<div class="setting-title">Notifications SMS</div>
-<div class="setting-desc">Envoyer des rappels par SMS.</div>
-<label class="toggle-switch">
-<input type="checkbox" id="sms_notifications">
-<span class="slider"></span>
-</label>
-</div>
-<div class="setting-item">
-<div class="setting-title">Paiements en ligne</div>
-<div class="setting-desc">Permettre les paiements de factures en ligne.</div>
-<label class="toggle-switch">
-<input type="checkbox" id="online_payments">
-<span class="slider"></span>
-</label>
-</div>
-<div class="setting-item">
-<div class="setting-title">Téléconsultation</div>
-<div class="setting-desc">Activer les consultations à distance.</div>
-<label class="toggle-switch">
-<input type="checkbox" id="teleconsultation">
-<span class="slider"></span>
-</label>
-</div>
-<div class="setting-item">
-<div class="setting-title">Partage de documents</div>
-<div class="setting-desc">Permettre aux patients de télécharger et partager des documents.</div>
-<label class="toggle-switch">
-<input type="checkbox" id="document_sharing">
-<span class="slider"></span>
-</label>
-</div>
-<div class="setting-item">
-<div class="form-group">
-<label class="form-label">Message de bienvenue</label>
-<textarea class="form-control" id="welcome_message" rows="3" placeholder="Message affiché aux nouveaux patients"></textarea>
-</div>
-</div>
-<div class="setting-item">
-<div class="form-group">
-<label class="form-label">Politique de confidentialité</label>
-<textarea class="form-control" id="privacy_policy" rows="3" placeholder="Lien ou texte de la politique de confidentialité"></textarea>
-</div>
-</div>
-<div class="setting-item">
-<div class="form-group">
-<label class="form-label">Heures d'ouverture (affichées)</label>
-<input type="text" class="form-control" id="opening_hours" placeholder="ex: Lun-Ven: 9h-18h, Sam: 9h-12h">
-</div>
-</div>
-</div>
-</div>
-</div><script src="../js/navbar.js"></script><script>
-function loadSettings() {
-const settings = JSON.parse(localStorage.getItem('patient_portal_settings')) || {};
-document.getElementById('online_booking').checked = settings.online_booking || false;
-document.getElementById('medical_records').checked = settings.medical_records || false;
-document.getElementById('secure_messaging').checked = settings.secure_messaging || false;
-document.getElementById('email_notifications').checked = settings.email_notifications || false;
-document.getElementById('sms_notifications').checked = settings.sms_notifications || false;
-document.getElementById('online_payments').checked = settings.online_payments || false;
-document.getElementById('teleconsultation').checked = settings.teleconsultation || false;
-document.getElementById('document_sharing').checked = settings.document_sharing || false;
-document.getElementById('welcome_message').value = settings.welcome_message || '';
-document.getElementById('privacy_policy').value = settings.privacy_policy || '';
-document.getElementById('opening_hours').value = settings.opening_hours || '';
-}
-function saveSettings() {
-const settings = {
-online_booking: document.getElementById('online_booking').checked,
-medical_records: document.getElementById('medical_records').checked,
-secure_messaging: document.getElementById('secure_messaging').checked,
-email_notifications: document.getElementById('email_notifications').checked,
-sms_notifications: document.getElementById('sms_notifications').checked,
-online_payments: document.getElementById('online_payments').checked,
-teleconsultation: document.getElementById('teleconsultation').checked,
-document_sharing: document.getElementById('document_sharing').checked,
-welcome_message: document.getElementById('welcome_message').value,
-privacy_policy: document.getElementById('privacy_policy').value,
-opening_hours: document.getElementById('opening_hours').value
-};
-localStorage.setItem('patient_portal_settings', JSON.stringify(settings));
-alert('Paramètres sauvegardés avec succès !');
-}
-loadSettings();
-</script>
+    <!-- Professional Sidebar Navigation -->
+    <div class="sidebar">
+        <!-- Cabinet Header -->
+        <div class="cabinet-header"><div class="cabinet-logo"><img src="../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+            
+            <div class="cabinet-name">DIKRA centre Dentaire</div>
+            <div class="cabinet-subtitle">Casablanca, Maroc</div>
+        </div>
+        <!-- Navigation Menu -->
+        <ul class="sidebar-menu">
+            <!-- DASHBOARD -->
+            <li class="sidebar-item">
+                <a href="dashboard.html" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                    Tableau de bord
+                </a>
+            </li>
+
+            <!-- RENDEZ-VOUS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-rdv-toggle">
+                    Rendez-vous
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-rdv-content">
+                    <div class="sidebar-item">
+                        <a href="Listes%20des%20Rendez-vous.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                            Liste des rendez-vous
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="Prise%20en%20ligne.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
+                            Prise en ligne
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="En%20présentiel.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            En présentiel
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="via-espace-patient.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
+                            Via espace patient
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="planning-equipe.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
+                            Planning de l'équipe
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="salle-attente.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
+                            Salle d'attente
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- PATIENTS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-patients-toggle">
+                    Patients
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-patients-content">
+                    <div class="sidebar-item">
+                        <a href="fiches-patients.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                            Fiches patients
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="dossiers-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
+                            Dossiers médicaux
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- CABINET -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-cabinet-toggle">
+                    Cabinet
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-cabinet-content">
+                    <div class="sidebar-item">
+                        <a href="salle-attente.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
+                            Salle d'attente
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- COMPTABILITÉ -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-compta-toggle">
+                    Comptabilité
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-compta-content">
+                    <div class="sidebar-item">
+                        <a href="comptabilite-generale.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
+                            Comptabilité générale
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="paiements-recus.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
+                            Paiements reçus
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="charges-depenses.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                            Charges & dépenses
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- COMMUNICATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-com-toggle">
+                    Communication
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-com-content">
+                    <div class="sidebar-item">
+                        <a href="messagerie-interne.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                            Messagerie interne
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="assistant-ia.html" class="sidebar-link">
+                            <span class="sidebar-icon">
+                                <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
+                            </span>
+                            Assistant IA
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="envoi-sms.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
+                            Envoi de SMS
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notifications.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                            Notifications
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- ORGANISATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-org-toggle">
+                    Organisation
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-org-content">
+                    <div class="sidebar-item">
+                        <a href="taches-rappels.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
+                            Tâches & rappels
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notes-personnelles.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
+                            Notes personnelles
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="statistiques.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                            Statistiques
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- GESTION DES STOCKS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-stock-toggle">
+                    Gestion des stocks
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-stock-content">
+                    <div class="sidebar-item">
+                        <a href="materiel-dentaire.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-box"></i></span>
+                            Matériel dentaire
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="consommables.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
+                            Consommables
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="medicaments.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
+                            Médicaments
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- DOCUMENTS & FORMULAIRES -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-docs-toggle">
+                    Documents & formulaires
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-docs-content">
+                    <div class="sidebar-item">
+                        <a href="ordonnances.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
+                            Ordonnances
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="certificats-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                            Certificats médicaux
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="feuilles-de-soins.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                            Feuilles de soins (CNOPS/CNSS)
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="imagerie-medicale.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
+                            Imagerie médicale
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="protheses.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                            Prothèses
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- UTILISATEURS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-users-toggle">
+                    Utilisateurs
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-users-content">
+                    <div class="sidebar-item">
+                        <a href="Liste%20du%20personnel.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-list"></i></span>
+                            Liste du personnel
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="ajouter-un-membre.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
+                            Ajouter un membre
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="roles-permissions.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                            Rôles & permissions
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="planning-equipe.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                            Planning de l'équipe
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="parametres-espace-patient.html" class="sidebar-link active">
+                            <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                            Paramètres espace patient
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="gestion-des-acces.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-key"></i></span>
+                            Gestion des accès
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="dossiers-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                            Dossiers médicaux
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- SITE WEB -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-website-toggle">
+                    Site web
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-website-content">
+                    <div class="sidebar-item">
+                        <a href="contenu-articles.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
+                            Contenu & articles
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="design-theme.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
+                            Design & thème
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="referencement-seo.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-search"></i></span>
+                            Référencement (SEO)
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="formulaire-contact.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
+                            Formulaire de contact
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="statistiques-visite.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
+                            Statistiques de visite
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- CONFIGURATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-config-toggle">
+                    Configuration
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-config-content">
+                    <div class="sidebar-item">
+                        <a href="mon-profil.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                            Mon profil
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="informations-cabinet.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            Informations cabinet
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="parametres-facturation.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                            Paramètres de facturation
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notifications.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                            Notifications
+                        </a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!-- User Section -->
+        <div class="user-section">
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <div class="user-details">
+                    <div class="user-name"></div>
+                    <div class="user-role"></div>
+                </div>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+                <span>Mode Sombre</span>
+            </button>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="content-header">
+            <div>
+                <h1 class="page-title">Paramètres espace patient</h1>
+                <p class="page-subtitle">Configurer les fonctionnalités et accès de l'espace patient en ligne</p>
+            </div>
+            <div class="content-actions">
+                <button class="btn btn-outline" id="resetBtn">
+                    <i class="fas fa-undo"></i> Réinitialiser
+                </button>
+                <button class="btn btn-primary" id="saveBtn">
+                    <i class="fas fa-save"></i> Enregistrer
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings Grid -->
+        <div class="settings-grid">
+            <!-- General Settings -->
+            <div class="settings-section">
+                <div class="settings-header">
+                    <h3 class="settings-title">Paramètres généraux</h3>
+                    <p class="settings-description">Configuration de base de l'espace patient</p>
+                </div>
+                <div class="settings-body">
+                    <div class="form-group">
+                        <label class="form-label">Nom de l'espace patient</label>
+                        <input type="text" class="form-control" id="patientSpaceName" value="Espace Patient - Cabinet Al-Farabi">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">URL de l'espace patient</label>
+                        <input type="url" class="form-control" id="patientSpaceUrl" value="https://patient.cabinet-alfarabi.ma">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Langue par défaut</label>
+                        <select class="form-control form-select" id="defaultLanguage">
+                            <option value="fr" selected>Français</option>
+                            <option value="ar">Arabe</option>
+                            <option value="en">Anglais</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Message de bienvenue</label>
+                        <textarea class="form-control form-textarea" id="welcomeMessage" rows="3">Bienvenue dans votre espace patient sécurisé. Ici, vous pouvez prendre rendez-vous, consulter vos dossiers médicaux et communiquer avec notre équipe.</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Access Control -->
+            <div class="settings-section">
+                <div class="settings-header">
+                    <h3 class="settings-title">Contrôle d'accès</h3>
+                    <p class="settings-description">Gérer les fonctionnalités disponibles pour les patients</p>
+                </div>
+                <div class="settings-body">
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Inscription en ligne</div>
+                            <div class="toggle-description">Permettre aux patients de créer leur compte en ligne</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="onlineRegistration" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Prise de rendez-vous en ligne</div>
+                            <div class="toggle-description">Les patients peuvent prendre rendez-vous via l'espace patient</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="onlineAppointments" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Accès aux dossiers médicaux</div>
+                            <div class="toggle-description">Les patients peuvent consulter leurs dossiers médicaux</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="medicalRecords" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Messagerie sécurisée</div>
+                            <div class="toggle-description">Communication sécurisée entre patients et cabinet</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="secureMessaging" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Paiements en ligne</div>
+                            <div class="toggle-description">Possibilité de payer les consultations en ligne</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="onlinePayments">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Téléconsultation</div>
+                            <div class="toggle-description">Consultations à distance via vidéo</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="teleconsultation">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="settings-section">
+                <div class="settings-header">
+                    <h3 class="settings-title">Sécurité</h3>
+                    <p class="settings-description">Paramètres de sécurité et confidentialité</p>
+                </div>
+                <div class="settings-body">
+                    <div class="form-group">
+                        <label class="form-label">Politique de mot de passe</label>
+                        <select class="form-control form-select" id="passwordPolicy">
+                            <option value="basic" selected>Basique (8 caractères minimum)</option>
+                            <option value="strong">Fort (12 caractères, majuscules, chiffres, symboles)</option>
+                            <option value="very-strong">Très fort (16 caractères + authentification 2FA)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Durée de session (minutes)</label>
+                        <input type="number" class="form-control" id="sessionDuration" value="30" min="5" max="480">
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Authentification à deux facteurs</div>
+                            <div class="toggle-description">Renforcer la sécurité avec 2FA</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="twoFactorAuth">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Journal d'audit</div>
+                            <div class="toggle-description">Enregistrer toutes les actions des utilisateurs</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="auditLog" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="settings-section">
+                <div class="settings-header">
+                    <h3 class="settings-title">Notifications</h3>
+                    <p class="settings-description">Configurer les notifications automatiques</p>
+                </div>
+                <div class="settings-body">
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Rappel de rendez-vous</div>
+                            <div class="toggle-description">Envoyer des rappels avant les rendez-vous</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="appointmentReminders" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Confirmation de rendez-vous</div>
+                            <div class="toggle-description">Confirmer automatiquement les rendez-vous</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="appointmentConfirmations" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <div class="toggle-title">Notifications de résultats</div>
+                            <div class="toggle-description">Informer les patients des nouveaux résultats</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="resultNotifications" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Délai de rappel (heures)</label>
+                        <input type="number" class="form-control" id="reminderDelay" value="24" min="1" max="168">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Features -->
+        <div class="content-container">
+            <div class="content-header-section">
+                <h3 class="content-title">Fonctionnalités disponibles</h3>
+            </div>
+            <div class="content-body">
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon primary">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h4 class="feature-name">Prise de rendez-vous</h4>
+                        <p class="feature-description">Interface intuitive pour réserver des consultations en ligne avec calendrier en temps réel.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon success">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                        <h4 class="feature-name">Dossiers médicaux</h4>
+                        <p class="feature-description">Accès sécurisé aux antécédents médicaux, radios, et documents de santé.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon warning">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h4 class="feature-name">Messagerie</h4>
+                        <p class="feature-description">Communication directe et sécurisée avec l'équipe médicale.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon primary">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h4 class="feature-name">Paiements</h4>
+                        <p class="feature-description">Règlement des consultations et soins dentaires en ligne.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon success">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h4 class="feature-name">Téléconsultation</h4>
+                        <p class="feature-description">Consultations à distance via visioconférence sécurisée.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon warning">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4 class="feature-name">Suivi des soins</h4>
+                        <p class="feature-description">Tableau de bord personnel pour suivre l'évolution des traitements.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Access Permissions -->
+        <div class="content-container">
+            <div class="content-header-section">
+                <h3 class="content-title">Permissions d'accès</h3>
+            </div>
+            <div class="content-body">
+                <div class="access-control">
+                    <div class="access-item">
+                        <div class="access-info">
+                            <div class="access-name">Consultation des rendez-vous</div>
+                            <div class="access-description">Permet aux patients de voir leurs rendez-vous passés et futurs</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="accessAppointments" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="access-item">
+                        <div class="access-info">
+                            <div class="access-name">Modification du profil</div>
+                            <div class="access-description">Autoriser les patients à modifier leurs informations personnelles</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="accessProfileEdit" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="access-item">
+                        <div class="access-info">
+                            <div class="access-name">Téléchargement de documents</div>
+                            <div class="access-description">Permettre le téléchargement des ordonnances et certificats</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="accessDocumentDownload" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="access-item">
+                        <div class="access-info">
+                            <div class="access-name">Historique des paiements</div>
+                            <div class="access-description">Accès à l'historique des paiements et factures</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="accessPaymentHistory">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="access-item">
+                        <div class="access-info">
+                            <div class="access-name">Demandes d'urgence</div>
+                            <div class="access-description">Permettre l'envoi de demandes de consultation d'urgence</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="accessEmergencyRequests" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Common JavaScript -->
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+        const themeText = themeToggle.querySelector('span');
+        // Using sessionStorage instead of localStorage
+        const savedTheme = sessionStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            themeIcon.className = 'fas fa-sun';
+            themeText.textContent = 'Mode Clair';
+        }
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Mode Clair';
+                sessionStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Mode Sombre';
+                sessionStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
+            }
+        });
+
+        // Navigation link functionality
+        const mainLinks = document.querySelectorAll('.sidebar-link');
+        const mainContent = document.getElementById('mainContent');
+        mainLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Update active states
+                mainLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize active link
+        document.querySelector('.sidebar-link[href="parametres-espace-patient.html"]').classList.add('active');
+
+        // Collapsible section headers
+        document.querySelectorAll('.section-header.clickable').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isCollapsed = content.classList.contains('collapsed');
+                // Close all other sections
+                document.querySelectorAll('.section-content').forEach(el => {
+                    if (el !== content) {
+                        el.classList.add('collapsed');
+                        el.previousElementSibling.classList.add('collapsed');
+                    }
+                });
+                // Toggle current section
+                if (isCollapsed) {
+                    content.classList.remove('collapsed');
+                    header.classList.remove('collapsed');
+                } else {
+                    content.classList.add('collapsed');
+                    header.classList.add('collapsed');
+                }
+            });
+        });
+
+        // Open "Utilisateurs" by default
+        document.getElementById('section-users-content').classList.remove('collapsed');
+        document.getElementById('section-users-toggle').classList.remove('collapsed');
+
+        // Save settings
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            // Collect all form data
+            const settings = {
+                patientSpaceName: document.getElementById('patientSpaceName').value,
+                patientSpaceUrl: document.getElementById('patientSpaceUrl').value,
+                defaultLanguage: document.getElementById('defaultLanguage').value,
+                welcomeMessage: document.getElementById('welcomeMessage').value,
+                onlineRegistration: document.getElementById('onlineRegistration').checked,
+                onlineAppointments: document.getElementById('onlineAppointments').checked,
+                medicalRecords: document.getElementById('medicalRecords').checked,
+                secureMessaging: document.getElementById('secureMessaging').checked,
+                onlinePayments: document.getElementById('onlinePayments').checked,
+                teleconsultation: document.getElementById('teleconsultation').checked,
+                passwordPolicy: document.getElementById('passwordPolicy').value,
+                sessionDuration: document.getElementById('sessionDuration').value,
+                twoFactorAuth: document.getElementById('twoFactorAuth').checked,
+                auditLog: document.getElementById('auditLog').checked,
+                appointmentReminders: document.getElementById('appointmentReminders').checked,
+                appointmentConfirmations: document.getElementById('appointmentConfirmations').checked,
+                resultNotifications: document.getElementById('resultNotifications').checked,
+                reminderDelay: document.getElementById('reminderDelay').value,
+                accessAppointments: document.getElementById('accessAppointments').checked,
+                accessProfileEdit: document.getElementById('accessProfileEdit').checked,
+                accessDocumentDownload: document.getElementById('accessDocumentDownload').checked,
+                accessPaymentHistory: document.getElementById('accessPaymentHistory').checked,
+                accessEmergencyRequests: document.getElementById('accessEmergencyRequests').checked
+            };
+
+            // Save to localStorage (in real app, this would be an API call)
+            localStorage.setItem('patientSpaceSettings', JSON.stringify(settings));
+
+            alert('Paramètres enregistrés avec succès !');
+        });
+
+        // Reset settings
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir réinitialiser tous les paramètres ?')) {
+                localStorage.removeItem('patientSpaceSettings');
+                location.reload();
+            }
+        });
+
+        // Load saved settings
+        const savedSettings = localStorage.getItem('patientSpaceSettings');
+        if (savedSettings) {
+            const settings = JSON.parse(savedSettings);
+            // Apply saved settings to form elements
+            Object.keys(settings).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        element.checked = settings[key];
+                    } else {
+                        element.value = settings[key];
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

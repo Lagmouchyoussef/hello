@@ -6,6 +6,7 @@
 <title>Notifications - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -295,7 +289,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -438,20 +432,17 @@ flex: 1;
 font-weight: 600;
 margin-bottom: 0.25rem;
 }
-.notification-description {
+.notification-Description {
 color: var(--text-secondary);
 font-size: 0.875rem;
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
 .main-content { margin-left: 0; padding: 1rem; }
 .cabinet-header,
 .user-section {
@@ -473,7 +464,32 @@ text-align: center;
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+<div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Notifications</h1>
 </div>
@@ -486,7 +502,7 @@ text-align: center;
 <div class="notification-item">
 <div class="notification-content">
 <div class="notification-title">Notifications par Email</div>
-<div class="notification-description">Recevoir des notifications par email pour les nouveaux rendez-vous et rappels</div>
+<div class="notification-Description">Recevoir des notifications par email pour les nouveaux rendez-vous et rappels</div>
 </div>
 <label class="switch">
 <input type="checkbox" id="email_notifications" checked >
@@ -496,7 +512,7 @@ text-align: center;
 <div class="notification-item">
 <div class="notification-content">
 <div class="notification-title">Notifications SMS</div>
-<div class="notification-description">Recevoir des notifications SMS pour les urgences et confirmations</div>
+<div class="notification-Description">Recevoir des notifications SMS pour les urgences et confirmations</div>
 </div>
 <label class="switch">
 <input type="checkbox" id="sms_notifications">
@@ -506,7 +522,7 @@ text-align: center;
 <div class="notification-item">
 <div class="notification-content">
 <div class="notification-title">Rappels de rendez-vous</div>
-<div class="notification-description">Envoyer automatiquement des rappels 24h avant les rendez-vous</div>
+<div class="notification-Description">Envoyer automatiquement des rappels 24h avant les rendez-vous</div>
 </div>
 <label class="switch">
 <input type="checkbox" id="appointment_reminders" checked >
@@ -516,7 +532,7 @@ text-align: center;
 <div class="notification-item">
 <div class="notification-content">
 <div class="notification-title">Notifications de paiement</div>
-<div class="notification-description">Recevoir des notifications pour les paiements reçus et en attente</div>
+<div class="notification-Description">Recevoir des notifications pour les paiements reçus et en attente</div>
 </div>
 <label class="switch">
 <input type="checkbox" id="payment_notifications" checked >
@@ -526,7 +542,7 @@ text-align: center;
 <div class="notification-item">
 <div class="notification-content">
 <div class="notification-title">Alertes d'urgence</div>
-<div class="notification-description">Notifications immédiates pour les cas d'urgence médicale</div>
+<div class="notification-Description">Notifications immédiates pour les cas d'urgence médicale</div>
 </div>
 <label class="switch">
 <input type="checkbox" id="emergency_alerts" checked >
@@ -536,7 +552,7 @@ text-align: center;
 <div class="notification-item">
 <div class="notification-content">
 <div class="notification-title">Notifications de stock</div>
-<div class="notification-description">Alertes lorsque le stock de médicaments ou consommables est faible</div>
+<div class="notification-Description">Alertes lorsque le stock de médicaments ou consommables est faible</div>
 </div>
 <label class="switch">
 <input type="checkbox" id="stock_alerts">
@@ -550,56 +566,26 @@ text-align: center;
 </form>
 </div>
 </div>
-</div><script src="../js/navbar.js"></script><script>
-let notificationSettings = JSON.parse(localStorage.getItem('notificationSettings')) || {
-email_notifications: true,
-sms_notifications: false,
-appointment_reminders: true,
-payment_notifications: true,
-emergency_alerts: true,
-stock_alerts: false
-};
-function loadSettings() {
-document.getElementById('email_notifications').checked = notificationSettings.email_notifications;
-document.getElementById('sms_notifications').checked = notificationSettings.sms_notifications;
-document.getElementById('appointment_reminders').checked = notificationSettings.appointment_reminders;
-document.getElementById('payment_notifications').checked = notificationSettings.payment_notifications;
-document.getElementById('emergency_alerts').checked = notificationSettings.emergency_alerts;
-document.getElementById('stock_alerts').checked = notificationSettings.stock_alerts;
-}
-function saveSettings(e) {
-e.preventDefault();
-notificationSettings = {
-email_notifications: document.getElementById('email_notifications').checked,
-sms_notifications: document.getElementById('sms_notifications').checked,
-appointment_reminders: document.getElementById('appointment_reminders').checked,
-payment_notifications: document.getElementById('payment_notifications').checked,
-emergency_alerts: document.getElementById('emergency_alerts').checked,
-stock_alerts: document.getElementById('stock_alerts').checked
-};
-localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
-alert('Paramètres de notifications enregistrés avec succès !');
-}
-function resetSettings() {
-if (confirm('Êtes-vous sûr de vouloir réinitialiser tous les paramètres de notifications ?')) {
-localStorage.removeItem('notificationSettings');
-notificationSettings = {
-email_notifications: true,
-sms_notifications: false,
-appointment_reminders: true,
-payment_notifications: true,
-emergency_alerts: true,
-stock_alerts: false
-};
-loadSettings();
-alert('Paramètres réinitialisés aux valeurs par défaut.');
-}
-}
-document.getElementById('notificationsForm').addEventListener('submit', saveSettings);
-loadSettings();
-</script>
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

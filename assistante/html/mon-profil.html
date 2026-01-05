@@ -6,6 +6,7 @@
 <title>Mon Profil - Dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -295,7 +289,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -430,18 +424,15 @@ gap: 1rem;
  border: 1px solid #a7f3d0;
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 .form-row {
 grid-template-columns: 1fr;
 }
 }
 @media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
 .main-content { margin-left: 0; padding: 1rem; }
 .cabinet-header,
 .user-section {
@@ -464,11 +455,36 @@ flex-direction: column;
 }
 }
 </style>
-<script src="../../LOGING/js/data.js"></script>
+
 </head>
 <body class="light-mode">
-<script>window.profileKey = 'assistant_profile';</script>
-<div id="navbar-container"></div><div class="main-content">
+
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+<div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Mon Profil</h1>
 </div>
@@ -532,94 +548,23 @@ flex-direction: column;
 </form>
 </div>
 </div>
-</div><script src="../js/navbar.js"></script><script>
-function loadProfile() {
-const currentUser = dentalDataManager.getCurrentUser();
-if (currentUser) {
-    document.getElementById('prenom').value = currentUser.firstName || '';
-    document.getElementById('nom').value = currentUser.lastName || '';
-    document.getElementById('email').value = currentUser.email || '';
-    document.getElementById('telephone').value = currentUser.phone || '';
-    document.getElementById('specialite').value = currentUser.specialty || '';
-    // Additional fields
-    document.getElementById('numero_ordre').value = currentUser.numero_ordre || '';
-    document.getElementById('adresse').value = currentUser.adresse || '';
-    document.getElementById('biographie').value = currentUser.biographie || '';
-}
-}
-function saveProfile(e) {
- e.preventDefault();
- const saveBtn = document.getElementById('saveBtn');
- const resetBtn = document.getElementById('resetBtn');
-
- // Show loader
- saveBtn.disabled = true;
- saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
- resetBtn.disabled = true;
-
- const currentUser = dentalDataManager.getCurrentUser();
- if (currentUser) {
-     const updatedData = {
-         firstName: document.getElementById('prenom').value,
-         lastName: document.getElementById('nom').value,
-         email: document.getElementById('email').value,
-         phone: document.getElementById('telephone').value,
-         specialty: document.getElementById('specialite').value,
-         numero_ordre: document.getElementById('numero_ordre').value,
-         adresse: document.getElementById('adresse').value,
-         biographie: document.getElementById('biographie').value
-     };
-
-     // Simulate async
-     setTimeout(() => {
-         const success = dentalDataManager.update('users', currentUser.id, updatedData);
-         if (success) {
-             const updatedUser = { ...currentUser, ...updatedData };
-             dentalDataManager.loginUser(updatedUser);
-             const messageCard = document.getElementById('messageCard');
-             messageCard.innerHTML = '<i class="fas fa-check-circle"></i> Profil sauvegardé !';
-             messageCard.className = 'message-card success';
-             messageCard.style.display = 'flex';
-             setTimeout(() => {
-                 messageCard.style.display = 'none';
-             }, 3000);
-             loadUserInfo();
-             updateUserInfo();
-         } else {
-             dentalDataManager.showMessage('Erreur lors de la sauvegarde.', 'error');
-         }
-
-         // Hide loader
-         saveBtn.disabled = false;
-         saveBtn.innerHTML = '<i class="fas fa-save"></i> Enregistrer les modifications';
-         resetBtn.disabled = false;
-     }, 1000);
- }
-}
-function resetForm() {
-if (confirm('Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les mod ifications non enregistrées seront perd ues.')) {
-document.getElementById('profileForm').reset();
-}
-}
-document.getElementById('profileForm').addEventListener('submit', saveProfile);
-loadProfile();
-loadUserInfo();
-function loadUserInfo() {
-   const currentUser = dentalDataManager.getCurrentUser();
-   if (currentUser) {
-       const fullName = (currentUser.firstName || '') + ' ' + (currentUser.lastName || '');
-       const displayName = fullName.trim() || currentUser.name || 'Utilisateur';
-       const roleDisplay = {
-           'Admin': 'Administrateur',
-           'Assistant': 'Assistante',
-           'Patient': 'Patient'
-       }[currentUser.role] || currentUser.role;
-
-       document.getElementById('profileAvatar').textContent = displayName.charAt(0).toUpperCase() || 'U';
-       document.getElementById('profileName').textContent = displayName;
-       document.getElementById('profileTitle').textContent = roleDisplay;
-   }
-}
-</script>
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

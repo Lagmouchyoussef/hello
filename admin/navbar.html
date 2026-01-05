@@ -3,175 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paiements Reçus - DIKRA centre Dentaire</title>
+    <title>Navbar Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../navbar.css">
-    <style>
-        /* Additional styles for payments page */
-        .appointments-container {
-            background: var(--bg-secondary);
-            border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        .appointments-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .appointments-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin: 0;
-        }
-
-        .appointments-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .appointments-table th,
-        .appointments-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .appointments-table th {
-            background: var(--bg-primary);
-            font-weight: 600;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .appointments-table tbody tr {
-            transition: var(--transition);
-        }
-
-        .appointments-table tbody tr:hover {
-            background: var(--section-bg);
-        }
-
-        .action-btn {
-            padding: 0.375rem 0.75rem;
-            border-radius: var(--border-radius);
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            margin-right: 0.5rem;
-        }
-
-        .action-btn.edit {
-            background: var(--warning);
-            color: white;
-        }
-
-        .action-btn.edit:hover {
-            background: #d97706;
-            transform: translateY(-1px);
-        }
-
-        .action-btn.delete {
-            background: var(--danger);
-            color: white;
-        }
-
-        .action-btn.delete:hover {
-            background: #dc2626;
-            transform: translateY(-1px);
-        }
-
-        .search-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .search-input {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            transition: var(--transition);
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--assistant-green);
-            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .form-actions {
-            margin-top: 2rem;
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-        }
-
-        .total-amount {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--assistant-green);
-            text-align: center;
-            margin: 1rem 0;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .appointments-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
-
-            .appointments-table th,
-            .appointments-table td {
-                padding: 0.5rem;
-                font-size: 0.75rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../navbar.css">
 </head>
 <body class="light-mode">
-    <!-- Professional Sidebar Navigation -->
     <div class="sidebar">
-        <!-- Cabinet Header -->
         <div class="cabinet-header"><div class="cabinet-logo"><img src="../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
             
             <div class="cabinet-name">DIKRA centre Dentaire</div>
             <div class="cabinet-subtitle">Casablanca, Maroc</div>
         </div>
-        <!-- Navigation Menu -->
         <ul class="sidebar-menu">
-            <!-- DASHBOARD -->
             <li class="sidebar-item">
                 <a href="dashboard.html" class="sidebar-link">
                     <span class="sidebar-icon"><i class="fas fa-home"></i></span>
@@ -179,7 +23,6 @@
                 </a>
             </li>
 
-            <!-- RENDEZ-VOUS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-rdv-toggle">
                     Rendez-vous
@@ -225,7 +68,6 @@
                 </div>
             </li>
 
-            <!-- PATIENTS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-patients-toggle">
                     Patients
@@ -247,7 +89,6 @@
                 </div>
             </li>
 
-            <!-- CABINET -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-cabinet-toggle">
                     Cabinet
@@ -263,7 +104,6 @@
                 </div>
             </li>
 
-            <!-- COMPTABILITÉ -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-compta-toggle">
                     Comptabilité
@@ -277,7 +117,7 @@
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="paiements-recus.html" class="sidebar-link active">
+                        <a href="paiements-recus.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
                             Paiements reçus
                         </a>
@@ -291,7 +131,6 @@
                 </div>
             </li>
 
-            <!-- COMMUNICATION -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-com-toggle">
                     Communication
@@ -324,16 +163,9 @@
                             Notifications
                         </a>
                     </div>
-                    <div class="sidebar-item">
-                        <a href="messages-patients.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
-                            Messages patients
-                        </a>
-                    </div>
                 </div>
             </li>
 
-            <!-- ORGANISATION -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-org-toggle">
                     Organisation
@@ -361,7 +193,6 @@
                 </div>
             </li>
 
-            <!-- GESTION DES STOCKS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-stock-toggle">
                     Gestion des stocks
@@ -389,7 +220,6 @@
                 </div>
             </li>
 
-            <!-- DOCUMENTS & FORMULAIRES -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-docs-toggle">
                     Documents & formulaires
@@ -429,7 +259,6 @@
                 </div>
             </li>
 
-            <!-- UTILISATEURS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-users-toggle">
                     Utilisateurs
@@ -473,12 +302,6 @@
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="messages-patients.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
-                            Messages patients
-                        </a>
-                    </div>
-                    <div class="sidebar-item">
                         <a href="dossiers-medicaux.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
                             Dossiers médicaux
@@ -487,7 +310,6 @@
                 </div>
             </li>
 
-            <!-- SITE WEB -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-website-toggle">
                     Site web
@@ -527,7 +349,6 @@
                 </div>
             </li>
 
-            <!-- CONFIGURATION -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-config-toggle">
                     Configuration
@@ -561,7 +382,6 @@
                 </div>
             </li>
         </ul>
-        <!-- User Section -->
         <div class="user-section">
             <div class="user-info">
                 <div class="user-avatar"></div>
@@ -581,324 +401,81 @@
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content" id="mainContent">
-        <div class="content-header">
-            <div>
-                <h1 class="page-title">Paiements Reçus</h1>
-            </div>
-            <div class="content-actions">
-                <button class="btn btn-primary" onclick="showForm()">
-                    <i class="fas fa-plus"></i> Nouveau Paiement
-                </button>
-            </div>
-        </div>
-
-        <!-- Add Payment Form -->
-        <div class="appointments-container" id="addForm" style="display: none;">
-            <div class="appointments-header">
-                <h2 class="appointments-title">Nouveau Paiement Reçu</h2>
-            </div>
-            <form id="paymentsForm" style="padding: 1.5rem;">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Patient</label>
-                        <input type="text" class="form-control" id="patient" placeholder="Nom du patient" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Date</label>
-                        <input type="date" class="form-control" id="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Montant (DH)</label>
-                        <input type="number" class="form-control" id="montant" step="0.01" placeholder="0.00" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Mode de paiement</label>
-                        <select class="form-control" id="mode_paiement" required>
-                            <option value="Espèces">Espèces</option>
-                            <option value="Carte bancaire">Carte bancaire</option>
-                            <option value="Chèque">Chèque</option>
-                            <option value="Virement">Virement</option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="grid-column: span 2;">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" id="description" rows="3" placeholder="Description du paiement" required></textarea>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Ajouter</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Payments List -->
-        <div class="appointments-container">
-            <div class="appointments-header">
-                <h2 class="appointments-title">Liste des Paiements Reçus</h2>
-                <div class="search-container">
-                    <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un paiement...">
-                </div>
-            </div>
-            <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color);">
-                <div class="total-amount" id="totalAmount">Total: 0.00 DH</div>
-            </div>
-            <table class="appointments-table">
-                <thead>
-                    <tr>
-                        <th>Patient</th>
-                        <th>Date</th>
-                        <th>Montant</th>
-                        <th>Mode</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="paymentsTableBody">
-                    <!-- Payments will be loaded here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- JavaScript -->
     <script>
         // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
         const themeIcon = themeToggle.querySelector('i');
         const themeText = themeToggle.querySelector('span');
+        // Using sessionStorage instead of localStorage
         const savedTheme = sessionStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+          body.classList.remove('light-mode');
+          body.classList.add('dark-mode');
+          themeIcon.className = 'fas fa-sun';
+          themeText.textContent = 'Mode Clair';
+        }
+        themeToggle.addEventListener('click', () => {
+          if (body.classList.contains('light-mode')) {
             body.classList.remove('light-mode');
             body.classList.add('dark-mode');
             themeIcon.className = 'fas fa-sun';
             themeText.textContent = 'Mode Clair';
-        }
-        themeToggle.addEventListener('click', () => {
-            if (body.classList.contains('light-mode')) {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-                themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'Mode Clair';
-                sessionStorage.setItem('theme', 'dark');
-            } else {
-                body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
-                themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'Mode Sombre';
-                sessionStorage.setItem('theme', 'light');
-            }
+            sessionStorage.setItem('theme', 'dark');
+          } else {
+            body.classList.remove('dark-mode');
+            body.classList.add('light-mode');
+            themeIcon.className = 'fas fa-moon';
+            themeText.textContent = 'Mode Sombre';
+            sessionStorage.setItem('theme', 'light');
+          }
         });
-
         // Logout functionality
         const logoutBtn = document.getElementById('logoutBtn');
         logoutBtn.addEventListener('click', () => {
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-            }
+          if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+            alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
+          }
         });
-
-        // Navigation functionality
+        // Navigation link functionality
+        const mainLinks = document.querySelectorAll('.sidebar-link');
+        mainLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+            // Update active states
+            mainLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+          });
+        });
+        // Initialize active link
+        document.querySelector('.sidebar-link[href="dashboard.html"]').classList.add('active');
+        // Collapsible section headers
         document.querySelectorAll('.section-header.clickable').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const isCollapsed = content.classList.contains('collapsed');
-                document.querySelectorAll('.section-content').forEach(el => {
-                    if (el !== content) {
-                        el.classList.add('collapsed');
-                        el.previousElementSibling.classList.add('collapsed');
-                    }
-                });
-                if (isCollapsed) {
-                    content.classList.remove('collapsed');
-                    header.classList.remove('collapsed');
-                } else {
-                    content.classList.add('collapsed');
-                    header.classList.add('collapsed');
-                }
+          header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            const isCollapsed = content.classList.contains('collapsed');
+            // Close all other sections
+            document.querySelectorAll('.section-content').forEach(el => {
+              if (el !== content) {
+                el.classList.add('collapsed');
+                el.previousElementSibling.classList.add('collapsed');
+              }
             });
-        });
-
-        // Open "Comptabilité" by default
-        document.getElementById('section-compta-content').classList.remove('collapsed');
-        document.getElementById('section-compta-toggle').classList.remove('collapsed');
-
-        // Payments functionality
-        let payments = JSON.parse(localStorage.getItem('payments')) || [];
-
-        function showForm() {
-            document.getElementById('addForm').style.display = 'block';
-            document.getElementById('patient').focus();
-        }
-
-        function hideForm() {
-            document.getElementById('addForm').style.display = 'none';
-            document.getElementById('paymentsForm').reset();
-        }
-
-        function renderPayments() {
-            const tbody = document.getElementById('paymentsTableBody');
-            tbody.innerHTML = '';
-
-            if (payments.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-secondary);">Aucun paiement enregistré</td></tr>';
-                return;
+            // Toggle current section
+            if (isCollapsed) {
+              content.classList.remove('collapsed');
+              header.classList.remove('collapsed');
+            } else {
+              content.classList.add('collapsed');
+              header.classList.add('collapsed');
             }
-
-            payments.forEach((payment, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${payment.patient}</td>
-                    <td>${new Date(payment.date).toLocaleDateString('fr-FR')}</td>
-                    <td>${payment.montant} DH</td>
-                    <td>${payment.mode}</td>
-                    <td>${payment.description}</td>
-                    <td>
-                        <button class="action-btn edit" onclick="editPayment(${index})">
-                            <i class="fas fa-edit"></i> Modifier
-                        </button>
-                        <button class="action-btn delete" onclick="deletePayment(${index})">
-                            <i class="fas fa-trash"></i> Supprimer
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            updateTotal();
-        }
-
-        function updateTotal() {
-            const total = payments.reduce((sum, payment) => sum + parseFloat(payment.montant), 0);
-            document.getElementById('totalAmount').textContent = `Total: ${total.toFixed(2)} DH`;
-        }
-
-        function addPayment(event) {
-            event.preventDefault();
-
-            const patient = document.getElementById('patient').value;
-            const date = document.getElementById('date').value;
-            const montant = document.getElementById('montant').value;
-            const mode = document.getElementById('mode_paiement').value;
-            const description = document.getElementById('description').value;
-
-            const newPayment = {
-                patient,
-                date,
-                montant: parseFloat(montant),
-                mode,
-                description
-            };
-
-            payments.push(newPayment);
-            localStorage.setItem('payments', JSON.stringify(payments));
-            renderPayments();
-            hideForm();
-        }
-
-        function editPayment(index) {
-            const payment = payments[index];
-            document.getElementById('patient').value = payment.patient;
-            document.getElementById('date').value = payment.date;
-            document.getElementById('montant').value = payment.montant;
-            document.getElementById('mode_paiement').value = payment.mode;
-            document.getElementById('description').value = payment.description;
-
-            showForm();
-
-            // Change form submission to update
-            const form = document.getElementById('paymentsForm');
-            form.onsubmit = (event) => {
-                event.preventDefault();
-                updatePayment(index);
-            };
-        }
-
-        function updatePayment(index) {
-            const patient = document.getElementById('patient').value;
-            const date = document.getElementById('date').value;
-            const montant = document.getElementById('montant').value;
-            const mode = document.getElementById('mode_paiement').value;
-            const description = document.getElementById('description').value;
-
-            payments[index] = {
-                patient,
-                date,
-                montant: parseFloat(montant),
-                mode,
-                description
-            };
-
-            localStorage.setItem('payments', JSON.stringify(payments));
-            renderPayments();
-            hideForm();
-
-            // Reset form submission
-            document.getElementById('paymentsForm').onsubmit = addPayment;
-        }
-
-        function deletePayment(index) {
-            if (confirm('Êtes-vous sûr de vouloir supprimer ce paiement ?')) {
-                payments.splice(index, 1);
-                localStorage.setItem('payments', JSON.stringify(payments));
-                renderPayments();
-            }
-        }
-
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#paymentsTableBody tr');
-
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
+          });
         });
-
-        // Initialize
-        document.getElementById('paymentsForm').addEventListener('submit', addPayment);
-        renderPayments();
+        // Open "Rendez-vous" by default
+        document.getElementById('section-rdv-content').classList.remove('collapsed');
+        document.getElementById('section-rdv-toggle').classList.remove('collapsed');
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

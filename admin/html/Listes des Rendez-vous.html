@@ -6,6 +6,7 @@
 <title>Liste des Rendez-vous - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../navbar.css">
 <style>
 * {
   margin: 0;
@@ -30,331 +31,8 @@
   --unread-bg: #dbeafe;
 }
 
-/* Light mode */
-.light-mode {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --border-color: #e2e8f0;
-  --card-shadow: var(--shadow);
-  --section-bg: rgba(30, 58, 138, 0.05);
-  --hover-bg: rgba(255, 255, 255, 0.1);
-  --active-bg: rgba(255, 255, 255, 0.2);
-}
-
-/* dark mode */
-.dark-mode {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --border-color: #334155;
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-  --unread-bg: #1e3a8a;
-  --section-bg: rgba(255, 255, 255, 0.05);
-  --hover-bg: rgba(255, 255, 255, 0.1);
-  --active-bg: rgba(255, 255, 255, 0.2);
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.5;
-  font-size: 0.875rem;
-  transition: var(--transition);
-}
-
-/* Professional Sidebar Navigation */
-.sidebar {
-  width: 280px;
-  background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
-  color: var(--text-light);
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
-  padding: 1.5rem 0;
-  overflow-y: auto;
-  box-shadow: var(--shadow);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  transition: var(--transition);
-}
-
-.cabinet-header {
-  padding: 0 1.5rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  margin-bottom: 1.5rem;
-  text-align: center;
-  position: relative;
-}
-
-.cabinet-logo {
-  width: 64px;
-  height: 64px;
-  background: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-  color: var(--medical-blue);
-  font-weight: 700;
-  font-size: 1.5rem;
-  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
-  transition: var(--transition);
-}
-
-.cabinet-logo:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
-}
-
-.cabinet-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-  letter-spacing: -0.025em;
-  background: linear-gradient(to right, #ffffff, #cbd5e1);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.cabinet-subtitle {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 400;
-}
-
-/* User Section */
-.user-section {
-  padding: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  margin-top: auto;
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.user-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.user-details {
-  flex: 1;
-}
-
-.user-name {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  color: white;
-}
-
-.user-role {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.logout-btn,
-.theme-toggle {
-  width: 100%;
-  padding: 0.625rem;
-  border-radius: var(--border-radius);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  border: none;
-  text-align: left;
-}
-
-.logout-btn {
-  background: rgba(220, 38, 38, 0.2);
-  color: white;
-}
-
-.logout-btn:hover {
-  background: rgba(220, 38, 38, 0.3);
-  transform: translateY(-1px);
-}
-
-.theme-toggle {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  margin-bottom: 0.75rem;
-}
-
-.theme-toggle:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: translateY(-1px);
-}
-
-.sidebar-menu {
-  list-style: none;
-  padding: 0 1.5rem;
-  flex: 1;
-}
-
-.sidebar-item {
-  margin: 0;
-}
-
-.sidebar-link {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.875rem 1.25rem;
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  transition: var(--transition);
-  border-radius: var(--border-radius);
-  position: relative;
-  width: 100%;
-  text-align: left;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-.sidebar-link:hover {
-  background: var(--hover-bg);
-  color: white;
-  transform: translateX(4px);
-}
-
-.sidebar-link.active {
-  background: var(--active-bg);
-  color: white;
-  border-left: 3px solid var(--medical-blue-light);
-  padding-left: 1rem;
-  transform: translateX(4px);
-}
-
-.sidebar-icon {
-  width: 24px;
-  text-align: center;
-  font-size: 1.125rem;
-  min-width: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.badge {
-  background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-  color: white;
-  border-radius: 9999px;
-  padding: 0.25rem 0.625rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-left: auto;
-  margin-right: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.ai-agent-icon {
-  background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-  color: white;
-  padding: 0.375rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-}
-
-/* Section Headers as dropdown triggers */
-.section-header {
-  padding: 0.75rem 1.25rem 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.6);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-top: 1.5rem;
-  position: relative;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.section-header:first-child  {
-  margin-top: 0;
-}
-
-.section-header::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 1.25rem;
-  right: 1.25rem;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.section-chevron {
-  font-size: 0.75rem;
-  transition: transform 0.3s ease;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.section-header.collapsed.section-chevron {
-  transform: rotate(-90deg);
-}
-
-/* Section content */
-.section-content {
-  overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-  max-height: 1000px;
-  opacity: 1;
-}
-
-.section-content.collapsed{
-  max-height: 0;
-  opacity: 0;
-}
-
-/* Sidebar section wrapper */
-.sidebar-section {
-  list-style: none;
-}
-
 /* Main Content */
 .main-content {
-  margin-left: 280px;
   padding: 2rem;
   min-height: 100vh;
   transition: var(--transition);
@@ -573,398 +251,428 @@ body {
 </style>
 </head>
 <body class="light-mode">
+<!-- Main Content -->
 <!-- Professional Sidebar Navigation -->
 <div class="sidebar">
-  <!-- Cabinet Header -->
-  <div class="cabinet-header">
-    <div class="cabinet-logo">
-      d 
+    <!-- Cabinet Header -->
+    <div class="cabinet-header"><div class="cabinet-logo"><img src="../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+        
+        <div class="cabinet-name">DIKRA centre Dentaire</div>
+        <div class="cabinet-subtitle">Casablanca, Maroc</div>
     </div>
-    <div class="cabinet-name">dikra Centre dentaire</div>
-    <div class="cabinet-subtitle">Casablanca, Maroc</div>
-  </div>
-  <!-- Navigation Menu -->
-  <ul class="sidebar-menu">
-    <!-- d ASHBOARd  -->
-    <li class="sidebar-item">
-      <a href="dashboard.html" class="sidebar-link">
-        <span class="sidebar-icon"><i class="fas fa-home"></i></span>
-        Tableau de bord 
-      </a>
-    </li>
+    <!-- Navigation Menu -->
+    <ul class="sidebar-menu">
+        <!-- d ASHBOARd  -->
+        <li class="sidebar-item">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                Tableau de bord
+            </a>
+        </li>
 
-    <!-- RENdeZ-VOUS -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-rdv-toggle">
-        Rendez-vous
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-rdv-content">
-        <div class="sidebar-item">
-          <a href="Listes des Rendez-vous.html" class="sidebar-link active">
-            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-            Liste des rendez-vous
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="Prise en ligne.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
-            Prise en ligne
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="En présentiel.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-build ing"></i></span>
-            En présentiel
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="via-espace-patient.html" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
-            Via espace patient
-          </a>
-        </div>
-      </div>
-    </li>
+        <!-- RENdeZ-VOUS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-rdv-toggle">
+                Rendez-vous
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-rdv-content">
+                <div class="sidebar-item">
+                    <a href="Listes des Rendez-vous.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Liste des rendez-vous
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="Prise%20en%20ligne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
+                        Prise en ligne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="En%20présentiel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        En présentiel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="via-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
+                        Via espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
 
-    <!-- PATIENTS -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-patients-toggle">
-        Patients
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-patients-content">
-        <div class="sidebar-item">
-          <a href="#patients" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-user-injured "></i></span>
-            Fiches patients
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#prothese" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
-            Prothèses
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#imagerie" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
-            Imagerie méd icale
-          </a>
-        </div>
-      </div>
-    </li>
+        <!-- PATIENTS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-patients-toggle">
+                Patients
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-patients-content">
+                <div class="sidebar-item">
+                    <a href="fiches-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                        Fiches patients
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
 
-    <!-- CABINET -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-cabinet-toggle">
-        Cabinet
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-cabinet-content">
-        <div class="sidebar-item">
-          <a href="#salle-attente" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
-            Salle d'attente
-          </a>
-        </div>
-      </div>
-    </li>
+        <!-- CABINET -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-cabinet-toggle">
+                Cabinet
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-cabinet-content">
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
 
-    <!-- COMPTABILITÉ -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-compta-toggle">
-        Comptabilité
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-compta-content">
-        <div class="sidebar-item">
-          <a href="#comptabilite" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
-            Comptabilité générale
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#paiements" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
-            Paiements reçus
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#charges" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-            Charges & d épenses
-          </a>
-        </div>
-      </div>
-    </li>
+        <!-- COMPTABILITÉ -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-compta-toggle">
+                Comptabilité
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-compta-content">
+                <div class="sidebar-item">
+                    <a href="comptabilite-generale.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
+                        Comptabilité générale
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="paiements-recus.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
+                        Paiements reçus
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="charges-depenses.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                        Charges & dépenses
+                    </a>
+                </div>
+            </div>
+        </li>
 
-    <!-- COMMUNICATION -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-com-toggle">
-        Communication
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-com-content">
-        <div class="sidebar-item">
-          <a href="#messaging" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
-            Messagerie interne
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#ai-agent" class="sidebar-link">
-            <span class="sidebar-icon">
-              <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
-            </span>
-            Assistant IA
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#sms" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
-            Envoi de SMS
-          </a>
-        </div>
-      </div>
-    </li>
+        <!-- COMMUNICATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-com-toggle">
+                Communication
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-com-content">
+                <div class="sidebar-item">
+                    <a href="messagerie-interne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                        Messagerie interne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="assistant-ia.html" class="sidebar-link">
+                        <span class="sidebar-icon">
+                            <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
+                        </span>
+                        Assistant IA
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="envoi-sms.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
+                        Envoi de SMS
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="messages-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
+                        Messages patients
+                    </a>
+                </div>
+            </div>
+        </li>
 
-    <!-- ORGANISATION -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-org-toggle">
-        Organisation
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-org-content">
-        <div class="sidebar-item">
-          <a href="#taches" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
-            Tâches & rappels
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#remarques" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
-            Notes personnelles
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#statistiques" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
-            Statistiques
-          </a>
-        </div>
-      </div>
-    </li>
+        <!-- ORGANISATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-org-toggle">
+                Organisation
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-org-content">
+                <div class="sidebar-item">
+                    <a href="taches-rappels.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
+                        Tâches & rappels
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notes-personnelles.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
+                        Notes personnelles
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="statistiques.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                        Statistiques
+                    </a>
+                </div>
+            </div>
+        </li>
 
-    <!-- GESTION deS STOCKS -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-stock-toggle">
-        Gestion des stocks
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-stock-content">
-        <div class="sidebar-item">
-          <a href="#stock-materiel" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-box"></i></span>
-            Matériel dentaire
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#stock-consommables" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
-            Consommables
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#stock-medicaments" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
-            Méd icaments
-          </a>
-        </div>
-      </div>
-    </li>
+        <!-- GESTION deS STOCKS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-stock-toggle">
+                Gestion des stocks
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-stock-content">
+                <div class="sidebar-item">
+                    <a href="materiel-dentaire.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-box"></i></span>
+                        Matériel dentaire
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="consommables.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
+                        Consommables
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="medicaments.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
+                        Médicaments
+                    </a>
+                </div>
+            </div>
+        </li>
 
-    <!-- documentS & FORMULAIRES -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-d ocs-toggle">
-        documents & formulaires
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-d ocs-content">
-        <div class="sidebar-item">
-          <a href="#Ordonnances" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
-            Ordonnances
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#certificats" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-            Certificats médicaux
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#feuilles-soins" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-            Feuilles de soins (CNOPS/CNSS)
-          </a>
-        </div>
-      </div>
-    </li>
+        <!-- documentS & FORMULAIRES -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-docs-toggle">
+                Documents & formulaires
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-docs-content">
+                <div class="sidebar-item">
+                    <a href="ordonnances.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
+                        Ordonnances
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="certificats-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Certificats médicaux
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="feuilles-de-soins.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                        Feuilles de soins (CNOPS/CNSS)
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="imagerie-medicale.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
+                        Imagerie médicale
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="protheses.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                        Prothèses
+                    </a>
+                </div>
+            </div>
+        </li>
 
-    <!-- UTILISATEURS -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-users-toggle">
-        Utilisateurs
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-users-content">
-        <div class="sidebar-item">
-          <a href="#staff-list" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-list"></i></span>
-            Liste d u personnel
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#staff-Add " class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
-            Ajouter un membre
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#staff-permissions" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-shield -alt"></i></span>
-            Rôles & permissions
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#staff-sched ule" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-            Planning de l'équipe
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#portal-settings" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
-            Paramètres espace patient
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#portal-access" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-key"></i></span>
-            Gestion des accès
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#portal-messages" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
-            Messages patients
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#portal-record s" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-            dossiers médicaux
-          </a>
-        </div>
-      </div>
-    </li>
+        <!-- UTILISATEURS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-users-toggle">
+                Utilisateurs
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-users-content">
+                <div class="sidebar-item">
+                    <a href="Liste%20du%20personnel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-list"></i></span>
+                        Liste du personnel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="ajouter-un-membre.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
+                        Ajouter un membre
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="roles-permissions.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                        Rôles & permissions
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="parametres-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                        Paramètres espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="gestion-des-acces.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-key"></i></span>
+                        Gestion des accès
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="messages-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
+                        Messages patients
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
 
-    <!-- SITE WEB -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-website-toggle">
-        Site web
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-website-content">
-        <div class="sidebar-item">
-          <a href="#website-content" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
-            Contenu & articles
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#website-design" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
-            design & thème
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#website-seo" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-search"></i></span>
-            Référencement (SEO)
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#website-contact" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
-            Formulaire de contact
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#website-analytics" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
-            Statistiques de visite
-          </a>
-        </div>
-      </div>
-    </li>
+        <!-- SITE WEB -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-website-toggle">
+                Site web
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-website-content">
+                <div class="sidebar-item">
+                    <a href="contenu-articles.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
+                        Contenu & articles
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="design-theme.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
+                        Design & thème
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="referencement-seo.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-search"></i></span>
+                        Référencement (SEO)
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="formulaire-contact.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
+                        Formulaire de contact
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="statistiques-visite.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
+                        Statistiques de visite
+                    </a>
+                </div>
+            </div>
+        </li>
 
-    <!-- CONFIGURATION -->
-    <li class="sidebar-section">
-      <div class="section-header clickable" id="section-config-toggle">
-        Configuration
-        <i class="fas fa-chevron-down section-chevron"></i>
-      </div>
-      <div class="section-content" id="section-config-content">
-        <div class="sidebar-item">
-          <a href="#profil" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
-            Mon profil
-          </a>
+        <!-- CONFIGURATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-config-toggle">
+                Configuration
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-config-content">
+                <div class="sidebar-item">
+                    <a href="mon-profil.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                        Mon profil
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="informations-cabinet.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        Informations cabinet
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="parametres-facturation.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                        Paramètres de facturation
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <!-- User Section -->
+    <div class="user-section">
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <div class="user-details">
+                <div class="user-name"></div>
+                <div class="user-role"></div>
+            </div>
         </div>
-        <div class="sidebar-item">
-          <a href="#cabinet-settings" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-build ing"></i></span>
-            Informations cabinet
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#facturation" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-file-invoice-d ollar"></i></span>
-            Paramètres de facturation
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#notifications" class="sidebar-link">
-            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
-            Notifications
-          </a>
-        </div>
-      </div>
-    </li>
-  </ul>
-  <!-- User Section -->
-  <div class="user-section">
-    <div class="user-info">
-      <div class="user-avatar">d M</div>
-      <div class="user-details">
-        <div class="user-name">d r. Mohammed  Alami</div>
-        <div class="user-role">Chirurgien-dentiste</div>
-      </div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <span>Mode Sombre</span>
+        </button>
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+        </button>
     </div>
-    <button class="theme-toggle" id="themeToggle">
-      <i class="fas fa-moon"></i>
-      <span>Mode Sombre</span>
-    </button>
-    <button class="logout-btn" id="logoutBtn">
-      <i class="fas fa-sign-out-alt"></i>
-      <span>déconnexion</span>
-    </button>
-  </div>
 </div>
-<!-- Main Content -->
+
+
 <div class="main-content">
   <div class="content-header">
     <h1 class="page-title">Liste des Rendez-vous</h1>
@@ -995,7 +703,7 @@ body {
         </div>
         <div class="form-group">
           <label class="form-label">Médecin</label>
-          <input type="text" class="form-control" id="doctor" placeholder="Nom d u médecin" required>
+          <input type="text" class="form-control" id="doctor" placeholder="Nom du médecin" required>
         </div>
         <div class="form-group">
           <label class="form-label">Traitement</label>
@@ -1058,126 +766,28 @@ body {
       </tbody>
     </table>
   </div>
-</div><script src="../js/navbar.js"></script><script>// Open "Rendez-vous" by default\ndocument.getElementById("section-rdv-content").classList.remove("collapsed");\ndocument.getElementById("section-rdv-toggle").classList.remove("collapsed");\n
-// Theme Toggle
-// Appointments Management
-let appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [];
-let editingIndex = -1;
-
-function showForm() {
-  document.getElementById('addForm').style.display = 'block';
-  document.getElementById('appointmentForm').reset();
-  editingIndex = -1;
-  document.querySelector('.appointments-title').textContent = 'Ajouter un Rendez-vous';
-}
-
-function hideForm() {
-  document.getElementById('addForm').style.display = 'none';
-}
-
-function saveAppointment(e) {
-  e.preventDefault();
-
-  const appointment = {
-    date: document.getElementById('date').value,
-    time: document.getElementById('time').value,
-    patient: document.getElementById('patient').value,
-    doctor: document.getElementById('doctor').value,
-    treatment: document.getElementById('treatment').value,
-    mode: document.getElementById('mode').value,
-    status: document.getElementById('status').value
-  };
-
-  if (editingIndex >= 0) {
-    appointments[editingIndex] = appointment;
-  } else {
-    appointments.push(appointment);
-  }
-
-  localStorage.setItem('dental_appointments', JSON.stringify(appointments));
-  renderAppointments();
-  hideForm();
-}
-
-function editAppointment(index) {
-  const appointment = appointments[index];
-  document.getElementById('date').value = appointment.date;
-  document.getElementById('time').value = appointment.time;
-  document.getElementById('patient').value = appointment.patient;
-  document.getElementById('doctor').value = appointment.doctor;
-  document.getElementById('treatment').value = appointment.treatment;
-  document.getElementById('mode').value = appointment.mode;
-  document.getElementById('status').value = appointment.status;
-
-  editingIndex = index;
-  document.getElementById('addForm').style.display = 'block';
-  document.querySelector('.appointments-title').textContent = 'Modifier le Rendez-vous';
-}
-
-function deleteAppointment(index) {
-  if (confirm('Êtes-vous sûr de vouloir supprimer ce rendez-vous ?')) {
-    appointments.splice(index, 1);
-    localStorage.setItem('dental_appointments', JSON.stringify(appointments));
-    renderAppointments();
-  }
-}
-
-function renderAppointments() {
-  const tbody = document.getElementById('appointmentsTablebody');
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  const statusFilter = document.getElementById('statusFilter').value;
-
-  tbody.innerHTML = '';
-
-  appointments.forEach((appointment, index) => {
-    // Filter logic
-    const matchesSearch = appointment.patient.toLowerCase().includes(searchTerm) ||
-                         appointment.doctor.toLowerCase().includes(searchTerm) ||
-                         appointment.treatment.toLowerCase().includes(searchTerm);
-    const matchesStatus = !statusFilter || appointment.status === statusFilter;
-
-    if (matchesSearch && matchesStatus) {
-      const row = document.createElement('tr');
-
-      let statusClass = '';
-      if (appointment.status === 'Confirmé') statusClass = 'status-confirmed';
-      else if (appointment.status === 'En attente') statusClass = 'status-pending';
-      else if (appointment.status === 'Annulé') statusClass = 'status-cancelled';
-
-      row.innerHTML = `
-        <td >${formatDate(appointment.date)}</td >
-        <td >${appointment.time}</td >
-        <td >${appointment.patient}</td >
-        <td >${appointment.doctor}</td >
-        <td >${appointment.treatment}</td >
-        <td >${appointment.mode}</td >
-        <td ><span class="status-badge ${statusClass}">${appointment.status}</span></td >
-        <td  class="action-buttons">
-          <button class="btn btn-small btn-success" title="Modifier" onclick="editAppointment(${index})"><i class="fas fa-edit"></i></button>
-          <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteAppointment(${index})"><i class="fas fa-times"></i></button>
-        </td >
-      `;
-
-      tbody.appendChild(row);
-    }
-  });
-}
-
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('fr-FR');
-}
-
-// Event listeners
-document.getElementById('appointmentForm').addEventListener('submit', saveAppointment);
-document.getElementById('searchInput').addEventListener('input', renderAppointments);
-document.getElementById('statusFilter').addEventListener('change', renderAppointments);
-
-// Initial render
-renderAppointments();
-</script>
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

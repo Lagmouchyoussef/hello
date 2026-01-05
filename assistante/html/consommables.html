@@ -6,6 +6,7 @@
 <title>Consommables - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -295,7 +289,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -408,12 +402,10 @@ font-size: 0.75rem;
 border-radius: 0.375rem;
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 .appointments-table {
 font-size: 0.8rem;
 }
@@ -423,7 +415,6 @@ padding: 0.75rem 0.5rem;
 }
 }
 @media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
 .main-content { margin-left: 0; padding: 1rem; }
 .cabinet-header,
 .user-section {
@@ -474,7 +465,32 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div>
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+
 <div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Consommables</h1>
@@ -490,8 +506,8 @@ Nouveau Consommable
 <form id="consumableForm" style="padding: 1.5rem;">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
 <div class="form-group">
-<label class="form-label">Nom d u consommable</label>
-<input type="text" class="form-control" id="nom_consommable" placeholder="Nom d u consommable" required>
+<label class="form-label">Nom du consommable</label>
+<input type="text" class="form-control" id="nom_consommable" placeholder="Nom du consommable" required>
 </div>
 <div class="form-group">
 <label class="form-label">Type</label>
@@ -514,8 +530,8 @@ Nouveau Consommable
 <input type="date" class="form-control" id="date_expiration" required>
 </div>
 <div class="form-group">
-<label class="form-label">description</label>
-<textarea class="form-control" id="description" rows="3" required></textarea>
+<label class="form-label">Description</label>
+<textarea class="form-control" id="Description" rows="3" required></textarea>
 </div>
 </div>
 <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
@@ -540,7 +556,7 @@ Nouveau Consommable
 <th>Fournisseur</th>
 <th>date d'achat</th>
 <th>date d'expiration</th>
-<th>description</th>
+<th>Description</th>
 <th>Actions</th>
 </tr>
 </thead >
@@ -549,99 +565,26 @@ Nouveau Consommable
 </table>
 </div>
 </div>
-<script src="../js/navbar.js"></script><script>// Open "Gestion des stocks" by default\ndocument.getElementById("section-stock-content").classList.remove("collapsed");\ndocument.getElementById("section-stock-toggle").classList.remove("collapsed");\n
-// Open "Gestion des stocks" by default
-document.getElementById('section-stock-content').classList.remove('collapsed');
-document.getElementById('section-stock-toggle').classList.remove('collapsed');
-let consumables = JSON.parse(localStorage.getItem('consumables')) || [];
-let editingIndex = -1;
-function showForm() {
-document.getElementById('addForm').style.display = 'block';
-document.getElementById('consumableForm').reset();
-editingIndex = -1;
-document.querySelector('#addForm .appointments-title').textContent = 'Ajouter un Consommable';
-}
-function hideForm() {
-document.getElementById('addForm').style.display = 'none';
-}
-function saveConsumable(e) {
-e.preventDefault();
-const consumable = {
-nom_consommable: document.getElementById('nom_consommable').value,
-type_consommable: document.getElementById('type_consommable').value,
-quantite: document.getElementById('quantite').value,
-fournisseur: document.getElementById('fournisseur').value,
-date_achat: document.getElementById('date_achat').value,
-date_expiration: document.getElementById('date_expiration').value,
-description: document.getElementById('description').value
-};
-if (editingIndex >= 0) {
-consumables[editingIndex] = consumable;
-} else {
-consumables.push(consumable);
-}
-localStorage.setItem('consumables', JSON.stringify(consumables));
-renderConsumables();
-hideForm();
-}
-function editConsumable(index) {
-const consumable = consumables[index];
-document.getElementById('nom_consommable').value = consumable.nom_consommable;
-document.getElementById('type_consommable').value = consumable.type_consommable;
-document.getElementById('quantite').value = consumable.quantite;
-document.getElementById('fournisseur').value = consumable.fournisseur;
-document.getElementById('date_achat').value = consumable.date_achat;
-document.getElementById('date_expiration').value = consumable.date_expiration;
-document.getElementById('description').value = consumable.description;
-editingIndex = index;
-document.getElementById('addForm').style.display = 'block';
-document.querySelector('#addForm .appointments-title').textContent = 'Modifier le Consommable';
-}
-function deleteConsumable(index) {
-if (confirm('Êtes-vous sûr de vouloir supprimer ce consommable ?')) {
-consumables.splice(index, 1);
-localStorage.setItem('consumables', JSON.stringify(consumables));
-renderConsumables();
-}
-}
-function renderConsumables() {
-const tbody = document.getElementById('consumablesTablebody');
-const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-tbody.innerHTML = '';
-consumables.forEach((consumable, index) => {
-const matchesSearch = consumable.nom_consommable.toLowerCase().includes(searchTerm) ||
-consumable.type_consommable.toLowerCase().includes(searchTerm) ||
-consumable.fournisseur.toLowerCase().includes(searchTerm) ||
-consumable.description.toLowerCase().includes(searchTerm);
-if (matchesSearch) {
-const row = document.createElement('tr');
-row.innerHTML = `
-<td >${consumable.nom_consommable}</td >
-<td >${consumable.type_consommable}</td >
-<td >${consumable.quantite}</td >
-<td >${consumable.fournisseur}</td >
-<td >${formatDate(consumable.date_achat)}</td >
-<td >${formatDate(consumable.date_expiration)}</td >
-<td >${consumable.description}</td >
-<td  class="action-buttons">
-<button class="btn btn-small btn-success" title="Modifier" onclick="editConsumable(${index})"><i class="fas fa-edit"></i></button>
-<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteConsumable(${index})"><i class="fas fa-times"></i></button>
-</td >
-`;
-tbody.appendChild(row);
-}
-});
-}
-function formatDate(dateString) {
-const date = new Date(dateString);
-return date.toLocaleDateString('fr-FR');
-}
-document.getElementById('consumableForm').addEventListener('submit', saveConsumable);
-document.getElementById('searchInput').addEventListener('input', renderConsumables);
-renderConsumables();
-</script>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

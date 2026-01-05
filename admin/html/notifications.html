@@ -6,600 +6,1412 @@
 <title>Notifications - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../navbar.css">
+
 <style>
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
+/* Professional Notifications Interface Styles */
 :root {
---medical-blue: #1e3a8a;
---medical-blue-dark: #1e40af;
---medical-blue-darker: #172554;
---medical-blue-light: #3b82f6;
---success: #059669;
---warning: #d97706;
---danger: #cbd5e1;
---text-light: #f8fafc;
---text-gray: #64748b;
---border-radius: 0.5rem;
---shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
---ai-purple: #7e22ce;
---ai-purple-light: #c084fc;
---transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
---unread-bg: #dbeafe;
+  --notification-primary: #3b82f6;
+  --notification-success: #10b981;
+  --notification-warning: #f59e0b;
+  --notification-error: #ef4444;
+  --notification-muted: #6b7280;
+  --notification-bg: #f8fafc;
+  --notification-card: #ffffff;
+  --notification-border: #e5e7eb;
+  --notification-hover: #f9fafb;
 }
-.light-mode {
---bg-primary: #f8fafc;
---bg-secondary: #ffffff;
---text-primary: #0f172a;
---text-secondary: #334155;
---border-color: #e2e8f0;
---card-shadow: var(--shadow);
---section-bg: rgba(30, 58, 138, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
+
+.notifications-container {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+  height: calc(100vh - 2rem);
 }
-.dark-mode {
---bg-primary: #0f172a;
---bg-secondary: #1e293b;
---text-primary: #f8fafc;
---text-secondary: #cbd5e1;
---border-color: #334155;
---card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
---unread-bg: #1e3a8a;
---section-bg: rgba(255, 255, 255, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
+
+.notifications-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
-body {
-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-background-color: var(--bg-primary);
-color: var(--text-primary);
-line-height: 1.5;
-font-size: 0.875rem;
-transition: var(--transition);
+
+.notifications-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
 }
-.sidebar {
-width: 280px;
-background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
-color: var(--text-light);
-height: 100vh;
-position: fixed;
-left: 0;
-top: 0;
-padding: 1.5rem 0;
-overflow-y: auto;
-box-shadow: var(--shadow);
-z-index: 1000;
-display: flex;
-flex-direction: column;
-transition: var(--transition);
+
+.notifications-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--notification-primary), #1d4ed8);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
 }
-.cabinet-header {
-padding: 0 1.5rem 1.5rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-margin-bottom: 1.5rem;
-text-align: center;
-position: relative;
+
+.notifications-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
 }
-.cabinet-logo {
-width: 64px;
-height: 64px;
-background: white;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-margin: 0 auto 1rem;
-color: var(--medical-blue);
-font-weight: 700;
-font-size: 1.5rem;
-box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
-transition: var(--transition);
+
+.notifications-subtitle {
+  margin: 0.25rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
-.cabinet-logo:hover {
-transform: scale(1.05);
-box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
+
+.notification-category {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
 }
-.cabinet-name {
-font-size: 1.25rem;
-font-weight: 700;
-margin-bottom: 0.25rem;
-letter-spacing: -0.025em;
-background: linear-gradient(to right, #ffffff, #cbd5e1);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
+
+.category-header {
+  padding: 1.5rem;
+  background: var(--notification-bg);
+  border-bottom: 1px solid var(--notification-border);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
-.cabinet-subtitle {
-font-size: 0.875rem;
-color: rgba(255, 255, 255, 0.8);
-font-weight: 400;
+
+.category-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: white;
 }
-.user-section {
-padding: 1.5rem;
-border-top: 1px solid rgba(255, 255, 255, 0.15);
-margin-top: auto;
-background: rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(10px);
+
+.category-icon.appointments { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+.category-icon.payments { background: linear-gradient(135deg, #10b981, #059669); }
+.category-icon.emergency { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.category-icon.system { background: linear-gradient(135deg, #6b7280, #4b5563); }
+.category-icon.marketing { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+.category-info h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
 }
-.user-info {
-display: flex;
-align-items: center;
-gap: 1rem;
-margin-bottom: 1.25rem;
-padding-bottom: 1rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+.category-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
-.user-avatar {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
-display: flex;
-align-items: center;
-justify-content: center;
-color: white;
-font-weight: 600;
-font-size: 0.9375rem;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+.category-content {
+  padding: 0;
 }
-.user-details {
-flex: 1;
-}
-.user-name {
-font-size: 0.9375rem;
-font-weight: 600;
-margin-bottom: 0.25rem;
-color: white;
-}
-.user-role {
-font-size: 0.75rem;
-color: rgba(255, 255, 255, 0.8);
-}
-.logout-btn,
-.theme-toggle {
-width: 100%;
-padding: 0.625rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 0.75rem;
-border: none;
-text-align: left;
-}
-.logout-btn {
-background: rgba(220, 38, 38, 0.2);
-color: white;
-}
-.logout-btn:hover {
-background: rgba(220, 38, 38, 0.3);
-transform: translateY(-1px);
-}
-.theme-toggle {
-background: rgba(255, 255, 255, 0.15);
-color: white;
-margin-bottom: 0.75rem;
-}
-.theme-toggle:hover {
-background: rgba(255, 255, 255, 0.25);
-transform: translateY(-1px);
-}
-.sidebar-menu {
-list-style: none;
-padding: 0 1.5rem;
-flex: 1;
-}
-.sidebar-item {
-margin: 0;
-}
-.sidebar-link {
-display: flex;
-align-items: center;
-gap: 1rem;
-padding: 0.875rem 1.25rem;
-text-decoration: none;
-color: rgba(255, 255, 255, 0.9);
-font-size: 0.9375rem;
-font-weight: 500;
-transition: var(--transition);
-border-radius: var(--border-radius);
-position: relative;
-width: 100%;
-text-align: left;
-border: none;
-background: none;
-cursor: pointer;
-}
-.sidebar-link:hover {
-background: var(--hover-bg);
-color: white;
-transform: translateX(4px);
-}
-.sidebar-link.active {
-background: var(--active-bg);
-color: white;
-border-left: 3px solid var(--medical-blue-light);
-padding-left: 1rem;
-transform: translateX(4px);
-}
-.sidebar-icon {
-width: 24px;
-text-align: center;
-font-size: 1.125rem;
-min-width: 24px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-.badge {
-background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-color: white;
-border-radius: 9999px;
-padding: 0.25rem 0.625rem;
-font-size: 0.75rem;
-font-weight: 600;
-margin-left: auto;
-margin-right: 0.5rem;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-.section-header {
-padding: 0.75rem 1.25rem 0.5rem;
-font-size: 0.75rem;
-font-weight: 600;
-color: rgba(255, 255, 255, 0.6);
-text-transform: uppercase;
-letter-spacing: 0.08em;
-margin-top: 1.5rem;
-position: relative;
-cursor: pointer;
-display: flex;
-justify-content: space-between;
-align-items: center;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-.section-header:first-child  {
-margin-top: 0;
-}
-.section-header::after {
-content: '';
-position: absolute;
-bottom: 0;
-left: 1.25rem;
-right: 1.25rem;
-height: 1px;
-background: rgba(255, 255, 255, 0.1);
-}
-.section-chevron {
-font-size: 0.75rem;
-transition: transform 0.3s ease;
-color: rgba(255, 255, 255, 0.6);
-}
-.section-header.collapsed.section-chevron {
-transform: rotate(-90deg);
-}
-.section-content {
-overflow: hidden;
-transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-max-height: 1000px;
-opacity: 1;
-}
-.section-content.collapsed{
-max-height: 0;
-opacity: 0;
-}
-.main-content {
-margin-left: 280px;
-padding: 2rem;
-min-height: 100vh;
-transition: var(--transition);
-}
-.content-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 2rem;
-flex-wrap: wrap;
-gap: 1rem;
-}
-.page-title {
-font-size: 1.75rem;
-font-weight: 700;
-letter-spacing: -0.025em;
-color: var(--text-primary);
-}
-.btn {
-padding: 0.5rem 1rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-border: none;
-}
-.btn-primary {
-background: var(--medical-blue);
-color: white;
-}
-.btn-primary:hover {
-background: var(--medical-blue-dark);
-transform: translateY(-2px);
-}
-.btn-success {
-background: var(--success);
-color: white;
-}
-.btn-danger {
-background: var(--danger);
-color: white;
-}
-.appointments-container {
-background: var(--bg-secondary);
-border-radius: var(--border-radius);
-box-shadow: var(--card-shadow);
-border: 1px solid var(--border-color);
-overflow: hidden;
-}
-.appointments-header {
-padding: 1.5rem;
-background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-color: white;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.appointments-title {
-font-size: 1.25rem;
-font-weight: 600;
-}
-.form-group {
-margin-bottom: 1rem;
-}
-.form-label {
-display: block;
-font-size: 0.875rem;
-font-weight: 500;
-color: var(--text-secondary);
-margin-bottom: 0.5rem;
-}
-.form-control {
-width: 100%;
-padding: 0.5rem;
-border: 1px solid var(--border-color);
-border-radius: var(--border-radius);
-background: var(--bg-primary);
-color: var(--text-primary);
-font-size: 0.875rem;
-}
-.form-control:focus {
-outline: none;
-border-color: var(--medical-blue);
-box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
-}
-.switch {
-position: relative;
-display: inline-block;
-width: 50px;
-height: 24px;
-}
-.switch input {
-opacity: 0;
-width: 0;
-height: 0;
-}
-.slider {
-position: absolute;
-cursor: pointer;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background-color: #ccc;
-transition: .4s;
-border-radius: 24px;
-}
-.slider:before {
-position: absolute;
-content: "";
-height: 18px;
-width: 18px;
-left: 3px;
-bottom: 3px;
-background-color: white;
-transition: .4s;
-border-radius: 50%;
-}
-input:checked  + .slider {
-background-color: var(--medical-blue);
-}
-input:checked  + .slider:before {
-transform: translateX(26px);
-}
+
 .notification-item {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 1rem;
-border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--notification-border);
+  transition: background 0.2s;
 }
-.notification-item:last-child  {
-border-bottom: none;
+
+.notification-item:hover {
+  background: var(--notification-hover);
 }
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
 .notification-content {
-flex: 1;
+  flex: 1;
+  margin-right: 1rem;
 }
+
 .notification-title {
-font-weight: 600;
-margin-bottom: 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
 }
+
 .notification-description {
-color: var(--text-secondary);
-font-size: 0.875rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
 }
-@media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+
+.notification-channels {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
+
+.channel-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid var(--notification-border);
+  background: white;
+}
+
+.channel-toggle.active {
+  background: var(--notification-primary);
+  color: white;
+  border-color: var(--notification-primary);
+}
+
+.channel-toggle.email.active { background: #ea4335; border-color: #ea4335; }
+.channel-toggle.sms.active { background: #25d366; border-color: #25d366; }
+.channel-toggle.push.active { background: #1877f2; border-color: #1877f2; }
+.channel-toggle.inapp.active { background: #6b7280; border-color: #6b7280; }
+
+.channel-icon {
+  font-size: 0.7rem;
+}
+
+.notification-settings {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  padding: 2rem;
+}
+
+.settings-section {
+  margin-bottom: 2rem;
+}
+
+.settings-section:last-child {
+  margin-bottom: 0;
+}
+
+.settings-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--notification-border);
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-label {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.setting-control {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.select-control {
+  padding: 0.5rem;
+  border: 1px solid var(--notification-border);
+  border-radius: 0.375rem;
+  background: white;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.select-control:focus {
+  outline: none;
+  border-color: var(--notification-primary);
+}
+
+.notifications-sidebar {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-section {
+  margin-bottom: 2rem;
+}
+
+.sidebar-section:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.notification-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.stat-card {
+  background: var(--notification-bg);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  border: 1px solid var(--notification-border);
+}
+
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--notification-primary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.notifications-log {
+  flex: 1;
+  min-height: 300px;
+}
+
+.log-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.empty-log {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  color: #e0e0e0;
+  margin-bottom: 1rem;
+}
+
+.empty-text {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.log-item {
+  padding: 1rem;
+  border-bottom: 1px solid var(--notification-border);
+  transition: background 0.2s;
+}
+
+.log-item:hover {
+  background: var(--notification-hover);
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.log-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.log-time {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.log-message {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.log-type {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.log-type.appointment { background: rgba(139, 92, 246, 0.1); color: #7c3aed; }
+.log-type.payment { background: rgba(16, 185, 129, 0.1); color: #059669; }
+.log-type.emergency { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
+.log-type.system { background: rgba(107, 114, 128, 0.1); color: #4b5563; }
+
+.save-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--notification-primary);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 1rem;
+}
+
+.save-button:hover {
+  background: #2563eb;
+}
+
+.save-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .notifications-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .notifications-sidebar {
+    order: -1;
+  }
+}
+
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
-}
-@media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
-.main-content { margin-left: 0; padding: 1rem; }
-.cabinet-header,
-.user-section {
-text-align: left;
-}
-.cabinet-logo {
-margin: 0 0 1rem 1.5rem;
-}
-.content-header {
-flex-direction: column;
-align-items: flex-start;
-}
-.appointments-header {
-flex-direction: column;
-gap: 1rem;
-text-align: center;
-}
+  .notifications-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  .notification-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .notification-channels {
+    width: 100%;
+  }
+  .setting-control {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 </style>
+
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
-<div class="content-header">
-<h1 class="page-title">Notifications</h1>
+
+<!-- Professional Sidebar Navigation -->
+<div class="sidebar">
+    <!-- Cabinet Header -->
+    <div class="cabinet-header"><div class="cabinet-logo"><img src="../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+        
+        <div class="cabinet-name">DIKRA centre Dentaire</div>
+        <div class="cabinet-subtitle">Casablanca, Maroc</div>
+    </div>
+    <!-- Navigation Menu -->
+    <ul class="sidebar-menu">
+        <!-- d ASHBOARd  -->
+        <li class="sidebar-item">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                Tableau de bord
+            </a>
+        </li>
+
+        <!-- RENdeZ-VOUS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-rdv-toggle">
+                Rendez-vous
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-rdv-content">
+                <div class="sidebar-item">
+                    <a href="Listes des Rendez-vous.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Liste des rendez-vous
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="Prise en ligne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
+                        Prise en ligne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="En présentiel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        En présentiel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="via-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
+                        Via espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- PATIENTS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-patients-toggle">
+                Patients
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-patients-content">
+                <div class="sidebar-item">
+                    <a href="fiches-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                        Fiches patients
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- CABINET -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-cabinet-toggle">
+                Cabinet
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-cabinet-content">
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- COMPTABILITÉ -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-compta-toggle">
+                Comptabilité
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-compta-content">
+                <div class="sidebar-item">
+                    <a href="comptabilite-generale.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
+                        Comptabilité générale
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="paiements-recus.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
+                        Paiements reçus
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="charges-depenses.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                        Charges & dépenses
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- COMMUNICATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-com-toggle">
+                Communication
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-com-content">
+                <div class="sidebar-item">
+                    <a href="messagerie-interne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                        Messagerie interne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="assistant-ia.html" class="sidebar-link">
+                        <span class="sidebar-icon">
+                            <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
+                        </span>
+                        Assistant IA
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="envoi-sms.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
+                        Envoi de SMS
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="messages-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
+                        Messages patients
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- ORGANISATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-org-toggle">
+                Organisation
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-org-content">
+                <div class="sidebar-item">
+                    <a href="taches-rappels.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
+                        Tâches & rappels
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notes-personnelles.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
+                        Notes personnelles
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="statistiques.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                        Statistiques
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- GESTION deS STOCKS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-stock-toggle">
+                Gestion des stocks
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-stock-content">
+                <div class="sidebar-item">
+                    <a href="materiel-dentaire.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-box"></i></span>
+                        Matériel dentaire
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="consommables.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
+                        Consommables
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="medicaments.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
+                        Médicaments
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- documentS & FORMULAIRES -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-docs-toggle">
+                Documents & formulaires
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-docs-content">
+                <div class="sidebar-item">
+                    <a href="ordonnances.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
+                        Ordonnances
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="certificats-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Certificats médicaux
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="feuilles-de-soins.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                        Feuilles de soins (CNOPS/CNSS)
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="imagerie-medicale.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
+                        Imagerie médicale
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="protheses.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                        Prothèses
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- UTILISATEURS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-users-toggle">
+                Utilisateurs
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-users-content">
+                <div class="sidebar-item">
+                    <a href="Liste du personnel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-list"></i></span>
+                        Liste du personnel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="ajouter-un-membre.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
+                        Ajouter un membre
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="roles-permissions.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                        Rôles & permissions
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="parametres-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                        Paramètres espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="gestion-des-acces.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-key"></i></span>
+                        Gestion des accès
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="messages-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
+                        Messages patients
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- SITE WEB -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-website-toggle">
+                Site web
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-website-content">
+                <div class="sidebar-item">
+                    <a href="contenu-articles.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
+                        Contenu & articles
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="design-theme.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
+                        Design & thème
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="referencement-seo.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-search"></i></span>
+                        Référencement (SEO)
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="formulaire-contact.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
+                        Formulaire de contact
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="statistiques-visite.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
+                        Statistiques de visite
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- CONFIGURATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-config-toggle">
+                Configuration
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-config-content">
+                <div class="sidebar-item">
+                    <a href="mon-profil.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                        Mon profil
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="informations-cabinet.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        Informations cabinet
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="parametres-facturation.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                        Paramètres de facturation
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <!-- User Section -->
+    <div class="user-section">
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <div class="user-details">
+                <div class="user-name"></div>
+                <div class="user-role"></div>
+            </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <span>Mode Sombre</span>
+        </button>
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+        </button>
+    </div>
 </div>
-<div class="appointments-container">
-<div class="appointments-header">
-<h2 class="appointments-title">Paramètres de Notifications</h2>
+
+
+<div class="main-content">
+<div class="notifications-container">
+  <!-- Main Content -->
+  <div class="notifications-main">
+    <!-- Header -->
+    <div class="notifications-header">
+      <div class="notifications-icon">
+        <i class="fas fa-bell"></i>
+      </div>
+      <div>
+        <h1 class="notifications-title">Centre de Notifications</h1>
+        <p class="notifications-subtitle">Gérez vos préférences de notifications et consultez l'historique</p>
+      </div>
+    </div>
+
+    <!-- Appointments Notifications -->
+    <div class="notification-category">
+      <div class="category-header">
+        <div class="category-icon appointments">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="category-info">
+          <h3>Rendez-vous</h3>
+          <p>Notifications liées aux consultations et planification</p>
+        </div>
+      </div>
+      <div class="category-content">
+        <div class="notification-item">
+          <div class="notification-content">
+            <div class="notification-title">Nouveaux rendez-vous</div>
+            <div class="notification-description">Recevoir une notification lors de la prise d'un nouveau rendez-vous</div>
+          </div>
+          <div class="notification-channels">
+            <div class="channel-toggle email active" onclick="toggleChannel(this)">
+              <i class="fas fa-envelope channel-icon"></i>
+              Email
+            </div>
+            <div class="channel-toggle push active" onclick="toggleChannel(this)">
+              <i class="fas fa-mobile-alt channel-icon"></i>
+              Push
+            </div>
+            <div class="channel-toggle inapp active" onclick="toggleChannel(this)">
+              <i class="fas fa-desktop channel-icon"></i>
+              In-App
+            </div>
+          </div>
+        </div>
+        <div class="notification-item">
+          <div class="notification-content">
+            <div class="notification-title">Rappels automatiques</div>
+            <div class="notification-description">Envoyer des rappels avant les rendez-vous</div>
+          </div>
+          <div class="notification-channels">
+            <div class="channel-toggle sms active" onclick="toggleChannel(this)">
+              <i class="fas fa-sms channel-icon"></i>
+              SMS
+            </div>
+            <div class="channel-toggle email active" onclick="toggleChannel(this)">
+              <i class="fas fa-envelope channel-icon"></i>
+              Email
+            </div>
+          </div>
+        </div>
+        <div class="notification-item">
+          <div class="notification-content">
+            <div class="notification-title">Annulations</div>
+            <div class="notification-description">Notifications en cas d'annulation de rendez-vous</div>
+          </div>
+          <div class="notification-channels">
+            <div class="channel-toggle push active" onclick="toggleChannel(this)">
+              <i class="fas fa-mobile-alt channel-icon"></i>
+              Push
+            </div>
+            <div class="channel-toggle inapp active" onclick="toggleChannel(this)">
+              <i class="fas fa-desktop channel-icon"></i>
+              In-App
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payments Notifications -->
+    <div class="notification-category">
+      <div class="category-header">
+        <div class="category-icon payments">
+          <i class="fas fa-credit-card"></i>
+        </div>
+        <div class="category-info">
+          <h3>Paiements</h3>
+          <p>Notifications financières et de facturation</p>
+        </div>
+      </div>
+      <div class="category-content">
+        <div class="notification-item">
+          <div class="notification-content">
+            <div class="notification-title">Paiements reçus</div>
+            <div class="notification-description">Confirmation des paiements effectués par les patients</div>
+          </div>
+          <div class="notification-channels">
+            <div class="channel-toggle email active" onclick="toggleChannel(this)">
+              <i class="fas fa-envelope channel-icon"></i>
+              Email
+            </div>
+            <div class="channel-toggle inapp active" onclick="toggleChannel(this)">
+              <i class="fas fa-desktop channel-icon"></i>
+              In-App
+            </div>
+          </div>
+        </div>
+        <div class="notification-item">
+          <div class="notification-content">
+            <div class="notification-title">Paiements en attente</div>
+            <div class="notification-description">Rappels pour les paiements non réglés</div>
+          </div>
+          <div class="notification-channels">
+            <div class="channel-toggle email" onclick="toggleChannel(this)">
+              <i class="fas fa-envelope channel-icon"></i>
+              Email
+            </div>
+            <div class="channel-toggle sms" onclick="toggleChannel(this)">
+              <i class="fas fa-sms channel-icon"></i>
+              SMS
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergency Notifications -->
+    <div class="notification-category">
+      <div class="category-header">
+        <div class="category-icon emergency">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="category-info">
+          <h3>Urgences</h3>
+          <p>Notifications critiques et d'urgence médicale</p>
+        </div>
+      </div>
+      <div class="category-content">
+        <div class="notification-item">
+          <div class="notification-content">
+            <div class="notification-title">Alertes d'urgence</div>
+            <div class="notification-description">Notifications immédiates pour les cas d'urgence</div>
+          </div>
+          <div class="notification-channels">
+            <div class="channel-toggle sms active" onclick="toggleChannel(this)">
+              <i class="fas fa-sms channel-icon"></i>
+              SMS
+            </div>
+            <div class="channel-toggle push active" onclick="toggleChannel(this)">
+              <i class="fas fa-mobile-alt channel-icon"></i>
+              Push
+            </div>
+            <div class="channel-toggle email active" onclick="toggleChannel(this)">
+              <i class="fas fa-envelope channel-icon"></i>
+              Email
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced Settings -->
+    <div class="notification-settings">
+      <div class="settings-section">
+        <h3 class="settings-title">
+          <i class="fas fa-cog"></i>
+          Paramètres avancés
+        </h3>
+        <div class="setting-item">
+          <span class="setting-label">Fréquence des rappels</span>
+          <div class="setting-control">
+            <select class="select-control" id="reminderFrequency">
+              <option value="1">1 heure avant</option>
+              <option value="24" selected>24 heures avant</option>
+              <option value="48">48 heures avant</option>
+              <option value="168">1 semaine avant</option>
+            </select>
+          </div>
+        </div>
+        <div class="setting-item">
+          <span class="setting-label">Heures d'envoi (SMS)</span>
+          <div class="setting-control">
+            <select class="select-control" id="smsHours">
+              <option value="9-18" selected>9h - 18h</option>
+              <option value="8-20">8h - 20h</option>
+              <option value="24">24h/24</option>
+            </select>
+          </div>
+        </div>
+        <div class="setting-item">
+          <span class="setting-label">Langue des notifications</span>
+          <div class="setting-control">
+            <select class="select-control" id="notificationLanguage">
+              <option value="fr" selected>Français</option>
+              <option value="ar">العربية</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button class="save-button" onclick="saveSettings()">
+        <i class="fas fa-save"></i>
+        Enregistrer les paramètres
+      </button>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="notifications-sidebar">
+    <div class="sidebar-section">
+      <h3 class="sidebar-title">
+        <i class="fas fa-chart-bar"></i>
+        Statistiques
+      </h3>
+      <div class="notification-stats">
+        <div class="stat-card">
+          <span class="stat-number" id="totalNotifications">0</span>
+          <span class="stat-label">Notifications envoyées</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="activeChannels">4</span>
+          <span class="stat-label">Canaux actifs</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="responseRate">0%</span>
+          <span class="stat-label">Taux de réponse</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3 class="sidebar-title">
+        <i class="fas fa-history"></i>
+        Historique récent
+      </h3>
+      <div class="notifications-log">
+        <div class="log-list" id="notificationsLog">
+          <div class="empty-log">
+            <div class="empty-icon">
+              <i class="fas fa-bell-slash"></i>
+            </div>
+            <p class="empty-text">Aucune notification pour le moment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div style="padding: 1.5rem;">
-<form id="notificationsForm">
-<div class="notification-item">
-<div class="notification-content">
-<div class="notification-title">Notifications par Email</div>
-<div class="notification-description">Recevoir des notifications par email pour les nouveaux rendez-vous et rappels</div>
 </div>
-<label class="switch">
-<input type="checkbox" id="email_notifications" checked >
-<span class="slider"></span>
-</label>
-</div>
-<div class="notification-item">
-<div class="notification-content">
-<div class="notification-title">Notifications SMS</div>
-<div class="notification-description">Recevoir des notifications SMS pour les urgences et confirmations</div>
-</div>
-<label class="switch">
-<input type="checkbox" id="sms_notifications">
-<span class="slider"></span>
-</label>
-</div>
-<div class="notification-item">
-<div class="notification-content">
-<div class="notification-title">Rappels de rendez-vous</div>
-<div class="notification-description">Envoyer automatiquement des rappels 24h avant les rendez-vous</div>
-</div>
-<label class="switch">
-<input type="checkbox" id="appointment_reminders" checked >
-<span class="slider"></span>
-</label>
-</div>
-<div class="notification-item">
-<div class="notification-content">
-<div class="notification-title">Notifications de paiement</div>
-<div class="notification-description">Recevoir des notifications pour les paiements reçus et en attente</div>
-</div>
-<label class="switch">
-<input type="checkbox" id="payment_notifications" checked >
-<span class="slider"></span>
-</label>
-</div>
-<div class="notification-item">
-<div class="notification-content">
-<div class="notification-title">Alertes d'urgence</div>
-<div class="notification-description">Notifications immédiates pour les cas d'urgence médicale</div>
-</div>
-<label class="switch">
-<input type="checkbox" id="emergency_alerts" checked >
-<span class="slider"></span>
-</label>
-</div>
-<div class="notification-item">
-<div class="notification-content">
-<div class="notification-title">Notifications de stock</div>
-<div class="notification-description">Alertes lorsque le stock de médicaments ou consommables est faible</div>
-</div>
-<label class="switch">
-<input type="checkbox" id="stock_alerts">
-<span class="slider"></span>
-</label>
-</div>
-<div style="margin-top: 2rem; display: flex; gap: 1rem;">
-<button type="submit" class="btn btn-primary">Enregistrer les paramètres</button>
-<button type="button" class="btn btn-danger" onclick="resetSettings()">Réinitialiser</button>
-</div>
-</form>
-</div>
-</div>
-</div><script src="../js/navbar.js"></script><script>
+
+<script>
+// Professional Notifications Management
 let notificationSettings = JSON.parse(localStorage.getItem('notificationSettings')) || {
-email_notifications: true,
-sms_notifications: false,
-appointment_reminders: true,
-payment_notifications: true,
-emergency_alerts: true,
-stock_alerts: false
+  appointments: {
+    new: { email: true, push: true, inapp: true },
+    reminders: { sms: true, email: true },
+    cancellations: { push: true, inapp: true }
+  },
+  payments: {
+    received: { email: true, inapp: true },
+    pending: { email: false, sms: false }
+  },
+  emergency: {
+    alerts: { sms: true, push: true, email: true }
+  },
+  advanced: {
+    reminderFrequency: '24',
+    smsHours: '9-18',
+    language: 'fr'
+  }
 };
+
+let notificationsLog = [];
+localStorage.setItem('notificationsLog', JSON.stringify(notificationsLog));
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  loadSettings();
+  updateUI();
+});
+
+// Load settings into UI
 function loadSettings() {
-document.getElementById('email_notifications').checked = notificationSettings.email_notifications;
-document.getElementById('sms_notifications').checked = notificationSettings.sms_notifications;
-document.getElementById('appointment_reminders').checked = notificationSettings.appointment_reminders;
-document.getElementById('payment_notifications').checked = notificationSettings.payment_notifications;
-document.getElementById('emergency_alerts').checked = notificationSettings.emergency_alerts;
-document.getElementById('stock_alerts').checked = notificationSettings.stock_alerts;
+  // Load channel toggles
+  document.querySelectorAll('.channel-toggle').forEach(toggle => {
+    const category = toggle.closest('.notification-category').querySelector('.category-icon').classList[1];
+    const notification = toggle.closest('.notification-item').querySelector('.notification-title').textContent.toLowerCase().replace(/\s+/g, '');
+    const channel = toggle.classList[1];
+
+    if (notificationSettings[category] && notificationSettings[category][notification] && notificationSettings[category][notification][channel]) {
+      toggle.classList.add('active');
+    }
+  });
+
+  // Load advanced settings
+  document.getElementById('reminderFrequency').value = notificationSettings.advanced.reminderFrequency;
+  document.getElementById('smsHours').value = notificationSettings.advanced.smsHours;
+  document.getElementById('notificationLanguage').value = notificationSettings.advanced.language;
 }
-function saveSettings(e) {
-e.preventDefault();
-notificationSettings = {
-email_notifications: document.getElementById('email_notifications').checked,
-sms_notifications: document.getElementById('sms_notifications').checked,
-appointment_reminders: document.getElementById('appointment_reminders').checked,
-payment_notifications: document.getElementById('payment_notifications').checked,
-emergency_alerts: document.getElementById('emergency_alerts').checked,
-stock_alerts: document.getElementById('stock_alerts').checked
-};
-localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
-alert('Paramètres de notifications enregistrés avec succès !');
+
+// Toggle channel
+function toggleChannel(element) {
+  element.classList.toggle('active');
 }
-function resetSettings() {
-if (confirm('Êtes-vous sûr de vouloir réinitialiser tous les paramètres de notifications ?')) {
-localStorage.removeItem('notificationSettings');
-notificationSettings = {
-email_notifications: true,
-sms_notifications: false,
-appointment_reminders: true,
-payment_notifications: true,
-emergency_alerts: true,
-stock_alerts: false
-};
-loadSettings();
-alert('Paramètres réinitialisés aux valeurs par défaut.');
+
+// Save settings
+function saveSettings() {
+  const saveBtn = document.querySelector('.save-button');
+  saveBtn.disabled = true;
+  saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
+
+  // Collect channel settings
+  document.querySelectorAll('.notification-category').forEach(categoryEl => {
+    const category = categoryEl.querySelector('.category-icon').classList[1];
+    if (!notificationSettings[category]) notificationSettings[category] = {};
+
+    categoryEl.querySelectorAll('.notification-item').forEach(itemEl => {
+      const notification = itemEl.querySelector('.notification-title').textContent.toLowerCase().replace(/\s+/g, '');
+      if (!notificationSettings[category][notification]) notificationSettings[category][notification] = {};
+
+      itemEl.querySelectorAll('.channel-toggle').forEach(toggle => {
+        const channel = toggle.classList[1];
+        notificationSettings[category][notification][channel] = toggle.classList.contains('active');
+      });
+    });
+  });
+
+  // Collect advanced settings
+  notificationSettings.advanced = {
+    reminderFrequency: document.getElementById('reminderFrequency').value,
+    smsHours: document.getElementById('smsHours').value,
+    language: document.getElementById('notificationLanguage').value
+  };
+
+  // Save to localStorage
+  localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
+
+  // Show success feedback
+  setTimeout(() => {
+    saveBtn.disabled = false;
+    saveBtn.innerHTML = '<i class="fas fa-check"></i> Paramètres enregistrés !';
+
+    setTimeout(() => {
+      saveBtn.innerHTML = '<i class="fas fa-save"></i> Enregistrer les paramètres';
+    }, 2000);
+  }, 1000);
 }
+
+// Update UI elements
+function updateUI() {
+  updateStats();
+  updateLog();
 }
-document.getElementById('notificationsForm').addEventListener('submit', saveSettings);
-loadSettings();
+
+// Update statistics
+function updateStats() {
+  document.getElementById('totalNotifications').textContent = 0;
+  document.getElementById('activeChannels').textContent = 0;
+  document.getElementById('responseRate').textContent = '0%';
+}
+
+// Count active channels
+function countActiveChannels() {
+  let count = 0;
+  Object.values(notificationSettings).forEach(category => {
+    if (typeof category === 'object' && category !== notificationSettings.advanced) {
+      Object.values(category).forEach(notification => {
+        if (typeof notification === 'object') {
+          Object.values(notification).forEach(enabled => {
+            if (enabled) count++;
+          });
+        }
+      });
+    }
+  });
+  return count;
+}
+
+// Update notifications log
+function updateLog() {
+  const logContainer = document.getElementById('notificationsLog');
+
+  if (notificationsLog.length === 0) {
+    logContainer.innerHTML = `
+      <div class="empty-log">
+        <div class="empty-icon">
+          <i class="fas fa-bell-slash"></i>
+        </div>
+        <p class="empty-text">Aucune notification pour le moment</p>
+      </div>
+    `;
+    return;
+  }
+
+  logContainer.innerHTML = '';
+  notificationsLog.slice(0, 10).forEach(notification => {
+    const logItem = document.createElement('div');
+    logItem.className = 'log-item';
+
+    logItem.innerHTML = `
+      <div class="log-header">
+        <div class="log-title">${notification.title}</div>
+        <div class="log-time">${formatTime(notification.timestamp)}</div>
+      </div>
+      <div class="log-message">${notification.message}</div>
+      <div class="log-type ${notification.type}">${notification.type}</div>
+    `;
+
+    logContainer.appendChild(logItem);
+  });
+}
+
+// Format time
+function formatTime(date) {
+  const d = new Date(date);
+  const now = new Date();
+  const diff = now - d;
+
+  if (diff < 60000) return 'À l\'instant';
+  if (diff < 3600000) return `Il y a ${Math.floor(diff / 60000)} min`;
+  if (diff < 86400000) return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+}
+
+// Simulate adding a notification (for demo purposes)
+function addSampleNotification() {
+  const sampleNotifications = [
+    {
+      title: 'Nouveau rendez-vous',
+      message: 'Mme Dupont a pris rendez-vous pour demain 14:00',
+      type: 'appointment',
+      timestamp: new Date()
+    },
+    {
+      title: 'Paiement reçu',
+      message: 'Paiement de 500 DH reçu de M. Alaoui',
+      type: 'payment',
+      timestamp: new Date(Date.now() - 3600000)
+    },
+    {
+      title: 'Alerte urgence',
+      message: 'Cas d\'urgence dentaire signalé',
+      type: 'emergency',
+      timestamp: new Date(Date.now() - 7200000)
+    }
+  ];
+
+  const randomNotification = sampleNotifications[Math.floor(Math.random() * sampleNotifications.length)];
+  notificationsLog.unshift(randomNotification);
+
+  // Keep only last 50 notifications
+  if (notificationsLog.length > 50) {
+    notificationsLog = notificationsLog.slice(0, 50);
+  }
+
+  localStorage.setItem('notificationsLog', JSON.stringify(notificationsLog));
+  updateUI();
+}
+
+// Sample notifications disabled
+// setInterval(addSampleNotification, 30000);
+
+// Export settings (for backup)
+function exportSettings() {
+  const dataStr = JSON.stringify({
+    settings: notificationSettings,
+    log: notificationsLog
+  }, null, 2);
+
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(dataBlob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'notifications-backup.json';
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
+
+// Import settings (for restore)
+function importSettings() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.settings) {
+            notificationSettings = data.settings;
+            localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
+          }
+          if (data.log) {
+            notificationsLog = data.log;
+            localStorage.setItem('notificationsLog', JSON.stringify(notificationsLog));
+          }
+          loadSettings();
+          updateUI();
+          alert('Paramètres importés avec succès !');
+        } catch (error) {
+          alert('Erreur lors de l\'importation du fichier.');
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
+  input.click();
+}
+
+// Make functions globally available
+window.toggleChannel = toggleChannel;
+window.saveSettings = saveSettings;
+window.exportSettings = exportSettings;
+window.importSettings = importSettings;
 </script>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

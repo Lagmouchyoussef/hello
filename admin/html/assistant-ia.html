@@ -6,591 +6,1101 @@
 <title>Assistant IA - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../navbar.css">
+
 <style>
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
+/* AI Assistant Chat Interface */
 :root {
---medical-blue: #1e3a8a;
---medical-blue-dark: #1e40af;
---medical-blue-darker: #172554;
---medical-blue-light: #3b82f6;
---success: #059669;
---warning: #d97706;
---danger: #cbd5e1;
---text-light: #f8fafc;
---text-gray: #64748b;
---border-radius: 0.5rem;
---shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
---ai-purple: #7e22ce;
---ai-purple-light: #c084fc;
---transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
---unread-bg: #dbeafe;
+  --ai-primary: #10a37f;
+  --ai-secondary: #343541;
+  --ai-bg: #f7f7f8;
+  --ai-user-bg: #ffffff;
+  --ai-assistant-bg: #f7f7f8;
+  --ai-border: #e5e5e5;
+  --ai-text: #333333;
+  --ai-text-light: #666666;
 }
-.light-mode {
---bg-primary: #f8fafc;
---bg-secondary: #ffffff;
---text-primary: #0f172a;
---text-secondary: #334155;
---border-color: #e2e8f0;
---card-shadow: var(--shadow);
---section-bg: rgba(30, 58, 138, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
+
+.ai-chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 2rem);
+  background: var(--ai-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
 }
-.dark-mode {
---bg-primary: #0f172a;
---bg-secondary: #1e293b;
---text-primary: #f8fafc;
---text-secondary: #cbd5e1;
---border-color: #334155;
---card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
---unread-bg: #1e3a8a;
---section-bg: rgba(255, 255, 255, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
+
+.ai-header {
+  padding: 1rem 1.5rem;
+  background: white;
+  border-bottom: 1px solid var(--ai-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-body {
-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-background-color: var(--bg-primary);
-color: var(--text-primary);
-line-height: 1.5;
-font-size: 0.875rem;
-transition: var(--transition);
+
+.ai-header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ai-text);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
-.sidebar {
-width: 280px;
-background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
-color: var(--text-light);
-height: 100vh;
-position: fixed;
-left: 0;
-top: 0;
-padding: 1.5rem 0;
-overflow-y: auto;
-box-shadow: var(--shadow);
-z-index: 1000;
-display: flex;
-flex-direction: column;
-transition: var(--transition);
+
+.ai-bot-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--ai-primary), #0d8a6c);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.1rem;
 }
-.cabinet-header {
-padding: 0 1.5rem 1.5rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-margin-bottom: 1.5rem;
-text-align: center;
-position: relative;
+
+.ai-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
-.cabinet-logo {
-width: 64px;
-height: 64px;
-background: white;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-margin: 0 auto 1rem;
-color: var(--medical-blue);
-font-weight: 700;
-font-size: 1.5rem;
-box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
-transition: var(--transition);
+
+.message {
+  display: flex;
+  gap: 1rem;
+  max-width: 80%;
+  animation: messageSlideIn 0.3s ease-out;
 }
-.cabinet-logo:hover {
-transform: scale(1.05);
-box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
+
+.message.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
 }
-.cabinet-name {
-font-size: 1.25rem;
-font-weight: 700;
-margin-bottom: 0.25rem;
-letter-spacing: -0.025em;
-background: linear-gradient(to right, #ffffff, #cbd5e1);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
+
+.message-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex-shrink: 0;
 }
-.cabinet-subtitle {
-font-size: 0.875rem;
-color: rgba(255, 255, 255, 0.8);
-font-weight: 400;
+
+.message.user .message-avatar {
+  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+  color: white;
 }
-.user-section {
-padding: 1.5rem;
-border-top: 1px solid rgba(255, 255, 255, 0.15);
-margin-top: auto;
-background: rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(10px);
+
+.message.assistant .message-avatar {
+  background: linear-gradient(135deg, var(--ai-primary), #0d8a6c);
+  color: white;
 }
-.user-info {
-display: flex;
-align-items: center;
-gap: 1rem;
-margin-bottom: 1.25rem;
-padding-bottom: 1rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+.message-content {
+  background: var(--ai-user-bg);
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  line-height: 1.5;
+  word-wrap: break-word;
 }
-.user-avatar {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
-display: flex;
-align-items: center;
-justify-content: center;
-color: white;
-font-weight: 600;
-font-size: 0.9375rem;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+.message.user .message-content {
+  background: var(--ai-user-bg);
+  border-bottom-right-radius: 0.25rem;
 }
-.user-details {
-flex: 1;
+
+.message.assistant .message-content {
+  background: var(--ai-assistant-bg);
+  border-bottom-left-radius: 0.25rem;
 }
-.user-name {
-font-size: 0.9375rem;
-font-weight: 600;
-margin-bottom: 0.25rem;
-color: white;
+
+.message-time {
+  font-size: 0.75rem;
+  color: var(--ai-text-light);
+  margin-top: 0.5rem;
+  text-align: right;
 }
-.user-role {
-font-size: 0.75rem;
-color: rgba(255, 255, 255, 0.8);
+
+.typing-indicator {
+  display: flex;
+  gap: 1rem;
+  max-width: 80%;
 }
-.logout-btn,
-.theme-toggle {
-width: 100%;
-padding: 0.625rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 0.75rem;
-border: none;
-text-align: left;
+
+.typing-indicator .message-content {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-style: italic;
+  color: var(--ai-text-light);
 }
-.logout-btn {
-background: rgba(220, 38, 38, 0.2);
-color: white;
+
+.typing-dots {
+  display: flex;
+  gap: 0.25rem;
 }
-.logout-btn:hover {
-background: rgba(220, 38, 38, 0.3);
-transform: translateY(-1px);
+
+.typing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ai-text-light);
+  animation: typingDot 1.4s infinite ease-in-out;
 }
-.theme-toggle {
-background: rgba(255, 255, 255, 0.15);
-color: white;
-margin-bottom: 0.75rem;
+
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+.ai-input-container {
+  padding: 1rem 1.5rem;
+  background: white;
+  border-top: 1px solid var(--ai-border);
 }
-.theme-toggle:hover {
-background: rgba(255, 255, 255, 0.25);
-transform: translateY(-1px);
+
+.ai-input-area {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
-.sidebar-menu {
-list-style: none;
-padding: 0 1.5rem;
-flex: 1;
+
+.ai-input {
+  flex: 1;
+  border: 1px solid var(--ai-border);
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  min-height: 20px;
+  max-height: 200px;
+  overflow-y: auto;
 }
-.sidebar-item {
-margin: 0;
+
+.ai-input:focus {
+  border-color: var(--ai-primary);
+  box-shadow: 0 0 0 2px rgba(16, 163, 127, 0.1);
 }
-.sidebar-link {
-display: flex;
-align-items: center;
-gap: 1rem;
-padding: 0.875rem 1.25rem;
-text-decoration: none;
-color: rgba(255, 255, 255, 0.9);
-font-size: 0.9375rem;
-font-weight: 500;
-transition: var(--transition);
-border-radius: var(--border-radius);
-position: relative;
-width: 100%;
-text-align: left;
-border: none;
-background: none;
-cursor: pointer;
+
+.ai-send-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--ai-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  flex-shrink: 0;
 }
-.sidebar-link:hover {
-background: var(--hover-bg);
-color: white;
-transform: translateX(4px);
+
+.ai-send-btn:hover:not(:disabled) {
+  background: #0d8a6c;
 }
-.sidebar-link.active {
-background: var(--active-bg);
-color: white;
-border-left: 3px solid var(--medical-blue-light);
-padding-left: 1rem;
-transform: translateX(4px);
+
+.ai-send-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
-.sidebar-icon {
-width: 24px;
-text-align: center;
-font-size: 1.125rem;
-min-width: 24px;
-display: flex;
-align-items: center;
-justify-content: center;
+
+.welcome-message {
+  text-align: center;
+  padding: 2rem;
+  color: var(--ai-text-light);
 }
-.ai-agent-icon {
-background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-color: white;
-padding: 0.375rem;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-width: 24px;
-height: 24px;
+
+.welcome-message h2 {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+  color: var(--ai-text);
 }
-.badge {
-background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-color: white;
-border-radius: 9999px;
-padding: 0.25rem 0.625rem;
-font-size: 0.75rem;
-font-weight: 600;
-margin-left: auto;
-margin-right: 0.5rem;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+.welcome-message p {
+  margin: 0 0 2rem;
+  font-size: 1rem;
 }
-.section-header {
-padding: 0.75rem 1.25rem 0.5rem;
-font-size: 0.75rem;
-font-weight: 600;
-color: rgba(255, 255, 255, 0.6);
-text-transform: uppercase;
-letter-spacing: 0.08em;
-margin-top: 1.5rem;
-position: relative;
-cursor: pointer;
-display: flex;
-justify-content: space-between;
-align-items: center;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+.suggestions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
-.section-header:first-child  {
-margin-top: 0;
+
+.suggestion-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--ai-border);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
 }
-.section-header::after {
-content: '';
-position: absolute;
-bottom: 0;
-left: 1.25rem;
-right: 1.25rem;
-height: 1px;
-background: rgba(255, 255, 255, 0.1);
+
+.suggestion-card:hover {
+  border-color: var(--ai-primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.section-chevron {
-font-size: 0.75rem;
-transition: transform 0.3s ease;
-color: rgba(255, 255, 255, 0.6);
+
+.suggestion-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: var(--ai-text);
 }
-.section-header.collapsed.section-chevron {
-transform: rotate(-90deg);
+
+.suggestion-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ai-text-light);
+  line-height: 1.4;
 }
-.section-content {
-overflow: hidden;
-transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-max-height: 1000px;
-opacity: 1;
+
+.clear-chat-btn {
+  background: none;
+  border: none;
+  color: var(--ai-text-light);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background 0.2s;
+  font-size: 0.9rem;
 }
-.section-content.collapsed{
-max-height: 0;
-opacity: 0;
+
+.clear-chat-btn:hover {
+  background: rgba(0,0,0,0.05);
 }
-.main-content {
-margin-left: 280px;
-padding: 2rem;
-min-height: 100vh;
-transition: var(--transition);
+
+/* Animations */
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.content-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 2rem;
-flex-wrap: wrap;
-gap: 1rem;
+
+@keyframes typingDot {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
 }
-.page-title {
-font-size: 1.75rem;
-font-weight: 700;
-letter-spacing: -0.025em;
-color: var(--text-primary);
-}
-.btn {
-padding: 0.5rem 1rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-border: none;
-}
-.btn-primary {
-background: var(--medical-blue);
-color: white;
-}
-.btn-primary:hover {
-background: var(--medical-blue-dark);
-transform: translateY(-2px);
-}
-.btn-success {
-background: var(--success);
-color: white;
-}
-.btn-danger {
-background: var(--danger);
-color: white;
-}
-.appointments-container {
-background: var(--bg-secondary);
-border-radius: var(--border-radius);
-box-shadow: var(--card-shadow);
-border: 1px solid var(--border-color);
-overflow: hidden;
-}
-.appointments-header {
-padding: 1.5rem;
-background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-color: white;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.appointments-title {
-font-size: 1.25rem;
-font-weight: 600;
-}
-.appointments-table {
-width: 100%;
-border-collapse: collapse;
-}
-.appointments-table th,
-.appointments-table td  {
-padding: 1rem;
-text-align: left;
-border-bottom: 1px solid var(--border-color);
-}
-.appointments-table th {
-background: var(--section-bg);
-font-weight: 600;
-color: var(--text-secondary);
-font-size: 0.875rem;
-text-transform: uppercase;
-letter-spacing: 0.05em;
-}
-.appointments-table tbody tr:hover {
-background: var(--section-bg);
-}
-.action-buttons {
-display: flex;
-gap: 0.5rem;
-}
-.btn-small {
-padding: 0.375rem 0.75rem;
-font-size: 0.75rem;
-border-radius: 0.375rem;
-}
-@media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
-}
+
+/* Responsive */
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
-.appointments-table {
-font-size: 0.8rem;
-}
-.appointments-table th,
-.appointments-table td  {
-padding: 0.75rem 0.5rem;
-}
-}
-@media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
-.main-content { margin-left: 0; padding: 1rem; }
-.cabinet-header,
-.user-section {
-text-align: left;
-}
-.cabinet-logo {
-margin: 0 0 1rem 1.5rem;
-}
-.content-header {
-flex-direction: column;
-align-items: flex-start;
-}
-.appointments-header {
-flex-direction: column;
-gap: 1rem;
-text-align: center;
-}
-.appointments-table {
-display: block;
-overflow-x: auto;
-white-space: nowrap;
-}
-}
-.form-group {
-margin-bottom: 1rem;
-}
-.form-label {
-display: block;
-font-size: 0.875rem;
-font-weight: 500;
-color: var(--text-secondary);
-margin-bottom: 0.5rem;
-}
-.form-control {
-width: 100%;
-padding: 0.5rem;
-border: 1px solid var(--border-color);
-border-radius: var(--border-radius);
-background: var(--bg-primary);
-color: var(--text-primary);
-font-size: 0.875rem;
-}
-.form-control:focus {
-outline: none;
-border-color: var(--medical-blue);
-box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+  .ai-chat-messages {
+    padding: 0.75rem;
+  }
+  .message {
+    max-width: 90%;
+    gap: 0.75rem;
+  }
+  .ai-input-container {
+    padding: 0.75rem 1rem;
+  }
+  .suggestions {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
+
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
-<div class="content-header">
-<h1 class="page-title">Assistant IA</h1>
-<button class="btn btn-primary" onclick="showForm()">
-<i class="fas fa-plus"></i>
-Nouvelle Configuration
-</button>
+
+<!-- Professional Sidebar Navigation -->
+<div class="sidebar">
+    <!-- Cabinet Header -->
+    <div class="cabinet-header"><div class="cabinet-logo"><img src="../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+        
+        <div class="cabinet-name">DIKRA centre Dentaire</div>
+        <div class="cabinet-subtitle">Casablanca, Maroc</div>
+    </div>
+    <!-- Navigation Menu -->
+    <ul class="sidebar-menu">
+        <!-- d ASHBOARd  -->
+        <li class="sidebar-item">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                Tableau de bord
+            </a>
+        </li>
+
+        <!-- RENdeZ-VOUS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-rdv-toggle">
+                Rendez-vous
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-rdv-content">
+                <div class="sidebar-item">
+                    <a href="Listes des Rendez-vous.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Liste des rendez-vous
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="Prise en ligne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
+                        Prise en ligne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="En présentiel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        En présentiel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="via-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
+                        Via espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- PATIENTS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-patients-toggle">
+                Patients
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-patients-content">
+                <div class="sidebar-item">
+                    <a href="fiches-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                        Fiches patients
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- CABINET -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-cabinet-toggle">
+                Cabinet
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-cabinet-content">
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- COMPTABILITÉ -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-compta-toggle">
+                Comptabilité
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-compta-content">
+                <div class="sidebar-item">
+                    <a href="comptabilite-generale.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
+                        Comptabilité générale
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="paiements-recus.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
+                        Paiements reçus
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="charges-depenses.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                        Charges & dépenses
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- COMMUNICATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-com-toggle">
+                Communication
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-com-content">
+                <div class="sidebar-item">
+                    <a href="messagerie-interne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                        Messagerie interne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="assistant-ia.html" class="sidebar-link">
+                        <span class="sidebar-icon">
+                            <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
+                        </span>
+                        Assistant IA
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="envoi-sms.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
+                        Envoi de SMS
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="messages-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
+                        Messages patients
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- ORGANISATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-org-toggle">
+                Organisation
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-org-content">
+                <div class="sidebar-item">
+                    <a href="taches-rappels.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
+                        Tâches & rappels
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notes-personnelles.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
+                        Notes personnelles
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="statistiques.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                        Statistiques
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- GESTION deS STOCKS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-stock-toggle">
+                Gestion des stocks
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-stock-content">
+                <div class="sidebar-item">
+                    <a href="materiel-dentaire.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-box"></i></span>
+                        Matériel dentaire
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="consommables.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
+                        Consommables
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="medicaments.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
+                        Médicaments
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- documentS & FORMULAIRES -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-docs-toggle">
+                Documents & formulaires
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-docs-content">
+                <div class="sidebar-item">
+                    <a href="ordonnances.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
+                        Ordonnances
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="certificats-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Certificats médicaux
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="feuilles-de-soins.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                        Feuilles de soins (CNOPS/CNSS)
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="imagerie-medicale.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
+                        Imagerie médicale
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="protheses.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                        Prothèses
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- UTILISATEURS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-users-toggle">
+                Utilisateurs
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-users-content">
+                <div class="sidebar-item">
+                    <a href="Liste du personnel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-list"></i></span>
+                        Liste du personnel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="ajouter-un-membre.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
+                        Ajouter un membre
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="roles-permissions.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                        Rôles & permissions
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="parametres-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                        Paramètres espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="gestion-des-acces.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-key"></i></span>
+                        Gestion des accès
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="messages-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
+                        Messages patients
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- SITE WEB -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-website-toggle">
+                Site web
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-website-content">
+                <div class="sidebar-item">
+                    <a href="contenu-articles.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
+                        Contenu & articles
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="design-theme.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
+                        Design & thème
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="referencement-seo.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-search"></i></span>
+                        Référencement (SEO)
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="formulaire-contact.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
+                        Formulaire de contact
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="statistiques-visite.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
+                        Statistiques de visite
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- CONFIGURATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-config-toggle">
+                Configuration
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-config-content">
+                <div class="sidebar-item">
+                    <a href="mon-profil.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                        Mon profil
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="informations-cabinet.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        Informations cabinet
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="parametres-facturation.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                        Paramètres de facturation
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <!-- User Section -->
+    <div class="user-section">
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <div class="user-details">
+                <div class="user-name"></div>
+                <div class="user-role"></div>
+            </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <span>Mode Sombre</span>
+        </button>
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+        </button>
+    </div>
 </div>
-<div class="appointments-container" id="addForm" style="display: none; margin-bottom: 2rem;">
-<div class="appointments-header">
-<h2 class="appointments-title">Nouvelle Configuration IA</h2>
+
+
+<div class="main-content">
+<div class="ai-chat-container">
+  <div class="ai-header">
+    <h1>
+      <span class="ai-bot-icon">
+        <i class="fas fa-robot"></i>
+      </span>
+      Assistant IA - Cabinet Dentaire
+    </h1>
+    <button class="clear-chat-btn" id="clearChatBtn" title="Effacer la conversation">
+      <i class="fas fa-trash"></i> Effacer
+    </button>
+  </div>
+
+  <div class="ai-chat-messages" id="chatMessages">
+    <div class="welcome-message" id="welcomeMessage">
+      <h2>Bonjour ! Je suis votre assistant IA</h2>
+      <p>Comment puis-je vous aider aujourd'hui ? Je peux vous assister avec la gestion du cabinet, les rendez-vous, la comptabilité, ou répondre à vos questions médicales.</p>
+
+      <div class="suggestions">
+        <div class="suggestion-card" onclick="sendSuggestion('Quels sont les rendez-vous d\'aujourd\'hui ?')">
+          <h3>📅 Rendez-vous du jour</h3>
+          <p>Voir la liste des consultations programmées pour aujourd'hui</p>
+        </div>
+        <div class="suggestion-card" onclick="sendSuggestion('Quel est le chiffre d\'affaires du mois ?')">
+          <h3>💰 Comptabilité</h3>
+          <p>Consulter les statistiques financières du cabinet</p>
+        </div>
+        <div class="suggestion-card" onclick="sendSuggestion('Comment gérer un patient anxieux ?')">
+          <h3>🦷 Conseils médicaux</h3>
+          <p>Obtenir des conseils pour la gestion des patients</p>
+        </div>
+        <div class="suggestion-card" onclick="sendSuggestion('Créer un rappel pour demain')">
+          <h3>⏰ Tâches et rappels</h3>
+          <p>Gérer les tâches et les rappels importants</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ai-input-container">
+    <div class="ai-input-area">
+      <textarea
+        class="ai-input"
+        id="messageInput"
+        placeholder="Posez votre question à l'assistant IA..."
+        rows="1"
+      ></textarea>
+      <button class="ai-send-btn" id="sendBtn" disabled>
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
 </div>
-<form id="aiForm" style="padding: 1.5rem;">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-<div class="form-group">
-<label class="form-label">Nom</label>
-<input type="text" class="form-control" id="nom" placeholder="Nom de la configuration" required>
 </div>
-<div class="form-group" style="grid-column: span 2;">
-<label class="form-label">Prompt</label>
-<textarea class="form-control" id="prompt" rows="3" placeholder="Prompt pour l'IA" required></textarea>
-</div>
-<div class="form-group" style="grid-column: span 2;">
-<label class="form-label">Response</label>
-<textarea class="form-control" id="response" rows="3" placeholder="Réponse attend ue" required></textarea>
-</div>
-</div>
-<div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-<button type="submit" class="btn btn-primary">Ajouter</button>
-<button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
-</div>
-</form>
-</div>
-<div class="appointments-container">
-<div class="appointments-header">
-<h2 class="appointments-title">Liste des Configurations IA</h2>
-<div>
-<input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
-</div>
-</div>
-<table class="appointments-table">
-<thead >
-<tr>
-<th>Nom</th>
-<th>Prompt</th>
-<th>Response</th>
-<th>Actions</th>
-</tr>
-</thead >
-<tbody id="aiTablebody">
-</tbody>
-</table>
-</div>
-</div><script src="../js/navbar.js"></script><script>// Open "Communication" by default\ndocument.getElementById("section-com-content").classList.remove("collapsed");\ndocument.getElementById("section-com-toggle").classList.remove("collapsed");\n
-let aiSettings = JSON.parse(localStorage.getItem('aiSettings')) || [];
-let editingIndex = -1;
-function showForm() {
-document.getElementById('addForm').style.display = 'block';
-document.getElementById('aiForm').reset();
-editingIndex = -1;
-document.querySelector('#addForm .appointments-title').textContent = 'Nouvelle Configuration IA';
-}
-function hideForm() {
-document.getElementById('addForm').style.display = 'none';
-}
-function saveAI(e) {
-e.preventDefault();
-const ai = {
-nom: document.getElementById('nom').value,
-prompt: document.getElementById('prompt').value,
-response: document.getElementById('response').value
-};
-if (editingIndex >= 0) {
-aiSettings[editingIndex] = ai;
-} else {
-aiSettings.push(ai);
-}
-localStorage.setItem('aiSettings', JSON.stringify(aiSettings));
-renderAI();
-hideForm();
-}
-function editAI(index) {
-const ai = aiSettings[index];
-document.getElementById('nom').value = ai.nom;
-document.getElementById('prompt').value = ai.prompt;
-document.getElementById('response').value = ai.response;
-editingIndex = index;
-document.getElementById('addForm').style.display = 'block';
-document.querySelector('#addForm .appointments-title').textContent = 'Modifier la Configuration IA';
-}
-function deleteAI(index) {
-if (confirm('Êtes-vous sûr de vouloir supprimer cette configuration IA ?')) {
-aiSettings.splice(index, 1);
-localStorage.setItem('aiSettings', JSON.stringify(aiSettings));
-renderAI();
-}
-}
-function renderAI() {
-const tbody = document.getElementById('aiTablebody');
-const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-tbody.innerHTML = '';
-aiSettings.forEach((ai, index) => {
-const matchesSearch = ai.nom.toLowerCase().includes(searchTerm) ||
-ai.prompt.toLowerCase().includes(searchTerm);
-if (matchesSearch) {
-const row = document.createElement('tr');
-row.innerHTML = `
-<td >${ai.nom}</td >
-<td >${ai.prompt}</td >
-<td >${ai.response}</td >
-<td  class="action-buttons">
-<button class="btn btn-small btn-success" title="Modifier" onclick="editAI(${index})"><i class="fas fa-edit"></i></button>
-<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteAI(${index})"><i class="fas fa-times"></i></button>
-</td >
-`;
-tbody.appendChild(row);
-}
+
+<script>
+// AI Assistant Chat Functionality
+const chatMessages = document.getElementById('chatMessages');
+const messageInput = document.getElementById('messageInput');
+const sendBtn = document.getElementById('sendBtn');
+const clearChatBtn = document.getElementById('clearChatBtn');
+const welcomeMessage = document.getElementById('welcomeMessage');
+
+let conversation = JSON.parse(localStorage.getItem('aiConversation')) || [];
+let isTyping = false;
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  loadConversation();
+  setupEventListeners();
+  updateSendButton();
 });
+
+// Setup event listeners
+function setupEventListeners() {
+  sendBtn.addEventListener('click', sendMessage);
+  messageInput.addEventListener('input', handleInput);
+  messageInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+  clearChatBtn.addEventListener('click', clearConversation);
 }
-document.getElementById('aiForm').addEventListener('submit', saveAI);
-document.getElementById('searchInput').addEventListener('input', renderAI);
-renderAI();
+
+// Handle input changes
+function handleInput() {
+  updateSendButton();
+  adjustTextareaHeight();
+}
+
+// Update send button state
+function updateSendButton() {
+  const hasText = messageInput.value.trim().length > 0;
+  sendBtn.disabled = !hasText || isTyping;
+}
+
+// Adjust textarea height
+function adjustTextareaHeight() {
+  messageInput.style.height = 'auto';
+  messageInput.style.height = Math.min(messageInput.scrollHeight, 200) + 'px';
+}
+
+// Send message
+async function sendMessage() {
+  const text = messageInput.value.trim();
+  if (!text || isTyping) return;
+
+  // Add user message
+  addMessage(text, 'user');
+  messageInput.value = '';
+  adjustTextareaHeight();
+  updateSendButton();
+
+  // Hide welcome message
+  welcomeMessage.style.display = 'none';
+
+  // Show typing indicator
+  showTypingIndicator();
+
+  try {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+
+    // Get AI response (simulated)
+    const response = await getAIResponse(text);
+    hideTypingIndicator();
+    addMessage(response, 'assistant');
+  } catch (error) {
+    hideTypingIndicator();
+    addMessage('Désolé, une erreur s\'est produite. Veuillez réessayer.', 'assistant');
+    console.error('AI Error:', error);
+  }
+}
+
+// Add message to chat
+function addMessage(text, sender) {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `message ${sender}`;
+
+  const avatar = sender === 'user' ? 'DM' : '<i class="fas fa-robot"></i>';
+  const avatarClass = sender === 'user' ? '' : 'ai-avatar';
+
+  messageDiv.innerHTML = `
+    <div class="message-avatar ${avatarClass}">${avatar}</div>
+    <div class="message-content">
+      ${formatMessage(text)}
+      <div class="message-time">${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</div>
+    </div>
+  `;
+
+  chatMessages.appendChild(messageDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  // Save to conversation
+  conversation.push({ text, sender, timestamp: new Date() });
+  saveConversation();
+}
+
+// Format message (simple markdown-like)
+function formatMessage(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n/g, '<br>');
+}
+
+// Show typing indicator
+function showTypingIndicator() {
+  isTyping = true;
+  updateSendButton();
+
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'message assistant typing-indicator';
+  typingDiv.id = 'typingIndicator';
+  typingDiv.innerHTML = `
+    <div class="message-avatar ai-avatar"><i class="fas fa-robot"></i></div>
+    <div class="message-content">
+      L'assistant écrit...
+      <div class="typing-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  `;
+
+  chatMessages.appendChild(typingDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Hide typing indicator
+function hideTypingIndicator() {
+  isTyping = false;
+  updateSendButton();
+  const typingIndicator = document.getElementById('typingIndicator');
+  if (typingIndicator) {
+    typingIndicator.remove();
+  }
+}
+
+// Simulated AI responses (replace with actual OpenAI API call)
+async function getAIResponse(userMessage) {
+  // Simulate different responses based on keywords
+  const message = userMessage.toLowerCase();
+
+  if (message.includes('rendez-vous') || message.includes('rdv')) {
+    return `**Rendez-vous d'aujourd'hui :**
+
+• 09:00 - Mme Dupont (Consultation de routine)
+• 10:30 - M. Alaoui (Détartrage)
+• 14:00 - Mme Bennani (Contrôle post-traitement)
+• 15:30 - M. Tazi (Consultation urgence)
+
+*Prochain rendez-vous disponible : demain à 11:00*`;
+  }
+
+  if (message.includes('chiffre') || message.includes('affaires') || message.includes('€') || message.includes('dh')) {
+    return `**Chiffre d'affaires du mois :**
+
+• Recettes totales : 45,230 DH
+• Charges : 12,450 DH
+• Bénéfice : 32,780 DH
+
+*Évolution par rapport au mois dernier : +8.5%*`;
+  }
+
+  if (message.includes('patient') && message.includes('anxieux')) {
+    return `**Gestion d'un patient anxieux :**
+
+1. **Communication rassurante** : Expliquez chaque étape calmement
+2. **Environnement apaisant** : Musique douce, éclairage tamisé
+3. **Techniques de relaxation** : Respiration profonde, distraction
+4. **Sédation consciente** : Si nécessaire, consultez les options disponibles
+5. **Suivi post-consultation** : Appelez pour prendre des nouvelles
+
+*Chaque patient est unique - adaptez votre approche à ses besoins spécifiques.*`;
+  }
+
+  if (message.includes('rappel') || message.includes('tâche')) {
+    return `**Nouveau rappel créé !**
+
+✅ Rappel programmé pour demain :
+- Titre : Consultation de suivi
+- Heure : 09:00
+- Patient : Mme Bennani
+- Notes : Vérifier l'évolution du traitement
+
+*Vous recevrez une notification 30 minutes avant.*`;
+  }
+
+  // Default response
+  return `Je suis l'assistant IA du DIKRA centre Dentaire. Je peux vous aider avec :
+
+• **Gestion des rendez-vous** : Consultation du planning, modifications
+• **Comptabilité** : Chiffres d'affaires, charges, statistiques
+• **Conseils médicaux** : Gestion des patients, protocoles de traitement
+• **Administration** : Tâches, rappels, organisation
+
+Pouvez-vous préciser votre demande pour que je puisse vous aider au mieux ?`;
+}
+
+// Send suggestion
+function sendSuggestion(text) {
+  messageInput.value = text;
+  updateSendButton();
+  adjustTextareaHeight();
+  messageInput.focus();
+}
+
+// Load conversation from localStorage
+function loadConversation() {
+  if (conversation.length > 0) {
+    welcomeMessage.style.display = 'none';
+    conversation.forEach(msg => {
+      addMessage(msg.text, msg.sender);
+    });
+  }
+}
+
+// Save conversation to localStorage
+function saveConversation() {
+  localStorage.setItem('aiConversation', JSON.stringify(conversation));
+}
+
+// Clear conversation
+function clearConversation() {
+  if (confirm('Êtes-vous sûr de vouloir effacer toute la conversation ?')) {
+    conversation = [];
+    chatMessages.innerHTML = '';
+    chatMessages.appendChild(welcomeMessage);
+    welcomeMessage.style.display = 'block';
+    saveConversation();
+  }
+}
+
+/*
+ * OpenAI API Integration Structure
+ *
+ * To connect with OpenAI, you'll need:
+ * 1. OpenAI API key (store securely on backend)
+ * 2. Backend endpoint to handle API calls
+ * 3. Replace getAIResponse() with actual API call
+ *
+ * Example backend integration:
+ *
+ * async function getAIResponse(userMessage) {
+ *   try {
+ *     const response = await fetch('/api/chat', {
+ *       method: 'POST',
+ *       headers: {
+ *         'Content-Type': 'application/json',
+ *       },
+ *       body: JSON.stringify({
+ *         message: userMessage,
+ *         context: 'dental-clinic-assistant'
+ *       })
+ *     });
+ *
+ *     const data = await response.json();
+ *     return data.response;
+ *   } catch (error) {
+ *     throw new Error('Failed to get AI response');
+ *   }
+ * }
+ */
 </script>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

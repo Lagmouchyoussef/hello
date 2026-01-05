@@ -6,6 +6,7 @@
 <title>Certificats médicaux - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -295,7 +289,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -408,12 +402,10 @@ font-size: 0.75rem;
 border-radius: 0.375rem;
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 .appointments-table {
 font-size: 0.8rem;
 }
@@ -423,7 +415,6 @@ padding: 0.75rem 0.5rem;
 }
 }
 @media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
 .main-content { margin-left: 0; padding: 1rem; }
 .cabinet-header,
 .user-section {
@@ -474,7 +465,32 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+<div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Certificats médicaux</h1>
 <button class="btn btn-primary" onclick="showForm()">
@@ -512,11 +528,11 @@ Nouveau Certificat
 </div>
 <div class="form-group">
 <label class="form-label">Motif</label>
-<textarea class="form-control" id="motif" rows="3" placeholder="Motif d u certificat" required></textarea>
+<textarea class="form-control" id="motif" rows="3" placeholder="Motif du certificat" required></textarea>
 </div>
 <div class="form-group">
-<label class="form-label">d urée (jours)</label>
-<input type="number" class="form-control" id="d uree" placeholder="d urée en jours" required>
+<label class="form-label">durée (jours)</label>
+<input type="number" class="form-control" id="duree" placeholder="durée en jours" required>
 </div>
 <div class="form-group">
 <label class="form-label">Statut</label>
@@ -549,7 +565,7 @@ Nouveau Certificat
 <th>Médecin</th>
 <th>Type</th>
 <th>Motif</th>
-<th>d urée</th>
+<th>durée</th>
 <th>Statut</th>
 <th>Actions</th>
 </tr>
@@ -558,93 +574,23 @@ Nouveau Certificat
 </tbody>
 </table>
 </div>
-</div><script src="../js/navbar.js"></script><script>
-let certificats = JSON.parse(localStorage.getItem('certificats')) || [];
-let editingIndex = -1;
-function showForm() {
-document.getElementById('addForm').style.display = 'block';
-document.getElementById('certificatForm').reset();
-editingIndex = -1;
-document.querySelector('#addForm .appointments-title').textContent = 'Ajouter un Certificat Méd ical';
-}
-function hideForm() {
-document.getElementById('addForm').style.display = 'none';
-}
-function saveCertificat(e) {
-e.preventDefault();
-const certificat = {
-nom_patient: document.getElementById('nom_patient').value,
-date_emission: document.getElementById('date_emission').value,
-medecin: document.getElementById('medecin').value,
-type_certificat: document.getElementById('type_certificat').value,
-motif: document.getElementById('motif').value,
-duree: document.getElementById('duree').value,
-statut: document.getElementById('statut').value
-};
-if (editingIndex >= 0) {
-certificats[editingIndex] = certificat;
-} else {
-certificats.push(certificat);
-}
-localStorage.setItem('certificats', JSON.stringify(certificats));
-renderCertificats();
-hideForm();
-}
-function editCertificat(index) {
-const certificat = certificats[index];
-document.getElementById('nom_patient').value = certificat.nom_patient;
-document.getElementById('date_emission').value = certificat.date_emission;
-document.getElementById('medecin').value = certificat.medecin;
-document.getElementById('type_certificat').value = certificat.type_certificat;
-document.getElementById('motif').value = certificat.motif;
-document.getElementById('duree').value = certificat.duree;
-document.getElementById('statut').value = certificat.statut;
-editingIndex = index;
-document.getElementById('addForm').style.display = 'block';
-document.querySelector('#addForm .appointments-title').textContent = 'Modifier le Certificat Méd ical';
-}
-function deleteCertificat(index) {
-if (confirm('Êtes-vous sûr de vouloir supprimer ce certificat ?')) {
-certificats.splice(index, 1);
-localStorage.setItem('certificats', JSON.stringify(certificats));
-renderCertificats();
-}
-}
-function renderCertificats() {
-const tbody = document.getElementById('certificatsTablebody');
-const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-tbody.innerHTML = '';
-certificats.forEach((certificat, index) => {
-const matchesSearch = certificat.nom_patient.toLowerCase().includes(searchTerm) ||
-certificat.medecin.toLowerCase().includes(searchTerm) ||
-certificat.type_certificat.toLowerCase().includes(searchTerm) ||
-certificat.motif.toLowerCase().includes(searchTerm);
-if (matchesSearch) {
-const row = document.createElement('tr');
-row.innerHTML = `
-<td >${certificat.nom_patient}</td >
-<td >${formatDate(certificat.date_emission)}</td >
-<td >${certificat.medecin}</td >
-<td >${certificat.type_certificat}</td >
-<td >${certificat.motif}</td >
-<td >${certificat.duree} jours</td >
-<td ><span class="status-bad ge status-${certificat.statut.toLowerCase()}">${certificat.statut}</span></td >
-<td  class="action-buttons">
-<button class="btn btn-small btn-success" title="Modifier" onclick="editCertificat(${index})"><i class="fas fa-edit"></i></button>
-<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteCertificat(${index})"><i class="fas fa-times"></i></button>
-</td >
-`;
-tbody.appendChild(row);
-}
-});
-}
-function formatDate(dateString) {
-const date = new Date(dateString);
-return date.toLocaleDateString('fr-FR');
-}
-document.getElementById('certificatForm').addEventListener('submit', saveCertificat);
-document.getElementById('searchInput').addEventListener('input', renderCertificats);
-renderCertificats();
-</script>
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

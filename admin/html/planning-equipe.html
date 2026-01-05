@@ -1,656 +1,1690 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planning de l'Équipe - dikra Centre dentaire</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-:root {
---medical-blue: #1e3a8a;
---medical-blue-dark: #1e40af;
---medical-blue-darker: #172554;
---medical-blue-light: #3b82f6;
---success: #059669;
---warning: #d97706;
---danger: #cbd5e1;
---text-light: #f8fafc;
---text-gray: #64748b;
---border-radius: 0.5rem;
---shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
---ai-purple: #7e22ce;
---ai-purple-light: #c084fc;
---transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
---unread-bg: #dbeafe;
-}
-.light-mode {
---bg-primary: #f8fafc;
---bg-secondary: #ffffff;
---text-primary: #0f172a;
---text-secondary: #334155;
---border-color: #e2e8f0;
---card-shadow: var(--shadow);
---section-bg: rgba(30, 58, 138, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
-}
-.dark-mode {
---bg-primary: #0f172a;
---bg-secondary: #1e293b;
---text-primary: #f8fafc;
---text-secondary: #cbd5e1;
---border-color: #334155;
---card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
---unread-bg: #1e3a8a;
---section-bg: rgba(255, 255, 255, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
-}
-body {
-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-background-color: var(--bg-primary);
-color: var(--text-primary);
-line-height: 1.5;
-font-size: 0.875rem;
-transition: var(--transition);
-}
-.sidebar {
-width: 280px;
-background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
-color: var(--text-light);
-height: 100vh;
-position: fixed;
-left: 0;
-top: 0;
-padding: 1.5rem 0;
-overflow-y: auto;
-box-shadow: var(--shadow);
-z-index: 1000;
-display: flex;
-flex-direction: column;
-transition: var(--transition);
-}
-.cabinet-header {
-padding: 0 1.5rem 1.5rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-margin-bottom: 1.5rem;
-text-align: center;
-position: relative;
-}
-.cabinet-logo {
-width: 64px;
-height: 64px;
-background: white;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-margin: 0 auto 1rem;
-color: var(--medical-blue);
-font-weight: 700;
-font-size: 1.5rem;
-box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
-transition: var(--transition);
-}
-.cabinet-logo:hover {
-transform: scale(1.05);
-box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
-}
-.cabinet-name {
-font-size: 1.25rem;
-font-weight: 700;
-margin-bottom: 0.25rem;
-letter-spacing: -0.025em;
-background: linear-gradient(to right, #ffffff, #cbd5e1);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-}
-.cabinet-subtitle {
-font-size: 0.875rem;
-color: rgba(255, 255, 255, 0.8);
-font-weight: 400;
-}
-.user-section {
-padding: 1.5rem;
-border-top: 1px solid rgba(255, 255, 255, 0.15);
-margin-top: auto;
-background: rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(10px);
-}
-.user-info {
-display: flex;
-align-items: center;
-gap: 1rem;
-margin-bottom: 1.25rem;
-padding-bottom: 1rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-.user-avatar {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
-display: flex;
-align-items: center;
-justify-content: center;
-color: white;
-font-weight: 600;
-font-size: 0.9375rem;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-.user-details {
-flex: 1;
-}
-.user-name {
-font-size: 0.9375rem;
-font-weight: 600;
-margin-bottom: 0.25rem;
-color: white;
-}
-.user-role {
-font-size: 0.75rem;
-color: rgba(255, 255, 255, 0.8);
-}
-.logout-btn,
-.theme-toggle {
-width: 100%;
-padding: 0.625rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 0.75rem;
-border: none;
-text-align: left;
-}
-.logout-btn {
-background: rgba(220, 38, 38, 0.2);
-color: white;
-}
-.logout-btn:hover {
-background: rgba(220, 38, 38, 0.3);
-transform: translateY(-1px);
-}
-.theme-toggle {
-background: rgba(255, 255, 255, 0.15);
-color: white;
-margin-bottom: 0.75rem;
-}
-.theme-toggle:hover {
-background: rgba(255, 255, 255, 0.25);
-transform: translateY(-1px);
-}
-.sidebar-menu {
-list-style: none;
-padding: 0 1.5rem;
-flex: 1;
-}
-.sidebar-item {
-margin: 0;
-}
-.sidebar-link {
-display: flex;
-align-items: center;
-gap: 1rem;
-padding: 0.875rem 1.25rem;
-text-decoration: none;
-color: rgba(255, 255, 255, 0.9);
-font-size: 0.9375rem;
-font-weight: 500;
-transition: var(--transition);
-border-radius: var(--border-radius);
-position: relative;
-width: 100%;
-text-align: left;
-border: none;
-background: none;
-cursor: pointer;
-}
-.sidebar-link:hover {
-background: var(--hover-bg);
-color: white;
-transform: translateX(4px);
-}
-.sidebar-link.active {
-background: var(--active-bg);
-color: white;
-border-left: 3px solid var(--medical-blue-light);
-padding-left: 1rem;
-transform: translateX(4px);
-}
-.sidebar-icon {
-width: 24px;
-text-align: center;
-font-size: 1.125rem;
-min-width: 24px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-.badge {
-background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-color: white;
-border-radius: 9999px;
-padding: 0.25rem 0.625rem;
-font-size: 0.75rem;
-font-weight: 600;
-margin-left: auto;
-margin-right: 0.5rem;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-.section-header {
-padding: 0.75rem 1.25rem 0.5rem;
-font-size: 0.75rem;
-font-weight: 600;
-color: rgba(255, 255, 255, 0.6);
-text-transform: uppercase;
-letter-spacing: 0.08em;
-margin-top: 1.5rem;
-position: relative;
-cursor: pointer;
-display: flex;
-justify-content: space-between;
-align-items: center;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-.section-header:first-child  {
-margin-top: 0;
-}
-.section-header::after {
-content: '';
-position: absolute;
-bottom: 0;
-left: 1.25rem;
-right: 1.25rem;
-height: 1px;
-background: rgba(255, 255, 255, 0.1);
-}
-.section-chevron {
-font-size: 0.75rem;
-transition: transform 0.3s ease;
-color: rgba(255, 255, 255, 0.6);
-}
-.section-header.collapsed.section-chevron {
-transform: rotate(-90deg);
-}
-.section-content {
-overflow: hidden;
-transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-max-height: 1000px;
-opacity: 1;
-}
-.section-content.collapsed{
-max-height: 0;
-opacity: 0;
-}
-.main-content {
-margin-left: 280px;
-padding: 2rem;
-min-height: 100vh;
-transition: var(--transition);
-}
-.content-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 2rem;
-flex-wrap: wrap;
-gap: 1rem;
-}
-.page-title {
-font-size: 1.75rem;
-font-weight: 700;
-letter-spacing: -0.025em;
-color: var(--text-primary);
-}
-.btn {
-padding: 0.5rem 1rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-border: none;
-}
-.btn-primary {
-background: var(--medical-blue);
-color: white;
-}
-.btn-primary:hover {
-background: var(--medical-blue-dark);
-transform: translateY(-2px);
-}
-.btn-success {
-background: var(--success);
-color: white;
-}
-.btn-danger {
-background: var(--danger);
-color: white;
-}
-.appointments-container {
-background: var(--bg-secondary);
-border-radius: var(--border-radius);
-box-shadow: var(--card-shadow);
-border: 1px solid var(--border-color);
-overflow: hidden;
-}
-.appointments-header {
-padding: 1.5rem;
-background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-color: white;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.appointments-title {
-font-size: 1.25rem;
-font-weight: 600;
-}
-.appointments-table {
-width: 100%;
-border-collapse: collapse;
-}
-.appointments-table th,
-.appointments-table td  {
-padding: 1rem;
-text-align: left;
-border-bottom: 1px solid var(--border-color);
-}
-.appointments-table th {
-background: var(--section-bg);
-font-weight: 600;
-color: var(--text-secondary);
-font-size: 0.875rem;
-text-transform: uppercase;
-letter-spacing: 0.05em;
-}
-.appointments-table tbody tr:hover {
-background: var(--section-bg);
-}
-.action-buttons {
-display: flex;
-gap: 0.5rem;
-}
-.btn-small {
-padding: 0.375rem 0.75rem;
-font-size: 0.75rem;
-border-radius: 0.375rem;
-}
-@media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
-}
-@media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
-.appointments-table {
-font-size: 0.8rem;
-}
-.appointments-table th,
-.appointments-table td  {
-padding: 0.75rem 0.5rem;
-}
-}
-@media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
-.main-content { margin-left: 0; padding: 1rem; }
-.cabinet-header,
-.user-section {
-text-align: left;
-}
-.cabinet-logo {
-margin: 0 0 1rem 1.5rem;
-}
-.content-header {
-flex-direction: column;
-align-items: flex-start;
-}
-.appointments-header {
-flex-direction: column;
-gap: 1rem;
-text-align: center;
-}
-.appointments-table {
-display: block;
-overflow-x: auto;
-white-space: nowrap;
-}
-}
-.form-group {
-margin-bottom: 1rem;
-}
-.form-label {
-display: block;
-font-size: 0.875rem;
-font-weight: 500;
-color: var(--text-secondary);
-margin-bottom: 0.5rem;
-}
-.form-control {
-width: 100%;
-padding: 0.5rem;
-border: 1px solid var(--border-color);
-border-radius: var(--border-radius);
-background: var(--bg-primary);
-color: var(--text-primary);
-font-size: 0.875rem;
-}
-.form-control:focus {
-outline: none;
-border-color: var(--medical-blue);
-box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning de l'équipe - DIKRA centre Dentaire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../navbar.css">
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --medical-blue: #1e3a8a;
+            --medical-blue-dark: #1e40af;
+            --medical-blue-darker: #172554;
+            --medical-blue-light: #3b82f6;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --text-light: #f8fafc;
+            --text-gray: #64748b;
+            --border-radius: 0.5rem;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --ai-purple: #7e22ce;
+            --ai-purple-light: #c084fc;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --unread-bg: #dbeafe;
+            --assistant-green: #047857;
+            --assistant-green-light: #10b981;
+        }
+
+        /* Light mode */
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --border-color: #e2e8f0;
+            --card-shadow: var(--shadow);
+            --section-bg: rgba(4, 120, 87, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Dark mode */
+        .dark-mode {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --unread-bg: #065f46;
+            --section-bg: rgba(255, 255, 255, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Content container */
+        .content-container {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .content-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-header-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .content-body {
+            padding: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--medical-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--medical-blue-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--text-gray);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        /* Calendar styles */
+        .calendar-container {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-sidebar {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .calendar-main {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .calendar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .calendar-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .calendar-nav-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            transition: var(--transition);
+        }
+
+        .calendar-nav-btn:hover {
+            background: var(--section-bg);
+            color: var(--text-primary);
+        }
+
+        .calendar-view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .view-btn.active {
+            background: var(--medical-blue);
+            color: white;
+            border-color: var(--medical-blue);
+        }
+
+        .view-btn:hover {
+            background: var(--medical-blue);
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        .calendar-day-header {
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+            background: var(--section-bg);
+        }
+
+        .calendar-day {
+            min-height: 120px;
+            padding: 0.5rem;
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-day:hover {
+            background: var(--section-bg);
+        }
+
+        .calendar-day.today {
+            background: rgba(30, 58, 138, 0.1);
+        }
+
+        .calendar-day.other-month {
+            background: var(--bg-primary);
+            color: var(--text-gray);
+        }
+
+        .day-number {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .calendar-day.other-month .day-number {
+            color: var(--text-gray);
+        }
+
+        .day-events {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .event-item {
+            background: var(--medical-blue);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .event-item.dentist {
+            background: var(--medical-blue);
+        }
+
+        .event-item.assistant {
+            background: var(--success);
+        }
+
+        .event-item.secretary {
+            background: var(--warning);
+        }
+
+        .event-item.technician {
+            background: #7c3aed;
+        }
+
+        /* Team members sidebar */
+        .team-members {
+            margin-bottom: 2rem;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .team-member:hover {
+            background: var(--section-bg);
+        }
+
+        .member-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .member-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.125rem;
+        }
+
+        .member-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .member-status {
+            margin-left: auto;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.625rem;
+            font-weight: 500;
+        }
+
+        .status-available {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+
+        .status-busy {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning);
+        }
+
+        .status-off {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+
+        /* Quick actions */
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quick-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+
+        .quick-action-btn:hover {
+            background: var(--section-bg);
+            border-color: var(--medical-blue);
+        }
+
+        /* Week view */
+        .week-view {
+            display: grid;
+            grid-template-columns: 100px repeat(7, 1fr);
+        }
+
+        .time-slot {
+            padding: 0.5rem;
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--section-bg);
+        }
+
+        .week-day-header {
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            background: var(--section-bg);
+        }
+
+        .week-time-slot {
+            height: 60px;
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .week-time-slot:hover {
+            background: var(--section-bg);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            margin: 5% auto;
+            padding: 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Form styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                margin-left: 250px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 250px;
+                padding: 1.5rem;
+            }
+
+            .calendar-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .calendar-sidebar {
+                order: 2;
+            }
+
+            .calendar-main {
+                order: 1;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .content-header-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 240px;
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .calendar-nav {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .calendar-view-toggle {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .week-view {
+                grid-template-columns: 80px repeat(7, 1fr);
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+
+            .calendar-day {
+                min-height: 100px;
+                padding: 0.25rem;
+            }
+
+            .day-events {
+                gap: 0.125rem;
+            }
+
+            .event-item {
+                font-size: 0.625rem;
+                padding: 0.125rem 0.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .calendar-container {
+                gap: 1rem;
+            }
+
+            .calendar-sidebar {
+                padding: 1rem;
+            }
+
+            .calendar-main {
+                overflow-x: auto;
+            }
+
+            .week-view {
+                min-width: 600px;
+            }
+
+            .calendar-grid {
+                min-width: 600px;
+            }
+
+            .calendar-day {
+                min-height: 80px;
+            }
+
+            .team-member {
+                padding: 0.5rem;
+            }
+
+            .member-avatar {
+                width: 2rem;
+                height: 2rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
-<div class="content-header">
-<h1 class="page-title">Planning de l'Équipe</h1>
-<button class="btn btn-primary" onclick="showForm()">
-<i class="fas fa-plus"></i>
-Ajouter un Shift
-</button>
-</div>
-<div class="appointments-container" id="addForm" style="display: none; margin-bottom: 2rem;">
-<div class="appointments-header">
-<h2 class="appointments-title">Ajouter un Shift</h2>
-</div>
-<form id="shiftForm" style="padding: 1.5rem;">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-<div class="form-group">
-<label class="form-label">Membre d u personnel</label>
-<select class="form-control" id="staff_member" required>
-<option value="">Sélectionner un membre</option>
-</select>
-</div>
-<div class="form-group">
-<label class="form-label">date</label>
-<input type="date" class="form-control" id="shift_date" required>
-</div>
-<div class="form-group">
-<label class="form-label">Heure de d ébut</label>
-<input type="time" class="form-control" id="start_time" required>
-</div>
-<div class="form-group">
-<label class="form-label">Heure de fin</label>
-<input type="time" class="form-control" id="end _time" required>
-</div>
-<div class="form-group">
-<label class="form-label">Type de shift</label>
-<select class="form-control" id="shift_type" required>
-<option value="">Sélectionner un type</option>
-<option value="Matin">Matin</option>
-<option value="Après-mid i">Après-mid i</option>
-<option value="Nuit">Nuit</option>
-<option value="Garde">Garde</option>
-</select>
-</div>
-<div class="form-group">
-<label class="form-label">Notes</label>
-<textarea class="form-control" id="notes" rows="3" placeholder="Notes supplémentaires"></textarea>
-</div>
-</div>
-<div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-<button type="submit" class="btn btn-primary">Ajouter</button>
-<button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
-</div>
-</form>
-</div>
-<div class="appointments-container">
-<div class="appointments-header">
-<h2 class="appointments-title">Planning de l'Équipe</h2>
-<div>
-<input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
-<select id="filterdate" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary);">
-<option value="">Toutes les dates</option>
-</select>
-</div>
-</div>
-<table class="appointments-table">
-<thead >
-<tr>
-<th>Membre</th>
-<th>date</th>
-<th>Heure de d ébut</th>
-<th>Heure de fin</th>
-<th>Type</th>
-<th>Notes</th>
-<th>Actions</th>
-</tr>
-</thead >
-<tbody id="shiftsTablebody">
-</tbody>
-</table>
-</div>
-</div><script src="../js/navbar.js"></script><script>
-let shifts = JSON.parse(localStorage.getItem('shifts')) || [];
-let editingIndex = -1;
-function loadStaffOptions() {
-const staff = JSON.parse(localStorage.getItem('staff')) || [];
-const select = document.getElementById('staff_member');
-select.innerHTML = '<option value="">Sélectionner un membre</option>';
-staff.forEach(member => {
-const option = document.createElement('option');
-option.value = member.id ;
-option.textContent = member.name;
-select.appendChild(option);
-});
-}
-function showForm() {
-loadStaffOptions();
-document.getElementById('addForm').style.display = 'block';
-document.getElementById('shiftForm').reset();
-editingIndex = -1;
-document.querySelector('#addForm .appointments-title').textContent = 'Ajouter un Shift';
-}
-function hideForm() {
-document.getElementById('addForm').style.display = 'none';
-}
-function saveShift(e) {
-e.preventDefault();
-const shift = {
-staff_member: document.getElementById('staff_member').value,
-shift_date: document.getElementById('shift_date').value,
-start_time: document.getElementById('start_time').value,
-end_time: document.getElementById('end _time').value,
-shift_type: document.getElementById('shift_type').value,
-notes: document.getElementById('notes').value
-};
-if (editingIndex >= 0) {
-shifts[editingIndex] = shift;
-} else {
-shifts.push(shift);
-}
-localStorage.setItem('shifts', JSON.stringify(shifts));
-renderShifts();
-hideForm();
-}
-function editShift(index) {
-const shift = shifts[index];
-document.getElementById('staff_member').value = shift.staff_member;
-document.getElementById('shift_date').value = shift.shift_date;
-document.getElementById('start_time').value = shift.start_time;
-document.getElementById('end _time').value = shift.end_time;
-document.getElementById('shift_type').value = shift.shift_type;
-document.getElementById('notes').value = shift.notes;
-editingIndex = index;
-document.getElementById('addForm').style.display = 'block';
-document.querySelector('#addForm .appointments-title').textContent = 'Modifier le Shift';
-}
-function deleteShift(index) {
-if (confirm('Êtes-vous sûr de vouloir supprimer ce shift ?')) {
-shifts.splice(index, 1);
-localStorage.setItem('shifts', JSON.stringify(shifts));
-renderShifts();
-}
-}
-function renderShifts() {
-const tbody = document.getElementById('shiftsTablebody');
-const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-tbody.innerHTML = '';
-const staff = JSON.parse(localStorage.getItem('staff')) || [];
-shifts.forEach((shift, index) => {
-const member = staff.find (m => m.id  == shift.staff_member);
-const memberName = member ? member.name : 'Inconnu';
-const matchesSearch = memberName.toLowerCase().includes(searchTerm) ||
-shift.shift_type.toLowerCase().includes(searchTerm);
-if (matchesSearch) {
-const row = document.createElement('tr');
-row.innerHTML = `
-<td >${memberName}</td >
-<td >${formatDate(shift.shift_date)}</td >
-<td >${shift.start_time}</td >
-<td >${shift.end_time}</td >
-<td >${shift.shift_type}</td >
-<td >${shift.notes}</td >
-<td  class="action-buttons">
-<button class="btn btn-small btn-success" title="Modifier" onclick="editShift(${index})"><i class="fas fa-edit"></i></button>
-<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteShift(${index})"><i class="fas fa-times"></i></button>
-</td >
-`;
-tbody.appendChild(row);
-}
-});
-}
-function formatDate(dateString) {
-const date = new Date(dateString);
-return date.toLocaleDateString('fr-FR');
-}
-document.getElementById('shiftForm').addEventListener('submit', saveShift);
-document.getElementById('searchInput').addEventListener('input', renderShifts);
-renderShifts();
-</script>
+    <!-- Professional Sidebar Navigation -->
+    <div class="sidebar">
+        <!-- Cabinet Header -->
+        <div class="cabinet-header"><div class="cabinet-logo"><img src="../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+            
+            <div class="cabinet-name">DIKRA centre Dentaire</div>
+            <div class="cabinet-subtitle">Casablanca, Maroc</div>
+        </div>
+        <!-- Navigation Menu -->
+        <ul class="sidebar-menu">
+            <!-- DASHBOARD -->
+            <li class="sidebar-item">
+                <a href="dashboard.html" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                    Tableau de bord
+                </a>
+            </li>
+
+            <!-- RENDEZ-VOUS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-rdv-toggle">
+                    Rendez-vous
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-rdv-content">
+                    <div class="sidebar-item">
+                        <a href="Listes%20des%20Rendez-vous.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                            Liste des rendez-vous
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="Prise%20en%20ligne.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
+                            Prise en ligne
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="En%20présentiel.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            En présentiel
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="via-espace-patient.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
+                            Via espace patient
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="planning-equipe.html" class="sidebar-link active">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
+                            Planning de l'équipe
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="salle-attente.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
+                            Salle d'attente
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- PATIENTS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-patients-toggle">
+                    Patients
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-patients-content">
+                    <div class="sidebar-item">
+                        <a href="fiches-patients.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                            Fiches patients
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="dossiers-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
+                            Dossiers médicaux
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- CABINET -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-cabinet-toggle">
+                    Cabinet
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-cabinet-content">
+                    <div class="sidebar-item">
+                        <a href="salle-attente.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
+                            Salle d'attente
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- COMPTABILITÉ -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-compta-toggle">
+                    Comptabilité
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-compta-content">
+                    <div class="sidebar-item">
+                        <a href="comptabilite-generale.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
+                            Comptabilité générale
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="paiements-recus.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
+                            Paiements reçus
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="charges-depenses.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                            Charges & dépenses
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- COMMUNICATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-com-toggle">
+                    Communication
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-com-content">
+                    <div class="sidebar-item">
+                        <a href="messagerie-interne.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                            Messagerie interne
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="assistant-ia.html" class="sidebar-link">
+                            <span class="sidebar-icon">
+                                <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
+                            </span>
+                            Assistant IA
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="envoi-sms.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
+                            Envoi de SMS
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notifications.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                            Notifications
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- ORGANISATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-org-toggle">
+                    Organisation
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-org-content">
+                    <div class="sidebar-item">
+                        <a href="taches-rappels.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
+                            Tâches & rappels
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notes-personnelles.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
+                            Notes personnelles
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="statistiques.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                            Statistiques
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- GESTION DES STOCKS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-stock-toggle">
+                    Gestion des stocks
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-stock-content">
+                    <div class="sidebar-item">
+                        <a href="materiel-dentaire.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-box"></i></span>
+                            Matériel dentaire
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="consommables.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
+                            Consommables
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="medicaments.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
+                            Médicaments
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- DOCUMENTS & FORMULAIRES -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-docs-toggle">
+                    Documents & formulaires
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-docs-content">
+                    <div class="sidebar-item">
+                        <a href="ordonnances.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
+                            Ordonnances
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="certificats-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                            Certificats médicaux
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="feuilles-de-soins.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                            Feuilles de soins (CNOPS/CNSS)
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="imagerie-medicale.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
+                            Imagerie médicale
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="protheses.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                            Prothèses
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- UTILISATEURS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-users-toggle">
+                    Utilisateurs
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-users-content">
+                    <div class="sidebar-item">
+                        <a href="Liste%20du%20personnel.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-list"></i></span>
+                            Liste du personnel
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="ajouter-un-membre.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
+                            Ajouter un membre
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="roles-permissions.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                            Rôles & permissions
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="planning-equipe.html" class="sidebar-link active">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                            Planning de l'équipe
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="parametres-espace-patient.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                            Paramètres espace patient
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="gestion-des-acces.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-key"></i></span>
+                            Gestion des accès
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="dossiers-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                            Dossiers médicaux
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- SITE WEB -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-website-toggle">
+                    Site web
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-website-content">
+                    <div class="sidebar-item">
+                        <a href="contenu-articles.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
+                            Contenu & articles
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="design-theme.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
+                            Design & thème
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="referencement-seo.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-search"></i></span>
+                            Référencement (SEO)
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="formulaire-contact.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
+                            Formulaire de contact
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="statistiques-visite.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
+                            Statistiques de visite
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- CONFIGURATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-config-toggle">
+                    Configuration
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-config-content">
+                    <div class="sidebar-item">
+                        <a href="mon-profil.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                            Mon profil
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="informations-cabinet.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            Informations cabinet
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="parametres-facturation.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                            Paramètres de facturation
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notifications.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                            Notifications
+                        </a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!-- User Section -->
+        <div class="user-section">
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <div class="user-details">
+                    <div class="user-name"></div>
+                    <div class="user-role"></div>
+                </div>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+                <span>Mode Sombre</span>
+            </button>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="content-header">
+            <div>
+                <h1 class="page-title">Planning de l'équipe</h1>
+                <p class="page-subtitle">Gérer les horaires et disponibilités de l'équipe médicale</p>
+            </div>
+            <div class="content-actions">
+                <button class="btn btn-outline" id="exportBtn">
+                    <i class="fas fa-download"></i> Exporter
+                </button>
+                <button class="btn btn-primary" id="addShiftBtn">
+                    <i class="fas fa-plus"></i> Ajouter un créneau
+                </button>
+            </div>
+        </div>
+
+        <!-- Calendar Container -->
+        <div class="calendar-container">
+            <!-- Sidebar -->
+            <div class="calendar-sidebar">
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem;">
+                        <i class="fas fa-bolt" style="margin-right: 0.5rem;"></i>
+                        Actions rapides
+                    </h3>
+
+                    <button class="quick-action-btn" id="viewTodayBtn">
+                        <i class="fas fa-calendar-day"></i>
+                        Aujourd'hui
+                    </button>
+
+                    <button class="quick-action-btn" id="viewWeekBtn">
+                        <i class="fas fa-calendar-week"></i>
+                        Cette semaine
+                    </button>
+
+                    <button class="quick-action-btn" id="manageAbsencesBtn">
+                        <i class="fas fa-user-times"></i>
+                        Gérer absences
+                    </button>
+
+                    <button class="quick-action-btn" id="scheduleReportBtn">
+                        <i class="fas fa-chart-bar"></i>
+                        Rapport planning
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Calendar -->
+            <div class="calendar-main">
+                <div class="calendar-header">
+                    <div class="calendar-nav">
+                        <button class="calendar-nav-btn" id="prevBtn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h2 class="calendar-title" id="calendarTitle">Décembre 2024</h2>
+                        <button class="calendar-nav-btn" id="nextBtn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="calendar-view-toggle">
+                        <button class="view-btn active" id="monthViewBtn">Mois</button>
+                        <button class="view-btn" id="weekViewBtn">Semaine</button>
+                        <button class="view-btn" id="dayViewBtn">Jour</button>
+                    </div>
+                </div>
+
+                <!-- Month View -->
+                <div id="monthView" class="calendar-view">
+                    <div class="calendar-grid">
+                        <div class="calendar-day-header">Lun</div>
+                        <div class="calendar-day-header">Mar</div>
+                        <div class="calendar-day-header">Mer</div>
+                        <div class="calendar-day-header">Jeu</div>
+                        <div class="calendar-day-header">Ven</div>
+                        <div class="calendar-day-header">Sam</div>
+                        <div class="calendar-day-header">Dim</div>
+                        <!-- Calendar days will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Week View -->
+                <div id="weekView" class="calendar-view" style="display: none;">
+                    <div class="week-view">
+                        <div class="week-day-header">Heure</div>
+                        <div class="week-day-header">Lundi</div>
+                        <div class="week-day-header">Mardi</div>
+                        <div class="week-day-header">Mercredi</div>
+                        <div class="week-day-header">Jeudi</div>
+                        <div class="week-day-header">Vendredi</div>
+                        <div class="week-day-header">Samedi</div>
+                        <div class="week-day-header">Dimanche</div>
+
+                        <!-- Time slots will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shift Management Modal -->
+        <div id="shiftModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="shiftModalTitle">Ajouter un créneau</h2>
+                    <button class="modal-close" id="closeShiftModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="shiftForm">
+                        <div class="form-group">
+                            <label class="form-label">Membre de l'équipe *</label>
+                            <select class="form-control form-select" id="shiftMember" required>
+                                <option value="">Sélectionner un membre</option>
+                                <option value="dr-alami"></option>
+                                <option value="dr-bennani">Dr. Sara Bennani</option>
+                                <option value="assistant-fatima">Fatima Tazi (Assistante)</option>
+                                <option value="assistant-karim">Karim Rachid (Assistant)</option>
+                                <option value="secretaire-amal">Amal Alaoui (Secrétaire)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date *</label>
+                            <input type="date" class="form-control" id="shiftDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Heure de début *</label>
+                            <input type="time" class="form-control" id="shiftStartTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Heure de fin *</label>
+                            <input type="time" class="form-control" id="shiftEndTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Type de créneau</label>
+                            <select class="form-control form-select" id="shiftType">
+                                <option value="regular">Régulier</option>
+                                <option value="emergency">Urgence</option>
+                                <option value="training">Formation</option>
+                                <option value="meeting">Réunion</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" id="shiftNotes" rows="3" placeholder="Notes supplémentaires..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancelShiftBtn">Annuler</button>
+                    <button class="btn btn-success" id="saveShiftBtn">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Common JavaScript -->
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+        const themeText = themeToggle.querySelector('span');
+        // Using sessionStorage instead of localStorage
+        const savedTheme = sessionStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            themeIcon.className = 'fas fa-sun';
+            themeText.textContent = 'Mode Clair';
+        }
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Mode Clair';
+                sessionStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Mode Sombre';
+                sessionStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
+            }
+        });
+
+        // Navigation link functionality
+        const mainLinks = document.querySelectorAll('.sidebar-link');
+        const mainContent = document.getElementById('mainContent');
+        mainLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Update active states
+                mainLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize active link
+        document.querySelector('.sidebar-link[href="planning-equipe.html"]').classList.add('active');
+
+        // Collapsible section headers
+        document.querySelectorAll('.section-header.clickable').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isCollapsed = content.classList.contains('collapsed');
+                // Close all other sections
+                document.querySelectorAll('.section-content').forEach(el => {
+                    if (el !== content) {
+                        el.classList.add('collapsed');
+                        el.previousElementSibling.classList.add('collapsed');
+                    }
+                });
+                // Toggle current section
+                if (isCollapsed) {
+                    content.classList.remove('collapsed');
+                    header.classList.remove('collapsed');
+                } else {
+                    content.classList.add('collapsed');
+                    header.classList.add('collapsed');
+                }
+            });
+        });
+
+        // Open "Utilisateurs" by default
+        document.getElementById('section-users-content').classList.remove('collapsed');
+        document.getElementById('section-rdv-content').classList.remove('collapsed');
+        document.getElementById('section-users-toggle').classList.remove('collapsed');
+        document.getElementById('section-rdv-toggle').classList.remove('collapsed');
+
+        // Calendar functionality
+        let currentDate = new Date();
+        let currentView = 'month';
+
+        // Sample events data
+        const events = [
+            {
+                id: 1,
+                member: 'dr-alami',
+                date: '2024-12-15',
+                startTime: '09:00',
+                endTime: '12:00',
+                type: 'regular',
+                title: 'Consultations matin'
+            },
+            {
+                id: 2,
+                member: 'dr-alami',
+                date: '2024-12-15',
+                startTime: '14:00',
+                endTime: '17:00',
+                type: 'regular',
+                title: 'Consultations après-midi'
+            },
+            {
+                id: 3,
+                member: 'dr-bennani',
+                date: '2024-12-16',
+                startTime: '09:00',
+                endTime: '12:00',
+                type: 'regular',
+                title: 'Consultations matin'
+            },
+            {
+                id: 4,
+                member: 'assistant-fatima',
+                date: '2024-12-15',
+                startTime: '08:00',
+                endTime: '17:00',
+                type: 'regular',
+                title: 'Service complet'
+            },
+            {
+                id: 5,
+                member: 'secretaire-amal',
+                date: '2024-12-15',
+                startTime: '08:30',
+                endTime: '17:30',
+                type: 'regular',
+                title: 'Accueil et administration'
+            }
+        ];
+
+        // Initialize calendar
+        function initCalendar() {
+            updateCalendarTitle();
+            renderCalendar();
+        }
+
+        // Update calendar title
+        function updateCalendarTitle() {
+            const options = { year: 'numeric', month: 'long' };
+            document.getElementById('calendarTitle').textContent = currentDate.toLocaleDateString('fr-FR', options);
+        }
+
+        // Render calendar
+        function renderCalendar() {
+            if (currentView === 'month') {
+                renderMonthView();
+            } else if (currentView === 'week') {
+                renderWeekView();
+            }
+        }
+
+        // Render month view
+        function renderMonthView() {
+            const calendarGrid = document.querySelector('.calendar-grid');
+            const dayHeaders = calendarGrid.querySelectorAll('.calendar-day-header');
+            const existingDays = calendarGrid.querySelectorAll('.calendar-day');
+
+            // Clear existing days
+            existingDays.forEach(day => day.remove());
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay() + 1);
+
+            const endDate = new Date(lastDay);
+            endDate.setDate(endDate.getDate() + (7 - lastDay.getDay()));
+
+            let currentDateIter = new Date(startDate);
+
+            while (currentDateIter <= endDate) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+
+                if (currentDateIter.getMonth() !== month) {
+                    dayElement.classList.add('other-month');
+                }
+
+                if (currentDateIter.toDateString() === new Date().toDateString()) {
+                    dayElement.classList.add('today');
+                }
+
+                dayElement.innerHTML = `
+                    <div class="day-number">${currentDateIter.getDate()}</div>
+                    <div class="day-events"></div>
+                `;
+
+                // Add events for this day
+                const dayEvents = events.filter(event => event.date === currentDateIter.toISOString().split('T')[0]);
+                const dayEventsContainer = dayElement.querySelector('.day-events');
+
+                dayEvents.forEach(event => {
+                    const eventElement = document.createElement('div');
+                    eventElement.className = `event-item ${event.member}`;
+                    eventElement.textContent = event.title;
+                    dayEventsContainer.appendChild(eventElement);
+                });
+
+                calendarGrid.appendChild(dayElement);
+                currentDateIter.setDate(currentDateIter.getDate() + 1);
+            }
+        }
+
+        // Render week view
+        function renderWeekView() {
+            const weekView = document.getElementById('weekView');
+            const existingSlots = weekView.querySelectorAll('.time-slot, .week-time-slot');
+
+            // Clear existing slots
+            existingSlots.forEach(slot => slot.remove());
+
+            // Add time slots
+            for (let hour = 8; hour <= 18; hour++) {
+                const timeSlot = document.createElement('div');
+                timeSlot.className = 'time-slot';
+                timeSlot.textContent = `${hour}:00`;
+                weekView.appendChild(timeSlot);
+
+                // Add slots for each day
+                for (let day = 0; day < 7; day++) {
+                    const daySlot = document.createElement('div');
+                    daySlot.className = 'week-time-slot';
+                    weekView.appendChild(daySlot);
+                }
+            }
+        }
+
+        // Navigation buttons
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentView === 'month') {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+            } else if (currentView === 'week') {
+                currentDate.setDate(currentDate.getDate() - 7);
+            }
+            updateCalendarTitle();
+            renderCalendar();
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentView === 'month') {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+            } else if (currentView === 'week') {
+                currentDate.setDate(currentDate.getDate() + 7);
+            }
+            updateCalendarTitle();
+            renderCalendar();
+        });
+
+        // View toggle buttons
+        document.getElementById('monthViewBtn').addEventListener('click', () => {
+            setView('month');
+        });
+
+        document.getElementById('weekViewBtn').addEventListener('click', () => {
+            setView('week');
+        });
+
+        document.getElementById('dayViewBtn').addEventListener('click', () => {
+            setView('day');
+        });
+
+        function setView(view) {
+            currentView = view;
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`#${view}ViewBtn`).classList.add('active');
+
+            document.querySelectorAll('.calendar-view').forEach(viewEl => {
+                viewEl.style.display = 'none';
+            });
+            document.getElementById(`${view}View`).style.display = 'block';
+
+            renderCalendar();
+        }
+
+        // Quick actions
+        document.getElementById('viewTodayBtn').addEventListener('click', () => {
+            currentDate = new Date();
+            updateCalendarTitle();
+            renderCalendar();
+        });
+
+        document.getElementById('viewWeekBtn').addEventListener('click', () => {
+            setView('week');
+        });
+
+        document.getElementById('manageAbsencesBtn').addEventListener('click', () => {
+            alert('Fonctionnalité de gestion des absences à implémenter');
+        });
+
+        document.getElementById('scheduleReportBtn').addEventListener('click', () => {
+            alert('Génération du rapport de planning...');
+        });
+
+        // Export functionality
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            alert('Export du planning en cours...');
+        });
+
+        // Shift modal
+        const shiftModal = document.getElementById('shiftModal');
+        const addShiftBtn = document.getElementById('addShiftBtn');
+        const closeShiftModal = document.getElementById('closeShiftModal');
+        const cancelShiftBtn = document.getElementById('cancelShiftBtn');
+        const saveShiftBtn = document.getElementById('saveShiftBtn');
+        const shiftForm = document.getElementById('shiftForm');
+
+        addShiftBtn.addEventListener('click', () => {
+            shiftModal.style.display = 'block';
+        });
+
+        closeShiftModal.addEventListener('click', () => {
+            shiftModal.style.display = 'none';
+        });
+
+        cancelShiftBtn.addEventListener('click', () => {
+            shiftModal.style.display = 'none';
+        });
+
+        saveShiftBtn.addEventListener('click', () => {
+            const formData = new FormData(shiftForm);
+            const shiftData = {
+                member: document.getElementById('shiftMember').value,
+                date: document.getElementById('shiftDate').value,
+                startTime: document.getElementById('shiftStartTime').value,
+                endTime: document.getElementById('shiftEndTime').value,
+                type: document.getElementById('shiftType').value,
+                notes: document.getElementById('shiftNotes').value
+            };
+
+            if (!shiftData.member || !shiftData.date || !shiftData.startTime || !shiftData.endTime) {
+                alert('Veuillez remplir tous les champs obligatoires.');
+                return;
+            }
+
+            // Add to events array
+            events.push({
+                id: Date.now(),
+                ...shiftData,
+                title: `${shiftData.member} - ${shiftData.startTime} à ${shiftData.endTime}`
+            });
+
+            shiftModal.style.display = 'none';
+            shiftForm.reset();
+            renderCalendar();
+
+            alert('Créneau ajouté avec succès !');
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === shiftModal) {
+                shiftModal.style.display = 'none';
+            }
+        });
+
+        // Team member selection
+        document.querySelectorAll('.team-member').forEach(member => {
+            member.addEventListener('click', () => {
+                document.querySelectorAll('.team-member').forEach(m => m.classList.remove('selected'));
+                member.classList.add('selected');
+            });
+        });
+
+        // Initialize
+        initCalendar();
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

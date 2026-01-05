@@ -6,6 +6,7 @@
 <title>Messages Patients - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -295,7 +289,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -465,8 +459,7 @@ transform: translateY(-2px);
 box-shadow: 0 4px 8px rgba(30, 58, 138, 0.3);
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 .messaging-container {
 flex-direction: column;
 height: auto;
@@ -477,11 +470,9 @@ height: 300px;
 }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
 .main-content { margin-left: 0; padding: 1rem; }
 .cabinet-header,
 .user-section {
@@ -504,7 +495,32 @@ height: 250px;
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+<div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Messages Patients</h1>
 </div>
@@ -530,97 +546,25 @@ height: 250px;
 </div>
 </div>
 </div>
-</div><script src="../js/navbar.js"></script><script>
-let patientMessages = JSON.parse(localStorage.getItem('patient_messages')) || [];
-let currentPatientId  = null;
-function loadMessages() {
-const messageList = document.getElementById('messageList');
-messageList.innerHTML = '';
-const patients = JSON.parse(localStorage.getItem('patients')) || [];
-patients.forEach(patient => {
-const patientMessages = getPatientMessages(patient.id);
-if (patientMessages.length > 0) {
-const lastMessage = patientMessages[patientMessages.length - 1];
-const unreadCount = patientMessages.filter(m => !m.read  && m.sender === 'patient').length;
-const messageItem = document.createElement('div');
-messageItem.className = 'message-item' + (unreadCount > 0 ? ' unread' : '');
-messageItem.onclick = () => openThread (patient.id);
-messageItem.innerHTML = `
-<div class="message-header">
-<span>${patient.name}</span>
-<span class="message-time">${formatTime(lastMessage.timestamp)}</span>
 </div>
-<div class="message-content">${lastMessage.content.substring(0, 50)}${lastMessage.content.length > 50 ? '...' : ''}</div>
-${unreadCount > 0 ? `<div class="bad ge">${unreadCount}</div>` : ''}
-`;
-messageList.appendChild(messageItem);
-}
-});
-}
-function getPatientMessages(patientId) {
-return patientMessages.filter(m => m.patient_id  === patientId);
-}
-function openThread (patientId) {
-currentPatientId  = patientId ;
-const patients = JSON.parse(localStorage.getItem('patients')) || [];
-const patient = patients.find (p => p.id  == patientId);
-document.getElementById('thread Patient').textContent = patient ? patient.name : 'Patient';
-document.getElementById('messageThread').style.display = 'flex';
-loadThreadMessages();
-}
-function loadThreadMessages() {
-const threadMessages = document.getElementById('thread Messages');
-threadMessages.innerHTML = '';
-const messages = getPatientMessages(currentpatientId);
-messages.forEach(message => {
-const messagediv = document.createElement('div');
-messagediv.className = 'thread -message ' + (message.sender === 'patient' ? 'received' : 'sent');
-messagediv.innerHTML = `
-<div class="message-bubble">
-${message.content}
-</div>
-<div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
-${formatTime(message.timestamp)}
-</div>
-`;
-threadMessages.appendChild(messagediv);
-if (message.sender === 'patient' && !message.read ) {
-message.read  = true;
-}
-});
-localStorage.setItem('patient_messages', JSON.stringify(patientMessages));
-threadMessages.scrollTop = threadMessages.scrollHeight;
-loadMessages(); // Refresh unreadcounts
-}
-function formatTime(timestamp) {
-const date = new Date(timestamp);
-const now = new Date();
-const diff = now - date;
-if (diff < 60000) return 'À l\'instant';
-if (diff < 3600000) return `Il y a ${Math.floor(diff / 60000)} min`;
-if (diff < 86400000) return `Il y a ${Math.floor(diff / 3600000)} h`;
-return date.toLocaleDateString('fr-FR');
-}
-document.getElementById('messageForm').addEventListener('submit', function(e) {
-e.preventDefault();
-const content = document.getElementById('messageContent').value;
-if (!content.trim() || !currentpatientId) return;
-const message = {
-id : date.now(),
-patient_id : currentPatientId ,
-sender: 'staff',
-content: content,
-timestamp: new Date().toISOString(),
-read : true
-};
-patientMessages.push(message);
-localStorage.setItem('patient_messages', JSON.stringify(patientMessages));
-document.getElementById('messageContent').value = '';
-loadThreadMessages();
-});
-loadMessages();
-</script>
 </body>
 </html>
 <div class="detail-label">Date souhaitée</div>
 <option value="submittedAt">date de demande</option><option value="submittedAt">date de demande</option>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

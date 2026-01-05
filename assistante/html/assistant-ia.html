@@ -6,6 +6,7 @@
 <title>Assistant IA - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -306,7 +300,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -400,12 +394,10 @@ font-size: 0.75rem;
 border-radius: 0.375rem;
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 .appointments-table {
 font-size: 0.8rem;
 }
@@ -415,7 +407,6 @@ padding: 0.75rem 0.5rem;
 }
 }
 @media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
 .main-content { margin-left: 0; padding: 1rem; }
 .cabinet-header,
 .user-section {
@@ -466,7 +457,32 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+<div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Assistant IA</h1>
 <button class="btn btn-primary" onclick="showForm()">
@@ -490,7 +506,7 @@ Nouvelle Configuration
 </div>
 <div class="form-group" style="grid-column: span 2;">
 <label class="form-label">Response</label>
-<textarea class="form-control" id="response" rows="3" placeholder="Réponse attend ue" required></textarea>
+<textarea class="form-control" id="response" rows="3" placeholder="Réponse attendue" required></textarea>
 </div>
 </div>
 <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
@@ -519,78 +535,26 @@ Nouvelle Configuration
 </tbody>
 </table>
 </div>
-</div><script src="../js/navbar.js"></script><script>// Open "Communication" by default\ndocument.getElementById("section-com-content").classList.remove("collapsed");\ndocument.getElementById("section-com-toggle").classList.remove("collapsed");\n
-let aiSettings = JSON.parse(localStorage.getItem('aiSettings')) || [];
-let editingIndex = -1;
-function showForm() {
-document.getElementById('addForm').style.display = 'block';
-document.getElementById('aiForm').reset();
-editingIndex = -1;
-document.querySelector('#addForm .appointments-title').textContent = 'Nouvelle Configuration IA';
-}
-function hideForm() {
-document.getElementById('addForm').style.display = 'none';
-}
-function saveAI(e) {
-e.preventDefault();
-const ai = {
-nom: document.getElementById('nom').value,
-prompt: document.getElementById('prompt').value,
-response: document.getElementById('response').value
-};
-if (editingIndex >= 0) {
-aiSettings[editingIndex] = ai;
-} else {
-aiSettings.push(ai);
-}
-localStorage.setItem('aiSettings', JSON.stringify(aiSettings));
-renderAI();
-hideForm();
-}
-function editAI(index) {
-const ai = aiSettings[index];
-document.getElementById('nom').value = ai.nom;
-document.getElementById('prompt').value = ai.prompt;
-document.getElementById('response').value = ai.response;
-editingIndex = index;
-document.getElementById('addForm').style.display = 'block';
-document.querySelector('#addForm .appointments-title').textContent = 'Modifier la Configuration IA';
-}
-function deleteAI(index) {
-if (confirm('Êtes-vous sûr de vouloir supprimer cette configuration IA ?')) {
-aiSettings.splice(index, 1);
-localStorage.setItem('aiSettings', JSON.stringify(aiSettings));
-renderAI();
-}
-}
-function renderAI() {
-const tbody = document.getElementById('aiTablebody');
-const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-tbody.innerHTML = '';
-aiSettings.forEach((ai, index) => {
-const matchesSearch = ai.nom.toLowerCase().includes(searchTerm) ||
-ai.prompt.toLowerCase().includes(searchTerm);
-if (matchesSearch) {
-const row = document.createElement('tr');
-row.innerHTML = `
-<td >${ai.nom}</td >
-<td >${ai.prompt}</td >
-<td >${ai.response}</td >
-<td  class="action-buttons">
-<button class="btn btn-small btn-success" title="Modifier" onclick="editAI(${index})"><i class="fas fa-edit"></i></button>
-<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteAI(${index})"><i class="fas fa-times"></i></button>
-</td >
-`;
-tbody.appendChild(row);
-}
-});
-}
-document.getElementById('aiForm').addEventListener('submit', saveAI);
-document.getElementById('searchInput').addEventListener('input', renderAI);
-renderAI();
-</script>
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

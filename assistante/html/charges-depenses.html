@@ -6,6 +6,7 @@
 <title>Charges & dépenses - Dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../navbar.css">
 <style>
 * {
 margin: 0;
@@ -60,7 +61,6 @@ line-height: 1.5;
 font-size: 0.875rem;
 transition: var(--transition);
 }
-.sidebar {
 width: 280px;
 background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
 color: var(--text-light);
@@ -191,15 +191,12 @@ margin-bottom: 0.75rem;
 background: rgba(255, 255, 255, 0.25);
 transform: translateY(-1px);
 }
-.sidebar-menu {
 list-style: none;
 padding: 0 1.5rem;
 flex: 1;
 }
-.sidebar-item {
 margin: 0;
 }
-.sidebar-link {
 display: flex;
 align-items: center;
 gap: 1rem;
@@ -217,19 +214,16 @@ border: none;
 background: none;
 cursor: pointer;
 }
-.sidebar-link:hover {
 background: var(--hover-bg);
 color: white;
 transform: translateX(4px);
 }
-.sidebar-link.active {
 background: var(--active-bg);
 color: white;
 border-left: 3px solid var(--medical-blue-light);
 padding-left: 1rem;
 transform: translateX(4px);
 }
-.sidebar-icon {
 width: 24px;
 text-align: center;
 font-size: 1.125rem;
@@ -295,7 +289,7 @@ max-height: 0;
 opacity: 0;
 }
 .main-content {
-margin-left: 280px;
+margin-left: 0;
 padding: 2rem;
 min-height: 100vh;
 transition: var(--transition);
@@ -389,12 +383,10 @@ font-size: 0.75rem;
 border-radius: 0.375rem;
 }
 @media (max-width: 992px) {
-.sidebar { width: 250px; }
-.main-content { margin-left: 250px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 }
 @media (max-width: 768px) {
-.sidebar { width: 240px; }
-.main-content { margin-left: 240px; padding: 1.5rem; }
+.main-content { margin-left: 0; padding: 1.5rem; }
 .appointments-table {
 font-size: 0.8rem;
 }
@@ -404,7 +396,6 @@ padding: 0.75rem 0.5rem;
 }
 }
 @media (max-width: 480px) {
-.sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; }
 .main-content { margin-left: 0; padding: 1rem; }
 .cabinet-header,
 .user-section {
@@ -455,7 +446,32 @@ box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 </style>
 </head>
 <body class="light-mode">
-<div id="navbar-container"></div><div class="main-content">
+
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  content.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  const icon = document.querySelector('.theme-toggle i');
+  if (document.body.classList.contains('dark-mode')) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function logout() {
+  window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+<div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Charges & dépenses</h1>
 <button class="btn btn-primary" onclick="showForm()">
@@ -475,7 +491,7 @@ Nouvelle Charge
 </div>
 <div class="form-group">
 <label class="form-label">Description</label>
-<input type="text" class="form-control" id="description" placeholder="Description de la charge/dépense" required>
+<input type="text" class="form-control" id="Description" placeholder="Description de la charge/dépense" required>
 </div>
 <div class="form-group">
 <label class="form-label">Montant</label>
@@ -521,88 +537,26 @@ Nouvelle Charge
 </tbody>
 </table>
 </div>
-</div><script src="../js/navbar.js"></script><script>// Open "Comptabilit�" by default\ndocument.getElementById("section-compta-content").classList.remove("collapsed");\ndocument.getElementById("section-compta-toggle").classList.remove("collapsed");\n
-let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-let editingIndex = -1;
-function showForm() {
-document.getElementById('addForm').style.display = 'block';
-document.getElementById('expensesForm').reset();
-editingIndex = -1;
-document.querySelector('#addForm .appointments-title').textContent = 'Nouvelle Charge ou dépense';
-}
-function hideForm() {
-document.getElementById('addForm').style.display = 'none';
-}
-function saveExpense(e) {
-e.preventDefault();
-const expense = {
-date: document.getElementById('date').value,
-description: document.getElementById('description').value,
-montant: parseFloat(document.getElementById('montant').value),
-type: document.getElementById('type').value,
-categorie: document.getElementById('categorie').value
-};
-if (editingIndex >= 0) {
-expenses[editingIndex] = expense;
-} else {
-expenses.push(expense);
-}
-localStorage.setItem('expenses', JSON.stringify(expenses));
-renderExpenses();
-hideForm();
-}
-function editExpense(index) {
-const expense = expenses[index];
-document.getElementById('date').value = expense.date;
-document.getElementById('description').value = expense.description;
-document.getElementById('montant').value = expense.montant;
-document.getElementById('type').value = expense.type;
-document.getElementById('categorie').value = expense.categorie;
-editingIndex = index;
-document.getElementById('addForm').style.display = 'block';
-document.querySelector('#addForm .appointments-title').textContent = 'Modifier la Charge/dépense';
-}
-function deleteExpense(index) {
-if (confirm('Êtes-vous sûr de vouloir supprimer cette charge/dépense ?')) {
-expenses.splice(index, 1);
-localStorage.setItem('expenses', JSON.stringify(expenses));
-renderExpenses();
-}
-}
-function renderExpenses() {
-const tbody = document.getElementById('expensesTablebody');
-const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-tbody.innerHTML = '';
-expenses.forEach((expense, index) => {
-const matchesSearch = expense.description.toLowerCase().includes(searchTerm) ||
-expense.categorie.toLowerCase().includes(searchTerm);
-if (matchesSearch) {
-const row = document.createElement('tr');
-row.innerHTML = `
-<td >${formatDate(expense.date)}</td >
-<td >${expense.description}</td >
-<td >${expense.montant.toFixed(2)} €</td >
-<td >${expense.type}</td >
-<td >${expense.categorie}</td >
-<td  class="action-buttons">
-<button class="btn btn-small btn-success" title="Modifier" onclick="editExpense(${index})"><i class="fas fa-edit"></i></button>
-<button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteExpense(${index})"><i class="fas fa-times"></i></button>
-</td >
-`;
-tbody.appendChild(row);
-}
-});
-}
-function formatDate(dateString) {
-const date = new Date(dateString);
-return date.toLocaleDateString('fr-FR');
-}
-document.getElementById('expensesForm').addEventListener('submit', saveExpense);
-document.getElementById('searchInput').addEventListener('input', renderExpenses);
-renderExpenses();
-</script>
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
