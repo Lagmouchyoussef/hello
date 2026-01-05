@@ -1574,8 +1574,13 @@ window.addEventListener('storage', function(e) {
     if (e.key === 'accountingEntries') {
       updateRevenueChart(); // Update revenue chart when accounting entries change
       updateKPIs(); // Update other KPIs
-    } else if (e.key === 'appointments') {
+    } else if (e.key === 'dental_appointments') {
       updateKPIs(); // Update KPIs and charts for appointments
+      updateTreatmentChart();
+    } else if (e.key === 'dental_patients') {
+      updateKPIs(); // Update patient count
+    } else if (e.key === 'dental_users') {
+      updateKPIs(); // Update staff count
     }
 });
 
@@ -1585,19 +1590,19 @@ window.addEventListener('cabinetInfoUpdated', function() {
    updateActivityFeed(); // Update activity feed with new doctor name
 });
 
-// Calculate monthly revenues from accounting entries
-function calculateMonthlyRevenues(entries) {
-   const monthlyData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // Jan to Dec
+// Calculate monthly revenues from payments
+function calculateMonthlyRevenues(payments) {
+    const monthlyData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // Jan to Dec
 
-   entries.forEach(entry => {
-     if (entry.date && entry.credit) {
-       const date = new Date(entry.date);
-       const month = date.getMonth(); // 0-11
-       monthlyData[month] += parseFloat(entry.credit) || 0;
-     }
-   });
+    payments.forEach(payment => {
+      if (payment.date && payment.montant) {
+        const date = new Date(payment.date);
+        const month = date.getMonth(); // 0-11
+        monthlyData[month] += parseFloat(payment.montant) || 0;
+      }
+    });
 
-   return monthlyData;
+    return monthlyData;
 }
 
 // Calculate treatment distribution from appointments
@@ -1629,75 +1634,81 @@ function calculateTreatmentDistribution(appointments) {
 
 // Initialize Charts
 function initializeCharts() {
-   // Revenue Chart - Calculate from accounting entries
-   const accountingEntries = JSON.parse(localStorage.getItem('accountingEntries')) || [];
-   const monthlyRevenues = calculateMonthlyRevenues(accountingEntries);
+    // Revenue Chart - Calculate from accounting entries (unique)
+    const accountingEntries = JSON.parse(localStorage.getItem('accountingEntries')) || [];
+    const uniqueAccountingEntries = accountingEntries.filter((entry, index, self) =>
+        index === self.findIndex(e => e.id === entry.id || (e.date === entry.date && e.credit === entry.credit && e.description === entry.description))
+    );
+    const monthlyRevenues = calculateMonthlyRevenues(uniqueAccountingEntries);
 
-   const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-   revenueChart = new Chart(revenueCtx, {
-     type: 'line',
-     data: {
-       labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
-       datasets: [{
-         label: 'Revenus (DH)',
-         data: monthlyRevenues,
-         borderColor: '#1e3a8a',
-         backgroundColor: 'rgba(30, 58, 138, 0.1)',
-         tension: 0.4,
-         fill: true,
-         pointBackgroundColor: '#1e3a8a',
-         pointBorderColor: '#ffffff',
-         pointBorderWidth: 2,
-         pointRadius: 4,
-         pointHoverRadius: 6
-       }]
-     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false
-        },
-        tooltip: {
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleColor: '#ffffff',
-          bodyColor: '#ffffff',
-          callbacks: {
-            label: function(context) {
-              return context.parsed.y.toLocaleString('fr-MA') + ' DH';
-            }
-          }
-        }
+    const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+    revenueChart = new Chart(revenueCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+        datasets: [{
+          label: 'Revenus (DH)',
+          data: monthlyRevenues,
+          borderColor: '#1e3a8a',
+          backgroundColor: 'rgba(30, 58, 138, 0.1)',
+          tension: 0.4,
+          fill: true,
+          pointBackgroundColor: '#1e3a8a',
+          pointBorderColor: '#ffffff',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        }]
       },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            callback: function(value) {
-              return (value / 1000).toFixed(0) + 'k DH';
-            }
-          },
-          grid: {
-            color: 'rgba(0, 0, 0, 0.1)'
-          }
-        },
-        x: {
-          grid: {
-            display: false
-          }
-        }
-      },
-      interaction: {
-        intersect: false,
-        mode: 'index'
-      }
-    }
-  });
+     options: {
+       responsive: true,
+       maintainAspectRatio: false,
+       plugins: {
+         legend: {
+           display: false
+         },
+         tooltip: {
+           backgroundColor: 'rgba(0, 0, 0, 0.8)',
+           titleColor: '#ffffff',
+           bodyColor: '#ffffff',
+           callbacks: {
+             label: function(context) {
+               return context.parsed.y.toLocaleString('fr-MA') + ' DH';
+             }
+           }
+         }
+       },
+       scales: {
+         y: {
+           beginAtZero: true,
+           ticks: {
+             callback: function(value) {
+               return (value / 1000).toFixed(0) + 'k DH';
+             }
+           },
+           grid: {
+             color: 'rgba(0, 0, 0, 0.1)'
+           }
+         },
+         x: {
+           grid: {
+             display: false
+           }
+         }
+       },
+       interaction: {
+         intersect: false,
+         mode: 'index'
+       }
+     }
+   });
 
-  // Treatment Distribution Chart - Calculate from appointments
-   const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-   const treatmentData = calculateTreatmentDistribution(appointments);
+  // Treatment Distribution Chart - Calculate from appointments (unique)
+    const appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [];
+    const uniqueAppointments = appointments.filter((appointment, index, self) =>
+        index === self.findIndex(a => a.id === appointment.id)
+    );
+    const treatmentData = calculateTreatmentDistribution(uniqueAppointments);
 
    const treatmentCtx = document.getElementById('treatmentChart').getContext('2d');
    treatmentChart = new Chart(treatmentCtx, {
@@ -1746,24 +1757,30 @@ function initializeCharts() {
 
 // Update revenue chart with new data
 function updateRevenueChart() {
-   if (revenueChart) {
-     const accountingEntries = JSON.parse(localStorage.getItem('accountingEntries')) || [];
-     const monthlyRevenues = calculateMonthlyRevenues(accountingEntries);
-     revenueChart.data.datasets[0].data = monthlyRevenues;
-     revenueChart.update();
-   }
- }
+    if (revenueChart) {
+      const accountingEntries = JSON.parse(localStorage.getItem('accountingEntries')) || [];
+      const uniqueAccountingEntries = accountingEntries.filter((entry, index, self) =>
+        index === self.findIndex(e => e.id === entry.id || (e.date === entry.date && e.credit === entry.credit && e.description === entry.description))
+      );
+      const monthlyRevenues = calculateMonthlyRevenues(uniqueAccountingEntries);
+      revenueChart.data.datasets[0].data = monthlyRevenues;
+      revenueChart.update();
+    }
+  }
 
 // Update treatment chart with new data
 function updateTreatmentChart() {
-   if (treatmentChart) {
-     const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-     const treatmentData = calculateTreatmentDistribution(appointments);
-     treatmentChart.data.labels = treatmentData.labels;
-     treatmentChart.data.datasets[0].data = treatmentData.data;
-     treatmentChart.update();
+     if (treatmentChart) {
+       const appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [];
+       const uniqueAppointments = appointments.filter((appointment, index, self) =>
+         index === self.findIndex(a => a.id === appointment.id)
+       );
+       const treatmentData = calculateTreatmentDistribution(uniqueAppointments);
+       treatmentChart.data.labels = treatmentData.labels;
+       treatmentChart.data.datasets[0].data = treatmentData.data;
+       treatmentChart.update();
+     }
    }
- }
 
 // Export Dashboard Data to CSV
 function exportDashboardData() {
@@ -1776,12 +1793,18 @@ function exportDashboardData() {
    const totalAppointments = document.getElementById('totalAppointments').textContent;
    const activeStaff = document.getElementById('activeStaff').textContent;
 
-   // Collect chart data
+   // Collect chart data (unique)
    const accountingEntries = JSON.parse(localStorage.getItem('accountingEntries')) || [];
-   const monthlyRevenues = calculateMonthlyRevenues(accountingEntries);
+   const uniqueAccountingEntries = accountingEntries.filter((entry, index, self) =>
+       index === self.findIndex(e => e.id === entry.id || (e.date === entry.date && e.credit === entry.credit && e.description === entry.description))
+   );
+   const monthlyRevenues = calculateMonthlyRevenues(uniqueAccountingEntries);
 
-   const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-   const treatmentData = calculateTreatmentDistribution(appointments);
+   const appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [];
+   const uniqueAppointments = appointments.filter((appointment, index, self) =>
+       index === self.findIndex(a => a.id === appointment.id)
+   );
+   const treatmentData = calculateTreatmentDistribution(uniqueAppointments);
 
    // Create CSV content
    let csvContent = 'Dashboard Export - ' + currentDate + '\n';
@@ -1868,7 +1891,10 @@ function exportDashboardToPDF() {
 
    doc.setFontSize(10);
    const accountingEntries = JSON.parse(localStorage.getItem('accountingEntries')) || [];
-   const monthlyRevenues = calculateMonthlyRevenues(accountingEntries);
+   const uniqueAccountingEntries = accountingEntries.filter((entry, index, self) =>
+       index === self.findIndex(e => e.id === entry.id || (e.date === entry.date && e.credit === entry.credit && e.description === entry.description))
+   );
+   const monthlyRevenues = calculateMonthlyRevenues(uniqueAccountingEntries);
    const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
 
    for (let i = 0; i < months.length; i++) {
@@ -1893,8 +1919,11 @@ function exportDashboardToPDF() {
    yPosition += 15;
 
    doc.setFontSize(10);
-   const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-   const treatmentData = calculateTreatmentDistribution(appointments);
+   const appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [];
+   const uniqueAppointments = appointments.filter((appointment, index, self) =>
+       index === self.findIndex(a => a.id === appointment.id)
+   );
+   const treatmentData = calculateTreatmentDistribution(uniqueAppointments);
 
    for (let i = 0; i < treatmentData.labels.length; i++) {
      if (yPosition > 270) {
@@ -2005,15 +2034,23 @@ function setupDashboardInteractions() {
 
 function updateTodaysAppointments() {
   const tbody = document.querySelector('.dashboard-table tbody');
-  const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-  const patients = JSON.parse(localStorage.getItem('patients')) || [];
+  const appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [];
+  const patients = JSON.parse(localStorage.getItem('dental_patients')) || [];
+
+  // Filter unique data
+  const uniqueAppointments = appointments.filter((appointment, index, self) =>
+    index === self.findIndex(a => a.id === appointment.id)
+  );
+  const uniquePatients = patients.filter((patient, index, self) =>
+    index === self.findIndex(p => p.id === patient.id)
+  );
 
   // Get today's date
   const today = new Date();
   const todayStr = today.toISOString().split('T')[0];
 
   // Filter appointments for today
-  const todaysAppointments = appointments.filter(apt => {
+  const todaysAppointments = uniqueAppointments.filter(apt => {
     const aptDate = new Date(apt.date).toISOString().split('T')[0];
     return aptDate === todayStr;
   });
@@ -2075,38 +2112,61 @@ function updateTodaysAppointments() {
 
 // Update KPI Values
 function updateKPIs() {
-   // Get real data from localStorage
-   const patients = JSON.parse(localStorage.getItem('patients')) || [];
-   const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-   const users = JSON.parse(localStorage.getItem('users')) || [];
+     // Get real data from localStorage using correct keys and filter unique entries
+     const patients = JSON.parse(localStorage.getItem('dental_patients')) || [];
+     const appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [];
+     const users = JSON.parse(localStorage.getItem('dental_users')) || [];
 
-   // Calculate active staff (non-patient users)
-   const activeStaff = users.filter(user => user.role !== 'Patient').length;
+    // Filter unique patients by id
+    const uniquePatients = patients.filter((patient, index, self) =>
+        index === self.findIndex(p => p.id === patient.id)
+    );
 
-   // Calculate total revenue from accounting entries (credit entries)
-   const accountingEntries = JSON.parse(localStorage.getItem('accountingEntries')) || [];
-   const totalRevenue = accountingEntries.reduce((sum, entry) => sum + (parseFloat(entry.credit) || 0), 0);
+    // Filter unique appointments by id
+    const uniqueAppointments = appointments.filter((appointment, index, self) =>
+        index === self.findIndex(a => a.id === appointment.id)
+    );
 
-   // Update KPI displays
-   document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString('fr-MA') + ' DH';
-   document.getElementById('activePatients').textContent = patients.length.toLocaleString('fr-MA');
-   document.getElementById('totalAppointments').textContent = appointments.length.toLocaleString('fr-MA');
-   document.getElementById('activeStaff').textContent = activeStaff.toString();
+    // Filter unique users by id
+    const uniqueUsers = users.filter((user, index, self) =>
+        index === self.findIndex(u => u.id === user.id)
+    );
 
-   // Update revenue chart
-   updateRevenueChart();
+    // Calculate active staff (non-patient users)
+    const activeStaff = uniqueUsers.filter(user => user.role !== 'Patient').length;
 
-   // Update treatment chart
-   updateTreatmentChart();
+    // Calculate total revenue from payments
+    const payments = JSON.parse(localStorage.getItem('payments')) || [];
+    const totalRevenue = payments.reduce((sum, payment) => sum + (parseFloat(payment.montant) || 0), 0);
 
-   // Update trend indicators based on date range
-   updateTrends();
+    // Update KPI displays
+    document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString('fr-MA') + ' DH';
+    document.getElementById('activePatients').textContent = uniquePatients.length.toLocaleString('fr-MA');
+    document.getElementById('totalAppointments').textContent = uniqueAppointments.length.toLocaleString('fr-MA');
+    document.getElementById('activeStaff').textContent = activeStaff.toString();
+
+    // Update revenue chart
+    updateRevenueChart();
+
+    // Update treatment chart
+    updateTreatmentChart();
+
+    // Update trend indicators based on date range
+    updateTrends();
 }
 
 function updateTrends() {
   const dateRange = document.getElementById('dateRange').value;
-  const patients = JSON.parse(localStorage.getItem('patients')) || [];
-  const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+  const patients = JSON.parse(localStorage.getItem('dental_patients')) || [];
+  const appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [];
+
+  // Filter unique data
+  const uniquePatients = patients.filter((patient, index, self) =>
+    index === self.findIndex(p => p.id === patient.id)
+  );
+  const uniqueAppointments = appointments.filter((appointment, index, self) =>
+    index === self.findIndex(a => a.id === appointment.id)
+  );
 
   // Calculate trends based on date range
   let patientChange = 0;
@@ -2118,14 +2178,14 @@ function updateTrends() {
     const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
 
-    const thisMonthPatients = patients.filter(p => new Date(p.createdAt || p.date_naissance) >= thisMonth).length;
-    const lastMonthPatients = patients.filter(p => {
+    const thisMonthPatients = uniquePatients.filter(p => new Date(p.createdAt || p.date_naissance) >= thisMonth).length;
+    const lastMonthPatients = uniquePatients.filter(p => {
       const date = new Date(p.createdAt || p.date_naissance);
       return date >= lastMonth && date < thisMonth;
     }).length;
 
-    const thisMonthAppointments = appointments.filter(a => new Date(a.date) >= thisMonth).length;
-    const lastMonthAppointments = appointments.filter(a => {
+    const thisMonthAppointments = uniqueAppointments.filter(a => new Date(a.date) >= thisMonth).length;
+    const lastMonthAppointments = uniqueAppointments.filter(a => {
       const date = new Date(a.date);
       return date >= lastMonth && date < thisMonth;
     }).length;
@@ -2161,41 +2221,29 @@ function updateTrends() {
   }
 }
 
-// Real-time updates simulation
-setInterval(() => {
-  // Simulate real-time KPI updates
-  const revenueElement = document.getElementById('totalRevenue');
-  const currentValue = parseInt(revenueElement.textContent.replace(/[^\d]/g, ''));
-
-  // Random small fluctuation
-  const change = Math.floor(Math.random() * 1000) - 500;
-  const newValue = Math.max(0, currentValue + change);
-
-  revenueElement.textContent = newValue.toLocaleString('fr-MA') + ' DH';
-
-  // Update trend indicator
-  const trendElement = revenueElement.nextElementSibling;
-  if (change > 0) {
-    trendElement.className = 'kpi-change positive';
-    trendElement.innerHTML = '<i class="fas fa-arrow-up"></i><span>+' + Math.abs(change) + ' DH</span>';
-  } else if (change < 0) {
-    trendElement.className = 'kpi-change negative';
-    trendElement.innerHTML = '<i class="fas fa-arrow-down"></i><span>-' + Math.abs(change) + ' DH</span>';
-  }
-}, 30000); // Update every 30 seconds
+// Real-time updates are handled by storage event listeners above
+// No fake simulation needed - data updates automatically when localStorage changes
 
 // Activity feed updates
 function updateActivityFeed() {
   const activityList = document.querySelector('.activity-list');
-  const patients = JSON.parse(localStorage.getItem('patients')) || [];
-  const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-  const users = JSON.parse(localStorage.getItem('users')) || [];
+  const patients = JSON.parse(localStorage.getItem('dental_patients')) || [];
+  const appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [];
+  const users = JSON.parse(localStorage.getItem('dental_users')) || [];
+
+  // Filter unique data
+  const uniquePatients = patients.filter((patient, index, self) =>
+    index === self.findIndex(p => p.id === patient.id)
+  );
+  const uniqueAppointments = appointments.filter((appointment, index, self) =>
+    index === self.findIndex(a => a.id === appointment.id)
+  );
 
   // Create activities from recent data
   const activities = [];
 
   // Recent patients (last 5)
-  const recentPatients = patients
+  const recentPatients = uniquePatients
     .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
     .slice(0, 3);
 
@@ -2210,14 +2258,14 @@ function updateActivityFeed() {
   });
 
   // Recent appointments (last 3)
-  const recentAppointments = appointments
+  const recentAppointments = uniqueAppointments
     .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
     .slice(0, 2);
 
   const doctorName = getCabinetInfo().nom_medecin || '';
 
   recentAppointments.forEach(appointment => {
-    const patient = patients.find(p => p.id === appointment.patientId);
+    const patient = uniquePatients.find(p => p.id === appointment.patientId);
     const patientName = patient ? `${patient.nom || patient.firstName} ${patient.prenom || patient.lastName}` : 'Patient';
     activities.push({
       text: `${doctorName} a ${appointment.status === 'confirmed' ? 'confirmé' : 'planifié'} un RDV: ${patientName}`,
@@ -2291,22 +2339,6 @@ function formatTimeAgo(dateString) {
 document.addEventListener('DOMContentLoaded', updateActivityFeed);
 setInterval(updateActivityFeed, 30000); // Update every 30 seconds
 
-// Theme toggle functionality
-document.getElementById('themeToggle').addEventListener('click', function() {
-  document.body.classList.toggle('light-mode');
-  document.body.classList.toggle('dark-mode');
-
-  const icon = this.querySelector('i');
-  const text = this.querySelector('span');
-
-  if (document.body.classList.contains('dark-mode')) {
-    icon.className = 'fas fa-sun';
-    text.textContent = 'Mode Clair';
-  } else {
-    icon.className = 'fas fa-moon';
-    text.textContent = 'Mode Sombre';
-  }
-});
 
 // Responsive chart handling
 window.addEventListener('resize', function() {

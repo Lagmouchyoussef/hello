@@ -478,7 +478,7 @@ Nouvelle Entrée
 <input type="text" class="form-control" id="description" placeholder="description de l'entrée" required>
 </div>
 <div class="form-group">
-<label class="form-label">d ébit</label>
+<label class="form-label">Débit (DH)</label>
 <input type="number" class="form-control" id="debit" step="0.01" placeholder="0.00" required>
 </div>
 <div class="form-group">
@@ -535,9 +535,9 @@ debit: parseFloat(document.getElementById('debit').value),
 credit: parseFloat(document.getElementById('credit').value)
 };
 if (editingIndex >= 0) {
-accountingEntries[editingIndex] = entry;
+accountingEntries[editingIndex] = { ...accountingEntries[editingIndex], ...entry };
 } else {
-accountingEntries.push(entry);
+accountingEntries.push({ id: Date.now() + Math.random(), ...entry });
 }
 localStorage.setItem('accountingEntries', JSON.stringify(accountingEntries));
 renderAccounting();

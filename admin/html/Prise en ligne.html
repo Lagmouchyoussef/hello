@@ -1452,9 +1452,9 @@
                     status: 'Confirmé'
                 };
 
-                let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+                let appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [];
                 appointments.push(regularAppointment);
-                localStorage.setItem('appointments', JSON.stringify(appointments));
+                localStorage.setItem('dental_appointments', JSON.stringify(appointments));
 
                 localStorage.setItem('onlineBookings', JSON.stringify(onlineBookings));
                 renderBookings();

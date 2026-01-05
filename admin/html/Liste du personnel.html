@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liste d u personnel - dikra Centre dentaire</title>
+<title>Liste du personnel - Dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -660,9 +660,10 @@ body {
   <!-- Add  Staff Form -->
   <div class="staff-container" id="addForm" style="display: none; margin-bottom: 2rem;">
     <div class="staff-header">
-      <h2 class="staff-title" id="formTitle">Ajouter un membre d u personnel</h2>
+      <h2 class="staff-title" id="formTitle">Ajouter un membre du personnel</h2>
     </div>
     <form id="staffForm" style="padding: 1.5rem;">
+      <div id="message" style="color: red; margin-bottom: 1rem;"></div>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
         <div class="form-group">
           <label class="form-label">Prénom</label>
@@ -705,7 +706,7 @@ body {
 
   <div class="staff-container">
     <div class="staff-header">
-      <h2 class="staff-title">Membres d u personnel</h2>
+      <h2 class="staff-title">Membres du personnel</h2>
       <div>
         <input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
         <select id="roleFilter" title="Filtrer par rôle" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary);">
@@ -734,7 +735,7 @@ body {
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div id="deleteModal" class="modal">
+<div id="deleteModal" class="modal" style="display: none;">
   <div class="modal-content">
     <h3>Confirmation de suppression</h3>
     <p>Êtes-vous sûr de vouloir supprimer ce membre du personnel ?</p>
@@ -748,138 +749,155 @@ body {
 <script src="../../LOGING/js/data.js"></script>
 <script src="../js/navbar.js"></script>
 <script>
-// Open "Utilisateurs" by default
-document.getElementById('section-users-content').classList.remove('collapsed');
-document.getElementById('section-users-toggle').classList.remove('collapsed');
+// Check if user is logged in as Admin
+const currentUser = dentalDataManager.getCurrentUser();
+// Temporarily disabled for testing
+    // Open "Utilisateurs" by default
+    document.getElementById('section-users-content').classList.remove('collapsed');
+    document.getElementById('section-users-toggle').classList.remove('collapsed');
 
-// Staff Management
-let editingId = null;
-let memberToDelete = null;
+    // Staff Management
+    let editingId = null;
+    let memberToDelete = null;
 
-function getStaff() {
-  return dentalDataManager.getAll('users').filter(u => u.role !== 'Patient');
-}
-
-function showForm() {
-  document.getElementById('addForm').style.display = 'block';
-  document.getElementById('staffForm').reset();
-  editingId = null;
-  document.getElementById('formTitle').textContent = 'Ajouter un membre du personnel';
-}
-
-function hideForm() {
-  document.getElementById('addForm').style.display = 'none';
-}
-
-function saveStaff(e) {
-  e.preventDefault();
-
-  const firstName = document.getElementById('firstName').value;
-  const lastName = document.getElementById('lastName').value;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const role = document.getElementById('role').value;
-  const phone = document.getElementById('phone').value;
-  const specialty = document.getElementById('specialty').value;
-
-  if (editingId) {
-    // Update existing
-    dentalDataManager.update('users', editingId, { firstName, lastName, email, password, role, phone, specialty });
-  } else {
-    // Create new
-    dentalDataManager.createUser(email, password, role, `${firstName} ${lastName}`, phone, specialty);
-  }
-
-  renderStaff();
-  hideForm();
-}
-
-function editStaff(id) {
-  const member = dentalDataManager.read('users', id);
-  if (member) {
-    document.getElementById('firstName').value = member.firstName || '';
-    document.getElementById('lastName').value = member.lastName || '';
-    document.getElementById('email').value = member.email;
-    document.getElementById('password').value = member.password;
-    document.getElementById('role').value = member.role;
-    document.getElementById('phone').value = member.phone || '';
-    document.getElementById('specialty').value = member.specialty || '';
-
-    editingId = id;
-    document.getElementById('addForm').style.display = 'block';
-    document.getElementById('formTitle').textContent = 'Modifier le membre du personnel';
-  }
-}
-
-function deleteStaff(id) {
-  memberToDelete = id;
-  document.getElementById('deleteModal').style.display = 'flex';
-}
-
-function renderStaff() {
-  const tbody = document.getElementById('staffTablebody');
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  const roleFilter = document.getElementById('roleFilter').value;
-  const staff = getStaff();
-
-  tbody.innerHTML = '';
-
-  staff.forEach((member) => {
-    // Filter logic
-    const matchesSearch = member.name.toLowerCase().includes(searchTerm) ||
-                          member.email.toLowerCase().includes(searchTerm);
-    const matchesRole = !roleFilter || member.role === roleFilter;
-
-    if (matchesSearch && matchesRole) {
-      const row = document.createElement('tr');
-
-      let roleClass = '';
-      if (member.role === 'Admin') roleClass = 'role-admin';
-      else if (member.role === 'Assistant') roleClass = 'role-assistant';
-
-      const fullName = (member.firstName || '') + ' ' + (member.lastName || '').trim() || member.name || '';
-      row.innerHTML = `
-        <td>${fullName}</td>
-        <td>${member.email}</td>
-        <td><span class="role-badge ${roleClass}">${member.role}</span></td>
-        <td>${member.phone || '-'}</td>
-        <td>${member.specialty || '-'}</td>
-        <td class="action-buttons">
-          <button class="btn btn-small btn-success" title="Modifier" onclick="editStaff('${member.id}')"><i class="fas fa-edit"></i></button>
-          <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteStaff('${member.id}')"><i class="fas fa-times"></i></button>
-        </td>
-      `;
-
-      tbody.appendChild(row);
+    function getStaff() {
+      return dentalDataManager.getAll('users').filter(u => u.role !== 'Patient');
     }
-  });
-}
 
-// Event listeners
-document.getElementById('staffForm').addEventListener('submit', saveStaff);
-document.getElementById('searchInput').addEventListener('input', renderStaff);
-document.getElementById('roleFilter').addEventListener('change', renderStaff);
+    function showForm() {
+      document.getElementById('addForm').style.display = 'block';
+      document.getElementById('staffForm').reset();
+      editingId = null;
+      document.getElementById('formTitle').textContent = 'Ajouter un membre du personnel';
+    }
 
-// Initial render
-renderStaff();
+    function hideForm() {
+      document.getElementById('addForm').style.display = 'none';
+    }
 
-// Modal event listeners
-document.getElementById('confirmDelete').addEventListener('click', () => {
-  if (memberToDelete) {
-    dentalDataManager.delete('users', memberToDelete);
+    function saveStaff(e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const role = document.getElementById('role').value;
+      const phone = document.getElementById('phone').value;
+      const specialty = document.getElementById('specialty').value;
+
+      // Clear message
+      document.getElementById('message').textContent = '';
+
+      if (editingId) {
+        // Update existing
+        dentalDataManager.update('users', editingId, { firstName, lastName, email, password, role, phone });
+      } else {
+        // Create new
+        dentalDataManager.createUser(email, password, role, `${firstName} ${lastName}`, phone, specialty);
+      }
+
+      renderStaff();
+      hideForm();
+    }
+
+    function editStaff(id) {
+      const member = dentalDataManager.read('users', id);
+      if (member) {
+        document.getElementById('firstName').value = member.firstName || '';
+        document.getElementById('lastName').value = member.lastName || '';
+        document.getElementById('email').value = member.email;
+        document.getElementById('password').value = member.password;
+        document.getElementById('role').value = member.role;
+        document.getElementById('phone').value = member.phone || '';
+        document.getElementById('specialty').value = member.specialty || '';
+
+        editingId = id;
+        document.getElementById('addForm').style.display = 'block';
+        document.getElementById('formTitle').textContent = 'Modifier le membre du personnel';
+      }
+    }
+
+    function deleteStaff(id) {
+      memberToDelete = id;
+      document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    function renderStaff() {
+      const tbody = document.getElementById('staffTablebody');
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const roleFilter = document.getElementById('roleFilter').value;
+      const staff = getStaff();
+
+      tbody.innerHTML = '';
+
+      staff.forEach((member) => {
+        // Filter logic
+        const matchesSearch = member.name.toLowerCase().includes(searchTerm) ||
+                              member.email.toLowerCase().includes(searchTerm);
+        const matchesRole = !roleFilter || member.role === roleFilter;
+
+        if (matchesSearch && matchesRole) {
+          const row = document.createElement('tr');
+
+          let roleClass = '';
+          if (member.role === 'Admin') roleClass = 'role-admin';
+          else if (member.role === 'Assistant') roleClass = 'role-assistant';
+
+          const fullName = (member.firstName || '') + ' ' + (member.lastName || '').trim() || member.name || '';
+          row.innerHTML = `
+            <td>${fullName}</td>
+            <td>${member.email}</td>
+            <td><span class="role-badge ${roleClass}">${member.role}</span></td>
+            <td>${member.phone || '-'}</td>
+            <td>${member.specialty || '-'}</td>
+            <td class="action-buttons">
+              <button class="btn btn-small btn-success" title="Modifier" onclick="editStaff('${member.id}')"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-small btn-danger" title="Supprimer" onclick="deleteStaff('${member.id}')"><i class="fas fa-times"></i></button>
+            </td>
+          `;
+
+          tbody.appendChild(row);
+        }
+      });
+    }
+
+    // Event listeners
+    document.getElementById('staffForm').addEventListener('submit', saveStaff);
+    document.getElementById('searchInput').addEventListener('input', renderStaff);
+    document.getElementById('roleFilter').addEventListener('change', renderStaff);
+
+    // Initial render
     renderStaff();
-    memberToDelete = null;
-  }
-  document.getElementById('deleteModal').style.display = 'none';
-});
 
-document.getElementById('cancelDelete').addEventListener('click', () => {
-  memberToDelete = null;
-  document.getElementById('deleteModal').style.display = 'none';
-});
+    // Modal event listeners
+    document.getElementById('confirmDelete').addEventListener('click', () => {
+      if (memberToDelete) {
+        dentalDataManager.delete('users', memberToDelete);
+        renderStaff();
+        memberToDelete = null;
+      }
+      document.getElementById('deleteModal').style.display = 'none';
+    });
+
+    document.getElementById('cancelDelete').addEventListener('click', () => {
+       memberToDelete = null;
+       document.getElementById('deleteModal').style.display = 'none';
+    });
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

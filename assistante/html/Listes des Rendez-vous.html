@@ -1061,7 +1061,7 @@ body {
 </div><script src="../js/navbar.js"></script><script>// Open "Rendez-vous" by default\ndocument.getElementById("section-rdv-content").classList.remove("collapsed");\ndocument.getElementById("section-rdv-toggle").classList.remove("collapsed");\n
 // Theme Toggle
 // Appointments Management
-let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+let appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [];
 let editingIndex = -1;
 
 function showForm() {
@@ -1094,7 +1094,7 @@ function saveAppointment(e) {
     appointments.push(appointment);
   }
 
-  localStorage.setItem('appointments', JSON.stringify(appointments));
+  localStorage.setItem('dental_appointments', JSON.stringify(appointments));
   renderAppointments();
   hideForm();
 }
@@ -1117,7 +1117,7 @@ function editAppointment(index) {
 function deleteAppointment(index) {
   if (confirm('Êtes-vous sûr de vouloir supprimer ce rendez-vous ?')) {
     appointments.splice(index, 1);
-    localStorage.setItem('appointments', JSON.stringify(appointments));
+    localStorage.setItem('dental_appointments', JSON.stringify(appointments));
     renderAppointments();
   }
 }

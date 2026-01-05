@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function updateTimes() {
     const selectedDate = dateInput.value;
-    const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+    const appointments = JSON.parse(localStorage.getItem('dental_appointments') || '[]');
     const booked = appointments.filter(a => a.date === selectedDate).map(a => a.time);
     timeSelect.innerHTML = '<option value="">Sélectionner</option>';
     availableTimes.forEach(time => {
@@ -72,15 +72,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const doctorName = doctor ? `${doctor.firstName} ${doctor.lastName}` : 'Médecin inconnu';
     const appointment = {
       id: Date.now(),
-      type: careType,
+      treatment: careType,
       doctor: doctorName,
       date: formData.get('date'),
       time: formData.get('time'),
-      status: 'En attente'
+      status: 'En attente',
+      mode: 'Via espace patient'
     };
-    const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+    const appointments = JSON.parse(localStorage.getItem('dental_appointments') || '[]');
     appointments.push(appointment);
-    localStorage.setItem('appointments', JSON.stringify(appointments));
+    localStorage.setItem('dental_appointments', JSON.stringify(appointments));
     alert('Rendez-vous réservé avec succès. Statut: En attente.');
     submitBtn.disabled = true;
     submitBtn.textContent = 'Réservé';
