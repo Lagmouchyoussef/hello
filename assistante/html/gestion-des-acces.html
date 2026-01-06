@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paramètres espace patient - DIKRA centre Dentaire</title>
+    <title>Gestion des accès - DIKRA centre Dentaire</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../navbar.css">
@@ -208,40 +208,214 @@
             color: var(--bg-primary);
         }
 
-        /* Settings grid */
-        .settings-grid {
+        /* Access management grid */
+        .access-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
         }
 
-        .settings-section {
+        .access-section {
             background: var(--bg-secondary);
             border-radius: var(--border-radius);
             border: 1px solid var(--border-color);
             overflow: hidden;
         }
 
-        .settings-header {
+        .access-header {
             padding: 1.5rem;
             border-bottom: 1px solid var(--border-color);
             background: var(--section-bg);
         }
 
-        .settings-title {
+        .access-title {
             font-size: 1.25rem;
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
         }
 
-        .settings-description {
+        .access-description {
             color: var(--text-secondary);
             font-size: 0.875rem;
         }
 
-        .settings-body {
+        .access-body {
             padding: 1.5rem;
+        }
+
+        /* User access cards */
+        .user-access-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .user-access-card:hover {
+            border-color: var(--medical-blue);
+            box-shadow: var(--card-shadow);
+        }
+
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: var(--medical-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .user-role {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .user-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+
+        .status-inactive {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning);
+        }
+
+        .status-blocked {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+
+        /* Permissions grid */
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .permission-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+        }
+
+        .permission-checkbox {
+            width: 1rem;
+            height: 1rem;
+            accent-color: var(--medical-blue);
+        }
+
+        .permission-label {
+            flex: 1;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+        }
+
+        /* Access logs */
+        .access-logs {
+            margin-top: 2rem;
+        }
+
+        .log-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 0.5rem;
+            background: var(--bg-primary);
+        }
+
+        .log-info {
+            flex: 1;
+        }
+
+        .log-action {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .log-details {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .log-time {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        /* Security settings */
+        .security-settings {
+            margin-top: 2rem;
+        }
+
+        .security-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            background: var(--bg-primary);
+        }
+
+        .security-info {
+            flex: 1;
+        }
+
+        .security-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .security-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
         }
 
         /* Form elements */
@@ -271,20 +445,6 @@
             outline: none;
             border-color: var(--medical-blue);
             box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
-        }
-
-        .form-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            padding-right: 2.5rem;
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
         }
 
         /* Toggle switches */
@@ -333,121 +493,6 @@
             transform: translateX(26px);
         }
 
-        .toggle-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            margin-bottom: 1rem;
-            background: var(--bg-primary);
-        }
-
-        .toggle-info {
-            flex: 1;
-        }
-
-        .toggle-title {
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .toggle-description {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        /* Feature cards */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .feature-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            transition: var(--transition);
-        }
-
-        .feature-card:hover {
-            border-color: var(--medical-blue);
-            box-shadow: var(--card-shadow);
-        }
-
-        .feature-icon {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            font-size: 1.25rem;
-        }
-
-        .feature-icon.primary {
-            background: rgba(30, 58, 138, 0.1);
-            color: var(--medical-blue);
-        }
-
-        .feature-icon.success {
-            background: rgba(5, 150, 105, 0.1);
-            color: var(--success);
-        }
-
-        .feature-icon.warning {
-            background: rgba(217, 119, 6, 0.1);
-            color: var(--warning);
-        }
-
-        .feature-name {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-description {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        /* Access control */
-        .access-control {
-            margin-top: 1.5rem;
-        }
-
-        .access-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            margin-bottom: 0.5rem;
-            background: var(--bg-primary);
-        }
-
-        .access-info {
-            flex: 1;
-        }
-
-        .access-name {
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .access-description {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
         /* Responsive Design */
         @media (max-width: 1200px) {
             .main-content {
@@ -461,7 +506,7 @@
                 padding: 1.5rem;
             }
 
-            .settings-grid {
+            .access-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -487,21 +532,23 @@
                 font-size: 1.5rem;
             }
 
-            .settings-grid {
-                gap: 1rem;
-            }
-
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .toggle-container {
+            .user-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 1rem;
             }
 
-            .access-item {
+            .permissions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .log-entry {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .security-item {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 1rem;
@@ -825,13 +872,13 @@
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="parametres-espace-patient.html" class="sidebar-link active">
+                        <a href="parametres-espace-patient.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
                             Paramètres espace patient
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="gestion-des-acces.html" class="sidebar-link">
+                        <a href="gestion-des-acces.html" class="sidebar-link active">
                             <span class="sidebar-icon"><i class="fas fa-key"></i></span>
                             Gestion des accès
                         </a>
@@ -943,338 +990,114 @@
     <div class="main-content" id="mainContent">
         <div class="content-header">
             <div>
-                <h1 class="page-title">Paramètres espace patient</h1>
-                <p class="page-subtitle">Configurer les fonctionnalités et accès de l'espace patient en ligne</p>
+                <h1 class="page-title">Gestion des accès</h1>
+                <p class="page-subtitle">Contrôler et surveiller les accès au système</p>
             </div>
             <div class="content-actions">
-                <button class="btn btn-outline" id="resetBtn">
-                    <i class="fas fa-undo"></i> Réinitialiser
+                <button class="btn btn-outline" id="exportBtn">
+                    <i class="fas fa-download"></i> Exporter
                 </button>
-                <button class="btn btn-primary" id="saveBtn">
-                    <i class="fas fa-save"></i> Enregistrer
+                <button class="btn btn-primary" id="addUserBtn">
+                    <i class="fas fa-user-plus"></i> Ajouter un utilisateur
                 </button>
             </div>
         </div>
 
-        <!-- Settings Grid -->
-        <div class="settings-grid">
-            <!-- General Settings -->
-            <div class="settings-section">
-                <div class="settings-header">
-                    <h3 class="settings-title">Paramètres généraux</h3>
-                    <p class="settings-description">Configuration de base de l'espace patient</p>
+        <!-- Access Management Grid -->
+        <div class="access-grid">
+            <!-- User Access Control -->
+            <div class="access-section">
+                <div class="access-header">
+                    <h3 class="access-title">Contrôle des accès utilisateurs</h3>
+                    <p class="access-description">Gérer les permissions et accès des utilisateurs</p>
                 </div>
-                <div class="settings-body">
-                    <div class="form-group">
-                        <label class="form-label">Nom de l'espace patient</label>
-                        <input type="text" class="form-control" id="patientSpaceName">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">URL de l'espace patient</label>
-                        <input type="url" class="form-control" id="patientSpaceUrl">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Langue par défaut</label>
-                        <select class="form-control form-select" id="defaultLanguage">
-                            <option value="fr">Français</option>
-                            <option value="ar">Arabe</option>
-                            <option value="en">Anglais</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Message de bienvenue</label>
-                        <textarea class="form-control form-textarea" id="welcomeMessage" rows="3"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Access Control -->
-            <div class="settings-section">
-                <div class="settings-header">
-                    <h3 class="settings-title">Contrôle d'accès</h3>
-                    <p class="settings-description">Gérer les fonctionnalités disponibles pour les patients</p>
-                </div>
-                <div class="settings-body">
-                    <div class="toggle-container">
-                        <div class="toggle-info">
-                            <div class="toggle-title">Inscription en ligne</div>
-                            <div class="toggle-description">Permettre aux patients de créer leur compte en ligne</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="onlineRegistration" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="toggle-container">
-                        <div class="toggle-info">
-                            <div class="toggle-title">Prise de rendez-vous en ligne</div>
-                            <div class="toggle-description">Les patients peuvent prendre rendez-vous via l'espace patient</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="onlineAppointments" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="toggle-container">
-                        <div class="toggle-info">
-                            <div class="toggle-title">Accès aux dossiers médicaux</div>
-                            <div class="toggle-description">Les patients peuvent consulter leurs dossiers médicaux</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="medicalRecords" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="toggle-container">
-                        <div class="toggle-info">
-                            <div class="toggle-title">Messagerie sécurisée</div>
-                            <div class="toggle-description">Communication sécurisée entre patients et cabinet</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="secureMessaging" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="toggle-container">
-                        <div class="toggle-info">
-                            <div class="toggle-title">Paiements en ligne</div>
-                            <div class="toggle-description">Possibilité de payer les consultations en ligne</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="onlinePayments">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="toggle-container">
-                        <div class="toggle-info">
-                            <div class="toggle-title">Téléconsultation</div>
-                            <div class="toggle-description">Consultations à distance via vidéo</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="teleconsultation">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
+                <div class="access-body">
+                    <!-- Users will be added manually -->
                 </div>
             </div>
 
             <!-- Security Settings -->
-            <div class="settings-section">
-                <div class="settings-header">
-                    <h3 class="settings-title">Sécurité</h3>
-                    <p class="settings-description">Paramètres de sécurité et confidentialité</p>
+            <div class="access-section">
+                <div class="access-header">
+                    <h3 class="access-title">Paramètres de sécurité</h3>
+                    <p class="access-description">Configuration de la sécurité du système</p>
                 </div>
-                <div class="settings-body">
-                    <div class="form-group">
-                        <label class="form-label">Politique de mot de passe</label>
-                        <select class="form-control form-select" id="passwordPolicy">
-                            <option value="basic" selected>Basique (8 caractères minimum)</option>
-                            <option value="strong">Fort (12 caractères, majuscules, chiffres, symboles)</option>
-                            <option value="very-strong">Très fort (16 caractères + authentification 2FA)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Durée de session (minutes)</label>
-                        <input type="number" class="form-control" id="sessionDuration" value="30" min="5" max="480">
-                    </div>
-
-                    <div class="toggle-container">
-                        <div class="toggle-info">
-                            <div class="toggle-title">Authentification à deux facteurs</div>
-                            <div class="toggle-description">Renforcer la sécurité avec 2FA</div>
+                <div class="access-body">
+                    <div class="security-settings">
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-name">Authentification à deux facteurs</div>
+                                <div class="security-description">Renforcer la sécurité avec 2FA obligatoire</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="twoFactorRequired">
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="twoFactorAuth">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
 
-                    <div class="toggle-container">
-                        <div class="toggle-info">
-                            <div class="toggle-title">Journal d'audit</div>
-                            <div class="toggle-description">Enregistrer toutes les actions des utilisateurs</div>
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-name">Session automatique</div>
+                                <div class="security-description">Déconnexion automatique après inactivité</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoLogout" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="auditLog" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Notifications -->
-            <div class="settings-section">
-                <div class="settings-header">
-                    <h3 class="settings-title">Notifications</h3>
-                    <p class="settings-description">Configurer les notifications automatiques</p>
-                </div>
-                <div class="settings-body">
-                    <div class="toggle-container">
-                        <div class="toggle-info">
-                            <div class="toggle-title">Rappel de rendez-vous</div>
-                            <div class="toggle-description">Envoyer des rappels avant les rendez-vous</div>
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-name">Journal d'audit</div>
+                                <div class="security-description">Enregistrer toutes les actions utilisateur</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="auditLogging" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="appointmentReminders" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
 
-                    <div class="toggle-container">
-                        <div class="toggle-info">
-                            <div class="toggle-title">Confirmation de rendez-vous</div>
-                            <div class="toggle-description">Confirmer automatiquement les rendez-vous</div>
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-name">Blocage après échecs</div>
+                                <div class="security-description">Bloquer le compte après 5 tentatives échouées</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="accountLockout" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="appointmentConfirmations" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
 
-                    <div class="toggle-container">
-                        <div class="toggle-info">
-                            <div class="toggle-title">Notifications de résultats</div>
-                            <div class="toggle-description">Informer les patients des nouveaux résultats</div>
+                        <div class="form-group">
+                            <label class="form-label">Durée maximale de session (minutes)</label>
+                            <input type="number" class="form-control" id="maxSessionTime" value="480" min="30" max="1440">
                         </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="resultNotifications" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Délai de rappel (heures)</label>
-                        <input type="number" class="form-control" id="reminderDelay" value="24" min="1" max="168">
+                        <div class="form-group">
+                            <label class="form-label">Nombre maximum de tentatives</label>
+                            <input type="number" class="form-control" id="maxLoginAttempts" value="5" min="3" max="10">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Available Features -->
+        <!-- Access Logs -->
         <div class="content-container">
             <div class="content-header-section">
-                <h3 class="content-title">Fonctionnalités disponibles</h3>
-            </div>
-            <div class="content-body">
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon primary">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <h4 class="feature-name">Prise de rendez-vous</h4>
-                        <p class="feature-description">Interface intuitive pour réserver des consultations en ligne avec calendrier en temps réel.</p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-icon success">
-                            <i class="fas fa-folder-open"></i>
-                        </div>
-                        <h4 class="feature-name">Dossiers médicaux</h4>
-                        <p class="feature-description">Accès sécurisé aux antécédents médicaux, radios, et documents de santé.</p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-icon warning">
-                            <i class="fas fa-comments"></i>
-                        </div>
-                        <h4 class="feature-name">Messagerie</h4>
-                        <p class="feature-description">Communication directe et sécurisée avec l'équipe médicale.</p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-icon primary">
-                            <i class="fas fa-credit-card"></i>
-                        </div>
-                        <h4 class="feature-name">Paiements</h4>
-                        <p class="feature-description">Règlement des consultations et soins dentaires en ligne.</p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-icon success">
-                            <i class="fas fa-video"></i>
-                        </div>
-                        <h4 class="feature-name">Téléconsultation</h4>
-                        <p class="feature-description">Consultations à distance via visioconférence sécurisée.</p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-icon warning">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h4 class="feature-name">Suivi des soins</h4>
-                        <p class="feature-description">Tableau de bord personnel pour suivre l'évolution des traitements.</p>
-                    </div>
+                <h3 class="content-title">Journal des accès</h3>
+                <div class="content-actions">
+                    <button class="btn btn-outline" id="filterBtn">
+                        <i class="fas fa-filter"></i> Filtrer
+                    </button>
+                    <button class="btn btn-outline" id="refreshBtn">
+                        <i class="fas fa-sync"></i> Actualiser
+                    </button>
                 </div>
             </div>
-        </div>
-
-        <!-- Access Permissions -->
-        <div class="content-container">
-            <div class="content-header-section">
-                <h3 class="content-title">Permissions d'accès</h3>
-            </div>
             <div class="content-body">
-                <div class="access-control">
-                    <div class="access-item">
-                        <div class="access-info">
-                            <div class="access-name">Consultation des rendez-vous</div>
-                            <div class="access-description">Permet aux patients de voir leurs rendez-vous passés et futurs</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="accessAppointments" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="access-item">
-                        <div class="access-info">
-                            <div class="access-name">Modification du profil</div>
-                            <div class="access-description">Autoriser les patients à modifier leurs informations personnelles</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="accessProfileEdit" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="access-item">
-                        <div class="access-info">
-                            <div class="access-name">Téléchargement de documents</div>
-                            <div class="access-description">Permettre le téléchargement des ordonnances et certificats</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="accessDocumentDownload" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="access-item">
-                        <div class="access-info">
-                            <div class="access-name">Historique des paiements</div>
-                            <div class="access-description">Accès à l'historique des paiements et factures</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="accessPaymentHistory">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="access-item">
-                        <div class="access-info">
-                            <div class="access-name">Demandes d'urgence</div>
-                            <div class="access-description">Permettre l'envoi de demandes de consultation d'urgence</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="accessEmergencyRequests" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
+                <div class="access-logs">
+                    <!-- Logs will be added dynamically -->
                 </div>
             </div>
         </div>
@@ -1332,7 +1155,7 @@
         });
 
         // Initialize active link
-        document.querySelector('.sidebar-link[href="parametres-espace-patient.html"]').classList.add('active');
+        document.querySelector('.sidebar-link[href="gestion-des-acces.html"]').classList.add('active');
 
         // Collapsible section headers
         document.querySelectorAll('.section-header.clickable').forEach(header => {
@@ -1361,65 +1184,57 @@
         document.getElementById('section-users-content').classList.remove('collapsed');
         document.getElementById('section-users-toggle').classList.remove('collapsed');
 
-        // Save settings
-        document.getElementById('saveBtn').addEventListener('click', () => {
-            // Collect all form data
-            const settings = {
-                patientSpaceName: document.getElementById('patientSpaceName').value,
-                patientSpaceUrl: document.getElementById('patientSpaceUrl').value,
-                defaultLanguage: document.getElementById('defaultLanguage').value,
-                welcomeMessage: document.getElementById('welcomeMessage').value,
-                onlineRegistration: document.getElementById('onlineRegistration').checked,
-                onlineAppointments: document.getElementById('onlineAppointments').checked,
-                medicalRecords: document.getElementById('medicalRecords').checked,
-                secureMessaging: document.getElementById('secureMessaging').checked,
-                onlinePayments: document.getElementById('onlinePayments').checked,
-                teleconsultation: document.getElementById('teleconsultation').checked,
-                passwordPolicy: document.getElementById('passwordPolicy').value,
-                sessionDuration: document.getElementById('sessionDuration').value,
-                twoFactorAuth: document.getElementById('twoFactorAuth').checked,
-                auditLog: document.getElementById('auditLog').checked,
-                appointmentReminders: document.getElementById('appointmentReminders').checked,
-                appointmentConfirmations: document.getElementById('appointmentConfirmations').checked,
-                resultNotifications: document.getElementById('resultNotifications').checked,
-                reminderDelay: document.getElementById('reminderDelay').value,
-                accessAppointments: document.getElementById('accessAppointments').checked,
-                accessProfileEdit: document.getElementById('accessProfileEdit').checked,
-                accessDocumentDownload: document.getElementById('accessDocumentDownload').checked,
-                accessPaymentHistory: document.getElementById('accessPaymentHistory').checked,
-                accessEmergencyRequests: document.getElementById('accessEmergencyRequests').checked
-            };
-
-            // Save to localStorage (in real app, this would be an API call)
-            localStorage.setItem('patientSpaceSettings', JSON.stringify(settings));
-
-            alert('Paramètres enregistrés avec succès !');
+        // Add user functionality
+        document.getElementById('addUserBtn').addEventListener('click', () => {
+            alert('Fonctionnalité d\'ajout d\'utilisateur à implémenter');
         });
 
-        // Reset settings
-        document.getElementById('resetBtn').addEventListener('click', () => {
-            if (confirm('Êtes-vous sûr de vouloir réinitialiser tous les paramètres ?')) {
-                localStorage.removeItem('patientSpaceSettings');
-                location.reload();
+        // Export functionality
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            alert('Export des données d\'accès en cours...');
+        });
+
+        // Filter functionality
+        document.getElementById('filterBtn').addEventListener('click', () => {
+            alert('Filtres de journal à implémenter');
+        });
+
+        // Refresh functionality
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            location.reload();
+        });
+
+        // Permission changes
+        document.querySelectorAll('.permission-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const userName = this.id.split('-')[0];
+                const permission = this.id.split('-')[1];
+                const action = this.checked ? 'accordée' : 'retirée';
+                console.log(`Permission ${permission} ${action} pour ${userName}`);
+                // In real app, this would save to database
+            });
+        });
+
+        // Security settings changes
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            if (checkbox.id.startsWith('twoFactor') || checkbox.id.startsWith('auto') || checkbox.id.startsWith('audit') || checkbox.id.startsWith('account')) {
+                checkbox.addEventListener('change', function() {
+                    const setting = this.id;
+                    const status = this.checked ? 'activé' : 'désactivé';
+                    console.log(`Paramètre ${setting} ${status}`);
+                    // In real app, this would save to database
+                });
             }
         });
 
-        // Load saved settings
-        const savedSettings = localStorage.getItem('patientSpaceSettings');
-        if (savedSettings) {
-            const settings = JSON.parse(savedSettings);
-            // Apply saved settings to form elements
-            Object.keys(settings).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    if (element.type === 'checkbox') {
-                        element.checked = settings[key];
-                    } else {
-                        element.value = settings[key];
-                    }
-                }
-            });
-        }
+        // Form inputs
+        document.getElementById('maxSessionTime').addEventListener('change', function() {
+            console.log(`Durée maximale de session: ${this.value} minutes`);
+        });
+
+        document.getElementById('maxLoginAttempts').addEventListener('change', function() {
+            console.log(`Nombre maximum de tentatives: ${this.value}`);
+        });
     </script>
 </body>
 </html>

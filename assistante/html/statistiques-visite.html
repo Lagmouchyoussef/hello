@@ -3,194 +3,215 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Charges & dépenses - Dikra Centre dentaire</title>
+<title>Statistiques de Visite - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../navbar.css">
 
 <style>
-/* Additional styles for charges & dépenses page */
-.appointments-container {
-    background: var(--bg-secondary);
-    border-radius: var(--border-radius);
-    box-shadow: var(--card-shadow);
-    padding: 1.5rem;
+/* Statistics Dashboard Specific Styles */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
     margin-bottom: 2rem;
 }
 
-.appointments-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+.stat-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
 }
 
-.appointments-title {
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--medical-blue), var(--assistant-green));
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.stat-trend {
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stat-trend.positive {
+    background: rgba(4, 120, 87, 0.1);
+    color: var(--success);
+}
+
+.stat-trend.negative {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.chart-container {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
+}
+
+.chart-title {
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin: 0;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.appointments-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--bg-secondary);
+.chart-placeholder {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 3rem 1rem;
+    background: var(--bg-primary);
     border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: var(--card-shadow);
+    border: 2px dashed var(--border-color);
 }
 
-.appointments-table th,
-.appointments-table td {
-    padding: 0.75rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.appointments-table th {
+.chart-canvas {
+    width: 100% !important;
+    height: 300px !important;
     background: var(--bg-primary);
-    font-weight: 600;
-    color: var(--text-primary);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    border-radius: var(--border-radius);
 }
 
-.appointments-table tbody tr:hover {
-    background: var(--bg-primary);
+.period-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-.appointments-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.type-charge {
-    color: var(--danger);
-    font-weight: 500;
-}
-
-.type-depense {
-    color: var(--success);
-    font-weight: 500;
-}
-
-.btn-action {
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-    border: none;
-    margin-right: 0.25rem;
-}
-
-.btn-edit {
-    background: var(--warning);
-    color: white;
-}
-
-.btn-edit:hover {
-    background: #b45309;
-    transform: translateY(-1px);
-}
-
-.btn-delete {
-    background: var(--danger);
-    color: white;
-}
-
-.btn-delete:hover {
-    background: #b91c1c;
-    transform: translateY(-1px);
-}
-
-.form-label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-}
-
-#searchInput {
-    padding: 0.5rem;
+.period-select {
+    padding: 0.5rem 1rem;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     background: var(--bg-primary);
     color: var(--text-primary);
     font-size: 0.875rem;
+    cursor: pointer;
     transition: var(--transition);
 }
 
-#searchInput:focus {
+.period-select:focus {
     outline: none;
     border-color: var(--assistant-green);
     box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
 }
 
-.total-summary {
-    display: flex;
+.stats-overview {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     gap: 2rem;
     margin-bottom: 2rem;
-    flex-wrap: wrap;
 }
 
-.summary-card {
+.overview-card {
     background: var(--bg-secondary);
-    padding: 1rem;
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
+    padding: 1.5rem;
     box-shadow: var(--card-shadow);
-    flex: 1;
-    min-width: 200px;
-    text-align: center;
 }
 
-.summary-card h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
+.overview-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.overview-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.overview-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: var(--bg-primary);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.overview-item-label {
+    font-weight: 500;
     color: var(--text-primary);
 }
 
-.summary-card p {
-    font-size: 0.875rem;
+.overview-item-value {
+    font-weight: 600;
     color: var(--text-secondary);
-    margin: 0.5rem 0 0;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.form-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
 }
 
 @media (max-width: 768px) {
-    .appointments-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .total-summary {
-        flex-direction: column;
-    }
-    .form-grid {
+    .stats-grid {
         grid-template-columns: 1fr;
+    }
+    .stats-overview {
+        grid-template-columns: 1fr;
+    }
+    .chart-container {
+        padding: 1rem;
     }
 }
 </style>
-
-</head>
-<body class="light-mode">
 
 <div class="sidebar">
     <div class="cabinet-header"><div class="cabinet-logo"><img src="../../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
@@ -514,206 +535,399 @@
 </div>
 <div class="main-content">
 <div class="content-header">
-<h1 class="page-title">Charges & dépenses</h1>
-<button class="btn btn-primary" onclick="showForm()">
-<i class="fas fa-plus"></i>
-Nouvelle Charge
-</button>
-</div>
-
-<div class="total-summary">
-<div class="summary-card">
-<h3 id="totalCharges">0.00 DH</h3>
-<p>Total Charges</p>
-</div>
-<div class="summary-card">
-<h3 id="totalDepenses">0.00 DH</h3>
-<p>Total Dépenses</p>
-</div>
-<div class="summary-card">
-<h3 id="balance">0.00 DH</h3>
-<p>Balance</p>
-</div>
-</div>
-<div class="appointments-container" id="addForm" style="display: none;">
-<div class="appointments-header">
-<h2 class="appointments-title">Nouvelle Charge ou dépense</h2>
-</div>
-<form id="expensesForm">
-<div class="form-grid">
-<div class="form-group">
-<label class="form-label">Date</label>
-<input type="date" class="form-control" id="date" required>
-</div>
-<div class="form-group">
-<label class="form-label">Description</label>
-<input type="text" class="form-control" id="Description" placeholder="Description de la charge/dépense" required>
-</div>
-<div class="form-group">
-<label class="form-label">Montant</label>
-<input type="number" class="form-control" id="montant" step="0.01" placeholder="0.00" required>
-</div>
-<div class="form-group">
-<label class="form-label">Type</label>
-<select class="form-control" id="type" required>
-<option value="Charge">Charge</option>
-<option value="dépense">Dépense</option>
+<h1 class="page-title">Statistiques de Visite</h1>
+<div class="period-selector">
+<label for="periodSelect" style="font-weight: 500; color: var(--text-primary);">Période:</label>
+<select id="periodSelect" class="period-select">
+<option value="7">7 derniers jours</option>
+<option value="30">30 derniers jours</option>
+<option value="90">90 derniers jours</option>
 </select>
 </div>
-<div class="form-group">
-<label class="form-label">Catégorie</label>
-<input type="text" class="form-control" id="categorie" placeholder="Catégorie" required>
 </div>
+
+<div class="stats-overview">
+<div class="stats-grid">
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-eye"></i>
 </div>
-<div class="form-actions">
-<button type="submit" class="btn btn-primary">Ajouter</button>
-<button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
+<div class="stat-value" id="totalVisits">0 <span class="stat-trend positive" id="visitsTrend"><i class="fas fa-arrow-up"></i> +12%</span></div>
+<div class="stat-label">Visites totales</div>
 </div>
-</form>
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-users"></i>
 </div>
-<div class="appointments-container">
-<div class="appointments-header">
-<h2 class="appointments-title">Liste des Charges & dépenses</h2>
-<div>
-<input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
+<div class="stat-value" id="uniqueVisitors">0 <span class="stat-trend positive" id="visitorsTrend"><i class="fas fa-arrow-up"></i> +8%</span></div>
+<div class="stat-label">Visiteurs uniques</div>
 </div>
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-clock"></i>
 </div>
-<table class="appointments-table">
-<thead >
-<tr>
-<th>Date</th>
-<th>Description</th>
-<th>Montant</th>
-<th>Type</th>
-<th>Catégorie</th>
-<th>Actions</th>
-</tr>
-</thead >
-<tbody id="expensesTablebody">
-</tbody>
-</table>
+<div class="stat-value" id="avgTime">0:00</div>
+<div class="stat-label">Temps moyen par visite</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-mouse-pointer"></i>
+</div>
+<div class="stat-value" id="bounceRate">0% <span class="stat-trend negative" id="bounceTrend"><i class="fas fa-arrow-down"></i> -5%</span></div>
+<div class="stat-label">Taux de rebond</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-mobile-alt"></i>
+</div>
+<div class="stat-value" id="mobileVisits">0% <span class="stat-trend positive" id="mobileTrend"><i class="fas fa-arrow-up"></i> +15%</span></div>
+<div class="stat-label">Visites mobiles</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-globe"></i>
+</div>
+<div class="stat-value" id="topCountry">Maroc</div>
+<div class="stat-label">Pays principal</div>
 </div>
 </div>
 
+<div class="overview-card">
+<div class="overview-title">Aperçu rapide</div>
+<div class="overview-list">
+<div class="overview-item">
+<span class="overview-item-label">Pages vues aujourd'hui</span>
+<span class="overview-item-value" id="todayViews">0</span>
+</div>
+<div class="overview-item">
+<span class="overview-item-label">Nouveaux visiteurs</span>
+<span class="overview-item-value" id="newVisitors">0</span>
+</div>
+<div class="overview-item">
+<span class="overview-item-label">Temps moyen sur site</span>
+<span class="overview-item-value" id="avgSessionTime">0:00</span>
+</div>
+<div class="overview-item">
+<span class="overview-item-label">Sources principales</span>
+<span class="overview-item-value" id="topSource">Recherche Google</span>
+</div>
+</div>
+</div>
+</div>
+<div class="chart-container">
+<div class="chart-title">
+<i class="fas fa-chart-line"></i>
+Évolution des visites
+</div>
+<canvas id="visitsChart" class="chart-canvas"></canvas>
+</div>
+<div class="chart-container">
+<div class="chart-title">
+<i class="fas fa-file-alt"></i>
+Pages les plus visitées
+</div>
+<canvas id="pagesChart" class="chart-canvas"></canvas>
+</div>
+<div class="chart-container">
+<div class="chart-title">
+<i class="fas fa-share-alt"></i>
+Sources de trafic
+</div>
+<canvas id="sourcesChart" class="chart-canvas"></canvas>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Load data from localStorage
-let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+// Statistics data management
+let currentPeriod = 30;
+let charts = {};
 
-// DOM elements
-const addForm = document.getElementById('addForm');
-const expensesForm = document.getElementById('expensesForm');
-const expensesTableBody = document.getElementById('expensesTablebody');
-const searchInput = document.getElementById('searchInput');
-const totalChargesEl = document.getElementById('totalCharges');
-const totalDepensesEl = document.getElementById('totalDepenses');
-const balanceEl = document.getElementById('balance');
+// Sample data for different periods
+const statisticsData = {
+    7: {
+        totalVisits: 0,
+        uniqueVisitors: 0,
+        avgTime: "0:00",
+        bounceRate: 0,
+        mobileVisits: 0,
+        topCountry: "Maroc",
+        todayViews: 0,
+        newVisitors: 0,
+        avgSessionTime: "0:00",
+        topSource: "Recherche Google",
+        visitsTrend: 0,
+        visitorsTrend: 0,
+        bounceTrend: 0,
+        mobileTrend: 0
+    },
+    30: {
+        totalVisits: 0,
+        uniqueVisitors: 0,
+        avgTime: "0:00",
+        bounceRate: 0,
+        mobileVisits: 0,
+        topCountry: "Maroc",
+        todayViews: 0,
+        newVisitors: 0,
+        avgSessionTime: "0:00",
+        topSource: "Recherche Google",
+        visitsTrend: 0,
+        visitorsTrend: 0,
+        bounceTrend: 0,
+        mobileTrend: 0
+    },
+    90: {
+        totalVisits: 0,
+        uniqueVisitors: 0,
+        avgTime: "0:00",
+        bounceRate: 0,
+        mobileVisits: 0,
+        topCountry: "Maroc",
+        todayViews: 0,
+        newVisitors: 0,
+        avgSessionTime: "0:00",
+        topSource: "Recherche Google",
+        visitsTrend: 0,
+        visitorsTrend: 0,
+        bounceTrend: 0,
+        mobileTrend: 0
+    }
+};
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    renderTable();
-    updateTotals();
-});
+// Chart data
+const chartData = {
+    visits: {
+        labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+        data: [0, 0, 0, 0, 0, 0, 0]
+    },
+    pages: {
+        labels: ['Accueil', 'Services', 'Contact', 'À propos', 'Blog', 'Rendez-vous'],
+        data: [0, 0, 0, 0, 0, 0]
+    },
+    sources: {
+        labels: ['Recherche Google', 'Réseaux sociaux', 'Référencement direct', 'Email', 'Autres'],
+        data: [0, 0, 0, 0, 0]
+    }
+};
 
-// Show form
-function showForm() {
-    addForm.style.display = 'block';
-    addForm.scrollIntoView({ behavior: 'smooth' });
+// Load statistics for selected period
+function loadStatistics(period) {
+    currentPeriod = period;
+    const data = statisticsData[period];
+
+    // Update main stats
+    document.getElementById('totalVisits').innerHTML = `${data.totalVisits.toLocaleString()} <span class="stat-trend positive"><i class="fas fa-arrow-up"></i> +${data.visitsTrend}%</span>`;
+    document.getElementById('uniqueVisitors').innerHTML = `${data.uniqueVisitors.toLocaleString()} <span class="stat-trend positive"><i class="fas fa-arrow-up"></i> +${data.visitorsTrend}%</span>`;
+    document.getElementById('avgTime').textContent = data.avgTime;
+    document.getElementById('bounceRate').innerHTML = `${data.bounceRate}% <span class="stat-trend ${data.bounceTrend > 0 ? 'negative' : 'positive'}"><i class="fas fa-arrow-${data.bounceTrend > 0 ? 'up' : 'down'}"></i> ${data.bounceTrend}%</span>`;
+    document.getElementById('mobileVisits').innerHTML = `${data.mobileVisits}% <span class="stat-trend positive"><i class="fas fa-arrow-up"></i> +${data.mobileTrend}%</span>`;
+    document.getElementById('topCountry').textContent = data.topCountry;
+
+    // Update overview
+    document.getElementById('todayViews').textContent = data.todayViews;
+    document.getElementById('newVisitors').textContent = data.newVisitors;
+    document.getElementById('avgSessionTime').textContent = data.avgSessionTime;
+    document.getElementById('topSource').textContent = data.topSource;
+
+    // Update charts
+    updateCharts();
 }
 
-// Hide form
-function hideForm() {
-    addForm.style.display = 'none';
-    expensesForm.reset();
-}
+// Update charts with new data
+function updateCharts() {
+    // Visits chart
+    if (charts.visitsChart) {
+        charts.visitsChart.data.datasets[0].data = chartData.visits.data;
+        charts.visitsChart.update();
+    }
 
-// Handle form submission
-expensesForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const formData = new FormData(expensesForm);
-    const expense = {
-        id: Date.now(),
-        date: formData.get('date'),
-        description: formData.get('Description'),
-        montant: parseFloat(formData.get('montant')),
-        type: formData.get('type'),
-        categorie: formData.get('categorie')
-    };
-    expenses.push(expense);
-    saveData();
-    renderTable();
-    updateTotals();
-    hideForm();
-});
+    // Pages chart
+    if (charts.pagesChart) {
+        charts.pagesChart.data.datasets[0].data = chartData.pages.data;
+        charts.pagesChart.update();
+    }
 
-// Render table
-function renderTable(filter = '') {
-    expensesTableBody.innerHTML = '';
-    const filtered = expenses.filter(exp =>
-        exp.description.toLowerCase().includes(filter.toLowerCase()) ||
-        exp.categorie.toLowerCase().includes(filter.toLowerCase())
-    );
-    filtered.forEach(exp => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${new Date(exp.date).toLocaleDateString('fr-FR')}</td>
-            <td>${exp.description}</td>
-            <td>${exp.montant.toFixed(2)} DH</td>
-            <td><span class="type-${exp.type.toLowerCase()}">${exp.type}</span></td>
-            <td>${exp.categorie}</td>
-            <td>
-                <button class="btn-action btn-edit" onclick="editExpense(${exp.id})">
-                    <i class="fas fa-edit"></i> Modifier
-                </button>
-                <button class="btn-action btn-delete" onclick="deleteExpense(${exp.id})">
-                    <i class="fas fa-trash"></i> Supprimer
-                </button>
-            </td>
-        `;
-        expensesTableBody.appendChild(row);
-    });
-}
-
-// Search
-searchInput.addEventListener('input', (e) => {
-    renderTable(e.target.value);
-});
-
-// Update totals
-function updateTotals() {
-    const charges = expenses.filter(e => e.type === 'Charge').reduce((sum, e) => sum + e.montant, 0);
-    const depenses = expenses.filter(e => e.type === 'dépense').reduce((sum, e) => sum + e.montant, 0);
-    const balance = depenses - charges;
-
-    totalChargesEl.textContent = charges.toFixed(2) + ' DH';
-    totalDepensesEl.textContent = depenses.toFixed(2) + ' DH';
-    balanceEl.textContent = balance.toFixed(2) + ' DH';
-    balanceEl.style.color = balance >= 0 ? 'var(--success)' : 'var(--danger)';
-}
-
-// Delete expense
-function deleteExpense(id) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette charge/dépense ?')) {
-        expenses = expenses.filter(e => e.id !== id);
-        saveData();
-        renderTable();
-        updateTotals();
+    // Sources chart
+    if (charts.sourcesChart) {
+        charts.sourcesChart.data.datasets[0].data = chartData.sources.data;
+        charts.sourcesChart.update();
     }
 }
 
-// Edit expense (simplified, could expand to edit form)
-function editExpense(id) {
-    alert('Fonction d\'édition à implémenter');
+// Initialize charts
+function initializeCharts() {
+    const chartConfig = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.1)'
+                },
+                ticks: {
+                    color: 'var(--text-secondary)'
+                }
+            },
+            x: {
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.1)'
+                },
+                ticks: {
+                    color: 'var(--text-secondary)'
+                }
+            }
+        }
+    };
+
+    // Visits line chart
+    const visitsCtx = document.getElementById('visitsChart').getContext('2d');
+    charts.visitsChart = new Chart(visitsCtx, {
+        type: 'line',
+        data: {
+            labels: chartData.visits.labels,
+            datasets: [{
+                label: 'Visites',
+                data: chartData.visits.data,
+                borderColor: 'var(--medical-blue)',
+                backgroundColor: 'rgba(30, 58, 138, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: 'var(--medical-blue)',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8
+            }]
+        },
+        options: {
+            ...chartConfig,
+            plugins: {
+                ...chartConfig.plugins,
+                title: {
+                    display: true,
+                    text: 'Évolution des visites cette semaine',
+                    color: 'var(--text-primary)',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    }
+                }
+            }
+        }
+    });
+
+    // Pages bar chart
+    const pagesCtx = document.getElementById('pagesChart').getContext('2d');
+    charts.pagesChart = new Chart(pagesCtx, {
+        type: 'bar',
+        data: {
+            labels: chartData.pages.labels,
+            datasets: [{
+                label: 'Vues de page',
+                data: chartData.pages.data,
+                backgroundColor: 'var(--assistant-green)',
+                borderColor: 'var(--success)',
+                borderWidth: 1,
+                borderRadius: 4,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            ...chartConfig,
+            plugins: {
+                ...chartConfig.plugins,
+                title: {
+                    display: true,
+                    text: 'Pages les plus consultées',
+                    color: 'var(--text-primary)',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    }
+                }
+            }
+        }
+    });
+
+    // Sources doughnut chart
+    const sourcesCtx = document.getElementById('sourcesChart').getContext('2d');
+    charts.sourcesChart = new Chart(sourcesCtx, {
+        type: 'doughnut',
+        data: {
+            labels: chartData.sources.labels,
+            datasets: [{
+                data: chartData.sources.data,
+                backgroundColor: [
+                    'var(--medical-blue)',
+                    'var(--assistant-green)',
+                    '#d97706',
+                    'var(--ai-purple)',
+                    'var(--text-gray)'
+                ],
+                borderWidth: 2,
+                borderColor: 'var(--bg-primary)',
+                hoverBorderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: 'var(--text-primary)',
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Répartition des sources de trafic',
+                    color: 'var(--text-primary)',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    }
+                }
+            }
+        }
+    });
 }
 
-// Save to localStorage
-function saveData() {
-    localStorage.setItem('expenses', JSON.stringify(expenses));
-}
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize with 30-day data
+    loadStatistics(30);
+    initializeCharts();
+
+    // Period selector
+    document.getElementById('periodSelect').addEventListener('change', function() {
+        loadStatistics(parseInt(this.value));
+    });
+});
+
+// Auto-refresh data every 5 minutes (simulated)
+setInterval(() => {
+    // Simulate real-time data updates
+    const randomChange = Math.floor(Math.random() * 20) - 10; // -10 to +10
+    const currentData = statisticsData[currentPeriod];
+    const newVisits = Math.max(0, currentData.totalVisits + randomChange);
+
+    document.getElementById('totalVisits').innerHTML = `${newVisits.toLocaleString()} <span class="stat-trend positive"><i class="fas fa-arrow-up"></i> +${currentData.visitsTrend}%</span>`;
+}, 300000); // 5 minutes
 </script>
 
 </body>
 </html>
-
 
 
 

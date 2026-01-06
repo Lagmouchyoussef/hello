@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rôles & permissions - DIKRA centre Dentaire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../navbar.css">
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --medical-blue: #1e3a8a;
+            --medical-blue-dark: #1e40af;
+            --medical-blue-darker: #172554;
+            --medical-blue-light: #3b82f6;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --text-light: #f8fafc;
+            --text-gray: #64748b;
+            --border-radius: 0.5rem;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --ai-purple: #7e22ce;
+            --ai-purple-light: #c084fc;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --unread-bg: #dbeafe;
+            --assistant-green: #047857;
+            --assistant-green-light: #10b981;
+        }
+
+        /* Light mode */
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --border-color: #e2e8f0;
+            --card-shadow: var(--shadow);
+            --section-bg: rgba(4, 120, 87, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Dark mode */
+        .dark-mode {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --unread-bg: #065f46;
+            --section-bg: rgba(255, 255, 255, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Content container */
+        .content-container {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .content-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-header-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .content-body {
+            padding: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--medical-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--medical-blue-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--text-gray);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        /* Role cards */
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .role-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .role-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+            border-color: var(--medical-blue);
+        }
+
+        .role-card.selected {
+            border-color: var(--medical-blue);
+            background: var(--section-bg);
+        }
+
+        .role-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .role-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--medical-blue);
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .role-info h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .role-info p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .role-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        /* Permissions table */
+        .permissions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .permissions-table th,
+        .permissions-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .permissions-table th {
+            font-weight: 600;
+            color: var(--text-primary);
+            background: var(--section-bg);
+        }
+
+        .permissions-table tbody tr:hover {
+            background: var(--section-bg);
+        }
+
+        .permission-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .permission-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Permission checkboxes */
+        .permission-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .permission-checkbox input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            accent-color: var(--medical-blue);
+        }
+
+        .permission-checkbox label {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        /* Permission groups */
+        .permission-group {
+            margin-bottom: 2rem;
+        }
+
+        .permission-group-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .permission-group-icon {
+            color: var(--medical-blue);
+        }
+
+        /* Bulk actions */
+        .bulk-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .bulk-actions button {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            border-radius: 0.25rem;
+        }
+
+        /* Search and filter */
+        .filters-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            margin: 5% auto;
+            padding: 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                margin-left: 250px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 250px;
+                padding: 1.5rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .content-header-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .roles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-input {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 240px;
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .content-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .permissions-table {
+                font-size: 0.75rem;
+            }
+
+            .permissions-table th,
+            .permissions-table td {
+                padding: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .content-container {
+                padding: 1rem;
+            }
+
+            .content-body {
+                padding: 1rem;
+            }
+
+            .role-card {
+                padding: 1rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Professional Sidebar Navigation -->
+    <div class="sidebar">
+        <!-- Cabinet Header -->
+        <div class="cabinet-header"><div class="cabinet-logo"><img src="../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+
+            <div class="cabinet-name">DIKRA centre Dentaire</div>
+            <div class="cabinet-subtitle">Casablanca, Maroc</div>
+        </div>
+        <!-- Navigation Menu -->
+        <ul class="sidebar-menu">
+            <!-- DASHBOARD -->
+            <li class="sidebar-item">
+                <a href="dashboard.html" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                    Tableau de bord
+                </a>
+            </li>
+
+            <!-- RENDEZ-VOUS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-rdv-toggle">
+                    Rendez-vous
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-rdv-content">
+                    <div class="sidebar-item">
+                        <a href="Listes%20des%20Rendez-vous.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                            Liste des rendez-vous
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="Prise%20en%20ligne.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
+                            Prise en ligne
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="En%20présentiel.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            En présentiel
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="via-espace-patient.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
+                            Via espace patient
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="planning-equipe.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
+                            Planning de l'équipe
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="salle-attente.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
+                            Salle d'attente
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- PATIENTS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-patients-toggle">
+                    Patients
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-patients-content">
+                    <div class="sidebar-item">
+                        <a href="fiches-patients.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                            Fiches patients
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="dossiers-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
+                            Dossiers médicaux
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- CABINET -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-cabinet-toggle">
+                    Cabinet
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-cabinet-content">
+                    <div class="sidebar-item">
+                        <a href="salle-attente.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
+                            Salle d'attente
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- COMPTABILITÉ -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-compta-toggle">
+                    Comptabilité
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-compta-content">
+                    <div class="sidebar-item">
+                        <a href="comptabilite-generale.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
+                            Comptabilité générale
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="paiements-recus.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
+                            Paiements reçus
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="charges-depenses.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                            Charges & dépenses
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- COMMUNICATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-com-toggle">
+                    Communication
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-com-content">
+                    <div class="sidebar-item">
+                        <a href="messagerie-interne.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                            Messagerie interne
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="assistant-ia.html" class="sidebar-link">
+                            <span class="sidebar-icon">
+                                <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
+                            </span>
+                            Assistant IA
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="envoi-sms.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
+                            Envoi de SMS
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notifications.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                            Notifications
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- ORGANISATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-org-toggle">
+                    Organisation
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-org-content">
+                    <div class="sidebar-item">
+                        <a href="taches-rappels.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
+                            Tâches & rappels
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notes-personnelles.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
+                            Notes personnelles
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="statistiques.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                            Statistiques
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- GESTION DES STOCKS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-stock-toggle">
+                    Gestion des stocks
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-stock-content">
+                    <div class="sidebar-item">
+                        <a href="materiel-dentaire.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-box"></i></span>
+                            Matériel dentaire
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="consommables.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
+                            Consommables
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="medicaments.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
+                            Médicaments
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- DOCUMENTS & FORMULAIRES -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-docs-toggle">
+                    Documents & formulaires
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-docs-content">
+                    <div class="sidebar-item">
+                        <a href="ordonnances.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
+                            Ordonnances
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="certificats-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                            Certificats médicaux
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="feuilles-de-soins.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                            Feuilles de soins (CNOPS/CNSS)
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="imagerie-medicale.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
+                            Imagerie médicale
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="protheses.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                            Prothèses
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- UTILISATEURS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-users-toggle">
+                    Utilisateurs
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-users-content">
+                    <div class="sidebar-item">
+                        <a href="Liste%20du%20personnel.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-list"></i></span>
+                            Liste du personnel
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="ajouter-un-membre.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
+                            Ajouter un membre
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="roles-permissions.html" class="sidebar-link active">
+                            <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                            Rôles & permissions
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="planning-equipe.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                            Planning de l'équipe
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="parametres-espace-patient.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                            Paramètres espace patient
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="gestion-des-acces.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-key"></i></span>
+                            Gestion des accès
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="dossiers-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                            Dossiers médicaux
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- SITE WEB -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-website-toggle">
+                    Site web
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-website-content">
+                    <div class="sidebar-item">
+                        <a href="contenu-articles.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
+                            Contenu & articles
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="design-theme.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
+                            Design & thème
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="referencement-seo.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-search"></i></span>
+                            Référencement (SEO)
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="formulaire-contact.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
+                            Formulaire de contact
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="statistiques-visite.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
+                            Statistiques de visite
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- CONFIGURATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-config-toggle">
+                    Configuration
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-config-content">
+                    <div class="sidebar-item">
+                        <a href="mon-profil.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                            Mon profil
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="informations-cabinet.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            Informations cabinet
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="parametres-facturation.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                            Paramètres de facturation
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notifications.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                            Notifications
+                        </a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!-- User Section -->
+        <div class="user-section">
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <div class="user-details">
+                    <div class="user-name"></div>
+                    <div class="user-role"></div>
+                </div>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+                <span>Mode Sombre</span>
+            </button>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="content-header">
+            <div>
+                <h1 class="page-title">Rôles & permissions</h1>
+                <p class="page-subtitle">Gérer les rôles et permissions des utilisateurs du cabinet</p>
+            </div>
+            <div class="content-actions">
+                <button class="btn btn-primary" id="createRoleBtn">
+                    <i class="fas fa-plus"></i> Nouveau rôle
+                </button>
+            </div>
+        </div>
+
+        <!-- Roles Overview -->
+        <div class="content-container">
+            <div class="content-header-section">
+                <h2 class="content-title">
+                    <i class="fas fa-users-cog"></i> Rôles prédéfinis
+                </h2>
+            </div>
+            <div class="content-body">
+                <div class="roles-grid" id="rolesGrid">
+                    <!-- Roles will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Permissions Management -->
+        <div class="content-container">
+            <div class="content-header-section">
+                <h2 class="content-title">
+                    <i class="fas fa-shield-alt"></i> Gestion des permissions
+                </h2>
+                <div class="content-actions">
+                    <div class="filters-section">
+                        <input type="text" class="search-input" id="searchPermissions" placeholder="Rechercher une permission...">
+                        <select class="filter-select" id="filterCategory">
+                            <option value="all">Toutes les catégories</option>
+                            <option value="patients">Patients</option>
+                            <option value="rendezvous">Rendez-vous</option>
+                            <option value="comptabilite">Comptabilité</option>
+                            <option value="stocks">Stocks</option>
+                            <option value="documents">Documents</option>
+                            <option value="administration">Administration</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="bulk-actions">
+                    <button class="btn btn-outline" id="selectAllBtn">
+                        <i class="fas fa-check-square"></i> Tout sélectionner
+                    </button>
+                    <button class="btn btn-outline" id="deselectAllBtn">
+                        <i class="fas fa-square"></i> Tout désélectionner
+                    </button>
+                    <button class="btn btn-success" id="savePermissionsBtn">
+                        <i class="fas fa-save"></i> Sauvegarder
+                    </button>
+                </div>
+
+                <!-- Patients Permissions -->
+                <div class="permission-group" data-category="patients">
+                    <h3 class="permission-group-title">
+                        <i class="fas fa-user-injured permission-group-icon"></i>
+                        Gestion des patients
+                    </h3>
+                    <table class="permissions-table">
+                        <thead>
+                            <tr>
+                                <th>Permission</th>
+                                <th>Description</th>
+                                <th>Accès</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="permission-name">Voir les fiches patients</td>
+                                <td class="permission-description">Accès en lecture aux informations des patients</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="view_patients" data-permission="view_patients">
+                                        <label for="view_patients">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Modifier les fiches patients</td>
+                                <td class="permission-description">Modifier les informations des patients</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="edit_patients" data-permission="edit_patients">
+                                        <label for="edit_patients">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Créer de nouveaux patients</td>
+                                <td class="permission-description">Ajouter de nouveaux patients au système</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="create_patients" data-permission="create_patients">
+                                        <label for="create_patients">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Supprimer des patients</td>
+                                <td class="permission-description">Supprimer définitivement des patients</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="delete_patients" data-permission="delete_patients">
+                                        <label for="delete_patients">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Rendez-vous Permissions -->
+                <div class="permission-group" data-category="rendezvous">
+                    <h3 class="permission-group-title">
+                        <i class="fas fa-calendar-check permission-group-icon"></i>
+                        Gestion des rendez-vous
+                    </h3>
+                    <table class="permissions-table">
+                        <thead>
+                            <tr>
+                                <th>Permission</th>
+                                <th>Description</th>
+                                <th>Accès</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="permission-name">Voir les rendez-vous</td>
+                                <td class="permission-description">Accès en lecture au planning des rendez-vous</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="view_appointments" data-permission="view_appointments">
+                                        <label for="view_appointments">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Créer des rendez-vous</td>
+                                <td class="permission-description">Planifier de nouveaux rendez-vous</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="create_appointments" data-permission="create_appointments">
+                                        <label for="create_appointments">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Modifier les rendez-vous</td>
+                                <td class="permission-description">Changer les horaires et détails des rendez-vous</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="edit_appointments" data-permission="edit_appointments">
+                                        <label for="edit_appointments">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Annuler des rendez-vous</td>
+                                <td class="permission-description">Annuler ou supprimer des rendez-vous</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="cancel_appointments" data-permission="cancel_appointments">
+                                        <label for="cancel_appointments">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Comptabilité Permissions -->
+                <div class="permission-group" data-category="comptabilite">
+                    <h3 class="permission-group-title">
+                        <i class="fas fa-calculator permission-group-icon"></i>
+                        Comptabilité & facturation
+                    </h3>
+                    <table class="permissions-table">
+                        <thead>
+                            <tr>
+                                <th>Permission</th>
+                                <th>Description</th>
+                                <th>Accès</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="permission-name">Voir la comptabilité</td>
+                                <td class="permission-description">Accès en lecture aux données financières</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="view_accounting" data-permission="view_accounting">
+                                        <label for="view_accounting">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Gérer les paiements</td>
+                                <td class="permission-description">Enregistrer et modifier les paiements</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="manage_payments" data-permission="manage_payments">
+                                        <label for="manage_payments">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Gérer les charges</td>
+                                <td class="permission-description">Ajouter et modifier les charges et dépenses</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="manage_expenses" data-permission="manage_expenses">
+                                        <label for="manage_expenses">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Stocks Permissions -->
+                <div class="permission-group" data-category="stocks">
+                    <h3 class="permission-group-title">
+                        <i class="fas fa-box permission-group-icon"></i>
+                        Gestion des stocks
+                    </h3>
+                    <table class="permissions-table">
+                        <thead>
+                            <tr>
+                                <th>Permission</th>
+                                <th>Description</th>
+                                <th>Accès</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="permission-name">Voir les stocks</td>
+                                <td class="permission-description">Accès en lecture aux inventaires</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="view_inventory" data-permission="view_inventory">
+                                        <label for="view_inventory">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Gérer les stocks</td>
+                                <td class="permission-description">Ajouter, modifier et supprimer des articles</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="manage_inventory" data-permission="manage_inventory">
+                                        <label for="manage_inventory">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Documents Permissions -->
+                <div class="permission-group" data-category="documents">
+                    <h3 class="permission-group-title">
+                        <i class="fas fa-file-medical permission-group-icon"></i>
+                        Documents médicaux
+                    </h3>
+                    <table class="permissions-table">
+                        <thead>
+                            <tr>
+                                <th>Permission</th>
+                                <th>Description</th>
+                                <th>Accès</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="permission-name">Voir les documents</td>
+                                <td class="permission-description">Accès en lecture aux documents médicaux</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="view_documents" data-permission="view_documents">
+                                        <label for="view_documents">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Créer des documents</td>
+                                <td class="permission-description">Générer de nouveaux documents médicaux</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="create_documents" data-permission="create_documents">
+                                        <label for="create_documents">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Modifier les documents</td>
+                                <td class="permission-description">Éditer les documents existants</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="edit_documents" data-permission="edit_documents">
+                                        <label for="edit_documents">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Administration Permissions -->
+                <div class="permission-group" data-category="administration">
+                    <h3 class="permission-group-title">
+                        <i class="fas fa-cog permission-group-icon"></i>
+                        Administration
+                    </h3>
+                    <table class="permissions-table">
+                        <thead>
+                            <tr>
+                                <th>Permission</th>
+                                <th>Description</th>
+                                <th>Accès</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="permission-name">Gérer les utilisateurs</td>
+                                <td class="permission-description">Ajouter, modifier et supprimer des utilisateurs</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="manage_users" data-permission="manage_users">
+                                        <label for="manage_users">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Gérer les rôles</td>
+                                <td class="permission-description">Créer et modifier les rôles et permissions</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="manage_roles" data-permission="manage_roles">
+                                        <label for="manage_roles">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="permission-name">Configuration système</td>
+                                <td class="permission-description">Accès aux paramètres système et configuration</td>
+                                <td>
+                                    <div class="permission-checkbox">
+                                        <input type="checkbox" id="system_config" data-permission="system_config">
+                                        <label for="system_config">Autoriser</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Role Modal -->
+        <div id="createRoleModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Créer un nouveau rôle</h2>
+                    <button class="modal-close" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="createRoleForm">
+                        <div class="form-group">
+                            <label class="form-label">Nom du rôle *</label>
+                            <input type="text" id="roleName" class="form-control" required placeholder="Ex: Assistant dentaire senior">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea id="roleDescription" class="form-control" rows="3" placeholder="Description du rôle et de ses responsabilités"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Couleur du rôle</label>
+                            <input type="color" id="roleColor" class="form-control" value="#1e3a8a">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancelRoleBtn">Annuler</button>
+                    <button class="btn btn-success" id="saveRoleBtn">Créer le rôle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Common JavaScript -->
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+        const themeText = themeToggle.querySelector('span');
+        // Using sessionStorage instead of localStorage
+        const savedTheme = sessionStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            themeIcon.className = 'fas fa-sun';
+            themeText.textContent = 'Mode Clair';
+        }
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Mode Clair';
+                sessionStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Mode Sombre';
+                sessionStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
+            }
+        });
+
+        // Navigation link functionality
+        const mainLinks = document.querySelectorAll('.sidebar-link');
+        const mainContent = document.getElementById('mainContent');
+        mainLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Update active states
+                mainLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize active link
+        document.querySelector('.sidebar-link[href="roles-permissions.html"]').classList.add('active');
+
+        // Collapsible section headers
+        document.querySelectorAll('.section-header.clickable').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isCollapsed = content.classList.contains('collapsed');
+                // Close all other sections
+                document.querySelectorAll('.section-content').forEach(el => {
+                    if (el !== content) {
+                        el.classList.add('collapsed');
+                        el.previousElementSibling.classList.add('collapsed');
+                    }
+                });
+                // Toggle current section
+                if (isCollapsed) {
+                    content.classList.remove('collapsed');
+                    header.classList.remove('collapsed');
+                } else {
+                    content.classList.add('collapsed');
+                    header.classList.add('collapsed');
+                }
+            });
+        });
+
+        // Open "Utilisateurs" by default
+        document.getElementById('section-users-content').classList.remove('collapsed');
+        document.getElementById('section-users-toggle').classList.remove('collapsed');
+
+        // Roles data
+        const defaultRoles = [
+            {
+                id: 'admin',
+                name: 'Administrateur',
+                description: 'Accès complet à toutes les fonctionnalités du système',
+                icon: 'fas fa-crown',
+                color: '#dc2626',
+                permissions: ['view_patients', 'edit_patients', 'create_patients', 'delete_patients', 'view_appointments', 'create_appointments', 'edit_appointments', 'cancel_appointments', 'view_accounting', 'manage_payments', 'manage_expenses', 'view_inventory', 'manage_inventory', 'view_documents', 'create_documents', 'edit_documents', 'manage_users', 'manage_roles', 'system_config']
+            },
+            {
+                id: 'assistant',
+                name: 'Assistante',
+                description: 'Support aux soins dentaires et gestion administrative',
+                icon: 'fas fa-user-nurse',
+                color: '#059669',
+                permissions: ['view_patients', 'edit_patients', 'view_appointments', 'create_appointments', 'edit_appointments', 'cancel_appointments', 'view_inventory', 'view_documents', 'create_documents']
+            },
+            {
+                id: 'patient',
+                name: 'Patients',
+                description: 'Accès limité aux informations personnelles du patient',
+                icon: 'fas fa-user-injured',
+                color: '#1e3a8a',
+                permissions: ['view_patients']
+            }
+        ];
+
+        // Load roles
+        function loadRoles() {
+            const rolesGrid = document.getElementById('rolesGrid');
+            rolesGrid.innerHTML = '';
+
+            const roles = JSON.parse(localStorage.getItem('roles')) || defaultRoles;
+
+            roles.forEach(role => {
+                const roleCard = document.createElement('div');
+                roleCard.className = 'role-card';
+                roleCard.innerHTML = `
+                    <div class="role-header">
+                        <div class="role-icon" style="background: ${role.color};">
+                            <i class="${role.icon}"></i>
+                        </div>
+                        <div class="role-info">
+                            <h3>${role.name}</h3>
+                            <p>${role.permissions.length} permissions</p>
+                        </div>
+                    </div>
+                    <p class="role-description">${role.description}</p>
+                `;
+
+                roleCard.addEventListener('click', () => {
+                    selectRole(role);
+                });
+
+                rolesGrid.appendChild(roleCard);
+            });
+        }
+
+        // Select role
+        function selectRole(role) {
+            // Remove selected class from all cards
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Add selected class to clicked card
+            event.currentTarget.classList.add('selected');
+
+            // Load permissions for selected role
+            loadRolePermissions(role);
+        }
+
+        // Load permissions for selected role
+        function loadRolePermissions(role) {
+            // Reset all checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            // Check permissions for this role
+            role.permissions.forEach(permission => {
+                const checkbox = document.getElementById(permission);
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+            });
+        }
+
+        // Search permissions
+        const searchInput = document.getElementById('searchPermissions');
+        searchInput.addEventListener('input', filterPermissions);
+
+        // Filter by category
+        const filterSelect = document.getElementById('filterCategory');
+        filterSelect.addEventListener('change', filterPermissions);
+
+        function filterPermissions() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedCategory = filterSelect.value;
+
+            document.querySelectorAll('.permission-group').forEach(group => {
+                const category = group.dataset.category;
+                const permissions = group.querySelectorAll('tbody tr');
+
+                let groupVisible = false;
+
+                permissions.forEach(row => {
+                    const permissionName = row.querySelector('.permission-name').textContent.toLowerCase();
+                    const permissionDesc = row.querySelector('.permission-description').textContent.toLowerCase();
+
+                    const matchesSearch = permissionName.includes(searchTerm) || permissionDesc.includes(searchTerm);
+                    const matchesCategory = selectedCategory === 'all' || category === selectedCategory;
+
+                    if (matchesSearch && matchesCategory) {
+                        row.style.display = '';
+                        groupVisible = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                group.style.display = groupVisible ? '' : 'none';
+            });
+        }
+
+        // Bulk actions
+        const selectAllBtn = document.getElementById('selectAllBtn');
+        const deselectAllBtn = document.getElementById('deselectAllBtn');
+        const savePermissionsBtn = document.getElementById('savePermissionsBtn');
+
+        selectAllBtn.addEventListener('click', () => {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        });
+
+        deselectAllBtn.addEventListener('click', () => {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        });
+
+        savePermissionsBtn.addEventListener('click', () => {
+            const selectedPermissions = [];
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+                selectedPermissions.push(checkbox.dataset.permission);
+            });
+
+            // Get selected role
+            const selectedRoleCard = document.querySelector('.role-card.selected');
+            if (!selectedRoleCard) {
+                alert('Veuillez sélectionner un rôle d\'abord.');
+                return;
+            }
+
+            // Update role permissions
+            const roles = JSON.parse(localStorage.getItem('roles')) || defaultRoles;
+            const roleIndex = Array.from(document.querySelectorAll('.role-card')).indexOf(selectedRoleCard);
+            roles[roleIndex].permissions = selectedPermissions;
+
+            localStorage.setItem('roles', JSON.stringify(roles));
+
+            alert('Permissions sauvegardées avec succès !');
+        });
+
+        // Create role modal
+        const createRoleModal = document.getElementById('createRoleModal');
+        const createRoleBtn = document.getElementById('createRoleBtn');
+        const closeModal = document.getElementById('closeModal');
+        const cancelRoleBtn = document.getElementById('cancelRoleBtn');
+        const saveRoleBtn = document.getElementById('saveRoleBtn');
+        const createRoleForm = document.getElementById('createRoleForm');
+
+        createRoleBtn.addEventListener('click', () => {
+            createRoleModal.style.display = 'block';
+        });
+
+        closeModal.addEventListener('click', () => {
+            createRoleModal.style.display = 'none';
+        });
+
+        cancelRoleBtn.addEventListener('click', () => {
+            createRoleModal.style.display = 'none';
+        });
+
+        saveRoleBtn.addEventListener('click', () => {
+            const roleName = document.getElementById('roleName').value.trim();
+            const roleDescription = document.getElementById('roleDescription').value.trim();
+            const roleColor = document.getElementById('roleColor').value;
+
+            if (!roleName) {
+                alert('Veuillez saisir un nom pour le rôle.');
+                return;
+            }
+
+            const newRole = {
+                id: Date.now().toString(),
+                name: roleName,
+                description: roleDescription || 'Nouveau rôle personnalisé',
+                icon: 'fas fa-user-shield',
+                color: roleColor,
+                permissions: []
+            };
+
+            const roles = JSON.parse(localStorage.getItem('roles')) || defaultRoles;
+            roles.push(newRole);
+            localStorage.setItem('roles', JSON.stringify(roles));
+
+            createRoleModal.style.display = 'none';
+            createRoleForm.reset();
+            loadRoles();
+
+            alert('Rôle créé avec succès !');
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === createRoleModal) {
+                createRoleModal.style.display = 'none';
+            }
+        });
+
+        // Initialize
+        loadRoles();
+    </script>
+</body>
+</html>

@@ -1,774 +1,1547 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cabinet dentaire - Logiciel de Gestion Professionnel</title>
+<title>Cabinet dentaire - Tableau de Bord Assistante</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../navbar.css">
+<link rel="stylesheet" href="../../navbar.css">
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-:root {
-  --medical-blue: #1e3a8a;
-  --medical-blue-dark: #1e40af;
-  --medical-blue-darker: #172554;
-  --medical-blue-light: #3b82f6;
-  --success: #059669;
-  --warning: #d97706;
-  --danger: #cbd5e1;
-  --text-light: #f8fafc;
-  --text-gray: #64748b;
-  --border-radius: 0.5rem;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --ai-purple: #7e22ce;
-  --ai-purple-light: #c084fc;
-  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  --unread-bg: #dbeafe;
-}
-
-/* Main Content */
-.main-content {
-  margin-left: 0;
-  padding: 2rem;
-  min-height: 100vh;
-  transition: var(--transition);
-}
-
-.content-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.page-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: var(--text-primary);
-}
-
-.maroc-compliance {
-  background: linear-gradient(135deg, var(--medical-blue-darker), var(--medical-blue));
-  color: white;
-  padding: 0.625rem 1.25rem;
-  border-radius: var(--border-radius);
-  font-size: 0.875rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.compliance-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  background: rgba(255, 255, 255, 0.15);
-  padding: 0.375rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  margin-right: 0.5rem;
-  font-weight: 600;
-}
-
-/* dashboard Cards */
-.dashboard-grid{
-  display: grid ;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.dashboard-card{
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border-color);
-  transition: var(--transition);
-}
-
-.dashboard-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.15);
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.25rem;
-}
-
-.card-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.card-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  background: rgba(30, 58, 138, 0.1);
-  color: var(--medical-blue);
-}
-
-.card-stats {
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-}
-
-.card-trend{
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-/* Maroc-Specific Features */
-.maroc-features {
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border-color);
-  margin-bottom: 2rem;
-}
-
-.features-grid{
-  display: grid ;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.feature-item {
-  text-align: center;
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  background: var(--section-bg);
-  transition: var(--transition);
-  border: 1px solid transparent;
-}
-
-.feature-item:hover {
-  transform: translateY(-4px);
-  background: rgba(30, 58, 138, 0.1);
-  border-color: var(--medical-blue);
-}
-
-.feature-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-  color: white;
-  font-size: 1.25rem;
-  box-shadow: 0 4px 8px rgba(30, 58, 138, 0.2);
-}
-
-.feature-title {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-}
-
-.feature-desc {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-}
-
-
-/* Messaging Section */
-.messaging-container {
-  display: none;
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border-color);
-  margin-bottom: 2rem;
-  overflow: hidden;
-}
-
-.messaging-header {
-  padding: 1.25rem 1.5rem;
-  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.messaging-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.message-list {
-  height: 400px;
-  overflow-y: auto;
-  padding: 1rem;
-}
-
-.message-item {
-  padding: 0.875rem;
-  margin-bottom: 0.875rem;
-  border-radius: var(--border-radius);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  transition: var(--transition);
-}
-
-.message-item.unread{
-  background: var(--unread-bg);
-  border-left: 4px solid var(--success);
-}
-
-.message-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.message-time {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-}
-
-.message-content {
-  font-size: 0.875rem;
-  line-height: 1.4;
-  color: var(--text-primary);
-}
-
-.message-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 0.875rem;
-}
-
-.btn {
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-  border: none;
-}
-
-.btn-primary {
-  background: var(--medical-blue);
-  color: white;
-}
-
-.btn-primary:hover {
-  background: var(--medical-blue-dark);
-  transform: translateY(-2px);
-}
-
-.btn-danger {
-  background: var(--danger);
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #b91c1c;
-  transform: translateY(-2px);
-}
-
-.btn-success {
-  background: var(--success);
-  color: white;
-}
-
-.btn-success:hover {
-  background: #047857;
-  transform: translateY(-2px);
-}
-
-.message-compose {
-  padding: 1.5rem;
-  border-top: 1px solid var(--border-color);
-}
-
-.form-group {
-  margin-bottom: 1.25rem;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.form-control {
-  width: 100%;
-  padding: 0.625rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-size: 0.875rem;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--medical-blue);
-  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
-}
-
-.btn-send{
-  width: 100%;
-  padding: 0.875rem;
-  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 0.9375rem;
-}
-
-.btn-send:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(30, 58, 138, 0.3);
-}
-
-/* AI Assistant */
-.ai-assistant {
-  background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  color: white;
-  box-shadow: 0 8px 16px rgba(126, 34, 206, 0.3);
-}
-
-.ai-header {
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  margin-bottom: 1rem;
-}
-
-.ai-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ai-purple);
-  font-weight: 700;
-  font-size: 1.125rem;
-}
-
-.ai-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-
-.ai-status {
-  font-size: 0.875rem;
-  opacity: 0.9;
-}
-
-.ai-chat {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: var(--border-radius);
-  padding: 1.25rem;
-  min-height: 100px;
-  margin-bottom: 1.25rem;
-  font-style: italic;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.ai-actions {
-  display: flex;
-  gap: 1rem;
-}
-
-.ai-btn {
-  flex: 1;
-  padding: 0.625rem;
-  border-radius: var(--border-radius);
-  background: white;
-  color: var(--ai-purple);
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 0.9375rem;
-}
-
-.ai-btn:hover {
-  background: rgba(255, 255, 255, 0.9);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Compliance Notice */
-.compliance-notice {
-  background: var(--medical-blue-darker);
-  color: white;
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  margin-bottom: 2rem;
-}
-
-.compliance-notice h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.compliance-notice p {
-  line-height: 1.6;
-}
-
-.compliance-notice strong {
-  color: #cbd5e1;
-}
-
-/* Responsive design */
-@media (max-width: 992px) {
-    width: 250px;
-  }
-  .main-content {
-    margin-left: 0;
-    padding: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-    width: 240px;
-  }
-  .main-content {
-    margin-left: 0;
-    padding: 1.5rem;
-  }
-  .dashboard-grid,
-  .features-grid{
-    grid-template-columns: 1fr;
-  }
-  .messaging-container,
-  .ai-assistant {
-    display: block !important;
-  }
-  .message-list {
-    height: 300px;
-  }
-}
-
-@media (max-width: 480px) {
-    width: 100%;
-    height: auto;
-    position: relative;
-    padding: 1rem 0;
-  }
-  .main-content {
-    margin-left: 0;
-    padding: 1rem;
-  }
-  .cabinet-header,
-  .user-section {
-    text-align: left;
-  }
-  .cabinet-logo {
-    margin: 0 0 1rem 1.5rem;
-  }
-  .content-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .maroc-compliance {
-    width: 100%;
-    margin-top: 1rem;
-  }
-}
-
-/* Active messaging view */
-.main-content.messaging-view .dashboard-grid,
-.main-content.messaging-view .maroc-features,
-.main-content.messaging-view .compliance-notice {
-  display: none;
-}
-
-.main-content.messaging-view .messaging-container {
-  display: block;
-}
-
-.main-content.messaging-view .ai-assistant {
-  display: block;
-}
-
-/* Focus states for accessibility */
-  outline: 2px solid var(--medical-blue-light);
-  outline-offset: 2px;
-}
-
-.btn:focus {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-}
+    /* CSS Variables */
+    :root {
+      --medical-blue: #1e3a8a;
+      --medical-blue-dark: #1e40af;
+      --medical-blue-darker: #172554;
+      --medical-blue-light: #3b82f6;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --text-light: #f8fafc;
+      --text-gray: #64748b;
+      --border-radius: 0.5rem;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      --ai-purple: #7e22ce;
+      --ai-purple-light: #c084fc;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --unread-bg: #dbeafe;
+      --assistant-green: #047857;
+      --assistant-green-light: #10b981;
+    }
+
+    /* Light mode */
+    .light-mode {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --border-color: #e2e8f0;
+      --card-shadow: var(--shadow);
+      --section-bg: rgba(4, 120, 87, 0.05);
+      --hover-bg: rgba(255, 255, 255, 0.1);
+      --active-bg: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Dark mode */
+    .dark-mode {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --border-color: #334155;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+      --unread-bg: #065f46;
+      --section-bg: rgba(255, 255, 255, 0.05);
+      --hover-bg: rgba(255, 255, 255, 0.1);
+      --active-bg: rgba(255, 255, 255, 0.2);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.5;
+        font-size: 0.875rem;
+        transition: var(--transition);
+    }
+
+    .main-content {
+        margin-left: 280px;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        min-height: 100vh;
+        transition: var(--transition);
+    }
+
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Dashboard Header */
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .dashboard-title {
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .dashboard-subtitle {
+        color: var(--text-secondary);
+        font-size: 1rem;
+    }
+
+    .greeting-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .greeting {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .current-date-time {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .dashboard-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .greeting-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .greeting {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .current-date-time {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .date-filter {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .date-filter label {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .date-filter select {
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 0.875rem;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .kpi-card {
+        background: var(--bg-secondary);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        box-shadow: var(--card-shadow);
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .kpi-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--assistant-green), var(--assistant-green-light));
+    }
+
+    .kpi-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .kpi-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .kpi-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .kpi-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .kpi-change {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .kpi-change.positive {
+        color: var(--success);
+    }
+
+    .kpi-change.negative {
+        color: var(--danger);
+    }
+
+    .kpi-change.neutral {
+        color: var(--text-secondary);
+    }
+
+    .kpi-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        color: white;
+    }
+
+    .kpi-card.appointments .kpi-icon {
+        background: linear-gradient(135deg, var(--assistant-green), var(--assistant-green-light));
+    }
+
+    .kpi-card.tasks .kpi-icon {
+        background: linear-gradient(135deg, #7e22ce, #c084fc);
+    }
+
+    .kpi-card.communications .kpi-icon {
+        background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+    }
+
+    .kpi-card.patients .kpi-icon {
+        background: linear-gradient(135deg, #d97706, #f59e0b);
+    }
+
+    /* Charts Section */
+    .charts-section {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .chart-card {
+        background: var(--bg-secondary);
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .chart-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .chart-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chart-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .chart-subtitle {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+    }
+
+    .chart-container, .pie-chart-container {
+        padding: 1.5rem;
+        height: 300px;
+    }
+
+    /* Activities Section */
+    .activities-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .activity-card, .quick-actions {
+        background: var(--bg-secondary);
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .activity-card:hover, .quick-actions:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .activity-header, .actions-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .activity-title, .actions-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .activity-list {
+        padding: 0;
+    }
+
+    .activity-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        transition: var(--transition);
+    }
+
+    .activity-item:hover {
+        background: var(--section-bg);
+    }
+
+    .activity-item:last-child {
+        border-bottom: none;
+    }
+
+    .activity-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--assistant-green), var(--ai-purple));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+
+    .activity-content {
+        flex: 1;
+    }
+
+    .activity-text {
+        font-weight: 500;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .activity-time {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+    }
+
+    .activity-status {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .status-completed {
+        background: rgba(5, 150, 105, 0.1);
+        color: var(--success);
+    }
+
+    .status-pending {
+        background: rgba(217, 119, 6, 0.1);
+        color: var(--warning);
+    }
+
+    /* Quick Actions */
+    .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--bg-primary);
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .action-btn:hover {
+        border-color: var(--assistant-green);
+        background: var(--section-bg);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .action-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--assistant-green), var(--assistant-green-light));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+    }
+
+    .action-content h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .action-content p {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    /* Data Table Widget */
+    .data-table-widget {
+        background: var(--bg-secondary);
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .data-table-widget:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .table-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .dashboard-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .dashboard-table th,
+    .dashboard-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .dashboard-table th {
+        background: var(--bg-primary);
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .dashboard-table tbody tr {
+        transition: var(--transition);
+    }
+
+    .dashboard-table tbody tr:hover {
+        background: var(--section-bg);
+    }
+
+    /* Buttons */
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: var(--border-radius);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-primary {
+        background: var(--assistant-green);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #047857;
+        transform: translateY(-2px);
+    }
+
+    .btn-success {
+        background: var(--success);
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #047857;
+        transform: translateY(-2px);
+    }
+
+    .btn-danger {
+        background: var(--danger);
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #b91c1c;
+        transform: translateY(-2px);
+    }
+
+    .btn-small {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    /* Modal */
+    .modal {
+        position: fixed;
+        z-index: 10000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        background: var(--bg-secondary);
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        max-width: 400px;
+        width: 90%;
+        color: var(--text-primary);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+        .charts-section {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .main-content {
+            margin-left: 250px;
+            padding: 1.5rem;
+        }
+
+        .activities-section {
+            grid-template-columns: 1fr;
+        }
+
+        .kpi-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .main-content {
+            margin-left: 240px;
+            padding: 1.5rem;
+        }
+
+        .dashboard-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .dashboard-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .charts-section {
+            grid-template-columns: 1fr;
+        }
+
+        .activities-section {
+            grid-template-columns: 1fr;
+        }
+
+        .actions-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .kpi-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .main-content {
+            margin-left: 0;
+            padding: 1rem;
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+        }
+
+        .kpi-card {
+            padding: 1rem;
+        }
+
+        .kpi-value {
+            font-size: 1.5rem;
+        }
+
+        .chart-container, .pie-chart-container {
+            height: 250px;
+        }
+    }
 </style>
-</head>
-<body class="light-mode">
+
+<!-- Professional Sidebar Navigation -->
+<div class="sidebar">
+    <!-- Cabinet Header -->
+    <div class="cabinet-header"><div class="cabinet-logo"><img src="../../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+
+        <div class="cabinet-name">DIKRA centre Dentaire</div>
+        <div class="cabinet-subtitle">Casablanca, Maroc</div>
+    </div>
+    <!-- Navigation Menu -->
+    <ul class="sidebar-menu">
+        <!-- DASHBOARD -->
+        <li class="sidebar-item">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                Tableau de bord
+            </a>
+        </li>
+
+        <!-- RENDEZ-VOUS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-rdv-toggle">
+                Rendez-vous
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-rdv-content">
+                <div class="sidebar-item">
+                    <a href="Listes%20des%20Rendez-vous.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Liste des rendez-vous
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="Prise%20en%20ligne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
+                        Prise en ligne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="En%20présentiel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        En présentiel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="via-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
+                        Via espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- PATIENTS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-patients-toggle">
+                Patients
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-patients-content">
+                <div class="sidebar-item">
+                    <a href="fiches-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                        Fiches patients
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- CABINET -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-cabinet-toggle">
+                Cabinet
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-cabinet-content">
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- COMMUNICATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-com-toggle">
+                Communication
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-com-content">
+                <div class="sidebar-item">
+                    <a href="messagerie-interne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                        Messagerie interne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="assistant-ia.html" class="sidebar-link">
+                        <span class="sidebar-icon">
+                            <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
+                        </span>
+                        Assistant IA
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="envoi-sms.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
+                        Envoi de SMS
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- ORGANISATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-org-toggle">
+                Organisation
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-org-content">
+                <div class="sidebar-item">
+                    <a href="taches-rappels.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
+                        Tâches & rappels
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notes-personnelles.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
+                        Notes personnelles
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="statistiques.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                        Statistiques
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- GESTION DES STOCKS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-stock-toggle">
+                Gestion des stocks
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-stock-content">
+                <div class="sidebar-item">
+                    <a href="materiel-dentaire.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-box"></i></span>
+                        Matériel dentaire
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="consommables.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
+                        Consommables
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="medicaments.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
+                        Médicaments
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- DOCUMENTS & FORMULAIRES -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-docs-toggle">
+                Documents & formulaires
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-docs-content">
+                <div class="sidebar-item">
+                    <a href="ordonnances.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
+                        Ordonnances
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="certificats-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Certificats médicaux
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="feuilles-de-soins.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                        Feuilles de soins (CNOPS/CNSS)
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="imagerie-medicale.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
+                        Imagerie médicale
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="protheses.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                        Prothèses
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- UTILISATEURS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-users-toggle">
+                Utilisateurs
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-users-content">
+                <div class="sidebar-item">
+                    <a href="Liste%20du%20personnel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-list"></i></span>
+                        Liste du personnel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="ajouter-un-membre.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
+                        Ajouter un membre
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="roles-permissions.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                        Rôles & permissions
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="parametres-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                        Paramètres espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="gestion-des-acces.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-key"></i></span>
+                        Gestion des accès
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
 
 
-<script>
-function toggleSection(header) {
-  const content = header.nextElementSibling;
-  const chevron = header.querySelector('.section-chevron');
-  content.classList.toggle('collapsed');
-  chevron.classList.toggle('collapsed');
-}
-
-function toggleTheme() {
-  document.body.classList.toggle('light-mode');
-  document.body.classList.toggle('dark-mode');
-  const icon = document.querySelector('.theme-toggle i');
-  if (document.body.classList.contains('dark-mode')) {
-    icon.className = 'fas fa-sun';
-  } else {
-    icon.className = 'fas fa-moon';
-  }
-}
-
-function logout() {
-  window.location.href = '../../LOGING/html/loging.html';
-}
-</script>
+        <!-- CONFIGURATION -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-config-toggle">
+                Configuration
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-config-content">
+                <div class="sidebar-item">
+                    <a href="mon-profil.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                        Mon profil
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="informations-cabinet.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        Informations cabinet
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="user-section">
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <div class="user-details">
+                <div class="user-name"></div>
+                <div class="user-role">Assistante</div>
+            </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <span>Mode Sombre</span>
+        </button>
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+        </button>
+    </div>
+</div>
 
 <!-- Main Content -->
 <div class="main-content" id="mainContent">
-  <div class="content-header">
-    <h1 class="page-title">Tableau de bord professionnel</h1>
-  </div>
-
-  <!-- Dashboard Cards -->
-  <div class="dashboard-grid">
-    <div class="dashboard-card">
-      <div class="card-header">
-        <div class="card-title">Patients actifs</div>
-        <div class="card-icon">
-          <i class="fas fa-users"></i>
-        </div>
-      </div>
-      <div class="card-stats" id="activePatients">0</div>
-      <div class="card-trend">
-        <i class="fas fa-arrow-up" style="color: var(--success);"></i>
-        <span style="color: var(--success);">+12%</span>
-        <span>ce mois</span>
-      </div>
-    </div>
-
-    <div class="dashboard-card">
-      <div class="card-header">
-        <div class="card-title">Rendez-vous aujourd'hui</div>
-        <div class="card-icon">
-          <i class="fas fa-calendar-check"></i>
-        </div>
-      </div>
-      <div class="card-stats" id="todayAppointments">0</div>
-      <div class="card-trend">
-        <i class="fas fa-clock" style="color: var(--warning);"></i>
-        <span style="color: var(--warning);">3 en attente</span>
-      </div>
-    </div>
-
-    <div class="dashboard-card">
-      <div class="card-header">
-        <div class="card-title">Rendez-vous total</div>
-        <div class="card-icon">
-          <i class="fas fa-calendar-alt"></i>
-        </div>
-      </div>
-      <div class="card-stats" id="totalAppointments">0</div>
-      <div class="card-trend">
-        <i class="fas fa-arrow-up" style="color: var(--success);"></i>
-        <span style="color: var(--success);">+8%</span>
-        <span>cette semaine</span>
-      </div>
-    </div>
-
-    <div class="dashboard-card">
-      <div class="card-header">
-        <div class="card-title">Messages non lus</div>
-        <div class="card-icon">
-          <i class="fas fa-envelope"></i>
-        </div>
-      </div>
-      <div class="card-stats" id="unreadMessages">0</div>
-      <div class="card-trend">
-        <i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i>
-        <span style="color: var(--danger);">À traiter</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Maroc-Specific Features -->
-  <div class="maroc-features">
-    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Fonctionnalités Maroc</h3>
-    <div class="features-grid">
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-file-medical"></i>
-        </div>
-        <div class="feature-title">Dossiers médicaux</div>
-        <div class="feature-desc">Gestion conforme aux normes marocaines</div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-prescription"></i>
-        </div>
-        <div class="feature-title">Ordonnances</div>
-        <div class="feature-desc">Modèles adaptés au Maroc</div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-sms"></i>
-        </div>
-        <div class="feature-title">SMS patients</div>
-        <div class="feature-desc">Rappels automatiques</div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-certificate"></i>
-        </div>
-        <div class="feature-title">Certificats médicaux</div>
-        <div class="feature-desc">Génération instantanée</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Messaging Section -->
-  <div class="messaging-container">
-    <div class="messaging-header">
-      <div class="messaging-title">Messagerie interne</div>
-      <div class="badge">0 nouveaux messages</div>
-    </div>
-    <div class="message-list">
-      <!-- Messages will be loaded here -->
-    </div>
-    <div class="message-compose">
-      <div class="form-group">
-        <label class="form-label">Destinataire</label>
-        <select class="form-control">
-          <option>Sélectionner un destinataire</option>
-          <option>Admin</option>
-          <option>Dr. Ahmed</option>
-          <option>Assistante Fatima</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Sujet</label>
-        <input type="text" class="form-control" placeholder="Sujet du message">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Message</label>
-        <textarea class="form-control" rows="4" placeholder="Votre message..."></textarea>
-      </div>
-      <button class="btn-send">Envoyer le message</button>
-    </div>
-  </div>
-
-  <!-- AI Assistant -->
-  <div class="ai-assistant">
-    <div class="ai-header">
-      <div class="ai-avatar">AI</div>
+  <div class="dashboard-container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
       <div>
-        <div class="ai-title">Assistant IA Médical</div>
-        <div class="ai-status">En ligne - Prêt à aider</div>
+        <div class="greeting-section">
+          <div class="greeting" id="greeting">Bonjour !</div>
+          <div class="current-date-time" id="currentDateTime">--- --- ---- --:--</div>
+        </div>
+        <h1 class="dashboard-title">Tableau de Bord Assistante</h1>
+        <p class="dashboard-subtitle">Vue d'ensemble de vos tâches et activités quotidiennes</p>
+      </div>
+      <div class="dashboard-actions">
+        <div class="date-filter">
+          <label for="dateRange">Période:</label>
+          <select id="dateRange">
+            <option value="today">Aujourd'hui</option>
+            <option value="week">Cette semaine</option>
+            <option value="month" selected>Ce mois</option>
+            <option value="quarter">Ce trimestre</option>
+            <option value="year">Cette année</option>
+          </select>
+        </div>
+        <button class="btn btn-primary">
+          <i class="fas fa-download"></i> Exporter
+        </button>
+        <button class="btn btn-success">
+          <i class="fas fa-sync"></i> Actualiser
+        </button>
+        <button class="btn btn-danger" id="resetDataBtn">
+          <i class="fas fa-trash"></i> Réinitialiser
+        </button>
       </div>
     </div>
-    <div class="ai-chat">
-      Bonjour ! Je suis votre assistant IA. Comment puis-je vous aider aujourd'hui ?
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card appointments">
+        <div class="kpi-header">
+          <div>
+            <h3 class="kpi-title">Rendez-vous aujourd'hui</h3>
+            <div class="kpi-value" id="todayAppointments">0</div>
+            <div class="kpi-change neutral">
+              <i class="fas fa-minus"></i>
+              <span>Aucune donnée</span>
+            </div>
+          </div>
+          <div class="kpi-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card tasks">
+        <div class="kpi-header">
+          <div>
+            <h3 class="kpi-title">Tâches en attente</h3>
+            <div class="kpi-value" id="pendingTasks">0</div>
+            <div class="kpi-change neutral">
+              <i class="fas fa-minus"></i>
+              <span>Aucune donnée</span>
+            </div>
+          </div>
+          <div class="kpi-icon">
+            <i class="fas fa-tasks"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card communications">
+        <div class="kpi-header">
+          <div>
+            <h3 class="kpi-title">Communications envoyées</h3>
+            <div class="kpi-value" id="communicationsSent">0</div>
+            <div class="kpi-change neutral">
+              <i class="fas fa-minus"></i>
+              <span>Aucune donnée</span>
+            </div>
+          </div>
+          <div class="kpi-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card patients">
+        <div class="kpi-header">
+          <div>
+            <h3 class="kpi-title">Patients contactés</h3>
+            <div class="kpi-value" id="patientsContacted">0</div>
+            <div class="kpi-change neutral">
+              <i class="fas fa-minus"></i>
+              <span>Aucune donnée</span>
+            </div>
+          </div>
+          <div class="kpi-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="ai-actions">
-      <button class="ai-btn">Poser une question</button>
-      <button class="ai-btn">Analyser un dossier</button>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h3 class="chart-title">Évolution des rendez-vous</h3>
+            <p class="chart-subtitle">Rendez-vous planifiés sur les 7 derniers jours</p>
+          </div>
+          <div class="chart-actions">
+            <button class="btn btn-small">
+              <i class="fas fa-expand"></i>
+            </button>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="appointmentsChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h3 class="chart-title">Répartition des tâches</h3>
+            <p class="chart-subtitle">Ce mois</p>
+          </div>
+        </div>
+        <div class="pie-chart-container">
+          <canvas id="tasksChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activities and Quick Actions -->
+    <div class="activities-section">
+      <div class="activity-card">
+        <div class="activity-header">
+          <h3 class="activity-title">Activités récentes</h3>
+          <button class="btn btn-small">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+        </div>
+        <div class="activity-list">
+           <div class="activity-item">
+             <div class="activity-avatar">?</div>
+             <div class="activity-content">
+               <div class="activity-text">Aucune activité récente</div>
+               <div class="activity-time">Aucune donnée</div>
+             </div>
+             <div class="activity-status status-pending">Vide</div>
+           </div>
+         </div>
+      </div>
+
+      <div class="quick-actions">
+        <div class="actions-header">
+          <h3 class="actions-title">Actions rapides</h3>
+        </div>
+        <div class="actions-grid">
+          <a href="Listes%20des%20Rendez-vous.html" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-calendar-plus"></i>
+            </div>
+            <div class="action-content">
+              <h4>Planifier RDV</h4>
+              <p>Créer un nouveau rendez-vous</p>
+            </div>
+          </a>
+          <a href="fiches-patients.html" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="action-content">
+              <h4>Nouveau patient</h4>
+              <p>Ajouter un patient au système</p>
+            </div>
+          </a>
+          <a href="envoi-sms.html" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-sms"></i>
+            </div>
+            <div class="action-content">
+              <h4>Envoyer SMS</h4>
+              <p>Contacter les patients</p>
+            </div>
+          </a>
+          <a href="taches-rappels.html" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-tasks"></i>
+            </div>
+            <div class="action-content">
+              <h4>Gérer tâches</h4>
+              <p>Organiser vos tâches quotidiennes</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Table Widget -->
+    <div class="data-table-widget">
+      <div class="table-header">
+        <h3 class="table-title">Rendez-vous d'aujourd'hui</h3>
+        <div>
+          <button class="btn btn-small">
+            <i class="fas fa-filter"></i> Filtrer
+          </button>
+          <button class="btn btn-small">
+            <i class="fas fa-eye"></i> Voir tout
+          </button>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Traitement</th>
+              <th>Heure</th>
+              <th>Médecin</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="6" style="text-align: center; color: var(--text-gray); padding: 2rem;">
+                <i class="fas fa-calendar-times me-2"></i>Aucun rendez-vous prévu pour aujourd'hui
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
+</div>
 
-  <!-- Compliance Notice -->
-  <div class="compliance-notice">
-    <h3>Conformité RGPD & Normes Marocaines</h3>
-    <p>
-      Cette application respecte les normes de protection des données personnelles (RGPD) et les réglementations médicales marocaines.
-      Toutes les données sont chiffrées et stockées de manière sécurisée. <strong>Confidentialité garantie.</strong>
-    </p>
+<!-- Export Modal -->
+<div id="exportModal" class="modal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+  <div class="modal-content" style="background-color: var(--bg-secondary); margin: 15% auto; padding: 20px; border: 1px solid var(--border-color); border-radius: var(--border-radius); width: 90%; max-width: 400px; color: var(--text-primary);">
+    <h3 style="margin-bottom: 20px; text-align: center;">Choisir le format d'export</h3>
+    <div style="display: flex; gap: 10px; justify-content: center;">
+      <button id="exportCSV" class="btn btn-primary" style="flex: 1;">
+        <i class="fas fa-file-csv"></i> CSV
+      </button>
+      <button id="exportPDF" class="btn btn-success" style="flex: 1;">
+        <i class="fas fa-file-pdf"></i> PDF
+      </button>
+    </div>
+    <button id="closeModal" class="btn btn-danger" style="width: 100%; margin-top: 15px;">
+      <i class="fas fa-times"></i> Annuler
+    </button>
   </div>
-
 </div>
 
 
 
+<script>
+// Theme Toggle
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+const themeIcon = themeToggle.querySelector('i');
+const themeText = themeToggle.querySelector('span');
+// Using sessionStorage instead of localStorage
+const savedTheme = sessionStorage.getItem('theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+  body.classList.remove('light-mode');
+  body.classList.add('dark-mode');
+  themeIcon.className = 'fas fa-sun';
+  themeText.textContent = 'Mode Clair';
+}
+themeToggle.addEventListener('click', () => {
+  if (body.classList.contains('light-mode')) {
+    body.classList.remove('light-mode');
+    body.classList.add('dark-mode');
+    themeIcon.className = 'fas fa-sun';
+    themeText.textContent = 'Mode Clair';
+    sessionStorage.setItem('theme', 'dark');
+  } else {
+    body.classList.remove('dark-mode');
+    body.classList.add('light-mode');
+    themeIcon.className = 'fas fa-moon';
+    themeText.textContent = 'Mode Sombre';
+    sessionStorage.setItem('theme', 'light');
+  }
+});
+// Logout functionality
+const logoutBtn = document.getElementById('logoutBtn');
+logoutBtn.addEventListener('click', () => {
+  if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+    alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
+  }
+});
+// Navigation link functionality
+const mainLinks = document.querySelectorAll('.sidebar-link');
+const mainContent = document.getElementById('mainContent');
+mainLinks.forEach(link => {
+  link.addEventListener('click', function(e) {
+    // Update active states
+    mainLinks.forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+// Initialize active link
+document.querySelector('.sidebar-link[href="dashboard.html"]').classList.add('active');
+// Collapsible section headers
+document.querySelectorAll('.section-header.clickable').forEach(header => {
+  header.addEventListener('click', () => {
+    const content = header.nextElementSibling;
+    const isCollapsed = content.classList.contains('collapsed');
+    // Close all other sections
+    document.querySelectorAll('.section-content').forEach(el => {
+      if (el !== content) {
+        el.classList.add('collapsed');
+        el.previousElementSibling.classList.add('collapsed');
+      }
+    });
+    // Toggle current section
+    if (isCollapsed) {
+      content.classList.remove('collapsed');
+      header.classList.remove('collapsed');
+    } else {
+      content.classList.add('collapsed');
+      header.classList.add('collapsed');
+    }
+  });
+});
+// Open "Rendez-vous" by default
+document.getElementById('section-rdv-content').classList.remove('collapsed');
+document.getElementById('section-rdv-toggle').classList.remove('collapsed');
 
+// Real-time greeting and date/time
+function updateGreetingAndTime() {
+  const now = new Date();
+  const hour = now.getHours();
+  const greetingElement = document.getElementById('greeting');
+  const dateTimeElement = document.getElementById('currentDateTime');
+
+  // Determine greeting based on time
+  let greeting = 'Bonjour';
+  if (hour >= 12 && hour < 18) {
+    greeting = 'Bon après-midi';
+  } else if (hour >= 18 || hour < 6) {
+    greeting = 'Bonsoir';
+  }
+
+  // Format date and time
+  const dateString = now.toLocaleDateString('fr-FR', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  const timeString = now.toLocaleTimeString('fr-FR', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  greetingElement.textContent = `${greeting} !`;
+  dateTimeElement.textContent = `${dateString} - ${timeString}`;
+}
+
+// Update greeting and time immediately and every minute
+updateGreetingAndTime();
+setInterval(updateGreetingAndTime, 60000);
+
+// Dashboard functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Populate KPI cards with sample data
+  updateKPIs();
+
+  // Initialize charts
+  initializeCharts();
+
+  // Export functionality
+  document.querySelector('.btn-primary').addEventListener('click', function() {
+    document.getElementById('exportModal').style.display = 'flex';
+  });
+
+  document.getElementById('closeModal').addEventListener('click', function() {
+    document.getElementById('exportModal').style.display = 'none';
+  });
+
+  document.getElementById('exportCSV').addEventListener('click', function() {
+    alert('Export CSV functionality would be implemented here');
+    document.getElementById('exportModal').style.display = 'none';
+  });
+
+  document.getElementById('exportPDF').addEventListener('click', function() {
+    alert('Export PDF functionality would be implemented here');
+    document.getElementById('exportModal').style.display = 'none';
+  });
+
+  // Reset data functionality
+  document.getElementById('resetDataBtn').addEventListener('click', function() {
+    if (confirm('Êtes-vous sûr de vouloir réinitialiser toutes les données ?')) {
+      // Reset KPIs
+      document.getElementById('todayAppointments').textContent = '0';
+      document.getElementById('pendingTasks').textContent = '0';
+      document.getElementById('communicationsSent').textContent = '0';
+      document.getElementById('patientsContacted').textContent = '0';
+
+      // Reset change indicators
+      document.querySelectorAll('.kpi-change').forEach(change => {
+        change.className = 'kpi-change neutral';
+        change.innerHTML = '<i class="fas fa-minus"></i><span>Aucune donnée</span>';
+      });
+
+      // Clear table
+      const tbody = document.querySelector('.dashboard-table tbody');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-gray); padding: 2rem;"><i class="fas fa-calendar-times me-2"></i>Aucun rendez-vous prévu pour aujourd\'hui</td></tr>';
+
+      alert('Données réinitialisées avec succès !');
+    }
+  });
+});
+
+function updateKPIs() {
+  // Sample data - in a real app, this would come from an API
+  const data = {
+    appointments: 0,
+    tasks: 0,
+    communications: 0,
+    patients: 0
+  };
+
+  document.getElementById('todayAppointments').textContent = data.appointments.toLocaleString();
+  document.getElementById('pendingTasks').textContent = data.tasks.toLocaleString();
+  document.getElementById('communicationsSent').textContent = data.communications.toLocaleString();
+  document.getElementById('patientsContacted').textContent = data.patients.toLocaleString();
+
+  // Update change indicators with sample data
+  updateKPIChange('todayAppointments', 'Aucune donnée', 'neutral');
+  updateKPIChange('pendingTasks', 'Aucune donnée', 'neutral');
+  updateKPIChange('communicationsSent', 'Aucune donnée', 'neutral');
+  updateKPIChange('patientsContacted', 'Aucune donnée', 'neutral');
+}
+
+function updateKPIChange(elementId, change, type) {
+  const changeElement = document.querySelector(`#${elementId}`).parentElement.querySelector('.kpi-change');
+  changeElement.className = `kpi-change ${type}`;
+  changeElement.innerHTML = `<i class="fas fa-arrow-${type === 'positive' ? 'up' : type === 'negative' ? 'down' : 'minus'}"></i><span>${change}</span>`;
+}
+
+function initializeCharts() {
+  // Appointments Chart
+  const appointmentsCtx = document.getElementById('appointmentsChart').getContext('2d');
+  new Chart(appointmentsCtx, {
+    type: 'line',
+    data: {
+      labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+      datasets: [{
+        label: 'Rendez-vous',
+        data: [0, 0, 0, 0, 0, 0, 0],
+        borderColor: '#047857',
+        backgroundColor: 'rgba(4, 120, 87, 0.1)',
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1
+          }
+        }
+      }
+    }
+  });
+
+  // Tasks Distribution Chart
+  const tasksCtx = document.getElementById('tasksChart').getContext('2d');
+  new Chart(tasksCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Administratif', 'Communication', 'Organisation', 'Suivi patients'],
+      datasets: [{
+        data: [25, 25, 25, 25],
+        backgroundColor: [
+          '#047857',
+          '#059669',
+          '#10b981',
+          '#34d399'
+        ],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            padding: 20,
+            usePointStyle: true
+          }
+        }
+      }
+    }
+  });
+}
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

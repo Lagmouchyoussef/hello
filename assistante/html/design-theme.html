@@ -3,349 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Messagerie Interne - dikra Centre dentaire</title>
+<title>design & Thème - dikra Centre dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../navbar.css">
 
 <style>
-/* WhatsApp-like Messaging Styles */
-:root {
-  --whatsapp-green: #25d366;
-  --whatsapp-green-dark: #128c7e;
-  --whatsapp-light-green: #dcf8c6;
-  --whatsapp-bg: #e5ddd5;
-  --chat-bg: #f0f0f0;
-  --message-bubble-sent: #dcf8c6;
-  --message-bubble-received: #ffffff;
-  --text-sent: #303030;
-  --text-received: #303030;
-  --timestamp: #999;
+/* Design Theme Specific Styles */
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
 }
 
-.whatsapp-container {
-  display: flex;
-  height: calc(100vh - 2rem);
-  background: var(--whatsapp-bg);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  box-shadow: var(--card-shadow);
+.setting-item {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
 }
 
-.chats-sidebar {
-  width: 350px;
-  background: #ffffff;
-  border-right: 1px solid #e0e0e0;
-  display: flex;
-  flex-direction: column;
+.setting-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.1);
 }
 
-.chat-header {
-  padding: 1rem;
-  background: var(--whatsapp-green);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.setting-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
 }
 
-.chat-header h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 500;
+.setting-desc {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
 }
 
-.search-container {
-  padding: 0.5rem 1rem;
-  background: #f8f8f8;
-  border-bottom: 1px solid #e0e0e0;
+.color-picker {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
 }
 
-.search-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: none;
-  border-radius: 20px;
-  background: white;
-  outline: none;
-  font-size: 0.9rem;
+.color-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: var(--transition);
+    position: relative;
 }
 
-.chats-list {
-  flex: 1;
-  overflow-y: auto;
+.color-option:hover {
+    transform: scale(1.1);
 }
 
-.chat-item {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
-  transition: background 0.2s;
+.color-option.selected {
+    border-color: var(--text-primary);
+    box-shadow: 0 0 0 2px var(--bg-secondary);
 }
 
-.chat-item:hover {
-  background: #f5f5f5;
-}
-
-.chat-item.active {
-  background: #e1f5fe;
-}
-
-.chat-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--whatsapp-green);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 600;
-  margin-right: 1rem;
-  flex-shrink: 0;
-}
-
-.chat-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.chat-name {
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.25rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.chat-last-message {
-  color: #666;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.chat-time {
-  color: #999;
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-  flex-shrink: 0;
-}
-
-.chat-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text fill="%23f0f0f0" font-size="20" y="50%">💬</text></svg>') repeat;
-  background-size: 50px 50px;
-}
-
-.chat-messages-header {
-  padding: 1rem;
-  background: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
-  display: flex;
-  align-items: center;
-}
-
-.chat-messages-header .chat-avatar {
-  width: 40px;
-  height: 40px;
-  margin-right: 1rem;
-}
-
-.chat-messages-header .chat-info {
-  flex: 1;
-}
-
-.chat-messages-header .chat-name {
-  margin-bottom: 0;
-  font-size: 1rem;
-}
-
-.chat-messages-container {
-  flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.message-bubble {
-  max-width: 70%;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  position: relative;
-  word-wrap: break-word;
-  font-size: 0.9rem;
-  line-height: 1.4;
-}
-
-.message-sent {
-  background: var(--message-bubble-sent);
-  color: var(--text-sent);
-  align-self: flex-end;
-  border-bottom-right-radius: 0.25rem;
-}
-
-.message-received {
-  background: var(--message-bubble-received);
-  color: var(--text-received);
-  align-self: flex-start;
-  border-bottom-left-radius: 0.25rem;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-.message-time {
-  font-size: 0.7rem;
-  color: var(--timestamp);
-  margin-top: 0.25rem;
-  text-align: right;
-}
-
-.message-input-container {
-  padding: 1rem;
-  background: #f0f0f0;
-  border-top: 1px solid #e0e0e0;
-}
-
-.message-input-area {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: white;
-  border-radius: 25px;
-  padding: 0.5rem 1rem;
-}
-
-.message-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 0.9rem;
-  resize: none;
-  min-height: 20px;
-  max-height: 100px;
-  overflow-y: auto;
-}
-
-.message-input::placeholder {
-  color: #999;
-}
-
-.attach-btn, .emoji-btn {
-  background: none;
-  border: none;
-  color: #666;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 50%;
-  transition: background 0.2s;
-}
-
-.attach-btn:hover, .emoji-btn:hover {
-  background: #f0f0f0;
-}
-
-.send-btn {
-  background: var(--whatsapp-green);
-  color: white;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
-}
-
-.send-btn:hover {
-  background: var(--whatsapp-green-dark);
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #666;
-  text-align: center;
-}
-
-.empty-state i {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  opacity: 0.5;
-}
-
-.empty-state h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.2rem;
-}
-
-.empty-state p {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .chats-sidebar {
-    width: 100%;
+.color-option.selected::after {
+    content: '✓';
     position: absolute;
-    left: -100%;
-    transition: left 0.3s;
-    z-index: 1001;
-  }
-  .chats-sidebar.open {
-    left: 0;
-  }
-  .chat-area {
-    width: 100%;
-  }
-  .chat-toggle {
-    display: block;
-  }
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
-.chat-toggle {
-  display: none;
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1002;
-  background: var(--whatsapp-green);
-  color: white;
-  border: none;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+.appointments-container {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
 }
 
-/* Animations */
-.message-bubble {
-  animation: fadeIn 0.3s ease-in;
+.appointments-header {
+    margin-bottom: 2rem;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.appointments-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.preview-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.preview-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.preview-content {
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    background: var(--bg-secondary);
+    transition: var(--transition);
+}
+
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-secondary {
+    background: var(--text-gray);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #475569;
+}
+
+@media (max-width: 768px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+    .btn-group {
+        flex-direction: column;
+    }
 }
 </style>
-
-</head>
-<body class="light-mode">
 
 <div class="sidebar">
     <div class="cabinet-header"><div class="cabinet-logo"><img src="../../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
@@ -668,291 +467,299 @@
     </div>
 </div>
 <div class="main-content">
-<button class="chat-toggle" id="chatToggle">
-<i class="fas fa-comments"></i>
+<div class="content-header">
+<h1 class="page-title">design & Thème</h1>
+<button class="btn btn-primary" onclick="saveSettings()">
+<i class="fas fa-save"></i>
+Sauvegarder
 </button>
-
-<div class="whatsapp-container">
-  <!-- Chats Sidebar -->
-  <div class="chats-sidebar" id="chatsSidebar">
-    <div class="chat-header">
-      <h3>Messagerie Interne</h3>
-      <button class="btn btn-primary" onclick="newChat()" style="background: rgba(255,255,255,0.2); border: none; padding: 0.5rem;">
-        <i class="fas fa-edit"></i>
-      </button>
-    </div>
-
-    <div class="search-container">
-      <input type="text" class="search-input" id="chatSearch" placeholder="Rechercher une conversation...">
-    </div>
-
-    <div class="chats-list" id="chatsList">
-      <!-- Chat items will be populated by JavaScript -->
-    </div>
-  </div>
-
-  <!-- Chat Area -->
-  <div class="chat-area" id="chatArea">
-    <div class="empty-state" id="emptyState">
-      <i class="fas fa-comments"></i>
-      <h3>Messagerie Interne</h3>
-      <p>Sélectionnez une conversation pour commencer à discuter</p>
-    </div>
-
-    <div class="chat-messages-view" id="chatMessagesView" style="display: none;">
-      <div class="chat-messages-header" id="chatMessagesHeader">
-        <!-- Header content will be populated by JavaScript -->
-      </div>
-
-      <div class="chat-messages-container" id="chatMessagesContainer">
-        <!-- Messages will be populated by JavaScript -->
-      </div>
-
-      <div class="message-input-container">
-        <div class="message-input-area">
-          <button class="attach-btn" id="attachBtn">
-            <i class="fas fa-paperclip"></i>
-          </button>
-          <textarea class="message-input" id="messageInput" placeholder="Tapez un message..." rows="1"></textarea>
-          <button class="emoji-btn" id="emojiBtn">
-            <i class="fas fa-smile"></i>
-          </button>
-          <button class="send-btn" id="sendBtn">
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+</div>
+<div class="appointments-container">
+<div class="appointments-header">
+<h2 class="appointments-title">Paramètres de design</h2>
+</div>
+<div class="settings-grid ">
+<div class="setting-item">
+<div class="setting-title">Préréglages de thème</div>
+<div class="setting-desc">Choisissez un thème prédéfini ou personnalisez.</div>
+<select class="form-control" id="themePreset">
+<option value="">Personnalisé</option>
+<option value="medical">Médical Classique</option>
+<option value="modern">Moderne</option>
+<option value="warm">Chaud et accueillant</option>
+<option value="cool">Frais et professionnel</option>
+</select>
+</div>
+<div class="setting-item">
+<div class="setting-title">Couleur principale</div>
+<div class="setting-desc">Choisissez la couleur principale du site web.</div>
+<div class="color-picker" id="primaryColorPicker">
+<div class="color-option" style="background: #1e3a8a;" data-color="#1e3a8a"></div>
+<div class="color-option" style="background: #059669;" data-color="#059669"></div>
+<div class="color-option" style="background: #d97706;" data-color="#d97706"></div>
+<div class="color-option" style="background: #cbd5e1;" data-color="#cbd5e1"></div>
+<div class="color-option" style="background: #7e22ce;" data-color="#7e22ce"></div>
+<div class="color-option" style="background: #dc2626;" data-color="#dc2626"></div>
+<div class="color-option" style="background: #0891b2;" data-color="#0891b2"></div>
+<div class="color-option" style="background: #65a30d;" data-color="#65a30d"></div>
+</div>
+</div>
+<div class="setting-item">
+<div class="setting-title">Police de caractères</div>
+<div class="setting-desc">Sélectionnez la police principale pour le texte.</div>
+<select class="form-control" id="fontFamily">
+<option value="Inter">Inter</option>
+<option value="Arial">Arial</option>
+<option value="Helvetica">Helvetica</option>
+<option value="Times New Roman">Times New Roman</option>
+</select>
+</div>
+<div class="setting-item">
+<div class="setting-title">Style de mise en page</div>
+<div class="setting-desc">Choisissez le style de mise en page du site.</div>
+<select class="form-control" id="layoutStyle">
+<option value="Moderne">Moderne</option>
+<option value="Classique">Classique</option>
+<option value="Minimaliste">Minimaliste</option>
+</select>
+</div>
+<div class="setting-item">
+<div class="setting-title">Logo du site</div>
+<div class="setting-desc">Téléchargez ou spécifiez l'URL du logo.</div>
+<div class="form-group">
+<input type="url" class="form-control" id="logoUrl" placeholder="URL du logo">
+</div>
+</div>
+<div class="setting-item">
+<div class="setting-title">Image d'arrière-plan</div>
+<div class="setting-desc">URL de l'image d'arrière-plan pour la page d'accueil.</div>
+<div class="form-group">
+<input type="url" class="form-control" id="backgroundImage" placeholder="URL de l'image">
+</div>
+</div>
+<div class="setting-item">
+<div class="setting-title">Transparence des éléments</div>
+<div class="setting-desc">Ajustez la transparence des éléments d'interface.</div>
+<div class="form-group">
+<input type="range" class="form-control" id="transparency" min="0" max="1" step="0.1" value="0.8">
+</div>
+</div>
+</div>
+</div>
+<div class="preview-section">
+<h3 class="preview-title">Aperçu du thème</h3>
+<div class="preview-content" id="themePreview">
+<div style="padding: 1rem; border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);">
+<h4 style="margin: 0 0 1rem 0;">Titre d'exemple</h4>
+<p style="margin: 0 0 1rem 0;">Ceci est un aperçu de votre thème. Les changements seront appliqués en temps réel.</p>
+<button style="padding: 0.5rem 1rem; background: var(--medical-blue); color: white; border: none; border-radius: 4px; cursor: pointer;">Bouton d'exemple</button>
+</div>
+</div>
+</div>
+<div class="btn-group">
+<button class="btn btn-secondary" onclick="resetSettings()">
+<i class="fas fa-undo"></i>
+Réinitialiser
+</button>
+<button class="btn btn-success" onclick="applyTheme()">
+<i class="fas fa-eye"></i>
+Appliquer le thème
+</button>
 </div>
 </div>
 
 <script>
-// Sample users (no messages as requested)
-const users = [];
-
-let currentChat = null;
-let chats = JSON.parse(localStorage.getItem('internalChats')) || [];
-
-// DOM elements
-const chatsList = document.getElementById('chatsList');
-const chatArea = document.getElementById('chatArea');
-const emptyState = document.getElementById('emptyState');
-const chatMessagesView = document.getElementById('chatMessagesView');
-const chatMessagesHeader = document.getElementById('chatMessagesHeader');
-const chatMessagesContainer = document.getElementById('chatMessagesContainer');
-const messageInput = document.getElementById('messageInput');
-const sendBtn = document.getElementById('sendBtn');
-const chatSearch = document.getElementById('chatSearch');
-const chatToggle = document.getElementById('chatToggle');
-const chatsSidebar = document.getElementById('chatsSidebar');
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  renderChatsList();
-  setupEventListeners();
-});
-
-// Setup event listeners
-function setupEventListeners() {
-  sendBtn.addEventListener('click', sendMessage);
-  messageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
+// Theme presets
+const themePresets = {
+    medical: {
+        primaryColor: '#1e3a8a',
+        fontFamily: 'Inter',
+        layoutStyle: 'Classique',
+        logoUrl: '',
+        backgroundImage: '',
+        transparency: 0.9
+    },
+    modern: {
+        primaryColor: '#059669',
+        fontFamily: 'Inter',
+        layoutStyle: 'Moderne',
+        logoUrl: '',
+        backgroundImage: '',
+        transparency: 0.8
+    },
+    warm: {
+        primaryColor: '#d97706',
+        fontFamily: 'Arial',
+        layoutStyle: 'Moderne',
+        logoUrl: '',
+        backgroundImage: '',
+        transparency: 0.85
+    },
+    cool: {
+        primaryColor: '#0891b2',
+        fontFamily: 'Helvetica',
+        layoutStyle: 'Minimaliste',
+        logoUrl: '',
+        backgroundImage: '',
+        transparency: 0.75
     }
-  });
-  messageInput.addEventListener('input', adjustTextareaHeight);
-  chatSearch.addEventListener('input', filterChats);
-  chatToggle.addEventListener('click', toggleSidebar);
+};
+
+// Theme settings management
+let currentSettings = {
+    primaryColor: '#1e3a8a',
+    fontFamily: 'Inter',
+    layoutStyle: 'Moderne',
+    logoUrl: '',
+    backgroundImage: '',
+    transparency: 0.8
+};
+
+// Load settings from localStorage
+function loadSettings() {
+    const saved = localStorage.getItem('designThemeSettings');
+    if (saved) {
+        currentSettings = { ...currentSettings, ...JSON.parse(saved) };
+    }
+    applySettingsToUI();
+    updatePreview();
 }
 
-// Render chats list
-function renderChatsList(filter = '') {
-  chatsList.innerHTML = '';
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(filter.toLowerCase()) ||
-    user.role.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  filteredUsers.forEach(user => {
-    const chatItem = document.createElement('div');
-    chatItem.className = `chat-item ${currentChat && currentChat.id === user.id ? 'active' : ''}`;
-    chatItem.onclick = () => openChat(user);
-
-    const lastMessage = getLastMessage(user.id);
-    const time = lastMessage ? formatTime(lastMessage.timestamp) : '';
-
-    chatItem.innerHTML = `
-      <div class="chat-avatar" style="position: relative;">
-        ${user.avatar}
-        <span class="status-indicator ${user.status}" style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; background: ${getStatusColor(user.status)};"></span>
-      </div>
-      <div class="chat-info">
-        <div class="chat-name">${user.name}</div>
-        <div class="chat-last-message">${lastMessage ? lastMessage.text : user.role}</div>
-      </div>
-      <div class="chat-time">${time}</div>
-    `;
-
-    chatsList.appendChild(chatItem);
-  });
+// Save settings to localStorage
+function saveSettings() {
+    localStorage.setItem('designThemeSettings', JSON.stringify(currentSettings));
+    alert('Paramètres sauvegardés avec succès !');
 }
 
-// Get status color
-function getStatusColor(status) {
-  switch(status) {
-    case 'online': return '#25d366';
-    case 'away': return '#ffa500';
-    case 'offline': return '#ccc';
-    default: return '#ccc';
-  }
+// Apply settings to UI elements
+function applySettingsToUI() {
+    // Theme preset
+    document.getElementById('themePreset').value = '';
+
+    // Primary color
+    document.querySelectorAll('.color-option').forEach(option => {
+        option.classList.toggle('selected', option.dataset.color === currentSettings.primaryColor);
+    });
+
+    // Font family
+    document.getElementById('fontFamily').value = currentSettings.fontFamily;
+
+    // Layout style
+    document.getElementById('layoutStyle').value = currentSettings.layoutStyle;
+
+    // Logo URL
+    document.getElementById('logoUrl').value = currentSettings.logoUrl;
+
+    // Background image
+    document.getElementById('backgroundImage').value = currentSettings.backgroundImage;
+
+    // Transparency
+    document.getElementById('transparency').value = currentSettings.transparency;
 }
 
-// Get last message for a user
-function getLastMessage(userId) {
-  const chat = chats.find(c => c.userId === userId);
-  return chat && chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null;
+// Update preview
+function updatePreview() {
+    const preview = document.getElementById('themePreview');
+    preview.style.backgroundColor = currentSettings.primaryColor;
+    preview.style.fontFamily = currentSettings.fontFamily;
+    preview.style.opacity = currentSettings.transparency;
+
+    if (currentSettings.backgroundImage) {
+        preview.style.backgroundImage = `url(${currentSettings.backgroundImage})`;
+        preview.style.backgroundSize = 'cover';
+        preview.style.backgroundPosition = 'center';
+    } else {
+        preview.style.backgroundImage = 'none';
+    }
 }
 
-// Open chat
-function openChat(user) {
-  currentChat = user;
-  renderChatsList();
-  showChatView();
+// Color picker functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Theme preset
+    document.getElementById('themePreset').addEventListener('change', function() {
+        const preset = this.value;
+        if (preset && themePresets[preset]) {
+            currentSettings = { ...themePresets[preset] };
+            applySettingsToUI();
+            updatePreview();
+        }
+    });
 
-  // Update header
-  chatMessagesHeader.innerHTML = `
-    <div class="chat-avatar" style="position: relative;">
-      ${user.avatar}
-      <span class="status-indicator ${user.status}" style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-radius: 50%; border: 2px solid white; background: ${getStatusColor(user.status)};"></span>
-    </div>
-    <div class="chat-info">
-      <div class="chat-name">${user.name}</div>
-      <div style="font-size: 0.8rem; color: #666;">${user.role}</div>
-    </div>
-  `;
+    // Color options
+    document.querySelectorAll('.color-option').forEach(option => {
+        option.addEventListener('click', function() {
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            currentSettings.primaryColor = this.dataset.color;
+            document.getElementById('themePreset').value = ''; // Reset preset when custom color selected
+            updatePreview();
+        });
+    });
 
-  // Load messages
-  loadMessages(user.id);
+    // Font family change
+    document.getElementById('fontFamily').addEventListener('change', function() {
+        currentSettings.fontFamily = this.value;
+        updatePreview();
+    });
 
-  // Focus input
-  messageInput.focus();
+    // Layout style change
+    document.getElementById('layoutStyle').addEventListener('change', function() {
+        currentSettings.layoutStyle = this.value;
+        updatePreview();
+    });
 
-  // Close sidebar on mobile
-  if (window.innerWidth <= 768) {
-    chatsSidebar.classList.remove('open');
-  }
-}
+    // Logo URL change
+    document.getElementById('logoUrl').addEventListener('input', function() {
+        currentSettings.logoUrl = this.value;
+        updatePreview();
+    });
 
-// Show chat view
-function showChatView() {
-  emptyState.style.display = 'none';
-  chatMessagesView.style.display = 'flex';
-}
+    // Background image change
+    document.getElementById('backgroundImage').addEventListener('input', function() {
+        currentSettings.backgroundImage = this.value;
+        updatePreview();
+    });
 
-// Load messages
-function loadMessages(userId) {
-  const chat = chats.find(c => c.userId === userId);
-  chatMessagesContainer.innerHTML = '';
+    // Transparency change
+    document.getElementById('transparency').addEventListener('input', function() {
+        currentSettings.transparency = this.value;
+        updatePreview();
+    });
 
-  if (!chat || chat.messages.length === 0) {
-    chatMessagesContainer.innerHTML = `
-      <div style="text-align: center; color: #666; padding: 2rem;">
-        <i class="fas fa-comments" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-        <p>Aucun message pour le moment. Commencez la conversation !</p>
-      </div>
-    `;
-    return;
-  }
-
-  chat.messages.forEach(message => {
-    const messageEl = document.createElement('div');
-    messageEl.className = `message-bubble ${message.sent ? 'message-sent' : 'message-received'}`;
-    messageEl.innerHTML = `
-      ${message.text}
-      <div class="message-time">${formatTime(message.timestamp)}</div>
-    `;
-    chatMessagesContainer.appendChild(messageEl);
-  });
-
-  // Scroll to bottom
-  chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-}
-
-// Send message
-function sendMessage() {
-  const text = messageInput.value.trim();
-  if (!text || !currentChat) return;
-
-  const message = {
-    text: text,
-    timestamp: new Date(),
-    sent: true
-  };
-
-  // Find or create chat
-  let chat = chats.find(c => c.userId === currentChat.id);
-  if (!chat) {
-    chat = { userId: currentChat.id, messages: [] };
-    chats.push(chat);
-  }
-  chat.messages.push(message);
-
-  // Save
-  localStorage.setItem('internalChats', JSON.stringify(chats));
-
-  // Update UI
-  loadMessages(currentChat.id);
-  renderChatsList();
-  messageInput.value = '';
-  adjustTextareaHeight();
-}
-
-// Adjust textarea height
-function adjustTextareaHeight() {
-  messageInput.style.height = 'auto';
-  messageInput.style.height = messageInput.scrollHeight + 'px';
-}
-
-// Filter chats
-function filterChats(e) {
-  renderChatsList(e.target.value);
-}
-
-// Toggle sidebar (mobile)
-function toggleSidebar() {
-  chatsSidebar.classList.toggle('open');
-}
-
-// New chat (placeholder)
-function newChat() {
-  alert('Fonction de nouveau chat à implémenter');
-}
-
-// Format time
-function formatTime(date) {
-  const d = new Date(date);
-  const now = new Date();
-  const diff = now - d;
-
-  if (diff < 60000) return 'À l\'instant';
-  if (diff < 3600000) return `Il y a ${Math.floor(diff / 60000)} min`;
-  if (diff < 86400000) return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
-}
-
-// Handle window resize
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 768) {
-    chatsSidebar.classList.remove('open');
-  }
+    // Load initial settings
+    loadSettings();
 });
+
+// Reset settings
+function resetSettings() {
+    currentSettings = {
+        primaryColor: '#1e3a8a',
+        fontFamily: 'Inter',
+        layoutStyle: 'Moderne',
+        logoUrl: '',
+        backgroundImage: '',
+        transparency: 0.8
+    };
+    document.getElementById('themePreset').value = '';
+    applySettingsToUI();
+    updatePreview();
+}
+
+// Apply theme globally (for demo purposes)
+function applyTheme() {
+    document.documentElement.style.setProperty('--medical-blue', currentSettings.primaryColor);
+    document.body.style.fontFamily = currentSettings.fontFamily;
+    if (currentSettings.backgroundImage) {
+        document.body.style.backgroundImage = `url(${currentSettings.backgroundImage})`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundAttachment = 'fixed';
+    }
+    alert('Thème appliqué à la page !');
+}
 </script>
 
 </body>
 </html>
-
 
 
 

@@ -3,349 +3,192 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Messagerie Interne - dikra Centre dentaire</title>
+<title>Certificates Médicaux - DIKRA centre Dentaire</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../navbar.css">
 
 <style>
-/* WhatsApp-like Messaging Styles */
-:root {
-  --whatsapp-green: #25d366;
-  --whatsapp-green-dark: #128c7e;
-  --whatsapp-light-green: #dcf8c6;
-  --whatsapp-bg: #e5ddd5;
-  --chat-bg: #f0f0f0;
-  --message-bubble-sent: #dcf8c6;
-  --message-bubble-received: #ffffff;
-  --text-sent: #303030;
-  --text-received: #303030;
-  --timestamp: #999;
+/* Cabinet Information Specific Styles */
+.appointments-container {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
 }
 
-.whatsapp-container {
-  display: flex;
-  height: calc(100vh - 2rem);
-  background: var(--whatsapp-bg);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  box-shadow: var(--card-shadow);
+.appointments-header h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
-.chats-sidebar {
-  width: 350px;
-  background: #ffffff;
-  border-right: 1px solid #e0e0e0;
-  display: flex;
-  flex-direction: column;
+.info-display {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
-.chat-header {
-  padding: 1rem;
-  background: var(--whatsapp-green);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.info-item {
+    background: var(--bg-primary);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
 }
 
-.chat-header h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 500;
+.info-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
 }
 
-.search-container {
-  padding: 0.5rem 1rem;
-  background: #f8f8f8;
-  border-bottom: 1px solid #e0e0e0;
+.info-value {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.4;
 }
 
-.search-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: none;
-  border-radius: 20px;
-  background: white;
-  outline: none;
-  font-size: 0.9rem;
+.form-section {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
 }
 
-.chats-list {
-  flex: 1;
-  overflow-y: auto;
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.chat-item {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
-  transition: background 0.2s;
+.form-group {
+    display: flex;
+    flex-direction: column;
 }
 
-.chat-item:hover {
-  background: #f5f5f5;
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.chat-item.active {
-  background: #e1f5fe;
+.form-control {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: var(--transition);
 }
 
-.chat-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--whatsapp-green);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 600;
-  margin-right: 1rem;
-  flex-shrink: 0;
+.form-control:focus {
+    outline: none;
+    border-color: var(--assistant-green);
+    box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
 }
 
-.chat-info {
-  flex: 1;
-  min-width: 0;
+.form-control:invalid {
+    border-color: #dc2626;
 }
 
-.chat-name {
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.25rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
 }
 
-.chat-last-message {
-  color: #666;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
 }
 
-.chat-time {
-  color: #999;
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-  flex-shrink: 0;
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.chat-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text fill="%23f0f0f0" font-size="20" y="50%">💬</text></svg>') repeat;
-  background-size: 50px 50px;
+.btn-primary {
+    background: var(--medical-blue);
+    color: white;
 }
 
-.chat-messages-header {
-  padding: 1rem;
-  background: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
-  display: flex;
-  align-items: center;
+.btn-primary:hover {
+    background: var(--medical-blue-dark);
+    transform: translateY(-2px);
 }
 
-.chat-messages-header .chat-avatar {
-  width: 40px;
-  height: 40px;
-  margin-right: 1rem;
+.btn-danger {
+    background: #dc2626;
+    color: white;
 }
 
-.chat-messages-header .chat-info {
-  flex: 1;
+.btn-danger:hover {
+    background: #b91c1c;
+    transform: translateY(-2px);
 }
 
-.chat-messages-header .chat-name {
-  margin-bottom: 0;
-  font-size: 1rem;
+.btn-secondary {
+    background: var(--text-gray);
+    color: white;
 }
 
-.chat-messages-container {
-  flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.btn-secondary:hover {
+    background: #475569;
+    transform: translateY(-2px);
 }
 
-.message-bubble {
-  max-width: 70%;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  position: relative;
-  word-wrap: break-word;
-  font-size: 0.9rem;
-  line-height: 1.4;
+.success-message,
+.error-message {
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    display: none;
 }
 
-.message-sent {
-  background: var(--message-bubble-sent);
-  color: var(--text-sent);
-  align-self: flex-end;
-  border-bottom-right-radius: 0.25rem;
+.success-message {
+    background: rgba(4, 120, 87, 0.1);
+    color: var(--success);
+    border: 1px solid rgba(4, 120, 87, 0.2);
 }
 
-.message-received {
-  background: var(--message-bubble-received);
-  color: var(--text-received);
-  align-self: flex-start;
-  border-bottom-left-radius: 0.25rem;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+.error-message {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+    border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
-.message-time {
-  font-size: 0.7rem;
-  color: var(--timestamp);
-  margin-top: 0.25rem;
-  text-align: right;
-}
-
-.message-input-container {
-  padding: 1rem;
-  background: #f0f0f0;
-  border-top: 1px solid #e0e0e0;
-}
-
-.message-input-area {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: white;
-  border-radius: 25px;
-  padding: 0.5rem 1rem;
-}
-
-.message-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 0.9rem;
-  resize: none;
-  min-height: 20px;
-  max-height: 100px;
-  overflow-y: auto;
-}
-
-.message-input::placeholder {
-  color: #999;
-}
-
-.attach-btn, .emoji-btn {
-  background: none;
-  border: none;
-  color: #666;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 50%;
-  transition: background 0.2s;
-}
-
-.attach-btn:hover, .emoji-btn:hover {
-  background: #f0f0f0;
-}
-
-.send-btn {
-  background: var(--whatsapp-green);
-  color: white;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
-}
-
-.send-btn:hover {
-  background: var(--whatsapp-green-dark);
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #666;
-  text-align: center;
-}
-
-.empty-state i {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  opacity: 0.5;
-}
-
-.empty-state h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.2rem;
-}
-
-.empty-state p {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  .chats-sidebar {
-    width: 100%;
-    position: absolute;
-    left: -100%;
-    transition: left 0.3s;
-    z-index: 1001;
-  }
-  .chats-sidebar.open {
-    left: 0;
-  }
-  .chat-area {
-    width: 100%;
-  }
-  .chat-toggle {
-    display: block;
-  }
-}
+    .info-display,
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 
-.chat-toggle {
-  display: none;
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1002;
-  background: var(--whatsapp-green);
-  color: white;
-  border: none;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-/* Animations */
-.message-bubble {
-  animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+    .btn-group {
+        flex-direction: column;
+    }
 }
 </style>
-
-</head>
-<body class="light-mode">
 
 <div class="sidebar">
     <div class="cabinet-header"><div class="cabinet-logo"><img src="../../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
@@ -668,291 +511,343 @@
     </div>
 </div>
 <div class="main-content">
-<button class="chat-toggle" id="chatToggle">
-<i class="fas fa-comments"></i>
+<div class="content-header">
+<h1 class="page-title">Informations Cabinet</h1>
+</div>
+<div class="appointments-container">
+ <div class="appointments-header">
+ <h2 class="appointments-title">Informations du Cabinet</h2>
+ </div>
+<div id="infoDisplay" class="info-display" style="display: none;">
+<div class="info-item">
+<div class="info-label">Nom du cabinet</div>
+<div class="info-value" id="display_nom"></div>
+</div>
+<div class="info-item">
+<div class="info-label">Adresse</div>
+<div class="info-value" id="display_Adresse"></div>
+</div>
+<div class="info-item">
+<div class="info-label">Téléphone</div>
+<div class="info-value" id="display_telephone"></div>
+</div>
+<div class="info-item">
+<div class="info-label">Email</div>
+<div class="info-value" id="display_email"></div>
+</div>
+<div class="info-item">
+<div class="info-label">Site web</div>
+<div class="info-value" id="display_site_web"></div>
+</div>
+<div class="info-item">
+<div class="info-label">Numéro fiscal</div>
+<div class="info-value" id="display_numero_fiscal"></div>
+</div>
+<div class="info-item">
+<div class="info-label">Numéro CNSS</div>
+<div class="info-value" id="display_numero_cnss"></div>
+</div>
+<div class="info-item">
+<div class="info-label">Nom du médecin</div>
+<div class="info-value" id="display_nom_medecin"></div>
+</div>
+<div class="info-item">
+<div class="info-label">Titre du médecin</div>
+<div class="info-value" id="display_titre_medecin"></div>
+</div>
+<div class="info-item" style="grid-column: span 2;">
+<div class="info-label">Description</div>
+<div class="info-value" id="display_description"></div>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="showForm()">
+<i class="fas fa-edit"></i>
+Modifier
 </button>
-
-<div class="whatsapp-container">
-  <!-- Chats Sidebar -->
-  <div class="chats-sidebar" id="chatsSidebar">
-    <div class="chat-header">
-      <h3>Messagerie Interne</h3>
-      <button class="btn btn-primary" onclick="newChat()" style="background: rgba(255,255,255,0.2); border: none; padding: 0.5rem;">
-        <i class="fas fa-edit"></i>
-      </button>
-    </div>
-
-    <div class="search-container">
-      <input type="text" class="search-input" id="chatSearch" placeholder="Rechercher une conversation...">
-    </div>
-
-    <div class="chats-list" id="chatsList">
-      <!-- Chat items will be populated by JavaScript -->
-    </div>
-  </div>
-
-  <!-- Chat Area -->
-  <div class="chat-area" id="chatArea">
-    <div class="empty-state" id="emptyState">
-      <i class="fas fa-comments"></i>
-      <h3>Messagerie Interne</h3>
-      <p>Sélectionnez une conversation pour commencer à discuter</p>
-    </div>
-
-    <div class="chat-messages-view" id="chatMessagesView" style="display: none;">
-      <div class="chat-messages-header" id="chatMessagesHeader">
-        <!-- Header content will be populated by JavaScript -->
-      </div>
-
-      <div class="chat-messages-container" id="chatMessagesContainer">
-        <!-- Messages will be populated by JavaScript -->
-      </div>
-
-      <div class="message-input-container">
-        <div class="message-input-area">
-          <button class="attach-btn" id="attachBtn">
-            <i class="fas fa-paperclip"></i>
-          </button>
-          <textarea class="message-input" id="messageInput" placeholder="Tapez un message..." rows="1"></textarea>
-          <button class="emoji-btn" id="emojiBtn">
-            <i class="fas fa-smile"></i>
-          </button>
-          <button class="send-btn" id="sendBtn">
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+<button class="btn btn-danger" onclick="deleteCabinet()">
+<i class="fas fa-trash"></i>
+Supprimer
+</button>
+</div>
+</div>
+<div id="infoForm" class="form-section" style="display: none;">
+<div class="success-message" id="successMessage">
+<i class="fas fa-check-circle"></i>
+Informations du cabinet mises à jour avec succès !
+</div>
+<div class="error-message" id="errorMessage">
+<i class="fas fa-exclamation-triangle"></i>
+Erreur lors de la mise à jour des informations.
+</div>
+<form id="cabinetForm">
+<div class="form-grid">
+<div class="form-group">
+<label class="form-label">
+<i class="fas fa-building"></i>
+Nom du cabinet
+</label>
+<input type="text" class="form-control" id="nom_cabinet" placeholder="Nom du cabinet" required>
+</div>
+<div class="form-group">
+<label class="form-label">
+<i class="fas fa-map-marker-alt"></i>
+Adresse
+</label>
+<input type="text" class="form-control" id="Adresse" placeholder="Adresse complète" required>
+</div>
+<div class="form-group">
+<label class="form-label">
+<i class="fas fa-phone"></i>
+Téléphone
+</label>
+<input type="tel" class="form-control" id="telephone" placeholder="Numéro de téléphone" required>
+</div>
+<div class="form-group">
+<label class="form-label">
+<i class="fas fa-envelope"></i>
+Email
+</label>
+<input type="email" class="form-control" id="email" placeholder="Adresse email" required>
+</div>
+<div class="form-group">
+<label class="form-label">
+<i class="fas fa-globe"></i>
+Site web
+</label>
+<input type="url" class="form-control" id="site_web" placeholder="http://www.example.com">
+</div>
+<div class="form-group">
+<label class="form-label">
+<i class="fas fa-file-invoice"></i>
+Numéro fiscal
+</label>
+<input type="text" class="form-control" id="numero_fiscal" placeholder="Numéro fiscal">
+</div>
+<div class="form-group">
+<label class="form-label">
+<i class="fas fa-id-card"></i>
+Numéro CNSS
+</label>
+<input type="text" class="form-control" id="numero_cnss" placeholder="Numéro CNSS">
+</div>
+<div class="form-group">
+<label class="form-label">
+<i class="fas fa-user-md"></i>
+Nom du médecin
+</label>
+<input type="text" class="form-control" id="nom_medecin" placeholder="Nom du médecin principal">
+</div>
+<div class="form-group">
+<label class="form-label">
+<i class="fas fa-certificate"></i>
+Titre du médecin
+</label>
+<input type="text" class="form-control" id="titre_medecin" placeholder="Ex: ">
+</div>
+<div class="form-group" style="grid-column: span 2;">
+<label class="form-label">
+<i class="fas fa-info-circle"></i>
+Description
+</label>
+<textarea class="form-control" id="Description" rows="3" placeholder="Description du cabinet"></textarea>
+</div>
+</div>
+<div class="btn-group">
+<button type="submit" class="btn btn-primary">
+<i class="fas fa-save"></i>
+Enregistrer
+</button>
+<button type="button" class="btn btn-secondary" onclick="cancelEdit()">
+<i class="fas fa-times"></i>
+Annuler
+</button>
+</div>
+</form>
+</div>
 </div>
 </div>
 
 <script>
-// Sample users (no messages as requested)
-const users = [];
+// Cabinet information management
+let cabinetData = {
+    nom_cabinet: 'DIKRA centre Dentaire',
+    Adresse: '',
+    telephone: '',
+    email: '',
+    site_web: '',
+    numero_fiscal: '',
+    numero_cnss: '',
+    nom_medecin: '',
+    titre_medecin: '',
+    Description: ''
+};
 
-let currentChat = null;
-let chats = JSON.parse(localStorage.getItem('internalChats')) || [];
-
-// DOM elements
-const chatsList = document.getElementById('chatsList');
-const chatArea = document.getElementById('chatArea');
-const emptyState = document.getElementById('emptyState');
-const chatMessagesView = document.getElementById('chatMessagesView');
-const chatMessagesHeader = document.getElementById('chatMessagesHeader');
-const chatMessagesContainer = document.getElementById('chatMessagesContainer');
-const messageInput = document.getElementById('messageInput');
-const sendBtn = document.getElementById('sendBtn');
-const chatSearch = document.getElementById('chatSearch');
-const chatToggle = document.getElementById('chatToggle');
-const chatsSidebar = document.getElementById('chatsSidebar');
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  renderChatsList();
-  setupEventListeners();
-});
-
-// Setup event listeners
-function setupEventListeners() {
-  sendBtn.addEventListener('click', sendMessage);
-  messageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
+// Load cabinet data
+function loadCabinetData() {
+    const saved = localStorage.getItem('cabinetData');
+    if (saved) {
+        cabinetData = { ...cabinetData, ...JSON.parse(saved) };
     }
-  });
-  messageInput.addEventListener('input', adjustTextareaHeight);
-  chatSearch.addEventListener('input', filterChats);
-  chatToggle.addEventListener('click', toggleSidebar);
+
+    // Check if data exists
+    const hasData = Object.values(cabinetData).some(value => value && value.trim() !== '');
+
+    if (hasData) {
+        showDisplay();
+    } else {
+        showForm();
+    }
 }
 
-// Render chats list
-function renderChatsList(filter = '') {
-  chatsList.innerHTML = '';
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(filter.toLowerCase()) ||
-    user.role.toLowerCase().includes(filter.toLowerCase())
-  );
+// Show display mode
+function showDisplay() {
+    document.getElementById('infoDisplay').style.display = 'grid';
+    document.getElementById('infoForm').style.display = 'none';
 
-  filteredUsers.forEach(user => {
-    const chatItem = document.createElement('div');
-    chatItem.className = `chat-item ${currentChat && currentChat.id === user.id ? 'active' : ''}`;
-    chatItem.onclick = () => openChat(user);
-
-    const lastMessage = getLastMessage(user.id);
-    const time = lastMessage ? formatTime(lastMessage.timestamp) : '';
-
-    chatItem.innerHTML = `
-      <div class="chat-avatar" style="position: relative;">
-        ${user.avatar}
-        <span class="status-indicator ${user.status}" style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; background: ${getStatusColor(user.status)};"></span>
-      </div>
-      <div class="chat-info">
-        <div class="chat-name">${user.name}</div>
-        <div class="chat-last-message">${lastMessage ? lastMessage.text : user.role}</div>
-      </div>
-      <div class="chat-time">${time}</div>
-    `;
-
-    chatsList.appendChild(chatItem);
-  });
+    // Populate display
+    Object.keys(cabinetData).forEach(key => {
+        const element = document.getElementById('display_' + key);
+        if (element) {
+            element.textContent = cabinetData[key] || 'Non défini';
+        }
+    });
 }
 
-// Get status color
-function getStatusColor(status) {
-  switch(status) {
-    case 'online': return '#25d366';
-    case 'away': return '#ffa500';
-    case 'offline': return '#ccc';
-    default: return '#ccc';
-  }
+// Show form mode
+function showForm() {
+    document.getElementById('infoDisplay').style.display = 'none';
+    document.getElementById('infoForm').style.display = 'block';
+
+    // Populate form
+    Object.keys(cabinetData).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+            element.value = cabinetData[key] || '';
+        }
+    });
+
+    hideMessages();
 }
 
-// Get last message for a user
-function getLastMessage(userId) {
-  const chat = chats.find(c => c.userId === userId);
-  return chat && chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null;
+// Save cabinet data
+function saveCabinetData() {
+    const formData = new FormData(document.getElementById('cabinetForm'));
+    const newData = {};
+
+    for (let [key, value] of formData.entries()) {
+        newData[key] = value;
+    }
+
+    // Validate required fields
+    const requiredFields = ['nom_cabinet', 'Adresse', 'telephone', 'email'];
+    let isValid = true;
+
+    requiredFields.forEach(field => {
+        const element = document.getElementById(field);
+        if (!newData[field] || newData[field].trim() === '') {
+            element.style.borderColor = '#dc2626';
+            isValid = false;
+        } else {
+            element.style.borderColor = 'var(--border-color)';
+        }
+    });
+
+    if (!isValid) {
+        showError('Veuillez remplir tous les champs obligatoires.');
+        return;
+    }
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(newData.email)) {
+        document.getElementById('email').style.borderColor = '#dc2626';
+        showError('Adresse email invalide.');
+        return;
+    }
+
+    // Save data
+    cabinetData = { ...cabinetData, ...newData };
+    localStorage.setItem('cabinetData', JSON.stringify(cabinetData));
+
+    showSuccess('Informations du cabinet mises à jour avec succès !');
+    setTimeout(() => {
+        showDisplay();
+    }, 2000);
 }
 
-// Open chat
-function openChat(user) {
-  currentChat = user;
-  renderChatsList();
-  showChatView();
-
-  // Update header
-  chatMessagesHeader.innerHTML = `
-    <div class="chat-avatar" style="position: relative;">
-      ${user.avatar}
-      <span class="status-indicator ${user.status}" style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-radius: 50%; border: 2px solid white; background: ${getStatusColor(user.status)};"></span>
-    </div>
-    <div class="chat-info">
-      <div class="chat-name">${user.name}</div>
-      <div style="font-size: 0.8rem; color: #666;">${user.role}</div>
-    </div>
-  `;
-
-  // Load messages
-  loadMessages(user.id);
-
-  // Focus input
-  messageInput.focus();
-
-  // Close sidebar on mobile
-  if (window.innerWidth <= 768) {
-    chatsSidebar.classList.remove('open');
-  }
+// Cancel edit
+function cancelEdit() {
+    showDisplay();
+    hideMessages();
 }
 
-// Show chat view
-function showChatView() {
-  emptyState.style.display = 'none';
-  chatMessagesView.style.display = 'flex';
+// Delete cabinet data
+function deleteCabinet() {
+    if (confirm('Êtes-vous sûr de vouloir supprimer toutes les informations du cabinet ? Cette action est irréversible.')) {
+        cabinetData = {
+            nom_cabinet: '',
+            Adresse: '',
+            telephone: '',
+            email: '',
+            site_web: '',
+            numero_fiscal: '',
+            numero_cnss: '',
+            nom_medecin: '',
+            titre_medecin: '',
+            Description: ''
+        };
+        localStorage.removeItem('cabinetData');
+        showForm();
+        showSuccess('Informations du cabinet supprimées.');
+    }
 }
 
-// Load messages
-function loadMessages(userId) {
-  const chat = chats.find(c => c.userId === userId);
-  chatMessagesContainer.innerHTML = '';
-
-  if (!chat || chat.messages.length === 0) {
-    chatMessagesContainer.innerHTML = `
-      <div style="text-align: center; color: #666; padding: 2rem;">
-        <i class="fas fa-comments" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-        <p>Aucun message pour le moment. Commencez la conversation !</p>
-      </div>
-    `;
-    return;
-  }
-
-  chat.messages.forEach(message => {
-    const messageEl = document.createElement('div');
-    messageEl.className = `message-bubble ${message.sent ? 'message-sent' : 'message-received'}`;
-    messageEl.innerHTML = `
-      ${message.text}
-      <div class="message-time">${formatTime(message.timestamp)}</div>
-    `;
-    chatMessagesContainer.appendChild(messageEl);
-  });
-
-  // Scroll to bottom
-  chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+// Show success message
+function showSuccess(message) {
+    const successEl = document.getElementById('successMessage');
+    successEl.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    successEl.style.display = 'block';
+    document.getElementById('errorMessage').style.display = 'none';
 }
 
-// Send message
-function sendMessage() {
-  const text = messageInput.value.trim();
-  if (!text || !currentChat) return;
-
-  const message = {
-    text: text,
-    timestamp: new Date(),
-    sent: true
-  };
-
-  // Find or create chat
-  let chat = chats.find(c => c.userId === currentChat.id);
-  if (!chat) {
-    chat = { userId: currentChat.id, messages: [] };
-    chats.push(chat);
-  }
-  chat.messages.push(message);
-
-  // Save
-  localStorage.setItem('internalChats', JSON.stringify(chats));
-
-  // Update UI
-  loadMessages(currentChat.id);
-  renderChatsList();
-  messageInput.value = '';
-  adjustTextareaHeight();
+// Show error message
+function showError(message) {
+    const errorEl = document.getElementById('errorMessage');
+    errorEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+    errorEl.style.display = 'block';
+    document.getElementById('successMessage').style.display = 'none';
 }
 
-// Adjust textarea height
-function adjustTextareaHeight() {
-  messageInput.style.height = 'auto';
-  messageInput.style.height = messageInput.scrollHeight + 'px';
+// Hide messages
+function hideMessages() {
+    document.getElementById('successMessage').style.display = 'none';
+    document.getElementById('errorMessage').style.display = 'none';
 }
 
-// Filter chats
-function filterChats(e) {
-  renderChatsList(e.target.value);
-}
+// Form validation on input
+document.addEventListener('DOMContentLoaded', function() {
+    loadCabinetData();
 
-// Toggle sidebar (mobile)
-function toggleSidebar() {
-  chatsSidebar.classList.toggle('open');
-}
+    // Form submission
+    document.getElementById('cabinetForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveCabinetData();
+    });
 
-// New chat (placeholder)
-function newChat() {
-  alert('Fonction de nouveau chat à implémenter');
-}
-
-// Format time
-function formatTime(date) {
-  const d = new Date(date);
-  const now = new Date();
-  const diff = now - d;
-
-  if (diff < 60000) return 'À l\'instant';
-  if (diff < 3600000) return `Il y a ${Math.floor(diff / 60000)} min`;
-  if (diff < 86400000) return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
-}
-
-// Handle window resize
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 768) {
-    chatsSidebar.classList.remove('open');
-  }
+    // Real-time validation
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('input', function() {
+            if (this.style.borderColor === 'rgb(220, 38, 38)') {
+                this.style.borderColor = 'var(--border-color)';
+            }
+            hideMessages();
+        });
+    });
 });
 </script>
 
 </body>
 </html>
-
 
 
 

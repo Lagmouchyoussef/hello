@@ -1,608 +1,1288 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Consommables - dikra Centre dentaire</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../navbar.css">
-<style>
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-:root {
---medical-blue: #1e3a8a;
---medical-blue-dark: #1e40af;
---medical-blue-darker: #172554;
---medical-blue-light: #3b82f6;
---success: #059669;
---warning: #d97706;
---danger: #cbd5e1;
---text-light: #f8fafc;
---text-gray: #64748b;
---border-radius: 0.5rem;
---shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
---ai-purple: #7e22ce;
---ai-purple-light: #c084fc;
---transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
---unread-bg: #dbeafe;
-}
-.light-mode {
---bg-primary: #f8fafc;
---bg-secondary: #ffffff;
---text-primary: #0f172a;
---text-secondary: #334155;
---border-color: #e2e8f0;
---card-shadow: var(--shadow);
---section-bg: rgba(30, 58, 138, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
-}
-.dark-mode {
---bg-primary: #0f172a;
---bg-secondary: #1e293b;
---text-primary: #f8fafc;
---text-secondary: #cbd5e1;
---border-color: #334155;
---card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
---unread-bg: #1e3a8a;
---section-bg: rgba(255, 255, 255, 0.05);
---hover-bg: rgba(255, 255, 255, 0.1);
---active-bg: rgba(255, 255, 255, 0.2);
-}
-body {
-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-background-color: var(--bg-primary);
-color: var(--text-primary);
-line-height: 1.5;
-font-size: 0.875rem;
-transition: var(--transition);
-}
-width: 280px;
-background: linear-gradient(180deg, var(--medical-blue), var(--medical-blue-darker));
-color: var(--text-light);
-height: 100vh;
-position: fixed;
-left: 0;
-top: 0;
-padding: 1.5rem 0;
-overflow-y: auto;
-box-shadow: var(--shadow);
-z-index: 1000;
-display: flex;
-flex-direction: column;
-transition: var(--transition);
-}
-.cabinet-header {
-padding: 0 1.5rem 1.5rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-margin-bottom: 1.5rem;
-text-align: center;
-position: relative;
-}
-.cabinet-logo {
-width: 64px;
-height: 64px;
-background: white;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-margin: 0 auto 1rem;
-color: var(--medical-blue);
-font-weight: 700;
-font-size: 1.5rem;
-box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
-transition: var(--transition);
-}
-.cabinet-logo:hover {
-transform: scale(1.05);
-box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
-}
-.cabinet-name {
-font-size: 1.25rem;
-font-weight: 700;
-margin-bottom: 0.25rem;
-letter-spacing: -0.025em;
-background: linear-gradient(to right, #ffffff, #cbd5e1);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-}
-.cabinet-subtitle {
-font-size: 0.875rem;
-color: rgba(255, 255, 255, 0.8);
-font-weight: 400;
-}
-.user-section {
-padding: 1.5rem;
-border-top: 1px solid rgba(255, 255, 255, 0.15);
-margin-top: auto;
-background: rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(10px);
-}
-.user-info {
-display: flex;
-align-items: center;
-gap: 1rem;
-margin-bottom: 1.25rem;
-padding-bottom: 1rem;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-.user-avatar {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: linear-gradient(135deg, var(--medical-blue-light), var(--ai-purple));
-display: flex;
-align-items: center;
-justify-content: center;
-color: white;
-font-weight: 600;
-font-size: 0.9375rem;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-.user-details {
-flex: 1;
-}
-.user-name {
-font-size: 0.9375rem;
-font-weight: 600;
-margin-bottom: 0.25rem;
-color: white;
-}
-.user-role {
-font-size: 0.75rem;
-color: rgba(255, 255, 255, 0.8);
-}
-.logout-btn,
-.theme-toggle {
-width: 100%;
-padding: 0.625rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 0.75rem;
-border: none;
-text-align: left;
-}
-.logout-btn {
-background: rgba(220, 38, 38, 0.2);
-color: white;
-}
-.logout-btn:hover {
-background: rgba(220, 38, 38, 0.3);
-transform: translateY(-1px);
-}
-.theme-toggle {
-background: rgba(255, 255, 255, 0.15);
-color: white;
-margin-bottom: 0.75rem;
-}
-.theme-toggle:hover {
-background: rgba(255, 255, 255, 0.25);
-transform: translateY(-1px);
-}
-list-style: none;
-padding: 0 1.5rem;
-flex: 1;
-}
-margin: 0;
-}
-display: flex;
-align-items: center;
-gap: 1rem;
-padding: 0.875rem 1.25rem;
-text-decoration: none;
-color: rgba(255, 255, 255, 0.9);
-font-size: 0.9375rem;
-font-weight: 500;
-transition: var(--transition);
-border-radius: var(--border-radius);
-position: relative;
-width: 100%;
-text-align: left;
-border: none;
-background: none;
-cursor: pointer;
-}
-background: var(--hover-bg);
-color: white;
-transform: translateX(4px);
-}
-background: var(--active-bg);
-color: white;
-border-left: 3px solid var(--medical-blue-light);
-padding-left: 1rem;
-transform: translateX(4px);
-}
-width: 24px;
-text-align: center;
-font-size: 1.125rem;
-min-width: 24px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-.badge {
-background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
-color: white;
-border-radius: 9999px;
-padding: 0.25rem 0.625rem;
-font-size: 0.75rem;
-font-weight: 600;
-margin-left: auto;
-margin-right: 0.5rem;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-.section-header {
-padding: 0.75rem 1.25rem 0.5rem;
-font-size: 0.75rem;
-font-weight: 600;
-color: rgba(255, 255, 255, 0.6);
-text-transform: uppercase;
-letter-spacing: 0.08em;
-margin-top: 1.5rem;
-position: relative;
-cursor: pointer;
-display: flex;
-justify-content: space-between;
-align-items: center;
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-.section-header:first-child  {
-margin-top: 0;
-}
-.section-header::after {
-content: '';
-position: absolute;
-bottom: 0;
-left: 1.25rem;
-right: 1.25rem;
-height: 1px;
-background: rgba(255, 255, 255, 0.1);
-}
-.section-chevron {
-font-size: 0.75rem;
-transition: transform 0.3s ease;
-color: rgba(255, 255, 255, 0.6);
-}
-.section-header.collapsed.section-chevron {
-transform: rotate(-90deg);
-}
-.section-content {
-overflow: hidden;
-transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-max-height: 1000px;
-opacity: 1;
-}
-.section-content.collapsed{
-max-height: 0;
-opacity: 0;
-}
-.main-content {
-margin-left: 0;
-padding: 2rem;
-min-height: 100vh;
-transition: var(--transition);
-}
-.content-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 2rem;
-flex-wrap: wrap;
-gap: 1rem;
-}
-.page-title {
-font-size: 1.75rem;
-font-weight: 700;
-letter-spacing: -0.025em;
-color: var(--text-primary);
-}
-.btn {
-padding: 0.5rem 1rem;
-border-radius: var(--border-radius);
-font-size: 0.875rem;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-border: none;
-}
-.btn-primary {
-background: var(--medical-blue);
-color: white;
-}
-.btn-primary:hover {
-background: var(--medical-blue-dark);
-transform: translateY(-2px);
-}
-.btn-success {
-background: var(--success);
-color: white;
-}
-.btn-danger {
-background: var(--danger);
-color: white;
-}
-.appointments-container {
-background: var(--bg-secondary);
-border-radius: var(--border-radius);
-box-shadow: var(--card-shadow);
-border: 1px solid var(--border-color);
-overflow: hidden;
-}
-.appointments-header {
-padding: 1.5rem;
-background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-color: white;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.appointments-title {
-font-size: 1.25rem;
-font-weight: 600;
-}
-.appointments-table {
-width: 100%;
-border-collapse: collapse;
-}
-.appointments-table th,
-.appointments-table td  {
-padding: 1rem;
-text-align: left;
-border-bottom: 1px solid var(--border-color);
-}
-.appointments-table th {
-background: var(--section-bg);
-font-weight: 600;
-color: var(--text-secondary);
-font-size: 0.875rem;
-text-transform: uppercase;
-letter-spacing: 0.05em;
-}
-.appointments-table tbody tr:hover {
-background: var(--section-bg);
-}
-.status-badge {
-padding: 0.25rem 0.75rem;
-border-radius: 9999px;
-font-size: 0.75rem;
-font-weight: 600;
-text-align: center;
-}
-.status-confirmed{
-background: rgba(5, 150, 105, 0.1);
-color: var(--success);
-}
-.status-pending {
-background: rgba(217, 119, 6, 0.1);
-color: var(--warning);
-}
-.status-cancelled{
-background: rgba(220, 38, 38, 0.1);
-color: var(--danger);
-}
-.action-buttons {
-display: flex;
-gap: 0.5rem;
-}
-.btn-small {
-padding: 0.375rem 0.75rem;
-font-size: 0.75rem;
-border-radius: 0.375rem;
-}
-@media (max-width: 992px) {
-.main-content { margin-left: 0; padding: 1.5rem; }
-}
-@media (max-width: 768px) {
-.main-content { margin-left: 0; padding: 1.5rem; }
-.appointments-table {
-font-size: 0.8rem;
-}
-.appointments-table th,
-.appointments-table td  {
-padding: 0.75rem 0.5rem;
-}
-}
-@media (max-width: 480px) {
-.main-content { margin-left: 0; padding: 1rem; }
-.cabinet-header,
-.user-section {
-text-align: left;
-}
-.cabinet-logo {
-margin: 0 0 1rem 1.5rem;
-}
-.content-header {
-flex-direction: column;
-align-items: flex-start;
-}
-.appointments-header {
-flex-direction: column;
-gap: 1rem;
-text-align: center;
-}
-.appointments-table {
-display: block;
-overflow-x: auto;
-white-space: nowrap;
-}
-}
-.form-group {
-margin-bottom: 1rem;
-}
-.form-label {
-display: block;
-font-size: 0.875rem;
-font-weight: 500;
-color: var(--text-secondary);
-margin-bottom: 0.5rem;
-}
-.form-control {
-width: 100%;
-padding: 0.5rem;
-border: 1px solid var(--border-color);
-border-radius: var(--border-radius);
-background: var(--bg-primary);
-color: var(--text-primary);
-font-size: 0.875rem;
-}
-.form-control:focus {
-outline: none;
-border-color: var(--medical-blue);
-box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consommables - DIKRA centre Dentaire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../navbar.css">
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --medical-blue: #1e3a8a;
+            --medical-blue-dark: #1e40af;
+            --medical-blue-darker: #172554;
+            --medical-blue-light: #3b82f6;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --text-light: #f8fafc;
+            --text-gray: #64748b;
+            --border-radius: 0.5rem;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --ai-purple: #7e22ce;
+            --ai-purple-light: #c084fc;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --unread-bg: #dbeafe;
+            --assistant-green: #047857;
+            --assistant-green-light: #10b981;
+        }
+
+        /* Light mode */
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --border-color: #e2e8f0;
+            --card-shadow: var(--shadow);
+            --section-bg: rgba(4, 120, 87, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Dark mode */
+        .dark-mode {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --unread-bg: #065f46;
+            --section-bg: rgba(255, 255, 255, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Content container */
+        .content-container {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .content-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-header-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .content-body {
+            padding: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--medical-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--medical-blue-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .btn-small {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background: var(--bg-primary);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .data-table tbody tr {
+            transition: var(--transition);
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--section-bg);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Stock specific styles */
+        .stock-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .stock-low {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+
+        .stock-normal {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+
+        .stock-high {
+            background: rgba(30, 58, 138, 0.1);
+            color: var(--medical-blue);
+        }
+
+        .expiry-warning {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning);
+        }
+
+        .expiry-expired {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                margin-left: 250px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 250px;
+                padding: 1.5rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .content-header-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 240px;
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .content-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .data-table {
+                font-size: 0.75rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .content-container {
+                padding: 1rem;
+            }
+
+            .content-body {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body class="light-mode">
+    <!-- Professional Sidebar Navigation -->
+    <div class="sidebar">
+    <div class="cabinet-header"><div class="cabinet-logo"><img src="../../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+        
+        <div class="cabinet-name">DIKRA centre Dentaire</div>
+        <div class="cabinet-subtitle">Casablanca, Maroc</div>
+    </div>
+    <ul class="sidebar-menu">
+        <li class="sidebar-item">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                Tableau de bord
+            </a>
+        </li>
+
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-rdv-toggle">
+                Rendez-vous
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-rdv-content">
+                <div class="sidebar-item">
+                    <a href="Listes%20des%20Rendez-vous.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Liste des rendez-vous
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="Prise%20en%20ligne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
+                        Prise en ligne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="En%20présentiel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        En présentiel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="via-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
+                        Via espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-patients-toggle">
+                Patients
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-patients-content">
+                <div class="sidebar-item">
+                    <a href="fiches-patients.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                        Fiches patients
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-cabinet-toggle">
+                Cabinet
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-cabinet-content">
+                <div class="sidebar-item">
+                    <a href="salle-attente.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
+                        Salle d'attente
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-com-toggle">
+                Communication
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-com-content">
+                <div class="sidebar-item">
+                    <a href="messagerie-interne.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                        Messagerie interne
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="assistant-ia.html" class="sidebar-link">
+                        <span class="sidebar-icon">
+                            <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
+                        </span>
+                        Assistant IA
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="envoi-sms.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
+                        Envoi de SMS
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-org-toggle">
+                Organisation
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-org-content">
+                <div class="sidebar-item">
+                    <a href="taches-rappels.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
+                        Tâches & rappels
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notes-personnelles.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
+                        Notes personnelles
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="statistiques.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                        Statistiques
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-stock-toggle">
+                Gestion des stocks
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-stock-content">
+                <div class="sidebar-item">
+                    <a href="materiel-dentaire.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-box"></i></span>
+                        Matériel dentaire
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="consommables.html" class="sidebar-link active">
+                        <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
+                        Consommables
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="medicaments.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
+                        Médicaments
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-docs-toggle">
+                Documents & formulaires
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-docs-content">
+                <div class="sidebar-item">
+                    <a href="ordonnances.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
+                        Ordonnances
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="certificats-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Certificats médicaux
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="feuilles-de-soins.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                        Feuilles de soins (CNOPS/CNSS)
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="imagerie-medicale.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
+                        Imagerie médicale
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="protheses.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                        Prothèses
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-users-toggle">
+                Utilisateurs
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-users-content">
+                <div class="sidebar-item">
+                    <a href="Liste%20du%20personnel.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-list"></i></span>
+                        Liste du personnel
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="ajouter-un-membre.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
+                        Ajouter un membre
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="roles-permissions.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                        Rôles & permissions
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="planning-equipe.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Planning de l'équipe
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="parametres-espace-patient.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                        Paramètres espace patient
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="gestion-des-acces.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-key"></i></span>
+                        Gestion des accès
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="dossiers-medicaux.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Dossiers médicaux
+                    </a>
+                </div>
+            </div>
+        </li>
 
 
-<script>
-function toggleSection(header) {
-  const content = header.nextElementSibling;
-  const chevron = header.querySelector('.section-chevron');
-  content.classList.toggle('collapsed');
-  chevron.classList.toggle('collapsed');
-}
-
-function toggleTheme() {
-  document.body.classList.toggle('light-mode');
-  document.body.classList.toggle('dark-mode');
-  const icon = document.querySelector('.theme-toggle i');
-  if (document.body.classList.contains('dark-mode')) {
-    icon.className = 'fas fa-sun';
-  } else {
-    icon.className = 'fas fa-moon';
-  }
-}
-
-function logout() {
-  window.location.href = '../../LOGING/html/loging.html';
-}
-</script>
-
-<div class="main-content">
-<div class="content-header">
-<h1 class="page-title">Consommables</h1>
-<button class="btn btn-primary" onclick="showForm()">
-<i class="fas fa-plus"></i>
-Nouveau Consommable
-</button>
-</div>
-<div class="appointments-container" id="addForm" style="display: none; margin-bottom: 2rem;">
-<div class="appointments-header">
-<h2 class="appointments-title">Ajouter un Consommable</h2>
-</div>
-<form id="consumableForm" style="padding: 1.5rem;">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-<div class="form-group">
-<label class="form-label">Nom du consommable</label>
-<input type="text" class="form-control" id="nom_consommable" placeholder="Nom du consommable" required>
-</div>
-<div class="form-group">
-<label class="form-label">Type</label>
-<input type="text" class="form-control" id="type_consommable" placeholder="Type de consommable" required>
-</div>
-<div class="form-group">
-<label class="form-label">Quantité</label>
-<input type="number" class="form-control" id="quantite" placeholder="Quantité" required>
-</div>
-<div class="form-group">
-<label class="form-label">Fournisseur</label>
-<input type="text" class="form-control" id="fournisseur" placeholder="Fournisseur" required>
-</div>
-<div class="form-group">
-<label class="form-label">date d'achat</label>
-<input type="date" class="form-control" id="date_achat" required>
-</div>
-<div class="form-group">
-<label class="form-label">date d'expiration</label>
-<input type="date" class="form-control" id="date_expiration" required>
-</div>
-<div class="form-group">
-<label class="form-label">Description</label>
-<textarea class="form-control" id="Description" rows="3" required></textarea>
-</div>
-</div>
-<div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-<button type="submit" class="btn btn-primary">Ajouter</button>
-<button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
-</div>
-</form>
-</div>
-<div class="appointments-container">
-<div class="appointments-header">
-<h2 class="appointments-title">Liste des Consommables</h2>
-<div>
-<input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-right: 0.5rem;">
-</div>
-</div>
-<table class="appointments-table">
-<thead >
-<tr>
-<th>Nom</th>
-<th>Type</th>
-<th>Quantité</th>
-<th>Fournisseur</th>
-<th>date d'achat</th>
-<th>date d'expiration</th>
-<th>Description</th>
-<th>Actions</th>
-</tr>
-</thead >
-<tbody id="consumablesTablebody">
-</tbody>
-</table>
-</div>
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-config-toggle">
+                Configuration
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-config-content">
+                <div class="sidebar-item">
+                    <a href="mon-profil.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                        Mon profil
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="informations-cabinet.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                        Informations cabinet
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="notifications.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                        Notifications
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="user-section">
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <div class="user-details">
+                <div class="user-name"></div>
+                <div class="user-role">Assistante</div>
+            </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <span>Mode Sombre</span>
+        </button>
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+        </button>
+    </div>
 </div>
 
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="content-header">
+            <div>
+                <h1 class="page-title">Consommables</h1>
+                <p class="page-subtitle">Gestion de l'inventaire des consommables médicaux</p>
+            </div>
+            <div class="content-actions">
+                <button class="btn btn-primary" id="showFormBtn">
+                    <i class="fas fa-plus"></i> Nouveau Consommable
+                </button>
+                <button class="btn btn-success" id="exportBtn">
+                    <i class="fas fa-download"></i> Exporter
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="content-container">
+                <div class="content-body" style="text-align: center; padding: 2rem 1rem;">
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;" id="totalConsommables">0</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">Total Consommables</div>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="content-body" style="text-align: center; padding: 2rem 1rem;">
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--warning); margin-bottom: 0.5rem;" id="lowStockCount">0</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">Stock Faible</div>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="content-body" style="text-align: center; padding: 2rem 1rem;">
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--danger); margin-bottom: 0.5rem;" id="expiredCount">0</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">Expirés</div>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="content-body" style="text-align: center; padding: 2rem 1rem;">
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--success); margin-bottom: 0.5rem;" id="expiringSoonCount">0</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">Expire Bientôt</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Consumable Form -->
+        <div class="content-container" id="addForm" style="display: none; margin-bottom: 2rem;">
+            <div class="content-header-section">
+                <h2 class="content-title">Ajouter un Consommable</h2>
+            </div>
+            <div class="content-body">
+                <form id="consumableForm">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Nom du consommable</label>
+                            <input type="text" class="form-control" id="nom_consommable" placeholder="Nom du consommable" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Type</label>
+                            <input type="text" class="form-control" id="type_consommable" placeholder="Type de consommable" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Quantité</label>
+                            <input type="number" class="form-control" id="quantite" placeholder="Quantité" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Seuil minimum</label>
+                            <input type="number" class="form-control" id="seuil_min" placeholder="Seuil d'alerte" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Fournisseur</label>
+                            <input type="text" class="form-control" id="fournisseur" placeholder="Fournisseur" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date d'achat</label>
+                            <input type="date" class="form-control" id="date_achat" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date d'expiration</label>
+                            <input type="date" class="form-control" id="date_expiration" required>
+                        </div>
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="description" rows="3" placeholder="Description du consommable" required></textarea>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                        <button type="button" class="btn btn-danger" id="hideFormBtn">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Filters and Search -->
+        <div class="content-container">
+            <div class="content-header-section">
+                <h2 class="content-title">Filtres et Recherche</h2>
+            </div>
+            <div class="content-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Rechercher</label>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Nom ou type...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Statut Stock</label>
+                        <select class="form-control" id="filterStatus">
+                            <option value="">Tous les statuts</option>
+                            <option value="low">Stock faible</option>
+                            <option value="normal">Stock normal</option>
+                            <option value="high">Stock élevé</option>
+                            <option value="expiring">Expire bientôt</option>
+                            <option value="expired">Expiré</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Fournisseur</label>
+                        <select class="form-control" id="filterSupplier">
+                            <option value="">Tous les fournisseurs</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="applyFilters()">
+                        <i class="fas fa-filter"></i> Appliquer Filtres
+                    </button>
+                    <button class="btn btn-danger" onclick="clearFilters()">
+                        <i class="fas fa-times"></i> Effacer Filtres
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consumables List -->
+        <div class="content-container">
+            <div class="content-header-section">
+                <h2 class="content-title">Liste des Consommables</h2>
+                <div>
+                    <button class="btn btn-small" onclick="sortTable()">
+                        <i class="fas fa-sort"></i> Trier
+                    </button>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="empty-state" id="emptyState">
+                    <i class="fas fa-vial"></i>
+                    <h3>Aucun consommable</h3>
+                    <p>Il n'y a pas encore de consommables enregistrés. Cliquez sur "Nouveau Consommable" pour en ajouter.</p>
+                </div>
+                <table class="data-table" id="consumablesTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Type</th>
+                            <th>Quantité</th>
+                            <th>Seuil min.</th>
+                            <th>Fournisseur</th>
+                            <th>Date d'achat</th>
+                            <th>Expiration</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="consumablesTablebody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Low Stock Alerts -->
+        <div class="content-container" id="alertsContainer" style="display: none;">
+            <div class="content-header-section">
+                <h2 class="content-title" style="color: var(--warning);">
+                    <i class="fas fa-exclamation-triangle"></i> Alertes
+                </h2>
+            </div>
+            <div class="content-body" id="alertsList">
+                <!-- Alerts will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Common JavaScript -->
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+        const themeText = themeToggle.querySelector('span');
+        // Using sessionStorage instead of localStorage
+        const savedTheme = sessionStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            themeIcon.className = 'fas fa-sun';
+            themeText.textContent = 'Mode Clair';
+        }
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Mode Clair';
+                sessionStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Mode Sombre';
+                sessionStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
+            }
+        });
+
+        // Navigation link functionality
+        const mainLinks = document.querySelectorAll('.sidebar-link');
+        const mainContent = document.getElementById('mainContent');
+        mainLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Update active states
+                mainLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize active link
+        document.querySelector('.sidebar-link[href="consommables.html"]').classList.add('active');
+
+        // Collapsible section headers
+        document.querySelectorAll('.section-header.clickable').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isCollapsed = content.classList.contains('collapsed');
+                // Close all other sections
+                document.querySelectorAll('.section-content').forEach(el => {
+                    if (el !== content) {
+                        el.classList.add('collapsed');
+                        el.previousElementSibling.classList.add('collapsed');
+                    }
+                });
+                // Toggle current section
+                if (isCollapsed) {
+                    content.classList.remove('collapsed');
+                    header.classList.remove('collapsed');
+                } else {
+                    content.classList.add('collapsed');
+                    header.classList.add('collapsed');
+                }
+            });
+        });
+
+        // Open "Gestion des stocks" by default
+        document.getElementById('section-stock-content').classList.remove('collapsed');
+        document.getElementById('section-stock-toggle').classList.remove('collapsed');
+
+        // Consumables management
+        let consommables = JSON.parse(localStorage.getItem('consommables_assistante')) || [];
+
+        const showFormBtn = document.getElementById('showFormBtn');
+        const hideFormBtn = document.getElementById('hideFormBtn');
+        const addForm = document.getElementById('addForm');
+        const consumableForm = document.getElementById('consumableForm');
+        const consumablesTable = document.getElementById('consumablesTable');
+        const consumablesTablebody = document.getElementById('consumablesTablebody');
+        const emptyState = document.getElementById('emptyState');
+        const searchInput = document.getElementById('searchInput');
+        const filterStatus = document.getElementById('filterStatus');
+        const filterSupplier = document.getElementById('filterSupplier');
+        const exportBtn = document.getElementById('exportBtn');
+
+        function showForm() {
+            addForm.style.display = 'block';
+            showFormBtn.style.display = 'none';
+        }
+
+        function hideForm() {
+            addForm.style.display = 'none';
+            showFormBtn.style.display = 'inline-flex';
+            consumableForm.reset();
+        }
+
+        function getStockStatus(quantite, seuilMin) {
+            if (quantite <= seuilMin) return 'low';
+            if (quantite <= seuilMin * 2) return 'normal';
+            return 'high';
+        }
+
+        function getExpiryStatus(dateExpiration) {
+            const today = new Date();
+            const expiry = new Date(dateExpiration);
+            const daysUntilExpiry = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+
+            if (daysUntilExpiry < 0) return 'expired';
+            if (daysUntilExpiry <= 30) return 'expiring';
+            return null;
+        }
+
+        function updateStatistics() {
+            const total = consommables.length;
+            const lowStock = consommables.filter(c => getStockStatus(c.quantite, c.seuil_min) === 'low').length;
+            const expired = consommables.filter(c => getExpiryStatus(c.date_expiration) === 'expired').length;
+            const expiringSoon = consommables.filter(c => getExpiryStatus(c.date_expiration) === 'expiring').length;
+
+            document.getElementById('totalConsommables').textContent = total;
+            document.getElementById('lowStockCount').textContent = lowStock;
+            document.getElementById('expiredCount').textContent = expired;
+            document.getElementById('expiringSoonCount').textContent = expiringSoon;
+        }
+
+        function renderConsumables() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const statusFilter = filterStatus.value;
+            const supplierFilter = filterSupplier.value;
+
+            const filteredConsumables = consommables.filter(consumable => {
+                const matchesSearch = consumable.nom_consommable.toLowerCase().includes(searchTerm) ||
+                                    consumable.type_consommable.toLowerCase().includes(searchTerm);
+                const stockStatus = getStockStatus(consumable.quantite, consumable.seuil_min);
+                const expiryStatus = getExpiryStatus(consumable.date_expiration);
+                let matchesStatus = true;
+
+                if (statusFilter) {
+                    if (statusFilter === 'expiring' || statusFilter === 'expired') {
+                        matchesStatus = expiryStatus === statusFilter;
+                    } else {
+                        matchesStatus = stockStatus === statusFilter;
+                    }
+                }
+
+                const matchesSupplier = !supplierFilter || consumable.fournisseur === supplierFilter;
+
+                return matchesSearch && matchesStatus && matchesSupplier;
+            });
+
+            if (filteredConsumables.length === 0) {
+                consumablesTable.style.display = 'none';
+                emptyState.style.display = 'block';
+                document.getElementById('alertsContainer').style.display = 'none';
+                return;
+            }
+
+            consumablesTable.style.display = 'table';
+            emptyState.style.display = 'none';
+
+            consumablesTablebody.innerHTML = filteredConsumables.map((consumable, index) => {
+                const stockStatus = getStockStatus(consumable.quantite, consumable.seuil_min);
+                const expiryStatus = getExpiryStatus(consumable.date_expiration);
+
+                let statusText = '';
+                let statusClass = '';
+
+                if (expiryStatus === 'expired') {
+                    statusText = 'Expiré';
+                    statusClass = 'expiry-expired';
+                } else if (expiryStatus === 'expiring') {
+                    statusText = 'Expire bientôt';
+                    statusClass = 'expiry-warning';
+                } else if (stockStatus === 'low') {
+                    statusText = 'Stock faible';
+                    statusClass = 'stock-low';
+                } else if (stockStatus === 'normal') {
+                    statusText = 'Stock normal';
+                    statusClass = 'stock-normal';
+                } else {
+                    statusText = 'Stock élevé';
+                    statusClass = 'stock-high';
+                }
+
+                return `
+                    <tr>
+                        <td>${consumable.nom_consommable}</td>
+                        <td>${consumable.type_consommable}</td>
+                        <td>${consumable.quantite}</td>
+                        <td>${consumable.seuil_min}</td>
+                        <td>${consumable.fournisseur}</td>
+                        <td>${new Date(consumable.date_achat).toLocaleDateString('fr-FR')}</td>
+                        <td>${new Date(consumable.date_expiration).toLocaleDateString('fr-FR')}</td>
+                        <td><span class="stock-status ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-small btn-primary" onclick="editConsumable(${consumable.id})">Modifier</button>
+                            <button class="btn btn-small btn-success" onclick="adjustStock(${consumable.id})">Ajuster</button>
+                            <button class="btn btn-small btn-danger" onclick="deleteConsumable(${consumable.id})">Supprimer</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Update supplier filter options
+            const suppliers = [...new Set(consommables.map(c => c.fournisseur))];
+            filterSupplier.innerHTML = '<option value="">Tous les fournisseurs</option>' +
+                suppliers.map(s => `<option value="${s}">${s}</option>`).join('');
+
+            // Show alerts
+            const alerts = [];
+            filteredConsumables.forEach(consumable => {
+                const stockStatus = getStockStatus(consumable.quantite, consumable.seuil_min);
+                const expiryStatus = getExpiryStatus(consumable.date_expiration);
+
+                if (stockStatus === 'low') {
+                    alerts.push(`<div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid var(--warning); border-radius: var(--border-radius); margin-bottom: 1rem; background: rgba(217, 119, 6, 0.05);">
+                        <i class="fas fa-exclamation-triangle" style="color: var(--warning); font-size: 1.5rem;"></i>
+                        <div style="flex: 1;">
+                            <strong>${consumable.nom_consommable}</strong> - Stock faible (${consumable.quantite} restant)
+                        </div>
+                        <button class="btn btn-small btn-warning" onclick="adjustStock(${consumable.id})">Réapprovisionner</button>
+                    </div>`);
+                }
+
+                if (expiryStatus === 'expiring') {
+                    alerts.push(`<div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid var(--warning); border-radius: var(--border-radius); margin-bottom: 1rem; background: rgba(217, 119, 6, 0.05);">
+                        <i class="fas fa-clock" style="color: var(--warning); font-size: 1.5rem;"></i>
+                        <div style="flex: 1;">
+                            <strong>${consumable.nom_consommable}</strong> - Expire bientôt (${new Date(consumable.date_expiration).toLocaleDateString('fr-FR')})
+                        </div>
+                    </div>`);
+                }
+
+                if (expiryStatus === 'expired') {
+                    alerts.push(`<div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid var(--danger); border-radius: var(--border-radius); margin-bottom: 1rem; background: rgba(220, 38, 38, 0.05);">
+                        <i class="fas fa-times-circle" style="color: var(--danger); font-size: 1.5rem;"></i>
+                        <div style="flex: 1;">
+                            <strong>${consumable.nom_consommable}</strong> - Expiré (${new Date(consumable.date_expiration).toLocaleDateString('fr-FR')})
+                        </div>
+                        <button class="btn btn-small btn-danger" onclick="deleteConsumable(${consumable.id})">Retirer</button>
+                    </div>`);
+                }
+            });
+
+            if (alerts.length > 0) {
+                document.getElementById('alertsContainer').style.display = 'block';
+                document.getElementById('alertsList').innerHTML = alerts.join('');
+            } else {
+                document.getElementById('alertsContainer').style.display = 'none';
+            }
+
+            updateStatistics();
+        }
+
+        function addConsumable(event) {
+            event.preventDefault();
+            const nom_consommable = document.getElementById('nom_consommable').value;
+            const type_consommable = document.getElementById('type_consommable').value;
+            const quantite = parseInt(document.getElementById('quantite').value);
+            const seuil_min = parseInt(document.getElementById('seuil_min').value);
+            const fournisseur = document.getElementById('fournisseur').value;
+            const date_achat = document.getElementById('date_achat').value;
+            const date_expiration = document.getElementById('date_expiration').value;
+            const description = document.getElementById('description').value;
+
+            const newConsumable = {
+                id: Date.now(),
+                nom_consommable,
+                type_consommable,
+                quantite,
+                seuil_min,
+                fournisseur,
+                date_achat,
+                date_expiration,
+                description
+            };
+
+            consommables.push(newConsumable);
+            localStorage.setItem('consommables_assistante', JSON.stringify(consommables));
+            renderConsumables();
+            hideForm();
+            alert('Consommable ajouté avec succès !');
+        }
+
+        function editConsumable(id) {
+            const consumable = consommables.find(c => c.id === id);
+            if (consumable) {
+                // Populate form with existing data
+                document.getElementById('nom_consommable').value = consumable.nom_consommable;
+                document.getElementById('type_consommable').value = consumable.type_consommable;
+                document.getElementById('quantite').value = consumable.quantite;
+                document.getElementById('seuil_min').value = consumable.seuil_min;
+                document.getElementById('fournisseur').value = consumable.fournisseur;
+                document.getElementById('date_achat').value = consumable.date_achat;
+                document.getElementById('date_expiration').value = consumable.date_expiration;
+                document.getElementById('description').value = consumable.description;
+
+                // Remove old entry and show form
+                deleteConsumable(id);
+                showForm();
+            }
+        }
+
+        function adjustStock(id) {
+            const consumable = consommables.find(c => c.id === id);
+            if (consumable) {
+                const adjustment = prompt(`Ajuster le stock pour ${consumable.nom_consommable} (stock actuel: ${consumable.quantite}):`, '0');
+                if (adjustment !== null) {
+                    const newStock = consumable.quantite + parseInt(adjustment);
+                    if (newStock >= 0) {
+                        consumable.quantite = newStock;
+                        localStorage.setItem('consommables_assistante', JSON.stringify(consommables));
+                        renderConsumables();
+                    } else {
+                        alert('Le stock ne peut pas être négatif.');
+                    }
+                }
+            }
+        }
+
+        function deleteConsumable(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer ce consommable ?')) {
+                consommables = consommables.filter(c => c.id !== id);
+                localStorage.setItem('consommables_assistante', JSON.stringify(consommables));
+                renderConsumables();
+            }
+        }
+
+        function applyFilters() {
+            renderConsumables();
+        }
+
+        function clearFilters() {
+            searchInput.value = '';
+            filterStatus.value = '';
+            filterSupplier.value = '';
+            renderConsumables();
+        }
+
+        function sortTable() {
+            // Simple sort by name
+            consommables.sort((a, b) => a.nom_consommable.localeCompare(b.nom_consommable));
+            localStorage.setItem('consommables_assistante', JSON.stringify(consommables));
+            renderConsumables();
+        }
+
+        exportBtn.addEventListener('click', () => {
+            if (consommables.length === 0) {
+                alert('Aucun consommable à exporter.');
+                return;
+            }
+
+            const csvContent = [
+                ['Nom', 'Type', 'Quantité', 'Seuil min', 'Fournisseur', 'Date d\'achat', 'Date d\'expiration', 'Description'],
+                ...consommables.map(c => [
+                    c.nom_consommable,
+                    c.type_consommable,
+                    c.quantite,
+                    c.seuil_min,
+                    c.fournisseur,
+                    c.date_achat,
+                    c.date_expiration,
+                    c.description
+                ])
+            ].map(row => row.join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'consommables.csv';
+            link.click();
+        });
+
+        showFormBtn.addEventListener('click', showForm);
+        hideFormBtn.addEventListener('click', hideForm);
+        consumableForm.addEventListener('submit', addConsumable);
+        searchInput.addEventListener('input', renderConsumables);
+        filterStatus.addEventListener('change', renderConsumables);
+        filterSupplier.addEventListener('change', renderConsumables);
+
+        // Initial render
+        renderConsumables();
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tâches & Rappels - DIKRA centre Dentaire</title>
+    <title>Ajouter un membre - DIKRA centre Dentaire</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../navbar.css">
+    <link rel="stylesheet" href="../navbar.css">
     <style>
         /* CSS Variables for consistent theming */
         :root {
@@ -109,7 +109,6 @@
             flex-wrap: wrap;
         }
 
-        /* Content container */
         .content-container {
             background: var(--bg-secondary);
             border-radius: var(--border-radius);
@@ -117,6 +116,7 @@
             border: 1px solid var(--border-color);
             overflow: hidden;
             transition: all 0.3s ease;
+            margin-bottom: 2rem;
         }
 
         .content-container:hover {
@@ -142,7 +142,6 @@
             padding: 1.5rem;
         }
 
-        /* Buttons */
         .btn {
             padding: 0.5rem 1rem;
             border-radius: var(--border-radius);
@@ -186,14 +185,18 @@
             transform: translateY(-2px);
         }
 
-        .btn-small {
-            padding: 0.375rem 0.75rem;
-            font-size: 0.75rem;
+        .btn-secondary {
+            background: var(--text-gray);
+            color: white;
         }
 
-        /* Forms */
+        .btn-secondary:hover {
+            background: #475569;
+            transform: translateY(-2px);
+        }
+
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-label {
@@ -220,62 +223,53 @@
             box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
 
-        /* Tables */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
         }
 
-        .data-table th,
-        .data-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .data-table th {
-            background: var(--bg-primary);
-            font-weight: 600;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .data-table tbody tr {
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
             transition: var(--transition);
         }
 
-        .data-table tbody tr:hover {
+        .file-upload:hover {
+            border-color: var(--medical-blue);
             background: var(--section-bg);
         }
 
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-secondary);
-        }
-
-        .empty-state i {
-            font-size: 3rem;
+        .file-upload i {
+            font-size: 2rem;
             color: var(--text-gray);
-            margin-bottom: 1rem;
-        }
-
-        .empty-state h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
             margin-bottom: 0.5rem;
         }
 
-        .empty-state p {
-            font-size: 0.875rem;
+        .file-upload p {
             color: var(--text-secondary);
+            margin: 0;
         }
 
-        /* Responsive Design */
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background: var(--border-color);
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
         @media (max-width: 1200px) {
             .main-content {
                 margin-left: 250px;
@@ -298,6 +292,10 @@
                 align-items: flex-start;
                 gap: 1rem;
             }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
@@ -319,15 +317,6 @@
                 width: 100%;
                 justify-content: space-between;
             }
-
-            .data-table {
-                font-size: 0.75rem;
-            }
-
-            .data-table th,
-            .data-table td {
-                padding: 0.5rem;
-            }
         }
 
         @media (max-width: 480px) {
@@ -348,101 +337,19 @@
                 padding: 1rem;
             }
         }
-
-        .priority-faible {
-            background: #10b981;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .priority-moyenne {
-            background: #f59e0b;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .priority-élevée {
-            background: #ef4444;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .status-en-cours {
-            background: #3b82f6;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .status-terminée {
-            background: #10b981;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .status-en-attente {
-            background: #6b7280;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        /* Reminder specific styles */
-        .reminder-item {
-            background: var(--section-bg);
-            border-radius: var(--border-radius);
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--warning);
-        }
-
-        .reminder-item.overdue {
-            border-left-color: var(--danger);
-            background: rgba(220, 38, 38, 0.1);
-        }
-
-        .reminder-item.today {
-            border-left-color: var(--success);
-            background: rgba(5, 150, 105, 0.1);
-        }
-
-        .reminder-time {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-        }
     </style>
 </head>
 <body class="light-mode">
     <!-- Professional Sidebar Navigation -->
     <div class="sidebar">
         <!-- Cabinet Header -->
-        <div class="cabinet-header">
-            <div class="cabinet-logo">
-                <img src="../../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-            </div>
+        <div class="cabinet-header"><div class="cabinet-logo"><img src="../../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+            
             <div class="cabinet-name">DIKRA centre Dentaire</div>
             <div class="cabinet-subtitle">Casablanca, Maroc</div>
         </div>
         <!-- Navigation Menu -->
         <ul class="sidebar-menu">
-            <!-- DASHBOARD -->
             <li class="sidebar-item">
                 <a href="dashboard.html" class="sidebar-link">
                     <span class="sidebar-icon"><i class="fas fa-home"></i></span>
@@ -450,7 +357,6 @@
                 </a>
             </li>
 
-            <!-- RENDEZ-VOUS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-rdv-toggle">
                     Rendez-vous
@@ -496,7 +402,6 @@
                 </div>
             </li>
 
-            <!-- PATIENTS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-patients-toggle">
                     Patients
@@ -518,7 +423,6 @@
                 </div>
             </li>
 
-            <!-- CABINET -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-cabinet-toggle">
                     Cabinet
@@ -534,7 +438,6 @@
                 </div>
             </li>
 
-            <!-- COMMUNICATION -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-com-toggle">
                     Communication
@@ -570,7 +473,6 @@
                 </div>
             </li>
 
-            <!-- ORGANISATION -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-org-toggle">
                     Organisation
@@ -578,7 +480,7 @@
                 </div>
                 <div class="section-content" id="section-org-content">
                     <div class="sidebar-item">
-                        <a href="taches-rappels.html" class="sidebar-link active">
+                        <a href="taches-rappels.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
                             Tâches & rappels
                         </a>
@@ -598,7 +500,6 @@
                 </div>
             </li>
 
-            <!-- GESTION DES STOCKS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-stock-toggle">
                     Gestion des stocks
@@ -626,7 +527,6 @@
                 </div>
             </li>
 
-            <!-- DOCUMENTS & FORMULAIRES -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-docs-toggle">
                     Documents & formulaires
@@ -666,7 +566,6 @@
                 </div>
             </li>
 
-            <!-- UTILISATEURS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-users-toggle">
                     Utilisateurs
@@ -680,7 +579,7 @@
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="ajouter-un-membre.html" class="sidebar-link">
+                        <a href="ajouter-un-membre.html" class="sidebar-link active">
                             <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
                             Ajouter un membre
                         </a>
@@ -718,7 +617,6 @@
                 </div>
             </li>
 
-            <!-- CONFIGURATION -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-config-toggle">
                     Configuration
@@ -770,119 +668,150 @@
     <div class="main-content" id="mainContent">
         <div class="content-header">
             <div>
-                <h1 class="page-title">Tâches & Rappels</h1>
-                <p class="page-subtitle">Gérez vos tâches et rappels quotidiens</p>
+                <h1 class="page-title">Ajouter un membre</h1>
+                <p class="page-subtitle">Ajouter un nouveau membre à l'équipe du cabinet</p>
             </div>
             <div class="content-actions">
-                <button class="btn btn-primary" id="showFormBtn">
-                    <i class="fas fa-plus"></i> Nouvelle Tâche
+                <button class="btn btn-secondary" id="cancelBtn">
+                    <i class="fas fa-arrow-left"></i> Annuler
                 </button>
             </div>
         </div>
 
-        <!-- Add Task Form -->
-        <div class="content-container" id="addForm" style="display: none; margin-bottom: 2rem;">
-            <div class="content-header-section">
-                <h2 class="content-title">Nouvelle Tâche</h2>
+        <!-- Add Member Form -->
+        <form id="addMemberForm">
+            <!-- Informations personnelles -->
+            <div class="content-container">
+                <div class="content-header-section">
+                    <h2 class="content-title">
+                        <i class="fas fa-user"></i> Informations personnelles
+                    </h2>
+                </div>
+                <div class="content-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Prénom *</label>
+                            <input type="text" id="prenom" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nom *</label>
+                            <input type="text" id="nom" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Téléphone *</label>
+                            <input type="tel" id="telephone" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Date de naissance</label>
+                            <input type="date" id="dateNaissance" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Adresse</label>
+                            <input type="text" id="adresse" class="form-control" placeholder="Adresse complète">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="content-body">
-                <form id="taskForm">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+
+            <!-- Informations professionnelles -->
+            <div class="content-container">
+                <div class="content-header-section">
+                    <h2 class="content-title">
+                        <i class="fas fa-briefcase"></i> Informations professionnelles
+                    </h2>
+                </div>
+                <div class="content-body">
+                    <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Titre</label>
-                            <input type="text" class="form-control" id="titre" placeholder="Titre de la tâche" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Date d'échéance</label>
-                            <input type="date" class="form-control" id="date_echeance" required>
-                        </div>
-                        <div class="form-group" style="grid-column: span 2;">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-control" id="description" rows="3" placeholder="Description de la tâche" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Priorité</label>
-                            <select class="form-control" id="priorite">
-                                <option value="Faible">Faible</option>
-                                <option value="Moyenne">Moyenne</option>
-                                <option value="Élevée">Élevée</option>
+                            <label class="form-label">Rôle *</label>
+                            <select id="role" class="form-control" required>
+                                <option value="">Sélectionner un rôle</option>
+                                <option value="assistante-dentaire">Assistante dentaire</option>
+                                <option value="secretaire">Secrétaire</option>
+                                <option value="technicien">Technicien</option>
+                                <option value="autre">Autre</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Statut</label>
-                            <select class="form-control" id="statut">
-                                <option value="En cours">En cours</option>
-                                <option value="Terminée">Terminée</option>
-                                <option value="En attente">En attente</option>
+                            <label class="form-label">Département *</label>
+                            <select id="departement" class="form-control" required>
+                                <option value="">Sélectionner un département</option>
+                                <option value="chirurgie">Chirurgie</option>
+                                <option value="prothese">Prothèse</option>
+                                <option value="administration">Administration</option>
+                                <option value="technique">Technique</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Rappel</label>
-                            <input type="datetime-local" class="form-control" id="rappel">
+                            <label class="form-label">Date d'embauche *</label>
+                            <input type="date" id="dateEmbauche" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Salaire mensuel (DH)</label>
+                            <input type="number" id="salaire" class="form-control" placeholder="0" min="0">
                         </div>
                     </div>
-                    <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
-                        <button type="button" class="btn btn-danger" id="hideFormBtn">Annuler</button>
+                </div>
+            </div>
+
+            <!-- Photo de profil -->
+            <div class="content-container">
+                <div class="content-header-section">
+                    <h2 class="content-title">
+                        <i class="fas fa-camera"></i> Photo de profil
+                    </h2>
+                </div>
+                <div class="content-body">
+                    <div class="file-upload" id="photoUpload">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Cliquez pour sélectionner une photo ou glissez-déposez</p>
+                        <input type="file" id="photoInput" accept="image/*" style="display: none;">
                     </div>
-                </form>
+                    <div class="progress-bar" id="uploadProgress" style="display: none;">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Reminders Section -->
-        <div class="content-container" style="margin-bottom: 2rem;">
-            <div class="content-header-section">
-                <h2 class="content-title">Rappels du jour</h2>
-            </div>
-            <div class="content-body">
-                <div id="remindersList">
-                    <!-- Reminders will be populated here -->
+            <!-- Notes -->
+            <div class="content-container">
+                <div class="content-header-section">
+                    <h2 class="content-title">
+                        <i class="fas fa-sticky-note"></i> Notes
+                    </h2>
                 </div>
-                <div class="empty-state" id="noReminders" style="display: block;">
-                    <i class="fas fa-bell"></i>
-                    <h3>Aucun rappel</h3>
-                    <p>Aucun rappel programmé pour aujourd'hui.</p>
+                <div class="content-body">
+                    <div class="form-group">
+                        <label class="form-label">Notes supplémentaires</label>
+                        <textarea id="notes" class="form-control" rows="4" placeholder="Informations supplémentaires sur le membre..."></textarea>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Tasks List -->
-        <div class="content-container">
-            <div class="content-header-section">
-                <h2 class="content-title">Liste des Tâches</h2>
-                <div>
-                    <input type="text" id="searchInput" placeholder="Rechercher..." class="form-control" style="width: 200px; margin-right: 0.5rem;">
-                    <select id="filterStatus" class="form-control" style="width: 150px;">
-                        <option value="">Tous les statuts</option>
-                        <option value="En cours">En cours</option>
-                        <option value="Terminée">Terminée</option>
-                        <option value="En attente">En attente</option>
-                    </select>
+            <!-- Actions -->
+            <div class="content-container">
+                <div class="content-body">
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                        <button type="button" class="btn btn-secondary" id="resetBtn">
+                            <i class="fas fa-undo"></i> Réinitialiser
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Enregistrer le membre
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="content-body">
-                <div class="empty-state" id="emptyState">
-                    <i class="fas fa-tasks"></i>
-                    <h3>Aucune tâche</h3>
-                    <p>Il n'y a pas encore de tâches à afficher. Cliquez sur "Nouvelle Tâche" pour en ajouter une.</p>
-                </div>
-                <table class="data-table" id="tasksTable" style="display: none;">
-                    <thead>
-                        <tr>
-                            <th>Titre</th>
-                            <th>Description</th>
-                            <th>Date d'échéance</th>
-                            <th>Priorité</th>
-                            <th>Statut</th>
-                            <th>Rappel</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tasksTablebody">
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        </form>
     </div>
 
     <!-- Common JavaScript -->
@@ -892,6 +821,7 @@
         const body = document.body;
         const themeIcon = themeToggle.querySelector('i');
         const themeText = themeToggle.querySelector('span');
+        // Using sessionStorage instead of localStorage
         const savedTheme = sessionStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
@@ -929,25 +859,28 @@
         const mainContent = document.getElementById('mainContent');
         mainLinks.forEach(link => {
             link.addEventListener('click', function(e) {
+                // Update active states
                 mainLinks.forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
             });
         });
 
         // Initialize active link
-        document.querySelector('.sidebar-link[href="taches-rappels.html"]').classList.add('active');
+        document.querySelector('.sidebar-link[href="ajouter-un-membre.html"]').classList.add('active');
 
         // Collapsible section headers
         document.querySelectorAll('.section-header.clickable').forEach(header => {
             header.addEventListener('click', () => {
                 const content = header.nextElementSibling;
                 const isCollapsed = content.classList.contains('collapsed');
+                // Close all other sections
                 document.querySelectorAll('.section-content').forEach(el => {
                     if (el !== content) {
                         el.classList.add('collapsed');
                         el.previousElementSibling.classList.add('collapsed');
                     }
                 });
+                // Toggle current section
                 if (isCollapsed) {
                     content.classList.remove('collapsed');
                     header.classList.remove('collapsed');
@@ -958,172 +891,142 @@
             });
         });
 
-        // Open "Organisation" by default
-        document.getElementById('section-org-content').classList.remove('collapsed');
-        document.getElementById('section-org-toggle').classList.remove('collapsed');
+        // Open "Utilisateurs" by default
+        document.getElementById('section-users-content').classList.remove('collapsed');
+        document.getElementById('section-users-toggle').classList.remove('collapsed');
 
-        // Task management
-        let tasks = [];
-        localStorage.removeItem('tasks'); // Clear any existing data
-        let editingIndex = -1;
+        // Photo upload
+        const photoUpload = document.getElementById('photoUpload');
+        const photoInput = document.getElementById('photoInput');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const progressFill = document.getElementById('progressFill');
+        const addMemberForm = document.getElementById('addMemberForm');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const resetBtn = document.getElementById('resetBtn');
 
-        const showFormBtn = document.getElementById('showFormBtn');
-        const hideFormBtn = document.getElementById('hideFormBtn');
-        const addForm = document.getElementById('addForm');
-        const taskForm = document.getElementById('taskForm');
-        const tasksTable = document.getElementById('tasksTable');
-        const tasksTablebody = document.getElementById('tasksTablebody');
-        const emptyState = document.getElementById('emptyState');
-        const searchInput = document.getElementById('searchInput');
-        const filterStatus = document.getElementById('filterStatus');
-        const remindersList = document.getElementById('remindersList');
-        const noReminders = document.getElementById('noReminders');
+        let uploadedPhoto = null;
 
-        function showForm() {
-            addForm.style.display = 'block';
-            showFormBtn.style.display = 'none';
-        }
+        photoUpload.addEventListener('click', () => {
+            photoInput.click();
+        });
 
-        function hideForm() {
-            addForm.style.display = 'none';
-            showFormBtn.style.display = 'inline-flex';
-            taskForm.reset();
-            editingIndex = -1;
-        }
-
-        function renderReminders() {
-            const today = new Date().toISOString().split('T')[0];
-            const todaysReminders = tasks.filter(task => task.rappel && task.rappel.startsWith(today));
-
-            if (todaysReminders.length === 0) {
-                remindersList.innerHTML = '';
-                noReminders.style.display = 'block';
-                return;
-            }
-
-            noReminders.style.display = 'none';
-            remindersList.innerHTML = todaysReminders.map(task => {
-                const reminderTime = new Date(task.rappel).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-                const isOverdue = new Date(task.rappel) < new Date();
-                const isToday = task.rappel.startsWith(today);
-                return `
-                    <div class="reminder-item ${isOverdue ? 'overdue' : isToday ? 'today' : ''}">
-                        <h4>${task.titre}</h4>
-                        <p>${task.description}</p>
-                        <div class="reminder-time">
-                            <i class="fas fa-clock"></i> ${reminderTime}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderTasks() {
-            const filteredTasks = tasks.filter(task => {
-                const matchesSearch = task.titre.toLowerCase().includes(searchInput.value.toLowerCase()) ||
-                                    task.description.toLowerCase().includes(searchInput.value.toLowerCase());
-                const matchesStatus = !filterStatus.value || task.statut === filterStatus.value;
-                return matchesSearch && matchesStatus;
-            });
-
-            if (filteredTasks.length === 0) {
-                tasksTable.style.display = 'none';
-                emptyState.style.display = 'block';
-                return;
-            }
-
-            tasksTable.style.display = 'table';
-            emptyState.style.display = 'none';
-
-            tasksTablebody.innerHTML = filteredTasks.map((task, index) => `
-                <tr>
-                    <td>${task.titre}</td>
-                    <td>${task.description}</td>
-                    <td>${new Date(task.date_echeance).toLocaleDateString('fr-FR')}</td>
-                    <td><span class="priority-${task.priorite.toLowerCase()}">${task.priorite}</span></td>
-                    <td><span class="status-${task.statut.toLowerCase().replace(' ', '-')}">${task.statut}</span></td>
-                    <td>${task.rappel ? new Date(task.rappel).toLocaleString('fr-FR') : '-'}</td>
-                    <td>
-                        <button class="btn btn-small btn-primary" onclick="editTask(${tasks.indexOf(task)})">Modifier</button>
-                        <button class="btn btn-small btn-danger" onclick="deleteTask(${tasks.indexOf(task)})">Supprimer</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function addTask(event) {
-            event.preventDefault();
-            const titre = document.getElementById('titre').value;
-            const description = document.getElementById('description').value;
-            const date_echeance = document.getElementById('date_echeance').value;
-            const priorite = document.getElementById('priorite').value;
-            const statut = document.getElementById('statut').value;
-            const rappel = document.getElementById('rappel').value;
-
-            if (editingIndex >= 0) {
-                tasks[editingIndex] = { titre, description, date_echeance, priorite, statut, rappel };
-                editingIndex = -1;
-            } else {
-                tasks.push({ titre, description, date_echeance, priorite, statut, rappel });
-            }
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            renderTasks();
-            renderReminders();
-            hideForm();
-        }
-
-        function editTask(index) {
-            const task = tasks[index];
-            document.getElementById('titre').value = task.titre;
-            document.getElementById('description').value = task.description;
-            document.getElementById('date_echeance').value = task.date_echeance;
-            document.getElementById('priorite').value = task.priorite;
-            document.getElementById('statut').value = task.statut;
-            document.getElementById('rappel').value = task.rappel;
-            editingIndex = index;
-            showForm();
-        }
-
-        function deleteTask(index) {
-            if (confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')) {
-                tasks.splice(index, 1);
-                localStorage.setItem('tasks', JSON.stringify(tasks));
-                renderTasks();
-                renderReminders();
-            }
-        }
-
-        showFormBtn.addEventListener('click', showForm);
-        hideFormBtn.addEventListener('click', hideForm);
-        taskForm.addEventListener('submit', addTask);
-        searchInput.addEventListener('input', renderTasks);
-        filterStatus.addEventListener('change', renderTasks);
-
-        // Initial render
-        renderTasks();
-        renderReminders();
-
-        // Check for reminders every minute
-        setInterval(() => {
-            const now = new Date();
-            tasks.forEach(task => {
-                if (task.rappel && new Date(task.rappel) <= now && !task.notified) {
-                    if (Notification.permission === 'granted') {
-                        new Notification(`Rappel: ${task.titre}`, {
-                            body: task.description,
-                            icon: '../../../Photo/Photo.png'
-                        });
-                    }
-                    task.notified = true;
-                    localStorage.setItem('tasks', JSON.stringify(tasks));
+        photoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                    alert('La taille du fichier ne doit pas dépasser 5MB.');
+                    return;
                 }
-            });
-        }, 60000);
 
-        // Request notification permission
-        if ('Notification' in window && Notification.permission === 'default') {
-            Notification.requestPermission();
-        }
+                const reader = new FileReader();
+                reader.onloadstart = () => {
+                    uploadProgress.style.display = 'block';
+                };
+                reader.onprogress = (e) => {
+                    if (e.lengthComputable) {
+                        const percent = (e.loaded / e.total) * 100;
+                        progressFill.style.width = percent + '%';
+                    }
+                };
+                reader.onload = (e) => {
+                    uploadedPhoto = e.target.result;
+                    photoUpload.innerHTML = `
+                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        <p>Photo sélectionnée avec succès</p>
+                    `;
+                    setTimeout(() => {
+                        uploadProgress.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 1000);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Drag and drop
+        photoUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            photoUpload.style.borderColor = 'var(--medical-blue)';
+        });
+
+        photoUpload.addEventListener('dragleave', () => {
+            photoUpload.style.borderColor = 'var(--border-color)';
+        });
+
+        photoUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            photoUpload.style.borderColor = 'var(--border-color)';
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                photoInput.files = e.dataTransfer.files;
+                photoInput.dispatchEvent(new Event('change'));
+            }
+        });
+
+        // Form submission
+        addMemberForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const formData = {
+                id: Date.now(),
+                nom: document.getElementById('nom').value.trim(),
+                prenom: document.getElementById('prenom').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                telephone: document.getElementById('telephone').value.trim(),
+                date_naissance: document.getElementById('dateNaissance').value || null,
+                adresse: document.getElementById('adresse').value.trim(),
+                role: document.getElementById('role').value,
+                departement: document.getElementById('departement').value,
+                date_embauche: document.getElementById('dateEmbauche').value,
+                salaire: parseFloat(document.getElementById('salaire').value) || 0,
+                notes: document.getElementById('notes').value.trim(),
+                photo: uploadedPhoto,
+                statut: 'actif'
+            };
+
+            // Validation
+            if (!formData.nom || !formData.prenom || !formData.email || !formData.telephone || !formData.role || !formData.departement || !formData.date_embauche) {
+                alert('Veuillez remplir tous les champs obligatoires.');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.email)) {
+                alert('Veuillez entrer une adresse email valide.');
+                return;
+            }
+
+            // Save to localStorage
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            staff.push(formData);
+            localStorage.setItem('staff', JSON.stringify(staff));
+
+            alert('Membre ajouté avec succès !');
+            window.location.href = 'Liste%20du%20personnel.html';
+        });
+
+        // Cancel button
+        cancelBtn.addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir annuler ? Toutes les données non sauvegardées seront perdues.')) {
+                window.location.href = 'Liste%20du%20personnel.html';
+            }
+        });
+
+        // Reset button
+        resetBtn.addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir réinitialiser le formulaire ?')) {
+                addMemberForm.reset();
+                uploadedPhoto = null;
+                photoUpload.innerHTML = `
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Cliquez pour sélectionner une photo ou glissez-déposez</p>
+                `;
+            }
+        });
+
+        // Set default date for hire date
+        document.getElementById('dateEmbauche').valueAsDate = new Date();
     </script>
 </body>
 </html>
