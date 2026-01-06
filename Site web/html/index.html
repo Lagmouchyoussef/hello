@@ -1086,10 +1086,129 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
 }
+
+/* Login Card Styles */
+.login-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    z-index: 1050;
+    max-width: 400px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.login-card-content {
+    padding: 0;
+}
+
+.login-card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    border-radius: 20px 20px 0 0;
+}
+
+.login-card-body {
+    padding: 2rem;
+}
     </style>
     <link rel="icon" href="../../Photo/Photo.png" type="image/png">
 </head>
 <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <img src="../../Photo/Photo.png" alt="DIKRA Centre dentaire" style="height: 40px; margin-right: 10px;">
+                DIKRA Centre dentaire
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gallery">Galerie</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Témoignages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+                <div class="d-flex ms-3">
+                    <button class="btn btn-professional btn-sm" id="espacePatientBtn">
+                        <i class="fas fa-user me-2"></i>Espace Patient
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Card -->
+    <div id="loginCard" class="login-card" style="display: none;">
+        <div class="login-card-content">
+            <div class="login-card-header">
+                <img src="../../Photo/Photo.png" alt="dikra Centre dentaire" class="login-logo mb-3" style="height: 60px;">
+                <h4 class="fw-bold text-primary">Connexion Espace Patient</h4>
+                <p class="text-muted mb-0 small">Accédez à votre dossier médical</p>
+                <button id="closeLoginCard" class="btn-close position-absolute top-0 end-0 m-3" style="color: white;"></button>
+            </div>
+            <div class="login-card-body px-4">
+                <form id="loginForm">
+                    <div class="mb-4">
+                        <label for="loginEmail" class="form-label fw-semibold">
+                            <i class="fas fa-envelope me-2 text-primary"></i>Email
+                        </label>
+                        <input type="email" class="form-control form-control-lg" id="loginEmail" value="patient@cabinet.ma" placeholder="votre.email@email.com" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="loginPassword" class="form-label fw-semibold">
+                            <i class="fas fa-lock me-2 text-primary"></i>Mot de passe
+                        </label>
+                        <input type="password" class="form-control form-control-lg" id="loginPassword" value="patient123" placeholder="••••••••" required>
+                    </div>
+                    <div id="loginError" class="alert alert-danger text-center mb-3" style="display: none;"></div>
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <a href="#" class="text-decoration-none text-primary fw-semibold">
+                        <i class="fas fa-key me-1"></i>Mot de passe oublié ?
+                    </a>
+                </div>
+                <hr class="my-4">
+                <div class="text-center">
+                    <p class="text-muted mb-2">Pas encore de compte ?</p>
+                    <button class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-user-plus me-1"></i>Créer un compte
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section id="home" class="hero-section">
@@ -1202,8 +1321,8 @@ html {
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-user-md text-primary me-3 fs-4"></i>
                                 <div>
-                                    <h6 class="fw-bold mb-0">Dr. Sarah Bennani</h6>
-                                    <small class="text-muted">Chirurgien-dentiste</small>
+                                    <h6 class="fw-bold mb-0">Équipe Qualifiée</h6>
+                                    <small class="text-muted">Chirurgiens-dentistes</small>
                                 </div>
                             </div>
                         </div>
@@ -1212,7 +1331,7 @@ html {
                                 <i class="fas fa-award text-primary me-3 fs-4"></i>
                                 <div>
                                     <h6 class="fw-bold mb-0"><span class="counter" data-target="15">0</span>+ Ans d'Expérience</h6>
-                                    <small class="text-muted">Diplômée Mohammed V</small>
+                                    <small class="text-muted">Formation spécialisée</small>
                                 </div>
                             </div>
                         </div>
@@ -1313,7 +1432,7 @@ html {
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <p class="testimonial-text">"Très satisfaite de mon traitement d'orthodontie. Le Dr. Bennani est très compétente et l'équipe est accueillante. Résultats au-delà de mes attentes !"</p>
+                            <p class="testimonial-text">"Très satisfaite de mon traitement d'orthodontie. L'équipe est très compétente et accueillante. Résultats au-delà de mes attentes !"</p>
                             <div class="testimonial-author">
                                 <div class="author-avatar">
                                     <i class="fas fa-user-circle"></i>
@@ -1528,61 +1647,163 @@ html {
         </div>
     </footer>
 
-    <!-- Login Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content login-modal-card">
-                <div class="modal-header text-center">
-                    <div class="w-100">
-                        <img src="../../Photo/Photo.png" alt="dikra Centre dentaire" class="login-logo mb-3" style="height: 60px;">
-                        <h4 class="modal-title fw-bold text-primary" id="loginModalLabel">Connexion Espace Patient</h4>
-                        <p class="text-muted mb-0 small">Accédez à votre dossier médical</p>
-                    </div>
-                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body px-4">
-                    <form id="loginForm">
-                        <div class="mb-4">
-                            <label for="loginEmail" class="form-label fw-semibold">
-                                <i class="fas fa-envelope me-2 text-primary"></i>Email
-                            </label>
-                            <input type="email" class="form-control form-control-lg" id="loginEmail" placeholder="votre.email@email.com" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="loginPassword" class="form-label fw-semibold">
-                                <i class="fas fa-lock me-2 text-primary"></i>Mot de passe
-                            </label>
-                            <input type="password" class="form-control form-control-lg" id="loginPassword" placeholder="••••••••" required>
-                        </div>
-                        <div id="loginError" class="alert alert-danger text-center mb-3" style="display: none;"></div>
-                        <div class="d-grid mb-3">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-sign-in-alt me-2"></i>Se connecter
-                            </button>
-                        </div>
-                    </form>
-                    <div class="text-center">
-                        <a href="#" class="text-decoration-none text-primary fw-semibold">
-                            <i class="fas fa-key me-1"></i>Mot de passe oublié ?
-                        </a>
-                    </div>
-                    <hr class="my-4">
-                    <div class="text-center">
-                        <p class="text-muted mb-2">Pas encore de compte ?</p>
-                        <button class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-user-plus me-1"></i>Créer un compte
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Bootstrap JS -->
-    
-    
-    
-    
+<!-- Custom JS -->
+<script>
+    // Loading screen
+    window.addEventListener('load', function() {
+        const loadingScreen = document.querySelector('.loading-screen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('fade-out');
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500);
+        }
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            navbar.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
+        } else {
+            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            navbar.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
+        }
+    });
+
+    // Counter animation
+    function animateCounter(element) {
+        const target = parseInt(element.getAttribute('data-target'));
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                element.textContent = target;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current);
+            }
+        }, 16);
+    }
+
+    // Intersection Observer for counters
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counters = entry.target.querySelectorAll('.counter');
+                counters.forEach(counter => animateCounter(counter));
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe the about section
+    const aboutSection = document.querySelector('#about');
+    if (aboutSection) {
+        observer.observe(aboutSection);
+    }
+
+    // Scroll to top button
+    const scrollToTopBtn = document.createElement('button');
+    scrollToTopBtn.className = 'scroll-to-top';
+    scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    scrollToTopBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.appendChild(scrollToTopBtn);
+
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.add('show');
+        } else {
+            scrollToTopBtn.classList.remove('show');
+        }
+    });
+
+    // Login card toggle
+    const espacePatientBtn = document.getElementById('espacePatientBtn');
+    const loginCard = document.getElementById('loginCard');
+    const closeLoginCard = document.getElementById('closeLoginCard');
+    if (espacePatientBtn && loginCard && closeLoginCard) {
+        espacePatientBtn.addEventListener('click', () => {
+            loginCard.style.display = 'block';
+        });
+        closeLoginCard.addEventListener('click', () => {
+            loginCard.style.display = 'none';
+        });
+        // Close on outside click
+        loginCard.addEventListener('click', (e) => {
+            if (e.target === loginCard) {
+                loginCard.style.display = 'none';
+            }
+        });
+    }
+
+    // Form handling
+    const appointmentForm = document.getElementById('appointmentForm');
+    if (appointmentForm) {
+        appointmentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically send the form data to your server
+            alert('Merci pour votre demande de rendez-vous. Nous vous contacterons bientôt !');
+            this.reset();
+        });
+    }
+
+    // Login form handling
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (email === 'patient@cabinet.ma' && password === 'patient123') {
+                // Successful login, redirect to patient dashboard
+                loginCard.style.display = 'none';
+                window.location.href = '../../patient/html/dashboard.html';
+            } else {
+                // Show error
+                loginError.textContent = 'Email ou mot de passe incorrect.';
+                loginError.style.display = 'block';
+            }
+        });
+    }
+
+    // Set minimum date for appointment
+    const dateInput = document.getElementById('date');
+    if (dateInput) {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dateInput.min = tomorrow.toISOString().split('T')[0];
+    }
+</script>
 </body>
 </html>
 

@@ -8,12 +8,430 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../navbar.css">
 <style>
+/* Professional Unified Navbar Styles */
+:root {
+  --medical-blue: #1e3a8a;
+  --medical-blue-dark: #1e40af;
+  --medical-blue-darker: #172554;
+  --medical-blue-light: #3b82f6;
+  --success: #059669;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --text-light: #f8fafc;
+  --text-gray: #64748b;
+  --border-radius: 0.5rem;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --ai-purple: #7e22ce;
+  --ai-purple-light: #c084fc;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --unread-bg: #dbeafe;
+  --assistant-green: #047857;
+  --assistant-green-light: #10b981;
+}
+
+/* Light mode */
+.light-mode {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --border-color: #e2e8f0;
+  --card-shadow: var(--shadow);
+  --section-bg: rgba(4, 120, 87, 0.05);
+  --hover-bg: rgba(255, 255, 255, 0.1);
+  --active-bg: rgba(255, 255, 255, 0.2);
+}
+
+/* Dark mode */
+.dark-mode {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --border-color: #334155;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --unread-bg: #065f46;
+  --section-bg: rgba(255, 255, 255, 0.05);
+  --hover-bg: rgba(255, 255, 255, 0.1);
+  --active-bg: rgba(255, 255, 255, 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.5;
+    font-size: 0.875rem;
+    transition: var(--transition);
+}
+
+/* Professional Sidebar Navigation */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, var(--assistant-green), var(--medical-blue-darker));
+    color: var(--text-light);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 1.5rem 0;
+    overflow-y: auto;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+}
+
+.cabinet-header {
+    padding: 0 1.5rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    position: relative;
+}
+
+.cabinet-logo {
+    width: 64px;
+    height: 64px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    color: var(--assistant-green);
+    font-weight: 700;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
+}
+
+.cabinet-logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
+}
+
+.cabinet-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.025em;
+    background: linear-gradient(to right, #ffffff, #a7f3d0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.cabinet-subtitle {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 400;
+}
+
+/* User Section */
+.user-section {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin-top: auto;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--assistant-green-light), var(--ai-purple));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.user-details {
+    flex: 1;
+}
+
+.user-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: white;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.logout-btn,
+.theme-toggle {
+    width: 100%;
+    padding: 0.625rem;
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    border: none;
+    text-align: left;
+}
+
+.logout-btn {
+    background: rgba(220, 38, 38, 0.2);
+    color: white;
+}
+
+.logout-btn:hover {
+    background: rgba(220, 38, 38, 0.3);
+    transform: translateY(-1px);
+}
+
+.theme-toggle {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    margin-bottom: 0.75rem;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0 1.5rem;
+    flex: 1;
+}
+
+.sidebar-item {
+    margin: 0;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: var(--transition);
+    border-radius: var(--border-radius);
+    position: relative;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.sidebar-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateX(4px);
+}
+
+.sidebar-link.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-left: 3px solid var(--medical-blue-light);
+    padding-left: 1rem;
+    transform: translateX(4px);
+}
+
+.sidebar-icon {
+    width: 24px;
+    text-align: center;
+    font-size: 1.125rem;
+    min-width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge {
+    background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
+    color: white;
+    border-radius: 9999px;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: auto;
+    margin-right: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ai-agent-icon {
+    background: linear-gradient(135deg, var(--ai-purple), var(--ai-purple-light));
+    color: white;
+    padding: 0.375rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+/* Section Headers as dropdown triggers */
+.section-header {
+    padding: 0.75rem 1.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 1.5rem;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.section-header:first-child {
+    margin-top: 0;
+}
+
+.section-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.section-chevron {
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.section-header.collapsed .section-chevron {
+    transform: rotate(-90deg);
+}
+
+/* Section content */
+.section-content {
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    max-height: 1000px;
+    opacity: 1;
+}
+
+.section-content.collapsed {
+    max-height: 0;
+    opacity: 0;
+}
+
+/* Sidebar section wrapper */
+.sidebar-section {
+    list-style: none;
+}
+
+/* Responsive design for sidebar */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 250px;
+    }
+    .main-content {
+        margin-left: 250px;
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 240px;
+    }
+    .main-content {
+        margin-left: 240px;
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 1rem 0;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+    .cabinet-header,
+    .user-section {
+        text-align: left;
+    }
+    .cabinet-logo {
+        margin: 0 0 1rem 1.5rem;
+    }
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Focus states for accessibility */
+.sidebar-link:focus {
+    outline: 2px solid var(--medical-blue-light);
+    outline-offset: 2px;
+}
+
+.btn:focus {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
 /* Main Content */
 .main-content {
-  margin-left: 0;
+  margin-left: 280px;
   padding: 2rem;
   min-height: 100vh;
   transition: var(--transition);
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.02) 0%, rgba(4, 120, 87, 0.02) 100%);
+  position: relative;
+}
+.main-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(circle at 20% 80%, rgba(30, 58, 138, 0.03) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(4, 120, 87, 0.03) 0%, transparent 50%);
+  pointer-events: none;
 }
 .content-header {
   display: flex;
@@ -45,16 +463,38 @@
 /* Card s */
 .patient-card{
   background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  box-shadow: var(--card-shadow);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
   border: 1px solid var(--border-color);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.patient-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--medical-blue), var(--assistant-green));
 }
 .patient-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 .card-header {
   display: flex;
@@ -69,13 +509,16 @@
 }
 /* Forms & Buttons */
 .btn {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   border-radius: var(--border-radius);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   transition: var(--transition);
   border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .btn-primary {
   background: var(--medical-blue);
@@ -94,7 +537,8 @@
   color: white;
 }
 .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  position: relative;
 }
 .form-label {
   display: block;
@@ -104,33 +548,137 @@
 }
 .form-control {
   width: 100%;
-  padding: 0.625rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  padding: 0.875rem 0.875rem 0.875rem 2.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.75rem;
   background: var(--bg-primary);
   color: var(--text-primary);
   font-size: 0.875rem;
+  transition: all 0.3s ease;
+  position: relative;
 }
 .form-control:focus {
   outline: none;
   border-color: var(--medical-blue);
-  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+  box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.15), 0 2px 8px rgba(30, 58, 138, 0.1);
+  transform: translateY(-1px);
+}
+.form-control:hover {
+  border-color: var(--medical-blue-light);
+}
+.form-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 2.75rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 768px) {
+  .form-row { grid-template-columns: 1fr; }
 }
 .btn-send{
   width: 100%;
-  padding: 0.875rem;
+  padding: 1rem;
   background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
   color: white;
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: 0.75rem;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
-  font-size: 0.9375rem;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+.btn-send::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+.btn-send:hover::before {
+  left: 100%;
 }
 .btn-send:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(30, 58, 138, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
+}
+.btn-send:active {
+  transform: translateY(-1px);
+}
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+.modal-content {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.modal-header h4 {
+  margin: 0;
+  color: var(--success);
+  font-size: 1.25rem;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+.modal-body {
+  padding: 1.5rem;
+}
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  text-align: right;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideIn {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+/* Error Messages */
+.error-message {
+  color: var(--danger);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: none;
 }
 /* Responsive */
 @media (max-width: 992px) {
@@ -138,59 +686,327 @@
 }
 @media (max-width: 768px) {
   .main-content { margin-left: 0; padding: 1.5rem; }
+  .content-header div {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 @media (max-width: 480px) {
   .main-content { margin-left: 0; padding: 1rem; }
+  .modal-content { width: 95%; }
 }
 </style>
 </head>
 <body class="light-mode">
-<!-- Sidebar -->
+<!-- Professional Sidebar Navigation -->
+<div class="sidebar">
+    <!-- Cabinet Header -->
+    <div class="cabinet-header">
+        <div class="cabinet-logo">
+          <img src="../../Photo/Photo.png" alt="DIKRA Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+        </div>
+        <div class="cabinet-name">DIKRA centre Dentaire</div>
+        <div class="cabinet-subtitle">Casablanca, Maroc</div>
+    </div>
+    <!-- Navigation Menu -->
+    <ul class="sidebar-menu">
+        <!-- d ASHBOARd  -->
+        <li class="sidebar-item">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                Tableau de bord
+            </a>
+        </li>
+
+        <!-- MES RENdeZ-VOUS -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-rdv-toggle">
+                Mes rendez-vous
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-rdv-content">
+                <div class="sidebar-item">
+                    <a href="prendre-rendez-vous.html" class="sidebar-link active">
+                        <span class="sidebar-icon"><i class="fas fa-plus-circle"></i></span>
+                        Prendre un rendez-vous
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="mes-rendez-vous.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                        Mes rendez-vous
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- DOSSIER MÉdICAL -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-docs-toggle">
+                Dossier médical
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-docs-content">
+                <div class="sidebar-item">
+                    <a href="dossier-medical.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                        Mon dossier médical
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="historique.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-history"></i></span>
+                        Historique
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="mes-documents.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                        Mes documents
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="suivi-protheses.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                        Suivi prothèses
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- PAIEMENTS -->
+        <li class="sidebar-item">
+            <a href="paiements.html" class="sidebar-link">
+                <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
+                Paiements
+            </a>
+        </li>
+
+        <!-- MESSAGERIE -->
+        <li class="sidebar-item">
+            <a href="messagerie.html" class="sidebar-link">
+                <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                Messagerie
+            </a>
+        </li>
+
+        <!-- MON COMPTE -->
+        <li class="sidebar-section">
+            <div class="section-header clickable" id="section-compte-toggle">
+                Mon compte
+                <i class="fas fa-chevron-down section-chevron"></i>
+            </div>
+            <div class="section-content" id="section-compte-content">
+                <div class="sidebar-item">
+                    <a href="mon-compte.html" class="sidebar-link">
+                        <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                        Mon profil
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <!-- User Section -->
+    <div class="user-section">
+        <div class="user-info">
+            <div class="user-avatar">YB</div>
+            <div class="user-details">
+                <div class="user-name"> </div>
+                <div class="user-role">Patient</div>
+            </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <span>Mode Sombre</span>
+        </button>
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+        </button>
+    </div>
+</div>
 <!-- Main Content -->
 <div class="main-content">
   <div class="content-header">
-    <h1 class="page-title">Prendre un rendez-vous</h1>
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <div style="background: linear-gradient(135deg, var(--medical-blue), var(--assistant-green)); padding: 0.75rem; border-radius: 50%; color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+        <i class="fas fa-calendar-plus" style="font-size: 1.5rem;"></i>
+      </div>
+      <div>
+        <h1 class="page-title">Prendre un rendez-vous</h1>
+        <p style="margin: 0; color: var(--text-secondary); font-size: 0.875rem;">Réservez facilement votre prochain rendez-vous dentaire</p>
+      </div>
+    </div>
   </div>
 
-  <div class="patient-card ">
-    <div class="card -header">
-      <h3 class="card -title">Réserver un rendez-vous</h3>
+  <div class="patient-card">
+    <div class="card-header">
+      <h3 class="card-title">Réserver un rendez-vous</h3>
     </div>
     <form id="booking-form">
-      <div class="form-group">
-        <label class="form-label">Type de soin</label>
-        <select id="care-type" name="care-type" class="form-control" required>
-          <option value="">Sélectionner</option>
-          <option value="Consultation">Consultation</option>
-          <option value="Traitement">Traitement</option>
-          <option value="Urgence">Urgence</option>
-          <option value="Autre">Autre</option>
-        </select>
-        <input type="text" id="custom-care-type" class="form-control" placeholder="Spécifiez le type de soin" style="display: none; margin-top: 0.5rem;">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Type de soin</label>
+          <i class="fas fa-stethoscope form-icon"></i>
+          <select id="care-type" name="care-type" class="form-control" required aria-label="Sélectionner le type de soin">
+            <option value="">Sélectionner</option>
+            <option value="Consultation">Consultation</option>
+            <option value="Traitement">Traitement</option>
+            <option value="Urgence">Urgence</option>
+            <option value="Autre">Autre</option>
+          </select>
+          <input type="text" id="custom-care-type" class="form-control" placeholder="Spécifiez le type de soin" style="display: none; margin-top: 0.5rem; padding-left: 0.75rem;" aria-label="Spécifier le type de soin personnalisé">
+          <div class="error-message" id="care-type-error"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Dentiste</label>
+          <i class="fas fa-user-md form-icon"></i>
+          <select id="doctor" name="doctor" class="form-control" required aria-label="Sélectionner le dentiste">
+            <option value="">Sélectionner</option>
+          </select>
+          <div class="error-message" id="doctor-error"></div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <i class="fas fa-calendar-alt form-icon"></i>
+          <input type="date" id="date" name="date" class="form-control" required min="2026-01-06" aria-label="Sélectionner la date du rendez-vous" placeholder="JJ/MM/AAAA">
+          <div class="error-message" id="date-error"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Heure</label>
+          <i class="fas fa-clock form-icon"></i>
+          <select id="time" name="time" class="form-control" required aria-label="Sélectionner l'heure du rendez-vous">
+            <option value="">Sélectionner</option>
+            <option value="08:00">08:00</option>
+            <option value="08:30">08:30</option>
+            <option value="09:00">09:00</option>
+            <option value="09:30">09:30</option>
+            <option value="10:00">10:00</option>
+            <option value="10:30">10:30</option>
+            <option value="11:00">11:00</option>
+            <option value="11:30">11:30</option>
+            <option value="14:00">14:00</option>
+            <option value="14:30">14:30</option>
+            <option value="15:00">15:00</option>
+            <option value="15:30">15:30</option>
+            <option value="16:00">16:00</option>
+            <option value="16:30">16:30</option>
+            <option value="17:00">17:00</option>
+            <option value="17:30">17:30</option>
+          </select>
+          <div class="error-message" id="time-error"></div>
+        </div>
       </div>
       <div class="form-group">
-        <label class="form-label">dentiste</label>
-        <select id="doctor" name="doctor" class="form-control" required>
-          <option value="">Sélectionner</option>
-        </select>
+        <label class="form-label">Commentaires (optionnel)</label>
+        <i class="fas fa-comment form-icon"></i>
+        <textarea id="comments" name="comments" class="form-control" rows="3" placeholder="Ajoutez des commentaires ou précisions..." aria-label="Commentaires optionnels"></textarea>
       </div>
-      <div class="form-group">
-        <label class="form-label">date</label>
-        <input type="date" id="date" name="date" class="form-control" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Heure</label>
-        <select id="time" name="time" class="form-control" required>
-          <option value="">Sélectionner</option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-primary" id="submit-btn">Réserver</button>
+      <button type="submit" class="btn btn-primary" id="submit-btn">
+        <i class="fas fa-calendar-check"></i>
+        Réserver le rendez-vous
+      </button>
     </form>
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4><i class="fas fa-check-circle"></i> Rendez-vous réservé avec succès!</h4>
+          <button class="modal-close" id="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Votre rendez-vous a été enregistré. Vous recevrez une confirmation par email et SMS.</p>
+          <div id="appointment-details" style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: var(--border-radius);">
+            <!-- Details will be populated here -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" id="modal-ok">OK</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
 
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        body.classList.toggle('dark-mode');
+        const icon = themeToggle.querySelector('i');
+        const span = themeToggle.querySelector('span');
+        if (body.classList.contains('dark-mode')) {
+            icon.className = 'fas fa-sun';
+            span.textContent = 'Mode Clair';
+        } else {
+            icon.className = 'fas fa-moon';
+            span.textContent = 'Mode Sombre';
+        }
+    });
+
+    // Collapsible sections
+    const toggles = document.querySelectorAll('.section-header.clickable');
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            const chevron = this.querySelector('.section-chevron');
+            content.classList.toggle('collapsed');
+            this.classList.toggle('collapsed');
+        });
+    });
+
+    // Form handling
+    const careTypeSelect = document.getElementById('care-type');
+    const customCareType = document.getElementById('custom-care-type');
+    const bookingForm = document.getElementById('booking-form');
+    const confirmationModal = document.getElementById('confirmation-modal');
+    const submitBtn = document.getElementById('submit-btn');
+
+    careTypeSelect.addEventListener('change', function() {
+        if (this.value === 'Autre') {
+            customCareType.style.display = 'block';
+            customCareType.required = true;
+        } else {
+            customCareType.style.display = 'none';
+            customCareType.required = false;
+        }
+    });
+
+    bookingForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Réservation en cours...';
+
+        // Simulate API call
+        setTimeout(() => {
+            confirmationModal.style.display = 'flex';
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-calendar-check"></i> Réserver le rendez-vous';
+            bookingForm.reset();
+            customCareType.style.display = 'none';
+            // Populate modal details
+            const detailsDiv = document.getElementById('appointment-details');
+            const careType = careTypeSelect.value === 'Autre' ? customCareType.value : careTypeSelect.value;
+            const doctor = document.getElementById('doctor').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            detailsDiv.innerHTML = `
+                <p><strong>Type de soin:</strong> ${careType}</p>
+                <p><strong>Dentiste:</strong> ${doctor}</p>
+                <p><strong>Date:</strong> ${date}</p>
+                <p><strong>Heure:</strong> ${time}</p>
+            `;
+        }, 2000);
+    });
+});
+</script>
 
 </body>
 </html>
