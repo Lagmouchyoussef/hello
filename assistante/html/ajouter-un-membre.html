@@ -814,6 +814,9 @@
         </form>
     </div>
 
+    <!-- DataManager Script -->
+    <script src="../../../dataManager.js"></script>
+
     <!-- Common JavaScript -->
     <script>
         // Theme Toggle
@@ -967,43 +970,54 @@
         addMemberForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const formData = {
-                id: Date.now(),
-                nom: document.getElementById('nom').value.trim(),
-                prenom: document.getElementById('prenom').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                telephone: document.getElementById('telephone').value.trim(),
-                date_naissance: document.getElementById('dateNaissance').value || null,
-                adresse: document.getElementById('adresse').value.trim(),
-                role: document.getElementById('role').value,
-                departement: document.getElementById('departement').value,
-                date_embauche: document.getElementById('dateEmbauche').value,
-                salaire: parseFloat(document.getElementById('salaire').value) || 0,
-                notes: document.getElementById('notes').value.trim(),
-                photo: uploadedPhoto,
-                statut: 'actif'
-            };
+            const firstName = document.getElementById('prenom').value.trim();
+            const lastName = document.getElementById('nom').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('telephone').value.trim();
+            const birthDate = document.getElementById('dateNaissance').value || null;
+            const address = document.getElementById('adresse').value.trim();
+            const role = document.getElementById('role').value;
+            const department = document.getElementById('departement').value;
+            const hireDate = document.getElementById('dateEmbauche').value;
+            const salary = parseFloat(document.getElementById('salaire').value) || 0;
+            const notes = document.getElementById('notes').value.trim();
+            const photo = uploadedPhoto;
 
             // Validation
-            if (!formData.nom || !formData.prenom || !formData.email || !formData.telephone || !formData.role || !formData.departement || !formData.date_embauche) {
+            if (!firstName || !lastName || !email || !phone || !role || !department || !hireDate) {
                 alert('Veuillez remplir tous les champs obligatoires.');
                 return;
             }
 
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(formData.email)) {
+            if (!emailRegex.test(email)) {
                 alert('Veuillez entrer une adresse email valide.');
                 return;
             }
 
-            // Save to localStorage
-            const staff = JSON.parse(localStorage.getItem('staff')) || [];
-            staff.push(formData);
-            localStorage.setItem('staff', JSON.stringify(staff));
+            try {
+                dataManager.createPersonnel({
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    birthDate,
+                    address,
+                    role,
+                    department,
+                    hireDate,
+                    salary,
+                    notes,
+                    photo,
+                    status: 'actif'
+                });
 
-            alert('Membre ajouté avec succès !');
-            window.location.href = 'Liste%20du%20personnel.html';
+                alert('Membre ajouté avec succès !');
+                window.location.href = 'Liste%20du%20personnel.html';
+            } catch (error) {
+                alert('Erreur: ' + error.message);
+            }
         });
 
         // Cancel button

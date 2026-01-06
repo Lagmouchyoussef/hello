@@ -603,7 +603,9 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label class="form-label">Patient</label>
-                        <input type="text" class="form-control" id="patient" placeholder="Nom du patient" required>
+                        <select class="form-control" id="patientId" required>
+                            <option value="">Sélectionner un patient</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Date</label>
@@ -662,6 +664,9 @@
             </table>
         </div>
     </div>
+
+    <!-- DataManager Script -->
+    <script src="../../../dataManager.js"></script>
 
     <!-- JavaScript -->
     <script>
@@ -728,16 +733,38 @@
         document.getElementById('section-compta-toggle').classList.remove('collapsed');
 
         // Payments functionality
-        let payments = JSON.parse(localStorage.getItem('payments')) || [];
+        let payments = [];
+        let patients = [];
+        let editingId = null;
+
+        function loadData() {
+            payments = dataManager.getAll('payments').filter(p => p.type === 'received');
+            patients = dataManager.getAll('patients');
+            renderPatients();
+            renderPayments();
+        }
+
+        function renderPatients() {
+            const select = document.getElementById('patientId');
+            select.innerHTML = '<option value="">Sélectionner un patient</option>';
+            patients.forEach(patient => {
+                const option = document.createElement('option');
+                option.value = patient.id;
+                option.textContent = `${patient.firstName} ${patient.lastName}`;
+                select.appendChild(option);
+            });
+        }
 
         function showForm() {
             document.getElementById('addForm').style.display = 'block';
-            document.getElementById('patient').focus();
+            document.getElementById('patientId').focus();
         }
 
         function hideForm() {
             document.getElementById('addForm').style.display = 'none';
             document.getElementById('paymentsForm').reset();
+            editingId = null;
+            document.getElementById('paymentsForm').onsubmit = addPayment;
         }
 
         function renderPayments() {
@@ -749,19 +776,21 @@
                 return;
             }
 
-            payments.forEach((payment, index) => {
+            payments.forEach((payment) => {
+                const patient = patients.find(p => p.id === payment.patientId);
+                const patientName = patient ? `${patient.firstName} ${patient.lastName}` : 'Patient inconnu';
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${payment.patient}</td>
+                    <td>${patientName}</td>
                     <td>${new Date(payment.date).toLocaleDateString('fr-FR')}</td>
-                    <td>${payment.montant} DH</td>
-                    <td>${payment.mode}</td>
-                    <td>${payment.description}</td>
+                    <td>${payment.amount} DH</td>
+                    <td>${payment.mode || 'N/A'}</td>
+                    <td>${payment.description || ''}</td>
                     <td>
-                        <button class="action-btn edit" onclick="editPayment(${index})">
+                        <button class="action-btn edit" onclick="editPayment('${payment.id}')">
                             <i class="fas fa-edit"></i> Modifier
                         </button>
-                        <button class="action-btn delete" onclick="deletePayment(${index})">
+                        <button class="action-btn delete" onclick="deletePayment('${payment.id}')">
                             <i class="fas fa-trash"></i> Supprimer
                         </button>
                     </td>
@@ -773,79 +802,87 @@
         }
 
         function updateTotal() {
-            const total = payments.reduce((sum, payment) => sum + parseFloat(payment.montant), 0);
+            const total = payments.reduce((sum, payment) => sum + parseFloat(payment.amount), 0);
             document.getElementById('totalAmount').textContent = `Total: ${total.toFixed(2)} DH`;
         }
 
         function addPayment(event) {
             event.preventDefault();
 
-            const patient = document.getElementById('patient').value;
+            const patientId = document.getElementById('patientId').value;
             const date = document.getElementById('date').value;
-            const montant = document.getElementById('montant').value;
+            const amount = document.getElementById('montant').value;
             const mode = document.getElementById('mode_paiement').value;
             const description = document.getElementById('description').value;
 
-            const newPayment = {
-                patient,
-                date,
-                montant: parseFloat(montant),
-                mode,
-                description
-            };
-
-            payments.push(newPayment);
-            localStorage.setItem('payments', JSON.stringify(payments));
-            renderPayments();
-            hideForm();
+            try {
+                const newPayment = dataManager.createPayment({
+                    patientId,
+                    amount: parseFloat(amount),
+                    type: 'received',
+                    date,
+                    mode,
+                    description
+                });
+                loadData();
+                hideForm();
+            } catch (error) {
+                alert('Erreur: ' + error.message);
+            }
         }
 
-        function editPayment(index) {
-            const payment = payments[index];
-            document.getElementById('patient').value = payment.patient;
-            document.getElementById('date').value = payment.date;
-            document.getElementById('montant').value = payment.montant;
-            document.getElementById('mode_paiement').value = payment.mode;
-            document.getElementById('description').value = payment.description;
+        function editPayment(id) {
+            const payment = payments.find(p => p.id === id);
+            if (!payment) return;
 
+            document.getElementById('patientId').value = payment.patientId;
+            document.getElementById('date').value = payment.date;
+            document.getElementById('montant').value = payment.amount;
+            document.getElementById('mode_paiement').value = payment.mode || '';
+            document.getElementById('description').value = payment.description || '';
+
+            editingId = id;
             showForm();
 
             // Change form submission to update
             const form = document.getElementById('paymentsForm');
             form.onsubmit = (event) => {
                 event.preventDefault();
-                updatePayment(index);
+                updatePayment();
             };
         }
 
-        function updatePayment(index) {
-            const patient = document.getElementById('patient').value;
+        function updatePayment() {
+            const patientId = document.getElementById('patientId').value;
             const date = document.getElementById('date').value;
-            const montant = document.getElementById('montant').value;
+            const amount = document.getElementById('montant').value;
             const mode = document.getElementById('mode_paiement').value;
             const description = document.getElementById('description').value;
 
-            payments[index] = {
-                patient,
-                date,
-                montant: parseFloat(montant),
-                mode,
-                description
-            };
-
-            localStorage.setItem('payments', JSON.stringify(payments));
-            renderPayments();
-            hideForm();
-
-            // Reset form submission
-            document.getElementById('paymentsForm').onsubmit = addPayment;
+            try {
+                dataManager.updatePayment(editingId, {
+                    patientId,
+                    amount: parseFloat(amount),
+                    type: 'received',
+                    date,
+                    mode,
+                    description
+                });
+                loadData();
+                hideForm();
+            } catch (error) {
+                alert('Erreur: ' + error.message);
+            }
         }
 
-        function deletePayment(index) {
+        function deletePayment(id) {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce paiement ?')) {
-                payments.splice(index, 1);
-                localStorage.setItem('payments', JSON.stringify(payments));
-                renderPayments();
+                try {
+                    dataManager.delete('payments', id);
+                    loadData();
+                } catch (error) {
+                    alert('Erreur: ' + error.message);
+                }
             }
         }
 
@@ -860,9 +897,16 @@
             });
         });
 
+        // Real-time sync
+        dataManager.onDataSync((detail) => {
+            if (detail.entity === 'payments' || detail.entity === 'patients') {
+                loadData();
+            }
+        });
+
         // Initialize
         document.getElementById('paymentsForm').addEventListener('submit', addPayment);
-        renderPayments();
+        loadData();
     </script>
 </body>
 </html>

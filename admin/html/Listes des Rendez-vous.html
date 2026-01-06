@@ -676,7 +676,7 @@
 <div class="main-content">
   <div class="content-header">
     <h1 class="page-title">Liste des Rendez-vous</h1>
-    <button class="btn btn-primary">
+    <button class="btn btn-primary" onclick="showForm()">
       <i class="fas fa-plus"></i>
       Nouveau Rendez-vous
     </button>
@@ -699,7 +699,9 @@
         </div>
         <div class="form-group">
           <label class="form-label">Patient</label>
-          <input type="text" class="form-control" id="patient" placeholder="Nom du patient" required>
+          <select class="form-control" id="patientSelect" name="patient" required>
+            <option value="">Sélectionner un patient</option>
+          </select>
         </div>
         <div class="form-group">
           <label class="form-label">Médecin</label>
@@ -739,6 +741,7 @@
       <h2 class="appointments-title">Rendez-vous Programmés</h2>
       <div>
         <button class="btn" onclick="showForm()" style="font-size: 1.1rem; padding: 0.75rem 1.5rem; background: #059669; color: white; border: none;"><i class="fas fa-plus"></i> Ajouter un Rendez-vous</button>
+        <button class="btn" onclick="loadAppointments()" style="font-size: 1.1rem; padding: 0.75rem 1.5rem; background: #3b82f6; color: white; border: none; margin-left: 0.5rem;"><i class="fas fa-refresh"></i> Actualiser</button>
         <input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-left: 0.5rem;">
         <select id="statusFilter" title="Filtrer par statut" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-left: 0.5rem;">
           <option value="">Tous les statuts</option>
@@ -767,6 +770,255 @@
     </table>
   </div>
 </div>
+<script src="../../../dataManager.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadAppointments();
+
+    // Function to load appointments from dataManager
+    function loadAppointments() {
+        const tbody = document.getElementById('appointmentsTablebody');
+        const appointments = dataManager.getAll('appointments');
+        tbody.innerHTML = '';
+
+        appointments.forEach(appointment => {
+            // Get patient name from patientId
+            const patient = dataManager.getById('patients', appointment.patientId);
+            const patientName = patient ? `${patient.firstName} ${patient.lastName}` : 'Patient inconnu';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${appointment.date}</td>
+                <td>${appointment.time}</td>
+                <td>${patientName}</td>
+                <td>${appointment.doctor}</td>
+                <td>${appointment.treatment}</td>
+                <td>${appointment.mode}</td>
+                <td><span class="status-badge status-${getStatusClass(appointment.status)}">${appointment.status}</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-small btn-primary" onclick="editAppointment('${appointment.id}')">Modifier</button>
+                    <button class="btn btn-small btn-danger" onclick="deleteAppointment('${appointment.id}')">Supprimer</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+    window.loadAppointments = loadAppointments;
+
+    // Function to get status class
+    function getStatusClass(status) {
+        switch(status) {
+            case 'Confirmé': return 'confirmed';
+            case 'En attente': return 'pending';
+            case 'Annulé': return 'cancelled';
+            default: return 'pending';
+        }
+    }
+
+    // Function to delete appointment
+    window.deleteAppointment = function(id) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce rendez-vous ?')) {
+            try {
+                dataManager.delete('appointments', id);
+                loadAppointments();
+            } catch (error) {
+                alert('Erreur lors de la suppression: ' + error.message);
+            }
+        }
+    };
+
+    // Function to show add form
+    window.showForm = function() {
+        // Populate patient dropdown
+        populatePatientDropdown();
+        document.getElementById('addForm').style.display = 'block';
+    };
+
+    // Function to populate patient dropdown
+    function populatePatientDropdown() {
+        const patients = dataManager.getAll('patients');
+        const select = document.getElementById('patientSelect');
+        if (!select) return; // If not updated yet
+
+        select.innerHTML = '<option value="">Sélectionner un patient</option>';
+        patients.forEach(patient => {
+            const option = document.createElement('option');
+            option.value = patient.id;
+            option.textContent = `${patient.firstName} ${patient.lastName}`;
+            select.appendChild(option);
+        });
+    }
+
+    // Function to hide add form
+    window.hideForm = function() {
+        document.getElementById('addForm').style.display = 'none';
+        document.getElementById('appointmentForm').reset();
+    };
+
+    // Function to add appointment from form
+    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const appointmentData = {
+            date: formData.get('date'),
+            time: formData.get('time'),
+            patientId: formData.get('patient'),
+            doctor: formData.get('doctor'),
+            treatment: formData.get('treatment'),
+            mode: formData.get('mode'),
+            status: formData.get('status')
+        };
+        try {
+            dataManager.createAppointment(appointmentData);
+            loadAppointments();
+            hideForm();
+        } catch (error) {
+            alert('Erreur lors de la création: ' + error.message);
+        }
+    });
+
+    // Function to edit appointment
+    window.editAppointment = function(id) {
+        const appointment = dataManager.getById('appointments', id);
+        if (!appointment) {
+            alert('Rendez-vous non trouvé');
+            return;
+        }
+
+        // Populate form with existing data
+        document.getElementById('date').value = appointment.date;
+        document.getElementById('time').value = appointment.time;
+        document.getElementById('doctor').value = appointment.doctor;
+        document.getElementById('treatment').value = appointment.treatment;
+        document.getElementById('mode').value = appointment.mode;
+        document.getElementById('status').value = appointment.status;
+
+        // Set patient
+        const patientSelect = document.getElementById('patientSelect');
+        if (patientSelect) patientSelect.value = appointment.patientId;
+
+        // Change form to edit mode
+        const form = document.getElementById('appointmentForm');
+        form.dataset.editId = id;
+        document.querySelector('#addForm h2').textContent = 'Modifier un Rendez-vous';
+        document.querySelector('#appointmentForm button[type="submit"]').textContent = 'Modifier';
+
+        showForm();
+    };
+
+    // Handle edit vs create
+    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const editId = this.dataset.editId;
+        const formData = new FormData(this);
+        const appointmentData = {
+            date: formData.get('date'),
+            time: formData.get('time'),
+            patientId: formData.get('patient'),
+            doctor: formData.get('doctor'),
+            treatment: formData.get('treatment'),
+            mode: formData.get('mode'),
+            status: formData.get('status')
+        };
+
+        try {
+            if (editId) {
+                dataManager.updateAppointment(editId, appointmentData);
+                delete this.dataset.editId;
+                document.querySelector('#addForm h2').textContent = 'Ajouter un Rendez-vous';
+                document.querySelector('#appointmentForm button[type="submit"]').textContent = 'Ajouter';
+            } else {
+                dataManager.createAppointment(appointmentData);
+            }
+            loadAppointments();
+            hideForm();
+        } catch (error) {
+            alert('Erreur: ' + error.message);
+        }
+    });
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', filterAppointments);
+
+    // Status filter
+    document.getElementById('statusFilter').addEventListener('change', filterAppointments);
+
+    function filterAppointments() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value;
+        const appointments = dataManager.getAll('appointments');
+        const tbody = document.getElementById('appointmentsTablebody');
+        tbody.innerHTML = '';
+
+        const filtered = appointments.filter(app => {
+            const patient = dataManager.getById('patients', app.patientId);
+            const patientName = patient ? `${patient.firstName} ${patient.lastName}`.toLowerCase() : '';
+            const matchesSearch = patientName.includes(searchTerm) ||
+                                  app.doctor.toLowerCase().includes(searchTerm) ||
+                                  app.treatment.toLowerCase().includes(searchTerm);
+            const matchesStatus = !statusFilter || app.status === statusFilter;
+            return matchesSearch && matchesStatus;
+        });
+
+        filtered.forEach(appointment => {
+            const patient = dataManager.getById('patients', appointment.patientId);
+            const patientName = patient ? `${patient.firstName} ${patient.lastName}` : 'Patient inconnu';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${appointment.date}</td>
+                <td>${appointment.time}</td>
+                <td>${patientName}</td>
+                <td>${appointment.doctor}</td>
+                <td>${appointment.treatment}</td>
+                <td>${appointment.mode}</td>
+                <td><span class="status-badge status-${getStatusClass(appointment.status)}">${appointment.status}</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-small btn-primary" onclick="editAppointment('${appointment.id}')">Modifier</button>
+                    <button class="btn btn-small btn-danger" onclick="deleteAppointment('${appointment.id}')">Supprimer</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Listen for data sync events
+    dataManager.onDataSync((detail) => {
+        if (detail.entity === 'appointments' || detail.entity === 'patients') {
+            loadAppointments();
+        }
+    });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        body.classList.toggle('dark-mode');
+        const icon = themeToggle.querySelector('i');
+        const span = themeToggle.querySelector('span');
+        if (body.classList.contains('dark-mode')) {
+            icon.className = 'fas fa-sun';
+            span.textContent = 'Mode Clair';
+        } else {
+            icon.className = 'fas fa-moon';
+            span.textContent = 'Mode Sombre';
+        }
+    });
+
+    // Collapsible sections
+    const toggles = document.querySelectorAll('.section-header.clickable');
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            const chevron = this.querySelector('.section-chevron');
+            content.classList.toggle('collapsed');
+            this.classList.toggle('collapsed');
+        });
+    });
+});
+</script>
 </body>
 </html>
 

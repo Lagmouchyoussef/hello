@@ -1288,6 +1288,14 @@
 
 
 <script>
+// Check authentication
+const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+if (!currentUser || currentUser.role !== 'assistant') {
+    alert('Accès non autorisé. Veuillez vous connecter.');
+    window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
+<script>
 // Theme Toggle
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
@@ -1321,7 +1329,9 @@ themeToggle.addEventListener('click', () => {
 const logoutBtn = document.getElementById('logoutBtn');
 logoutBtn.addEventListener('click', () => {
   if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+    sessionStorage.removeItem('currentUser');
     alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
+    window.location.href = '../../LOGING/html/loging.html';
   }
 });
 // Navigation link functionality
@@ -1542,6 +1552,16 @@ function initializeCharts() {
     }
   });
 }
+
+// Synchronization listeners
+window.addEventListener('storage', function(e) {
+    if (e.key === 'dataManagerUpdate') {
+        // Refresh data when other tabs update
+        updateKPIs();
+        initializeCharts();
+    }
+});
 </script>
+<script src="../../../dataManager.js"></script>
 </body>
 </html>

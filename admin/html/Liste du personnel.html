@@ -1011,6 +1011,9 @@
         </div>
     </div>
 
+    <!-- DataManager Script -->
+    <script src="../../../dataManager.js"></script>
+
     <!-- Common JavaScript -->
     <script>
         // Theme Toggle
@@ -1093,14 +1096,13 @@
         document.getElementById('section-users-toggle').classList.remove('collapsed');
 
         // Staff management
-        let staff = JSON.parse(localStorage.getItem('staff')) || [];
+        let staff = [];
 
-        // Remove the specified personnel
-        staff = staff.filter(member => {
-            const fullName = `${member.prenom} ${member.nom}`;
-            return !['Fatima Alaoui', 'Ahmed Bennani', 'Leila Tazi', 'Karim El Amrani', 'Sofia Benjelloun'].includes(fullName);
-        });
-        localStorage.setItem('staff', JSON.stringify(staff));
+        function loadStaff() {
+            staff = dataManager.getAll('personnel');
+            renderStaffTable();
+            updateStatistics();
+        }
 
         const addMemberBtn = document.getElementById('addMemberBtn');
         const staffTable = document.getElementById('staffTable');
@@ -1170,11 +1172,11 @@
 
         function renderStaffTable() {
             const filteredStaff = staff.filter(member => {
-                const fullName = `${member.prenom} ${member.nom}`.toLowerCase();
+                const fullName = `${member.firstName} ${member.lastName}`.toLowerCase();
                 const matchesSearch = fullName.includes(searchInput.value.toLowerCase());
                 const matchesRole = !filterRole.value || member.role === filterRole.value;
-                const matchesStatus = !filterStatus.value || member.statut === filterStatus.value;
-                const matchesDepartment = !filterDepartment.value || member.departement === filterDepartment.value;
+                const matchesStatus = !filterStatus.value || (member.status || 'actif') === filterStatus.value;
+                const matchesDepartment = !filterDepartment.value || (member.department || '') === filterDepartment.value;
 
                 return matchesSearch && matchesRole && matchesStatus && matchesDepartment;
             });
@@ -1190,76 +1192,71 @@
 
             staffTableBody.innerHTML = filteredStaff.map((member, index) => {
                 const roleLabel = getRoleLabel(member.role);
-                const deptLabel = getDepartmentLabel(member.departement);
-                const statusBadge = getStatusBadge(member.statut);
-                const hireDate = new Date(member.date_embauche);
-                const initials = getInitials(member.nom, member.prenom);
+                const deptLabel = getDepartmentLabel(member.department || '');
+                const statusBadge = getStatusBadge(member.status || 'actif');
+                const hireDate = member.hireDate ? new Date(member.hireDate) : new Date();
+                const initials = getInitials(member.lastName, member.firstName);
 
                 return `
                     <tr>
                         <td><div class="avatar">${initials}</div></td>
-                        <td>${member.prenom} ${member.nom}</td>
+                        <td>${member.firstName} ${member.lastName}</td>
                         <td><span class="role-badge">${roleLabel}</span></td>
                         <td>${deptLabel}</td>
                         <td>${member.email}</td>
-                        <td>${member.telephone}</td>
+                        <td>${member.phone}</td>
                         <td>${statusBadge}</td>
                         <td>${hireDate.toLocaleDateString('fr-FR')}</td>
                         <td>
-                            <button class="btn btn-small btn-primary" onclick="viewStaff(${index})">Voir</button>
-                            <button class="btn btn-small btn-danger" onclick="deleteStaff(${index})">Supprimer</button>
+                            <button class="btn btn-small btn-primary" onclick="viewStaff('${member.id}')">Voir</button>
+                            <button class="btn btn-small btn-danger" onclick="deleteStaff('${member.id}')">Supprimer</button>
                         </td>
                     </tr>
                 `;
             }).join('');
         }
 
-        function viewStaff(index) {
-            const member = staff[index];
+        function viewStaff(id) {
+            const member = staff.find(m => m.id === id);
+            if (!member) return;
             const roleLabel = getRoleLabel(member.role);
-            const deptLabel = getDepartmentLabel(member.departement);
-            const statusBadge = getStatusBadge(member.statut);
-            const hireDate = new Date(member.date_embauche);
-            const birthDate = member.date_naissance ? new Date(member.date_naissance) : null;
-            const initials = getInitials(member.nom, member.prenom);
+            const deptLabel = getDepartmentLabel(member.department || '');
+            const statusBadge = getStatusBadge(member.status || 'actif');
+            const hireDate = member.hireDate ? new Date(member.hireDate) : new Date();
+            const initials = getInitials(member.lastName, member.firstName);
 
             modalDetails.innerHTML = `
                 <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
                     <div class="avatar" style="width: 60px; height: 60px; font-size: 1.25rem; margin-right: 1rem;">${initials}</div>
                     <div>
-                        <h3 style="margin: 0; color: var(--text-primary);">${member.prenom} ${member.nom}</h3>
+                        <h3 style="margin: 0; color: var(--text-primary);">${member.firstName} ${member.lastName}</h3>
                         <p style="margin: 0.25rem 0; color: var(--text-secondary);">${roleLabel}</p>
                         ${statusBadge}
                     </div>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
                     <div><strong>Email:</strong> ${member.email}</div>
-                    <div><strong>Téléphone:</strong> ${member.telephone}</div>
+                    <div><strong>Téléphone:</strong> ${member.phone}</div>
                     <div><strong>Département:</strong> ${deptLabel}</div>
                     <div><strong>Date d'embauche:</strong> ${hireDate.toLocaleDateString('fr-FR')}</div>
-                    ${birthDate ? `<div><strong>Date de naissance:</strong> ${birthDate.toLocaleDateString('fr-FR')}</div>` : ''}
-                    ${member.numero_ordre ? `<div><strong>N° Ordre:</strong> ${member.numero_ordre}</div>` : ''}
-                    <div><strong>Salaire:</strong> ${member.salaire.toLocaleString('fr-FR')} DH/mois</div>
                 </div>
-                ${member.specialites && member.specialites.length > 0 ? `<div><strong>Spécialités:</strong> ${member.specialites.join(', ')}</div>` : ''}
-                <div><strong>Adresse:</strong> ${member.adresse}</div>
-                ${member.notes ? `<div style="margin-top: 1rem;"><strong>Notes:</strong><p style="margin-top: 0.5rem;">${member.notes}</p></div>` : ''}
             `;
 
-            editBtn.onclick = () => editStaff(index);
+            editBtn.onclick = () => editStaff(id);
             deleteBtn.onclick = () => {
                 if (confirm('Êtes-vous sûr de vouloir supprimer ce membre du personnel ?')) {
-                    deleteStaff(index);
+                    deleteStaff(id);
                     staffModal.style.display = 'none';
                 }
             };
 
-            if (member.statut === 'actif') {
+            const status = member.status || 'actif';
+            if (status === 'actif') {
                 activateBtn.style.display = 'none';
                 deactivateBtn.style.display = 'inline-flex';
                 deactivateBtn.onclick = () => {
                     if (confirm('Êtes-vous sûr de vouloir désactiver ce membre ?')) {
-                        toggleStaffStatus(index, 'inactif');
+                        toggleStaffStatus(id, 'inactif');
                         staffModal.style.display = 'none';
                     }
                 };
@@ -1268,7 +1265,7 @@
                 deactivateBtn.style.display = 'none';
                 activateBtn.onclick = () => {
                     if (confirm('Êtes-vous sûr de vouloir activer ce membre ?')) {
-                        toggleStaffStatus(index, 'actif');
+                        toggleStaffStatus(id, 'actif');
                         staffModal.style.display = 'none';
                     }
                 };
@@ -1281,20 +1278,25 @@
             alert('Fonction de modification à implémenter');
         }
 
-        function deleteStaff(index) {
+        function deleteStaff(id) {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce membre du personnel ?')) {
-                staff.splice(index, 1);
-                localStorage.setItem('staff', JSON.stringify(staff));
-                renderStaffTable();
-                updateStatistics();
+                try {
+                    dataManager.delete('personnel', id);
+                    loadStaff();
+                } catch (error) {
+                    alert('Erreur: ' + error.message);
+                }
             }
         }
 
-        function toggleStaffStatus(index, newStatus) {
-            staff[index].statut = newStatus;
-            localStorage.setItem('staff', JSON.stringify(staff));
-            renderStaffTable();
-            updateStatistics();
+        function toggleStaffStatus(id, newStatus) {
+            try {
+                const member = staff.find(m => m.id === id);
+                dataManager.updatePersonnel(id, { ...member, status: newStatus });
+                loadStaff();
+            } catch (error) {
+                alert('Erreur: ' + error.message);
+            }
         }
 
         // Event listeners
@@ -1312,9 +1314,15 @@
             }
         });
 
+        // Real-time sync
+        dataManager.onDataSync((detail) => {
+            if (detail.entity === 'personnel') {
+                loadStaff();
+            }
+        });
+
         // Initial render
-        renderStaffTable();
-        updateStatistics();
+        loadStaff();
     </script>
 </body>
 </html>

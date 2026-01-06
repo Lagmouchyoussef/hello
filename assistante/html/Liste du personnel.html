@@ -6,7 +6,7 @@
     <title>Liste du personnel - DIKRA centre Dentaire</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../navbar.css">
+    <link rel="stylesheet" href="../navbar.css">
     <style>
         /* CSS Variables for consistent theming */
         :root {
@@ -221,6 +221,12 @@
             box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
 
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
         /* Tables */
         .data-table {
             width: 100%;
@@ -384,6 +390,34 @@
             gap: 1rem;
         }
 
+        /* Collapsible sections */
+        .collapsible-section {
+            margin-bottom: 1rem;
+        }
+
+        .collapsible-header {
+            background: var(--section-bg);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .collapsible-header:hover {
+            background: rgba(4, 120, 87, 0.1);
+        }
+
+        .collapsible-content {
+            display: none;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            margin-top: 0.5rem;
+        }
+
         /* Responsive Design */
         @media (max-width: 1200px) {
             .main-content {
@@ -462,333 +496,16 @@
 <body class="light-mode">
     <!-- Professional Sidebar Navigation -->
     <div class="sidebar">
-    <div class="cabinet-header"><div class="cabinet-logo"><img src="../../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
-        
-        <div class="cabinet-name">DIKRA centre Dentaire</div>
-        <div class="cabinet-subtitle">Casablanca, Maroc</div>
-    </div>
-    <ul class="sidebar-menu">
-        <li class="sidebar-item">
-            <a href="dashboard.html" class="sidebar-link">
-                <span class="sidebar-icon"><i class="fas fa-home"></i></span>
-                Tableau de bord
-            </a>
-        </li>
-
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-rdv-toggle">
-                Rendez-vous
-                <i class="fas fa-chevron-down section-chevron"></i>
+        <!-- Cabinet Header -->
+        <div class="cabinet-header">
+            <div class="cabinet-logo">
+                <img src="../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
             </div>
-            <div class="section-content" id="section-rdv-content">
-                <div class="sidebar-item">
-                    <a href="Listes%20des%20Rendez-vous.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-                        Liste des rendez-vous
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="Prise%20en%20ligne.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
-                        Prise en ligne
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="En%20présentiel.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
-                        En présentiel
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="via-espace-patient.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
-                        Via espace patient
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="planning-equipe.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
-                        Planning de l'équipe
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="salle-attente.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
-                        Salle d'attente
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-patients-toggle">
-                Patients
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-patients-content">
-                <div class="sidebar-item">
-                    <a href="fiches-patients.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
-                        Fiches patients
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="dossiers-medicaux.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
-                        Dossiers médicaux
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-cabinet-toggle">
-                Cabinet
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-cabinet-content">
-                <div class="sidebar-item">
-                    <a href="salle-attente.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
-                        Salle d'attente
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-com-toggle">
-                Communication
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-com-content">
-                <div class="sidebar-item">
-                    <a href="messagerie-interne.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
-                        Messagerie interne
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="assistant-ia.html" class="sidebar-link">
-                        <span class="sidebar-icon">
-                            <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
-                        </span>
-                        Assistant IA
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="envoi-sms.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
-                        Envoi de SMS
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="notifications.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
-                        Notifications
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-org-toggle">
-                Organisation
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-org-content">
-                <div class="sidebar-item">
-                    <a href="taches-rappels.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
-                        Tâches & rappels
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="notes-personnelles.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
-                        Notes personnelles
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="statistiques.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
-                        Statistiques
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-stock-toggle">
-                Gestion des stocks
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-stock-content">
-                <div class="sidebar-item">
-                    <a href="materiel-dentaire.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-box"></i></span>
-                        Matériel dentaire
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="consommables.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
-                        Consommables
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="medicaments.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
-                        Médicaments
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-docs-toggle">
-                Documents & formulaires
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-docs-content">
-                <div class="sidebar-item">
-                    <a href="ordonnances.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
-                        Ordonnances
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="certificats-medicaux.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-                        Certificats médicaux
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="feuilles-de-soins.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-                        Feuilles de soins (CNOPS/CNSS)
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="imagerie-medicale.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
-                        Imagerie médicale
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="protheses.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
-                        Prothèses
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-users-toggle">
-                Utilisateurs
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-users-content">
-                <div class="sidebar-item">
-                    <a href="Liste%20du%20personnel.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-list"></i></span>
-                        Liste du personnel
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="ajouter-un-membre.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
-                        Ajouter un membre
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="roles-permissions.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
-                        Rôles & permissions
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="planning-equipe.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-                        Planning de l'équipe
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="parametres-espace-patient.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
-                        Paramètres espace patient
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="gestion-des-acces.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-key"></i></span>
-                        Gestion des accès
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="dossiers-medicaux.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-                        Dossiers médicaux
-                    </a>
-                </div>
-            </div>
-        </li>
-
-
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-config-toggle">
-                Configuration
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-config-content">
-                <div class="sidebar-item">
-                    <a href="mon-profil.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
-                        Mon profil
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="informations-cabinet.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
-                        Informations cabinet
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="notifications.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
-                        Notifications
-                    </a>
-                </div>
-            </div>
-        </li>
-    </ul>
-    <div class="user-section">
-        <div class="user-info">
-            <div class="user-avatar"></div>
-            <div class="user-details">
-                <div class="user-name"></div>
-                <div class="user-role">Assistante</div>
-            </div>
-        </div>
-        <button class="theme-toggle" id="themeToggle">
-            <i class="fas fa-moon"></i>
-            <span>Mode Sombre</span>
-        </button>
-        <button class="logout-btn" id="logoutBtn">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Déconnexion</span>
-        </button>
-    </div>
-</div>
-
-            
             <div class="cabinet-name">DIKRA centre Dentaire</div>
             <div class="cabinet-subtitle">Casablanca, Maroc</div>
         </div>
         <!-- Navigation Menu -->
         <ul class="sidebar-menu">
-            <!-- DASHBOARD -->
             <li class="sidebar-item">
                 <a href="dashboard.html" class="sidebar-link">
                     <span class="sidebar-icon"><i class="fas fa-home"></i></span>
@@ -796,7 +513,6 @@
                 </a>
             </li>
 
-            <!-- RENDEZ-VOUS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-rdv-toggle">
                     Rendez-vous
@@ -842,7 +558,6 @@
                 </div>
             </li>
 
-            <!-- PATIENTS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-patients-toggle">
                     Patients
@@ -864,7 +579,6 @@
                 </div>
             </li>
 
-            <!-- CABINET -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-cabinet-toggle">
                     Cabinet
@@ -880,35 +594,6 @@
                 </div>
             </li>
 
-            <!-- COMPTABILITÉ -->
-            <li class="sidebar-section">
-                <div class="section-header clickable" id="section-compta-toggle">
-                    Comptabilité
-                    <i class="fas fa-chevron-down section-chevron"></i>
-                </div>
-                <div class="section-content" id="section-compta-content">
-                    <div class="sidebar-item">
-                        <a href="comptabilite-generale.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
-                            Comptabilité générale
-                        </a>
-                    </div>
-                    <div class="sidebar-item">
-                        <a href="paiements-recus.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
-                            Paiements reçus
-                        </a>
-                    </div>
-                    <div class="sidebar-item">
-                        <a href="charges-depenses.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-                            Charges & dépenses
-                        </a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- COMMUNICATION -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-com-toggle">
                     Communication
@@ -944,7 +629,6 @@
                 </div>
             </li>
 
-            <!-- ORGANISATION -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-org-toggle">
                     Organisation
@@ -972,7 +656,6 @@
                 </div>
             </li>
 
-            <!-- GESTION DES STOCKS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-stock-toggle">
                     Gestion des stocks
@@ -1000,7 +683,6 @@
                 </div>
             </li>
 
-            <!-- DOCUMENTS & FORMULAIRES -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-docs-toggle">
                     Documents & formulaires
@@ -1040,7 +722,6 @@
                 </div>
             </li>
 
-            <!-- UTILISATEURS -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-users-toggle">
                     Utilisateurs
@@ -1092,47 +773,6 @@
                 </div>
             </li>
 
-            <!-- SITE WEB -->
-            <li class="sidebar-section">
-                <div class="section-header clickable" id="section-website-toggle">
-                    Site web
-                    <i class="fas fa-chevron-down section-chevron"></i>
-                </div>
-                <div class="section-content" id="section-website-content">
-                    <div class="sidebar-item">
-                        <a href="contenu-articles.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
-                            Contenu & articles
-                        </a>
-                    </div>
-                    <div class="sidebar-item">
-                        <a href="design-theme.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
-                            Design & thème
-                        </a>
-                    </div>
-                    <div class="sidebar-item">
-                        <a href="referencement-seo.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-search"></i></span>
-                            Référencement (SEO)
-                        </a>
-                    </div>
-                    <div class="sidebar-item">
-                        <a href="formulaire-contact.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
-                            Formulaire de contact
-                        </a>
-                    </div>
-                    <div class="sidebar-item">
-                        <a href="statistiques-visite.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
-                            Statistiques de visite
-                        </a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- CONFIGURATION -->
             <li class="sidebar-section">
                 <div class="section-header clickable" id="section-config-toggle">
                     Configuration
@@ -1152,12 +792,6 @@
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="parametres-facturation.html" class="sidebar-link">
-                            <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
-                            Paramètres de facturation
-                        </a>
-                    </div>
-                    <div class="sidebar-item">
                         <a href="notifications.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
                             Notifications
@@ -1172,7 +806,7 @@
                 <div class="user-avatar"></div>
                 <div class="user-details">
                     <div class="user-name"></div>
-                    <div class="user-role"></div>
+                    <div class="user-role">Assistante</div>
                 </div>
             </div>
             <button class="theme-toggle" id="themeToggle">
@@ -1194,74 +828,89 @@
                 <p class="page-subtitle">Gestion des membres de l'équipe du cabinet</p>
             </div>
             <div class="content-actions">
-                <button class="btn btn-primary" id="addMemberBtn">
+                <button class="btn btn-primary" id="toggleAddForm">
                     <i class="fas fa-plus"></i> Ajouter un membre
                 </button>
             </div>
         </div>
 
-        <!-- Statistics Cards -->
-        <div class="content-container">
-            <div class="content-body">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                    <div style="text-align: center; padding: 1rem; background: var(--section-bg); border-radius: var(--border-radius);">
-                        <div style="font-size: 2rem; font-weight: 700; color: var(--medical-blue); margin-bottom: 0.5rem;" id="totalStaff">0</div>
-                        <div style="color: var(--text-secondary); font-size: 0.875rem;">Total personnel</div>
-                    </div>
-                    <div style="text-align: center; padding: 1rem; background: var(--section-bg); border-radius: var(--border-radius);">
-                        <div style="font-size: 2rem; font-weight: 700; color: var(--success); margin-bottom: 0.5rem;" id="activeStaff">0</div>
-                        <div style="color: var(--text-secondary); font-size: 0.875rem;">Actifs</div>
-                    </div>
-                    <div style="text-align: center; padding: 1rem; background: var(--section-bg); border-radius: var(--border-radius);">
-                        <div style="font-size: 2rem; font-weight: 700; color: var(--warning); margin-bottom: 0.5rem;" id="onLeaveStaff">0</div>
-                        <div style="color: var(--text-secondary); font-size: 0.875rem;">En congé</div>
-                    </div>
-                    <div style="text-align: center; padding: 1rem; background: var(--section-bg); border-radius: var(--border-radius);">
-                        <div style="font-size: 2rem; font-weight: 700; color: var(--danger); margin-bottom: 0.5rem;" id="inactiveStaff">0</div>
-                        <div style="color: var(--text-secondary); font-size: 0.875rem;">Inactifs</div>
-                    </div>
-                </div>
+        <!-- Add Member Form (Collapsible) -->
+        <div class="collapsible-section">
+            <div class="collapsible-header" id="addFormHeader">
+                <span><i class="fas fa-user-plus"></i> Ajouter un nouveau membre</span>
+                <i class="fas fa-chevron-down"></i>
             </div>
-        </div>
-
-        <!-- Filters -->
-        <div class="content-container">
-            <div class="content-header-section">
-                <h2 class="content-title">Filtres</h2>
-            </div>
-            <div class="content-body">
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 200px;">
-                        <input type="text" id="searchInput" placeholder="Rechercher par nom..." class="form-control">
+            <div class="collapsible-content" id="addFormContent">
+                <form id="addMemberForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Prénom *</label>
+                            <input type="text" id="prenom" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nom *</label>
+                            <input type="text" id="nom" class="form-control" required>
+                        </div>
                     </div>
-                    <div style="flex: 1; min-width: 150px;">
-                        <select id="filterRole" class="form-control">
-                            <option value="">Tous rôles</option>
-                            <option value=""></option>
-                            <option value="assistante-dentaire">Assistante dentaire</option>
-                            <option value="secretaire">Secrétaire</option>
-                            <option value="technicien">Technicien</option>
-                            <option value="autre">Autre</option>
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Téléphone *</label>
+                            <input type="tel" id="telephone" class="form-control" required>
+                        </div>
                     </div>
-                    <div style="flex: 1; min-width: 150px;">
-                        <select id="filterStatus" class="form-control">
-                            <option value="">Tous statuts</option>
-                            <option value="actif">Actif</option>
-                            <option value="inactif">Inactif</option>
-                            <option value="conge">En congé</option>
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Rôle *</label>
+                            <select id="role" class="form-control" required>
+                                <option value="">Sélectionner un rôle</option>
+                                <option value="assistante-dentaire">Assistante dentaire</option>
+                                <option value="secretaire">Secrétaire</option>
+                                <option value="technicien">Technicien</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Département *</label>
+                            <select id="departement" class="form-control" required>
+                                <option value="">Sélectionner un département</option>
+                                <option value="chirurgie">Chirurgie</option>
+                                <option value="prothese">Prothèse</option>
+                                <option value="administration">Administration</option>
+                                <option value="technique">Technique</option>
+                            </select>
+                        </div>
                     </div>
-                    <div style="flex: 1; min-width: 150px;">
-                        <select id="filterDepartment" class="form-control">
-                            <option value="">Tous départements</option>
-                            <option value="chirurgie">Chirurgie</option>
-                            <option value="prothese">Prothèse</option>
-                            <option value="administration">Administration</option>
-                            <option value="technique">Technique</option>
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Date d'embauche *</label>
+                            <input type="date" id="dateEmbauche" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Salaire mensuel (DH)</label>
+                            <input type="number" id="salaire" class="form-control" placeholder="0" min="0">
+                        </div>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label class="form-label">Adresse</label>
+                        <input type="text" id="adresse" class="form-control" placeholder="Adresse complète">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notes</label>
+                        <textarea id="notes" class="form-control" rows="3" placeholder="Informations supplémentaires..."></textarea>
+                    </div>
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1rem;">
+                        <button type="button" class="btn btn-secondary" id="resetForm">
+                            <i class="fas fa-undo"></i> Réinitialiser
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Enregistrer
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -1274,13 +923,12 @@
                 <div class="empty-state" id="emptyState">
                     <i class="fas fa-users"></i>
                     <h3>Aucun membre du personnel</h3>
-                    <p>Il n'y a pas encore de membres enregistrés. Cliquez sur "Ajouter un membre" pour commencer.</p>
+                    <p>Il n'y a pas encore de membres enregistrés. Utilisez le formulaire ci-dessus pour ajouter des membres.</p>
                 </div>
                 <div class="table-responsive" id="staffTable" style="display: none;">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Photo</th>
                                 <th>Nom complet</th>
                                 <th>Rôle</th>
                                 <th>Département</th>
@@ -1319,15 +967,12 @@
                 <button class="btn btn-danger" id="deleteBtn">
                     <i class="fas fa-trash"></i> Supprimer
                 </button>
-                <button class="btn btn-success" id="activateBtn" style="display: none;">
-                    <i class="fas fa-check"></i> Activer
-                </button>
-                <button class="btn btn-warning" id="deactivateBtn" style="display: none;">
-                    <i class="fas fa-pause"></i> Désactiver
-                </button>
             </div>
         </div>
     </div>
+
+    <!-- DataManager Script -->
+    <script src="../../../dataManager.js"></script>
 
     <!-- Common JavaScript -->
     <script>
@@ -1410,39 +1055,46 @@
         document.getElementById('section-users-content').classList.remove('collapsed');
         document.getElementById('section-users-toggle').classList.remove('collapsed');
 
+        // Collapsible form
+        const addFormHeader = document.getElementById('addFormHeader');
+        const addFormContent = document.getElementById('addFormContent');
+        const toggleAddForm = document.getElementById('toggleAddForm');
+
+        function toggleForm() {
+            if (addFormContent.style.display === 'block') {
+                addFormContent.style.display = 'none';
+                addFormHeader.querySelector('i').className = 'fas fa-chevron-down';
+            } else {
+                addFormContent.style.display = 'block';
+                addFormHeader.querySelector('i').className = 'fas fa-chevron-up';
+            }
+        }
+
+        addFormHeader.addEventListener('click', toggleForm);
+        toggleAddForm.addEventListener('click', toggleForm);
+
         // Staff management
-        let staff = JSON.parse(localStorage.getItem('staff')) || [];
+        let staff = [];
 
-        // Remove the specified personnel
-        staff = staff.filter(member => {
-            const fullName = `${member.prenom} ${member.nom}`;
-            return !['Fatima Alaoui', 'Ahmed Bennani', 'Leila Tazi', 'Karim El Amrani', 'Sofia Benjelloun'].includes(fullName);
-        });
-        localStorage.setItem('staff', JSON.stringify(staff));
+        function loadStaff() {
+            staff = dataManager.getAll('personnel');
+            renderStaffTable();
+            updateStatistics();
+        }
 
-        const addMemberBtn = document.getElementById('addMemberBtn');
+        const addMemberForm = document.getElementById('addMemberForm');
         const staffTable = document.getElementById('staffTable');
         const staffTableBody = document.getElementById('staffTableBody');
         const emptyState = document.getElementById('emptyState');
-        const searchInput = document.getElementById('searchInput');
-        const filterRole = document.getElementById('filterRole');
-        const filterStatus = document.getElementById('filterStatus');
-        const filterDepartment = document.getElementById('filterDepartment');
         const staffModal = document.getElementById('staffModal');
         const modalClose = document.getElementById('modalClose');
         const modalDetails = document.getElementById('modalDetails');
         const editBtn = document.getElementById('editBtn');
         const deleteBtn = document.getElementById('deleteBtn');
-        const activateBtn = document.getElementById('activateBtn');
-        const deactivateBtn = document.getElementById('deactivateBtn');
-        const totalStaff = document.getElementById('totalStaff');
-        const activeStaff = document.getElementById('activeStaff');
-        const onLeaveStaff = document.getElementById('onLeaveStaff');
-        const inactiveStaff = document.getElementById('inactiveStaff');
+        const resetForm = document.getElementById('resetForm');
 
         function getRoleLabel(role) {
             const roles = {
-                '': '',
                 'assistante-dentaire': 'Assistante dentaire',
                 'secretaire': 'Secrétaire',
                 'technicien': 'Technicien',
@@ -1470,34 +1122,8 @@
             return badges[status] || status;
         }
 
-        function getInitials(nom, prenom) {
-            return (prenom.charAt(0) + nom.charAt(0)).toUpperCase();
-        }
-
-        function updateStatistics() {
-            const total = staff.length;
-            const active = staff.filter(s => s.statut === 'actif').length;
-            const onLeave = staff.filter(s => s.statut === 'conge').length;
-            const inactive = staff.filter(s => s.statut === 'inactif').length;
-
-            totalStaff.textContent = total;
-            activeStaff.textContent = active;
-            onLeaveStaff.textContent = onLeave;
-            inactiveStaff.textContent = inactive;
-        }
-
         function renderStaffTable() {
-            const filteredStaff = staff.filter(member => {
-                const fullName = `${member.prenom} ${member.nom}`.toLowerCase();
-                const matchesSearch = fullName.includes(searchInput.value.toLowerCase());
-                const matchesRole = !filterRole.value || member.role === filterRole.value;
-                const matchesStatus = !filterStatus.value || member.statut === filterStatus.value;
-                const matchesDepartment = !filterDepartment.value || member.departement === filterDepartment.value;
-
-                return matchesSearch && matchesRole && matchesStatus && matchesDepartment;
-            });
-
-            if (filteredStaff.length === 0) {
+            if (staff.length === 0) {
                 staffTable.style.display = 'none';
                 emptyState.style.display = 'block';
                 return;
@@ -1506,91 +1132,71 @@
             staffTable.style.display = 'block';
             emptyState.style.display = 'none';
 
-            staffTableBody.innerHTML = filteredStaff.map((member, index) => {
+            staffTableBody.innerHTML = staff.map((member) => {
                 const roleLabel = getRoleLabel(member.role);
-                const deptLabel = getDepartmentLabel(member.departement);
-                const statusBadge = getStatusBadge(member.statut);
-                const hireDate = new Date(member.date_embauche);
-                const initials = getInitials(member.nom, member.prenom);
+                const deptLabel = getDepartmentLabel(member.department || '');
+                const statusBadge = getStatusBadge(member.status || 'actif');
+                const hireDate = member.hireDate ? new Date(member.hireDate) : new Date();
+                const fullName = `${member.firstName} ${member.lastName}`;
 
                 return `
                     <tr>
-                        <td><div class="avatar">${initials}</div></td>
-                        <td>${member.prenom} ${member.nom}</td>
+                        <td>${fullName}</td>
                         <td><span class="role-badge">${roleLabel}</span></td>
                         <td>${deptLabel}</td>
                         <td>${member.email}</td>
-                        <td>${member.telephone}</td>
+                        <td>${member.phone}</td>
                         <td>${statusBadge}</td>
                         <td>${hireDate.toLocaleDateString('fr-FR')}</td>
                         <td>
-                            <button class="btn btn-small btn-primary" onclick="viewStaff(${index})">Voir</button>
-                            <button class="btn btn-small btn-danger" onclick="deleteStaff(${index})">Supprimer</button>
+                            <button class="btn btn-small btn-primary" onclick="viewStaff('${member.id}')">Voir</button>
+                            <button class="btn btn-small btn-danger" onclick="deleteStaff('${member.id}')">Supprimer</button>
                         </td>
                     </tr>
                 `;
             }).join('');
         }
 
-        function viewStaff(index) {
-            const member = staff[index];
+        function viewStaff(id) {
+            const member = staff.find(m => m.id === id);
+            if (!member) return;
             const roleLabel = getRoleLabel(member.role);
-            const deptLabel = getDepartmentLabel(member.departement);
-            const statusBadge = getStatusBadge(member.statut);
-            const hireDate = new Date(member.date_embauche);
-            const birthDate = member.date_naissance ? new Date(member.date_naissance) : null;
-            const initials = getInitials(member.nom, member.prenom);
+            const deptLabel = getDepartmentLabel(member.department || '');
+            const statusBadge = getStatusBadge(member.status || 'actif');
+            const hireDate = member.hireDate ? new Date(member.hireDate) : new Date();
+            const birthDate = member.birthDate ? new Date(member.birthDate) : null;
 
             modalDetails.innerHTML = `
                 <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
-                    <div class="avatar" style="width: 60px; height: 60px; font-size: 1.25rem; margin-right: 1rem;">${initials}</div>
+                    <div class="avatar" style="width: 60px; height: 60px; font-size: 1.25rem; margin-right: 1rem;">
+                        ${member.firstName.charAt(0)}${member.lastName.charAt(0)}
+                    </div>
                     <div>
-                        <h3 style="margin: 0; color: var(--text-primary);">${member.prenom} ${member.nom}</h3>
+                        <h3 style="margin: 0; color: var(--text-primary);">${member.firstName} ${member.lastName}</h3>
                         <p style="margin: 0.25rem 0; color: var(--text-secondary);">${roleLabel}</p>
                         ${statusBadge}
                     </div>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
                     <div><strong>Email:</strong> ${member.email}</div>
-                    <div><strong>Téléphone:</strong> ${member.telephone}</div>
+                    <div><strong>Téléphone:</strong> ${member.phone}</div>
                     <div><strong>Département:</strong> ${deptLabel}</div>
                     <div><strong>Date d'embauche:</strong> ${hireDate.toLocaleDateString('fr-FR')}</div>
                     ${birthDate ? `<div><strong>Date de naissance:</strong> ${birthDate.toLocaleDateString('fr-FR')}</div>` : ''}
-                    ${member.numero_ordre ? `<div><strong>N° Ordre:</strong> ${member.numero_ordre}</div>` : ''}
-                    <div><strong>Salaire:</strong> ${member.salaire.toLocaleString('fr-FR')} DH/mois</div>
+                    ${member.numeroOrdre ? `<div><strong>N° Ordre:</strong> ${member.numeroOrdre}</div>` : ''}
+                    <div><strong>Salaire:</strong> ${member.salary ? member.salary.toLocaleString('fr-FR') : 0} DH/mois</div>
                 </div>
-                ${member.specialites && member.specialites.length > 0 ? `<div><strong>Spécialités:</strong> ${member.specialites.join(', ')}</div>` : ''}
-                <div><strong>Adresse:</strong> ${member.adresse}</div>
+                ${member.address ? `<div><strong>Adresse:</strong> ${member.address}</div>` : ''}
                 ${member.notes ? `<div style="margin-top: 1rem;"><strong>Notes:</strong><p style="margin-top: 0.5rem;">${member.notes}</p></div>` : ''}
             `;
 
-            editBtn.onclick = () => editStaff(index);
+            editBtn.onclick = () => editStaff(id);
             deleteBtn.onclick = () => {
                 if (confirm('Êtes-vous sûr de vouloir supprimer ce membre du personnel ?')) {
-                    deleteStaff(index);
+                    deleteStaff(id);
                     staffModal.style.display = 'none';
                 }
             };
-
-            if (member.statut === 'actif') {
-                activateBtn.style.display = 'none';
-                deactivateBtn.style.display = 'inline-flex';
-                deactivateBtn.onclick = () => {
-                    if (confirm('Êtes-vous sûr de vouloir désactiver ce membre ?')) {
-                        toggleStaffStatus(index, 'inactif');
-                        staffModal.style.display = 'none';
-                    }
-                };
-            } else {
-                activateBtn.style.display = 'inline-flex';
-                deactivateBtn.style.display = 'none';
-                activateBtn.onclick = () => {
-                    if (confirm('Êtes-vous sûr de vouloir activer ce membre ?')) {
-                        toggleStaffStatus(index, 'actif');
-                        staffModal.style.display = 'none';
-                    }
-                };
-            }
 
             staffModal.style.display = 'block';
         }
@@ -1599,30 +1205,78 @@
             alert('Fonction de modification à implémenter');
         }
 
-        function deleteStaff(index) {
+        function deleteStaff(id) {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce membre du personnel ?')) {
-                staff.splice(index, 1);
-                localStorage.setItem('staff', JSON.stringify(staff));
-                renderStaffTable();
-                updateStatistics();
+                try {
+                    dataManager.delete('personnel', id);
+                    loadStaff();
+                } catch (error) {
+                    alert('Erreur: ' + error.message);
+                }
             }
         }
 
-        function toggleStaffStatus(index, newStatus) {
-            staff[index].statut = newStatus;
-            localStorage.setItem('staff', JSON.stringify(staff));
-            renderStaffTable();
-            updateStatistics();
-        }
+        // Form submission
+        addMemberForm.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-        // Event listeners
-        addMemberBtn.addEventListener('click', () => {
-            window.location.href = 'ajouter-un-membre.html';
+            const firstName = document.getElementById('prenom').value.trim();
+            const lastName = document.getElementById('nom').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('telephone').value.trim();
+            const role = document.getElementById('role').value;
+            const department = document.getElementById('departement').value;
+            const hireDate = document.getElementById('dateEmbauche').value;
+            const salary = parseFloat(document.getElementById('salaire').value) || 0;
+            const address = document.getElementById('adresse').value.trim();
+            const notes = document.getElementById('notes').value.trim();
+
+            // Validation
+            if (!firstName || !lastName || !email || !phone || !role || !department || !hireDate) {
+                alert('Veuillez remplir tous les champs obligatoires.');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Veuillez entrer une adresse email valide.');
+                return;
+            }
+
+            try {
+                dataManager.createPersonnel({
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    role,
+                    department,
+                    hireDate,
+                    status: 'actif',
+                    salary,
+                    address,
+                    notes
+                });
+
+                alert('Membre ajouté avec succès !');
+                addMemberForm.reset();
+                document.getElementById('dateEmbauche').valueAsDate = new Date();
+                loadStaff();
+            } catch (error) {
+                alert('Erreur: ' + error.message);
+            }
         });
-        searchInput.addEventListener('input', renderStaffTable);
-        filterRole.addEventListener('change', renderStaffTable);
-        filterStatus.addEventListener('change', renderStaffTable);
-        filterDepartment.addEventListener('change', renderStaffTable);
+
+        // Reset form
+        resetForm.addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir réinitialiser le formulaire ?')) {
+                addMemberForm.reset();
+                document.getElementById('dateEmbauche').valueAsDate = new Date();
+            }
+        });
+
+        // Modal close
         modalClose.addEventListener('click', () => staffModal.style.display = 'none');
         window.addEventListener('click', (event) => {
             if (event.target === staffModal) {
@@ -1630,12 +1284,18 @@
             }
         });
 
+        // Set default date for hire date
+        document.getElementById('dateEmbauche').valueAsDate = new Date();
+
+        // Real-time sync
+        dataManager.onDataSync((detail) => {
+            if (detail.entity === 'personnel') {
+                loadStaff();
+            }
+        });
+
         // Initial render
-        renderStaffTable();
-        updateStatistics();
+        loadStaff();
     </script>
 </body>
 </html>
-
-
-

@@ -575,7 +575,7 @@
 <div class="main-content">
   <div class="content-header">
     <h1 class="page-title">Liste des Rendez-vous</h1>
-    <button class="btn btn-primary">
+    <button class="btn btn-primary" onclick="showForm()">
       <i class="fas fa-plus"></i>
       Nouveau Rendez-vous
     </button>
@@ -638,6 +638,7 @@
       <h2 class="appointments-title">Rendez-vous Programmés</h2>
       <div>
         <button class="btn" onclick="showForm()" style="font-size: 1.1rem; padding: 0.75rem 1.5rem; background: #059669; color: white; border: none;"><i class="fas fa-plus"></i> Ajouter un Rendez-vous</button>
+        <button class="btn" onclick="loadAppointments()" style="font-size: 1.1rem; padding: 0.75rem 1.5rem; background: #3b82f6; color: white; border: none; margin-left: 0.5rem;"><i class="fas fa-refresh"></i> Actualiser</button>
         <input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-left: 0.5rem;">
         <select id="statusFilter" title="Filtrer par statut" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-left: 0.5rem;">
           <option value="">Tous les statuts</option>
@@ -666,6 +667,163 @@
     </table>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadAppointments();
+
+    // Function to load appointments from localStorage
+    function loadAppointments() {
+        const tbody = document.getElementById('appointmentsTablebody');
+        const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+        tbody.innerHTML = '';
+
+        appointments.forEach(appointment => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${appointment.date}</td>
+                <td>${appointment.time}</td>
+                <td>${appointment.patient}</td>
+                <td>${appointment.doctor}</td>
+                <td>${appointment.careType}</td>
+                <td>${appointment.mode}</td>
+                <td><span class="status-badge status-${getStatusClass(appointment.status)}">${appointment.status}</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-small btn-primary" onclick="editAppointment(${appointment.id})">Modifier</button>
+                    <button class="btn btn-small btn-danger" onclick="deleteAppointment(${appointment.id})">Supprimer</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+    window.loadAppointments = loadAppointments;
+
+    // Function to get status class
+    function getStatusClass(status) {
+        switch(status) {
+            case 'Confirmé': return 'confirmed';
+            case 'En attente': return 'pending';
+            case 'Annulé': return 'cancelled';
+            default: return 'pending';
+        }
+    }
+
+    // Function to delete appointment
+    window.deleteAppointment = function(id) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce rendez-vous ?')) {
+            let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            appointments = appointments.filter(app => app.id !== id);
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+            loadAppointments();
+        }
+    };
+
+    // Function to show add form
+    window.showForm = function() {
+        document.getElementById('addForm').style.display = 'block';
+    };
+
+    // Function to hide add form
+    window.hideForm = function() {
+        document.getElementById('addForm').style.display = 'none';
+        document.getElementById('appointmentForm').reset();
+    };
+
+    // Function to add appointment from form
+    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const appointment = {
+            id: Date.now(),
+            date: formData.get('date'),
+            time: formData.get('time'),
+            patient: formData.get('patient'),
+            doctor: formData.get('doctor'),
+            careType: formData.get('treatment'),
+            mode: formData.get('mode'),
+            status: formData.get('status')
+        };
+        let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+        appointments.push(appointment);
+        localStorage.setItem('appointments', JSON.stringify(appointments));
+        loadAppointments();
+        hideForm();
+    });
+
+    // Function to edit appointment (placeholder)
+    window.editAppointment = function(id) {
+        alert('Fonction de modification à implémenter');
+    };
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', filterAppointments);
+
+    // Status filter
+    document.getElementById('statusFilter').addEventListener('change', filterAppointments);
+
+    function filterAppointments() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value;
+        const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+        const tbody = document.getElementById('appointmentsTablebody');
+        tbody.innerHTML = '';
+
+        const filtered = appointments.filter(app => {
+            const matchesSearch = app.patient.toLowerCase().includes(searchTerm) ||
+                                  app.doctor.toLowerCase().includes(searchTerm) ||
+                                  app.careType.toLowerCase().includes(searchTerm);
+            const matchesStatus = !statusFilter || app.status === statusFilter;
+            return matchesSearch && matchesStatus;
+        });
+
+        filtered.forEach(appointment => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${appointment.date}</td>
+                <td>${appointment.time}</td>
+                <td>${appointment.patient}</td>
+                <td>${appointment.doctor}</td>
+                <td>${appointment.careType}</td>
+                <td>${appointment.mode}</td>
+                <td><span class="status-badge status-${getStatusClass(appointment.status)}">${appointment.status}</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-small btn-primary" onclick="editAppointment(${appointment.id})">Modifier</button>
+                    <button class="btn btn-small btn-danger" onclick="deleteAppointment(${appointment.id})">Supprimer</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        body.classList.toggle('dark-mode');
+        const icon = themeToggle.querySelector('i');
+        const span = themeToggle.querySelector('span');
+        if (body.classList.contains('dark-mode')) {
+            icon.className = 'fas fa-sun';
+            span.textContent = 'Mode Clair';
+        } else {
+            icon.className = 'fas fa-moon';
+            span.textContent = 'Mode Sombre';
+        }
+    });
+
+    // Collapsible sections
+    const toggles = document.querySelectorAll('.section-header.clickable');
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            const chevron = this.querySelector('.section-chevron');
+            content.classList.toggle('collapsed');
+            this.classList.toggle('collapsed');
+        });
+    });
+});
+</script>
 </body>
 </html>
 

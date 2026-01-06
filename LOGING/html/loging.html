@@ -81,8 +81,41 @@
             <a href="reset-password.html" style="color: #667eea; text-decoration: none;">Mot de passe oublié ?</a>
         </p>
     </div>
-    
-    
+
+    <script src="../../../dataManager.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error');
+
+            // Clear previous error
+            errorDiv.textContent = '';
+
+            // Authenticate user
+            console.log('Attempting login with:', email, password);
+            const user = dataManager.authenticatePersonnel(email, password);
+            console.log('User found:', user);
+
+            if (user) {
+                // Store user session (simple implementation)
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+
+                // Redirect based on role
+                if (user.role === 'admin') {
+                    window.location.href = '../../admin/html/dashboard.html';
+                } else if (user.role === 'assistant') {
+                    window.location.href = '../../assistante/html/dashboard.html';
+                } else {
+                    errorDiv.textContent = 'Rôle utilisateur non reconnu.';
+                }
+            } else {
+                errorDiv.textContent = 'Email ou mot de passe incorrect.';
+            }
+        });
+    </script>
 </body>
 </html>
 

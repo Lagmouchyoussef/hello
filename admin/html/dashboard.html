@@ -1311,6 +1311,15 @@
 
 
 
+<script src="../../../dataManager.js"></script>
+<script>
+// Check authentication
+const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+if (!currentUser || currentUser.role !== 'admin') {
+    alert('Accès non autorisé. Veuillez vous connecter.');
+    window.location.href = '../../LOGING/html/loging.html';
+}
+</script>
 <script>
 // Theme Toggle
 const themeToggle = document.getElementById('themeToggle');
@@ -1345,7 +1354,9 @@ themeToggle.addEventListener('click', () => {
 const logoutBtn = document.getElementById('logoutBtn');
 logoutBtn.addEventListener('click', () => {
   if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+    sessionStorage.removeItem('currentUser');
     alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
+    window.location.href = '../../LOGING/html/loging.html';
   }
 });
 // Navigation link functionality
@@ -1465,11 +1476,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Dashboard functionality
 document.addEventListener('DOMContentLoaded', function() {
-  // Populate KPI cards with sample data
+  // Populate KPI cards with real data
   updateKPIs();
 
   // Initialize charts
   initializeCharts();
+
+  // Set up data synchronization listeners
+  setupDataSync();
 
   // Export functionality
   document.querySelector('.btn-primary').addEventListener('click', function() {
@@ -1515,24 +1529,35 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateKPIs() {
-  // Sample data - in a real app, this would come from an API
-  const data = {
-    revenue: 0,
-    patients: 0,
-    appointments: 0,
-    staff: 0
-  };
+  // Get real data from dataManager
+  const patients = dataManager.getAll('patients');
+  const appointments = dataManager.getAll('appointments');
+  const payments = dataManager.getAll('payments');
+  const personnel = dataManager.getAll('personnel');
 
-  document.getElementById('totalRevenue').textContent = data.revenue.toLocaleString() + ' DH';
-  document.getElementById('activePatients').textContent = data.patients.toLocaleString();
-  document.getElementById('totalAppointments').textContent = data.appointments.toLocaleString();
-  document.getElementById('activeStaff').textContent = data.staff.toLocaleString();
+  // Calculate metrics
+  const totalRevenue = payments
+    .filter(p => p.type === 'received')
+    .reduce((sum, p) => sum + (p.amount || 0), 0);
 
-  // Update change indicators with sample data
-  updateKPIChange('totalRevenue', 'Aucune donnée', 'neutral');
-  updateKPIChange('activePatients', 'Aucune donnée', 'neutral');
-  updateKPIChange('totalAppointments', 'Aucune donnée', 'neutral');
-  updateKPIChange('activeStaff', 'Aucune donnée', 'neutral');
+  const activePatients = patients.length;
+  const totalAppointments = appointments.length;
+  const activeStaff = personnel.length;
+
+  // Update KPI displays
+  document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString() + ' DH';
+  document.getElementById('activePatients').textContent = activePatients.toLocaleString();
+  document.getElementById('totalAppointments').textContent = totalAppointments.toLocaleString();
+  document.getElementById('activeStaff').textContent = activeStaff.toLocaleString();
+
+  // Update today's appointments table
+  updateTodaysAppointments();
+
+  // Update change indicators (simplified - in real app would compare with previous period)
+  updateKPIChange('totalRevenue', 'Synchronisé', 'neutral');
+  updateKPIChange('activePatients', 'Synchronisé', 'neutral');
+  updateKPIChange('totalAppointments', 'Synchronisé', 'neutral');
+  updateKPIChange('activeStaff', 'Synchronisé', 'neutral');
 }
 
 function updateKPIChange(elementId, change, type) {
@@ -1610,6 +1635,59 @@ function initializeCharts() {
       }
     }
   });
+}
+
+function setupDataSync() {
+  // Listen for data synchronization events
+  dataManager.onDataSync((detail) => {
+    console.log('Data sync event received:', detail);
+    // Update KPIs when data changes
+    updateKPIs();
+  });
+
+  // Listen for storage changes (cross-tab sync)
+  dataManager.onStorageChange((key, newValue) => {
+    console.log('Storage change detected:', key);
+    // Update KPIs when localStorage changes from another tab
+    updateKPIs();
+  });
+}
+
+function updateTodaysAppointments() {
+  const today = new Date().toISOString().split('T')[0];
+  const appointments = dataManager.getAll('appointments')
+    .filter(app => app.date === today)
+    .sort((a, b) => a.time.localeCompare(b.time));
+
+  const tbody = document.querySelector('.dashboard-table tbody');
+
+  if (appointments.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-gray); padding: 2rem;"><i class="fas fa-calendar-times me-2"></i>Aucun rendez-vous prévu pour aujourd\'hui</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = appointments.map(app => {
+    const patient = dataManager.getById('patients', app.patientId);
+    const patientName = patient ? `${patient.firstName} ${patient.lastName}` : 'Patient inconnu';
+
+    return `
+      <tr>
+        <td>${patientName}</td>
+        <td>${app.treatment || 'Non spécifié'}</td>
+        <td>${app.time}</td>
+        <td>${app.doctor || 'Non assigné'}</td>
+        <td><span class="status-badge status-${app.status || 'pending'}">${app.status || 'En attente'}</span></td>
+        <td>
+          <button class="btn btn-small btn-primary" onclick="viewAppointment('${app.id}')">Voir</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function viewAppointment(appointmentId) {
+  // Placeholder for viewing appointment details
+  alert('Fonctionnalité de visualisation des rendez-vous à implémenter');
 }
 </script>
 </body>

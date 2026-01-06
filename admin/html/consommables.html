@@ -900,6 +900,9 @@
         </div>
     </div>
 
+    <!-- DataManager Script -->
+    <script src="../../dataManager.js"></script>
+
     <!-- Common JavaScript -->
     <script>
         // Theme Toggle
@@ -982,7 +985,13 @@
         document.getElementById('section-stock-toggle').classList.remove('collapsed');
 
         // Consumables management
-        let consumables = JSON.parse(localStorage.getItem('consumables')) || [];
+        let consumables = [];
+        let editingId = null;
+
+        function loadConsumables() {
+            consumables = dataManager.getInventoryByCategory('consumables');
+            renderConsumables();
+        }
 
         const showFormBtn = document.getElementById('showFormBtn');
         const hideFormBtn = document.getElementById('hideFormBtn');
@@ -1003,6 +1012,8 @@
             addForm.style.display = 'none';
             showFormBtn.style.display = 'inline-flex';
             consumableForm.reset();
+            editingId = null;
+            consumableForm.onsubmit = addConsumable;
         }
 
         function getStockStatus(quantite, seuilMin) {
@@ -1023,10 +1034,10 @@
 
         function renderConsumables() {
             const filteredConsumables = consumables.filter(consumable => {
-                const matchesSearch = consumable.nom_consommable.toLowerCase().includes(searchInput.value.toLowerCase()) ||
-                                    consumable.type_consommable.toLowerCase().includes(searchInput.value.toLowerCase());
-                const stockStatus = getStockStatus(consumable.quantite, consumable.seuil_min);
-                const expiryStatus = getExpiryStatus(consumable.date_expiration);
+                const matchesSearch = (consumable.name || '').toLowerCase().includes(searchInput.value.toLowerCase()) ||
+                                    (consumable.type || '').toLowerCase().includes(searchInput.value.toLowerCase());
+                const stockStatus = getStockStatus(consumable.quantity, consumable.threshold || 0);
+                const expiryStatus = consumable.expiryDate ? getExpiryStatus(consumable.expiryDate) : null;
                 let matchesStatus = true;
 
                 if (filterStatus.value) {
@@ -1049,9 +1060,9 @@
             consumablesTable.style.display = 'table';
             emptyState.style.display = 'none';
 
-            consumablesTablebody.innerHTML = filteredConsumables.map((consumable, index) => {
-                const stockStatus = getStockStatus(consumable.quantite, consumable.seuil_min);
-                const expiryStatus = getExpiryStatus(consumable.date_expiration);
+            consumablesTablebody.innerHTML = filteredConsumables.map((consumable) => {
+                const stockStatus = getStockStatus(consumable.quantity, consumable.threshold || 0);
+                const expiryStatus = consumable.expiryDate ? getExpiryStatus(consumable.expiryDate) : null;
 
                 let statusText = '';
                 let statusClass = '';
@@ -1075,17 +1086,17 @@
 
                 return `
                     <tr>
-                        <td>${consumable.nom_consommable}</td>
-                        <td>${consumable.type_consommable}</td>
-                        <td>${consumable.quantite}</td>
-                        <td>${consumable.seuil_min}</td>
-                        <td>${consumable.fournisseur}</td>
-                        <td>${new Date(consumable.date_achat).toLocaleDateString('fr-FR')}</td>
-                        <td>${new Date(consumable.date_expiration).toLocaleDateString('fr-FR')}</td>
+                        <td>${consumable.name || ''}</td>
+                        <td>${consumable.type || ''}</td>
+                        <td>${consumable.quantity}</td>
+                        <td>${consumable.threshold || 0}</td>
+                        <td>${consumable.supplier || ''}</td>
+                        <td>${consumable.purchaseDate ? new Date(consumable.purchaseDate).toLocaleDateString('fr-FR') : ''}</td>
+                        <td>${consumable.expiryDate ? new Date(consumable.expiryDate).toLocaleDateString('fr-FR') : ''}</td>
                         <td><span class="stock-status ${statusClass}">${statusText}</span></td>
                         <td>
-                            <button class="btn btn-small btn-primary" onclick="editConsumable(${index})">Modifier</button>
-                            <button class="btn btn-small btn-danger" onclick="deleteConsumable(${index})">Supprimer</button>
+                            <button class="btn btn-small btn-primary" onclick="editConsumable('${consumable.id}')">Modifier</button>
+                            <button class="btn btn-small btn-danger" onclick="deleteConsumable('${consumable.id}')">Supprimer</button>
                         </td>
                     </tr>
                 `;
@@ -1094,32 +1105,98 @@
 
         function addConsumable(event) {
             event.preventDefault();
-            const nom_consommable = document.getElementById('nom_consommable').value;
-            const type_consommable = document.getElementById('type_consommable').value;
-            const quantite = parseInt(document.getElementById('quantite').value);
-            const seuil_min = parseInt(document.getElementById('seuil_min').value);
-            const fournisseur = document.getElementById('fournisseur').value;
-            const date_achat = document.getElementById('date_achat').value;
-            const date_expiration = document.getElementById('date_expiration').value;
+            const name = document.getElementById('nom_consommable').value;
+            const type = document.getElementById('type_consommable').value;
+            const quantity = parseInt(document.getElementById('quantite').value);
+            const threshold = parseInt(document.getElementById('seuil_min').value);
+            const supplier = document.getElementById('fournisseur').value;
+            const purchaseDate = document.getElementById('date_achat').value;
+            const expiryDate = document.getElementById('date_expiration').value;
             const description = document.getElementById('description').value;
 
-            consumables.push({ nom_consommable, type_consommable, quantite, seuil_min, fournisseur, date_achat, date_expiration, description });
-            localStorage.setItem('consumables', JSON.stringify(consumables));
-            renderConsumables();
-            hideForm();
+            try {
+                const newConsumable = dataManager.createInventory({
+                    name,
+                    category: 'consumables',
+                    quantity,
+                    unitPrice: 0, // not used
+                    type,
+                    threshold,
+                    supplier,
+                    purchaseDate,
+                    expiryDate,
+                    description
+                });
+                loadConsumables();
+                hideForm();
+            } catch (error) {
+                alert('Erreur: ' + error.message);
+            }
         }
 
-        function editConsumable(index) {
-            // For simplicity, we'll just delete and let user add new
-            deleteConsumable(index);
+        function editConsumable(id) {
+            const consumable = consumables.find(c => c.id === id);
+            if (!consumable) return;
+
+            document.getElementById('nom_consommable').value = consumable.name || '';
+            document.getElementById('type_consommable').value = consumable.type || '';
+            document.getElementById('quantite').value = consumable.quantity;
+            document.getElementById('seuil_min').value = consumable.threshold || 0;
+            document.getElementById('fournisseur').value = consumable.supplier || '';
+            document.getElementById('date_achat').value = consumable.purchaseDate || '';
+            document.getElementById('date_expiration').value = consumable.expiryDate || '';
+            document.getElementById('description').value = consumable.description || '';
+
+            editingId = id;
             showForm();
+
+            // Change form submission to update
+            consumableForm.onsubmit = (e) => {
+                e.preventDefault();
+                updateConsumable();
+            };
         }
 
-        function deleteConsumable(index) {
+        function updateConsumable() {
+            const name = document.getElementById('nom_consommable').value;
+            const type = document.getElementById('type_consommable').value;
+            const quantity = parseInt(document.getElementById('quantite').value);
+            const threshold = parseInt(document.getElementById('seuil_min').value);
+            const supplier = document.getElementById('fournisseur').value;
+            const purchaseDate = document.getElementById('date_achat').value;
+            const expiryDate = document.getElementById('date_expiration').value;
+            const description = document.getElementById('description').value;
+
+            try {
+                dataManager.updateInventory(editingId, {
+                    name,
+                    category: 'consumables',
+                    quantity,
+                    unitPrice: 0,
+                    type,
+                    threshold,
+                    supplier,
+                    purchaseDate,
+                    expiryDate,
+                    description
+                });
+                loadConsumables();
+                hideForm();
+                consumableForm.onsubmit = addConsumable;
+                editingId = null;
+            } catch (error) {
+                alert('Erreur: ' + error.message);
+            }
+        }
+
+        function deleteConsumable(id) {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce consommable ?')) {
-                consumables.splice(index, 1);
-                localStorage.setItem('consumables', JSON.stringify(consumables));
-                renderConsumables();
+                try {
+                    dataManager.delete('inventory', id);
+                    loadConsumables();
+                } catch (error) {
+                    alert('Erreur: ' + error.message);
+                }
             }
         }
 
@@ -1129,8 +1206,15 @@
         searchInput.addEventListener('input', renderConsumables);
         filterStatus.addEventListener('change', renderConsumables);
 
+        // Real-time sync
+        dataManager.onDataSync((detail) => {
+            if (detail.entity === 'inventory') {
+                loadConsumables();
+            }
+        });
+
         // Initial render
-        renderConsumables();
+        loadConsumables();
     </script>
 </body>
 </html>

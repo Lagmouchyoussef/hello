@@ -979,6 +979,91 @@
             </div>
         </div>
     </div>
+
+<script src="../../../dataManager.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadBookings();
+
+    // Function to load bookings
+    function loadBookings() {
+        const tbody = document.getElementById('bookingsTablebody');
+        // For now, show empty state - in real implementation would load from dataManager
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem;">Aucune demande de rendez-vous en ligne</td></tr>';
+
+        // Update stats
+        updateStats();
+    }
+
+    function updateStats() {
+        // Get data from dataManager
+        const appointments = dataManager.getAll('appointments');
+        const today = new Date().toISOString().split('T')[0];
+
+        const totalBookings = appointments.length;
+        const pendingBookings = appointments.filter(app => app.status === 'pending' || !app.status).length;
+        const confirmedBookings = appointments.filter(app => app.status === 'confirmed').length;
+        const todayBookings = appointments.filter(app => app.date === today).length;
+
+        document.getElementById('totalBookings').textContent = totalBookings;
+        document.getElementById('pendingBookings').textContent = pendingBookings;
+        document.getElementById('confirmedBookings').textContent = confirmedBookings;
+        document.getElementById('todayBookings').textContent = todayBookings;
+        document.getElementById('bookingCount').textContent = totalBookings + ' demandes';
+    }
+
+    // Listen for data sync events
+    dataManager.onDataSync((detail) => {
+        if (detail.entity === 'appointments') {
+            loadBookings();
+        }
+    });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        body.classList.toggle('dark-mode');
+        const icon = themeToggle.querySelector('i');
+        const span = themeToggle.querySelector('span');
+        if (body.classList.contains('dark-mode')) {
+            icon.className = 'fas fa-sun';
+            span.textContent = 'Mode Clair';
+        } else {
+            icon.className = 'fas fa-moon';
+            span.textContent = 'Mode Sombre';
+        }
+    });
+
+    // Logout button
+    const logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn.addEventListener('click', function() {
+        window.location.href = '../../../Site web/html/index.html';
+    });
+
+    // Collapsible sections
+    const toggles = document.querySelectorAll('.section-header.clickable');
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            const chevron = this.querySelector('.section-chevron');
+            content.classList.toggle('collapsed');
+            this.classList.toggle('collapsed');
+        });
+    });
+
+    // Global functions
+    window.refreshBookings = function() {
+        loadBookings();
+    };
+
+    window.exportBookings = function() {
+        alert('Fonctionnalité d\'export à implémenter');
+    };
+});
+</script>
 </body>
 </html>
 

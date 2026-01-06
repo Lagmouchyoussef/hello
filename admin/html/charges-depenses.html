@@ -696,9 +696,11 @@ Nouvelle Charge
 </div>
 </div>
 
+<script src="../../../dataManager.js"></script>
+
 <script>
-// Load data from localStorage
-let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+// Load data from dataManager
+let expenses = [];
 
 // DOM elements
 const addForm = document.getElementById('addForm');
@@ -709,10 +711,23 @@ const totalChargesEl = document.getElementById('totalCharges');
 const totalDepensesEl = document.getElementById('totalDepenses');
 const balanceEl = document.getElementById('balance');
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
+// Load data
+function loadData() {
+    expenses = dataManager.getAll('payments').filter(p => p.type === 'expense');
     renderTable();
     updateTotals();
+}
+
+// Real-time sync
+dataManager.onDataSync((detail) => {
+    if (detail.entity === 'payments') {
+        loadData();
+    }
+});
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    loadData();
 });
 
 // Show form
@@ -731,41 +746,43 @@ function hideForm() {
 expensesForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(expensesForm);
-    const expense = {
-        id: Date.now(),
-        date: formData.get('date'),
-        description: formData.get('Description'),
-        montant: parseFloat(formData.get('montant')),
-        type: formData.get('type'),
-        categorie: formData.get('categorie')
-    };
-    expenses.push(expense);
-    saveData();
-    renderTable();
-    updateTotals();
-    hideForm();
+    try {
+        const newExpense = dataManager.createPayment({
+            patientId: 'general', // dummy for expenses
+            amount: parseFloat(formData.get('montant')),
+            type: 'expense',
+            date: formData.get('date'),
+            description: formData.get('Description'),
+            categorie: formData.get('categorie'),
+            mode: formData.get('type') // Charge or dépense
+        });
+        loadData();
+        hideForm();
+    } catch (error) {
+        alert('Erreur: ' + error.message);
+    }
 });
 
 // Render table
 function renderTable(filter = '') {
     expensesTableBody.innerHTML = '';
     const filtered = expenses.filter(exp =>
-        exp.description.toLowerCase().includes(filter.toLowerCase()) ||
-        exp.categorie.toLowerCase().includes(filter.toLowerCase())
+        (exp.description || '').toLowerCase().includes(filter.toLowerCase()) ||
+        (exp.categorie || '').toLowerCase().includes(filter.toLowerCase())
     );
     filtered.forEach(exp => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${new Date(exp.date).toLocaleDateString('fr-FR')}</td>
-            <td>${exp.description}</td>
-            <td>${exp.montant.toFixed(2)} DH</td>
-            <td><span class="type-${exp.type.toLowerCase()}">${exp.type}</span></td>
-            <td>${exp.categorie}</td>
+            <td>${exp.description || ''}</td>
+            <td>${exp.amount.toFixed(2)} DH</td>
+            <td><span class="type-${exp.mode ? exp.mode.toLowerCase() : 'expense'}">${exp.mode || 'Expense'}</span></td>
+            <td>${exp.categorie || ''}</td>
             <td>
-                <button class="btn-action btn-edit" onclick="editExpense(${exp.id})">
+                <button class="btn-action btn-edit" onclick="editExpense('${exp.id}')">
                     <i class="fas fa-edit"></i> Modifier
                 </button>
-                <button class="btn-action btn-delete" onclick="deleteExpense(${exp.id})">
+                <button class="btn-action btn-delete" onclick="deleteExpense('${exp.id}')">
                     <i class="fas fa-trash"></i> Supprimer
                 </button>
             </td>
@@ -781,8 +798,8 @@ searchInput.addEventListener('input', (e) => {
 
 // Update totals
 function updateTotals() {
-    const charges = expenses.filter(e => e.type === 'Charge').reduce((sum, e) => sum + e.montant, 0);
-    const depenses = expenses.filter(e => e.type === 'dépense').reduce((sum, e) => sum + e.montant, 0);
+    const charges = expenses.filter(e => e.mode === 'Charge').reduce((sum, e) => sum + e.amount, 0);
+    const depenses = expenses.filter(e => e.mode === 'dépense').reduce((sum, e) => sum + e.amount, 0);
     const balance = depenses - charges;
 
     totalChargesEl.textContent = charges.toFixed(2) + ' DH';
@@ -794,22 +811,73 @@ function updateTotals() {
 // Delete expense
 function deleteExpense(id) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette charge/dépense ?')) {
-        expenses = expenses.filter(e => e.id !== id);
-        saveData();
-        renderTable();
-        updateTotals();
+        try {
+            dataManager.delete('payments', id);
+            loadData();
+        } catch (error) {
+            alert('Erreur: ' + error.message);
+        }
     }
 }
 
-// Edit expense (simplified, could expand to edit form)
+// Edit expense
 function editExpense(id) {
-    alert('Fonction d\'édition à implémenter');
+    const expense = expenses.find(e => e.id === id);
+    if (!expense) return;
+
+    document.getElementById('date').value = expense.date;
+    document.getElementById('Description').value = expense.description || '';
+    document.getElementById('montant').value = expense.amount;
+    document.getElementById('type').value = expense.mode || 'Charge';
+    document.getElementById('categorie').value = expense.categorie || '';
+
+    showForm();
+
+    // Change form submission to update
+    expensesForm.onsubmit = (e) => {
+        e.preventDefault();
+        updateExpense(id);
+    };
 }
 
-// Save to localStorage
-function saveData() {
-    localStorage.setItem('expenses', JSON.stringify(expenses));
+function updateExpense(id) {
+    const formData = new FormData(expensesForm);
+    try {
+        dataManager.updatePayment(id, {
+            patientId: 'general',
+            amount: parseFloat(formData.get('montant')),
+            type: 'expense',
+            date: formData.get('date'),
+            description: formData.get('Description'),
+            categorie: formData.get('categorie'),
+            mode: formData.get('type')
+        });
+        loadData();
+        hideForm();
+        expensesForm.onsubmit = (e) => {
+            e.preventDefault();
+            const formData = new FormData(expensesForm);
+            try {
+                const newExpense = dataManager.createPayment({
+                    patientId: 'general',
+                    amount: parseFloat(formData.get('montant')),
+                    type: 'expense',
+                    date: formData.get('date'),
+                    description: formData.get('Description'),
+                    categorie: formData.get('categorie'),
+                    mode: formData.get('type')
+                });
+                loadData();
+                hideForm();
+            } catch (error) {
+                alert('Erreur: ' + error.message);
+            }
+        };
+    } catch (error) {
+        alert('Erreur: ' + error.message);
+    }
 }
+
 </script>
 
 </body>
