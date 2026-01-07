@@ -1,1063 +1,1395 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liste des Rendez-vous - dikra Centre dentaire</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../navbar.css">
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-:root {
-  --medical-blue: #1e3a8a;
-  --medical-blue-dark: #1e40af;
-  --medical-blue-darker: #172554;
-  --medical-blue-light: #3b82f6;
-  --success: #059669;
-  --warning: #d97706;
-  --danger: #cbd5e1;
-  --text-light: #f8fafc;
-  --text-gray: #64748b;
-  --border-radius: 0.5rem;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --ai-purple: #7e22ce;
-  --ai-purple-light: #c084fc;
-  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  --unread-bg: #dbeafe;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Rendez-vous - DIKRA centre Dentaire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../navbar.css">
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --medical-blue: #1e3a8a;
+            --medical-blue-dark: #1e40af;
+            --medical-blue-darker: #172554;
+            --medical-blue-light: #3b82f6;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --text-light: #f8fafc;
+            --text-gray: #64748b;
+            --border-radius: 0.5rem;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --ai-purple: #7e22ce;
+            --ai-purple-light: #c084fc;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --unread-bg: #dbeafe;
+            --assistant-green: #047857;
+            --assistant-green-light: #10b981;
+        }
 
-/* Main Content */
-.main-content {
-  padding: 2rem;
-  min-height: 100vh;
-  transition: var(--transition);
-}
+        /* Light mode */
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --border-color: #e2e8f0;
+            --card-shadow: var(--shadow);
+            --section-bg: rgba(4, 120, 87, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
 
-.content-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
+        /* Dark mode */
+        .dark-mode {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --unread-bg: #065f46;
+            --section-bg: rgba(255, 255, 255, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --active-bg: rgba(255, 255, 255, 0.2);
+        }
 
-.page-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: var(--text-primary);
-}
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.btn {
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-  border: none;
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
 
-.btn-primary {
-  background: var(--medical-blue);
-  color: white;
-}
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            transition: var(--transition);
+        }
 
-.btn-primary:hover {
-  background: var(--medical-blue-dark);
-  transform: translateY(-2px);
-}
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
 
-.btn-success {
-  background: var(--success);
-  color: white;
-}
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
 
-.btn-success:hover {
-  background: #047857;
-  transform: translateY(-2px);
-}
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
 
-.btn-danger {
-  background: var(--danger);
-  color: white;
-}
+        .content-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-.btn-danger:hover {
-  background: #b91c1c;
-  transform: translateY(-2px);
-}
+        /* Content container */
+        .content-container {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
 
-/* Appointments Table */
-.appointments-container {
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-}
+        .content-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
 
-.appointments-header {
-  padding: 1.5rem;
-  background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+        .content-header-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.appointments-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-}
+        .content-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
 
-.appointments-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+        .content-body {
+            padding: 1.5rem;
+        }
 
-.appointments-table th,
-.appointments-table td  {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
-}
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-.appointments-table th {
-  background: var(--section-bg);
-  font-weight: 600;
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
+        .btn-primary {
+            background: var(--medical-blue);
+            color: white;
+        }
 
-.appointments-table tbody tr:hover {
-  background: var(--section-bg);
-}
+        .btn-primary:hover {
+            background: var(--medical-blue-dark);
+            transform: translateY(-2px);
+        }
 
-.status-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-align: center;
-}
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
 
-.status-confirmed{
-  background: rgba(5, 150, 105, 0.1);
-  color: var(--success);
-}
+        .btn-success:hover {
+            background: #047857;
+            transform: translateY(-2px);
+        }
 
-.status-pending {
-  background: rgba(217, 119, 6, 0.1);
-  color: var(--warning);
-}
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
 
-.status-cancelled{
-  background: rgba(220, 38, 38, 0.1);
-  color: var(--danger);
-}
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
 
-.action-buttons {
-  display: flex;
-  gap: 0.5rem;
-}
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
 
-.btn-small {
-  padding: 0.375rem 0.75rem;
-  font-size: 0.75rem;
-  border-radius: 0.375rem;
-}
+        .btn-warning:hover {
+            background: #b45309;
+            transform: translateY(-2px);
+        }
 
-/* Responsive design */
-@media (max-width: 992px) {
-  .sidebar {
-    width: 250px;
-  }
-  .main-content {
-    margin-left: 250px;
-    padding: 1.5rem;
-  }
-}
+        .btn-small {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+        }
 
-@media (max-width: 768px) {
-  .sidebar {
-    width: 240px;
-  }
-  .main-content {
-    margin-left: 240px;
-    padding: 1.5rem;
-  }
-  .appointments-table {
-    font-size: 0.8rem;
-  }
-  .appointments-table th,
-  .appointments-table td  {
-    padding: 0.75rem 0.5rem;
-  }
-}
+        /* Forms */
+        .form-group {
+            margin-bottom: 1rem;
+        }
 
-@media (max-width: 480px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    padding: 1rem 0;
-  }
-  .main-content {
-    margin-left: 0;
-    padding: 1rem;
-  }
-  .cabinet-header,
-  .user-section {
-    text-align: left;
-  }
-  .cabinet-logo {
-    margin: 0 0 1rem 1.5rem;
-  }
-  .content-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .appointments-header {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-  }
-  .appointments-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-}
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
 
-/* Focus states for accessibility */
-.sidebar-link:focus {
-  outline: 2px solid var(--medical-blue-light);
-  outline-offset: 2px;
-}
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
 
-.btn:focus {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-}
-</style>
+        .form-control:focus {
+            outline: none;
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background: var(--bg-primary);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .data-table tbody tr {
+            transition: var(--transition);
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--section-bg);
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-confirmed {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+
+        .status-pending {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning);
+        }
+
+        .status-cancelled {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+
+        .status-completed {
+            background: rgba(30, 58, 138, 0.1);
+            color: var(--medical-blue);
+        }
+
+        /* Filters and search */
+        .filters-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-input input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .search-input i {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-gray);
+        }
+
+        /* URL Card */
+        .url-card {
+            background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .url-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .url-header i {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .url-header h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .url-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .url-display {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .url-display code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: block;
+            word-break: break-all;
+        }
+
+        /* Appointments Cards */
+        .appointments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .appointment-card {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .appointment-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--medical-blue-light), var(--medical-blue));
+            color: white;
+        }
+
+        .patient-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .status-indicator {
+            font-size: 0.8rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .patient-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-align: center;
+            padding: 0.5rem;
+            background: rgba(30, 58, 138, 0.05);
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--medical-blue);
+        }
+
+        .appointment-details {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: var(--section-bg);
+            border-radius: 0.375rem;
+            font-size: 0.9rem;
+        }
+
+        .detail-item i {
+            color: var(--medical-blue);
+            width: 16px;
+            text-align: center;
+        }
+
+        .card-actions {
+            padding: 1rem 1.5rem 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-primary);
+        }
+
+        /* URL Card */
+        .url-card {
+            background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: var(--card-shadow);
+            border: 2px solid var(--medical-blue-light);
+        }
+
+        .url-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .url-header i {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .url-header h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .url-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .url-display {
+            flex: 1;
+        }
+
+        .url-display code {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            word-break: break-all;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                margin-left: 250px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 250px;
+                padding: 1.5rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .content-header-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 240px;
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .content-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .data-table {
+                font-size: 0.75rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+
+            .filters-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-input {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .content-container {
+                padding: 1rem;
+            }
+
+            .content-body {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body class="light-mode">
-<!-- Main Content -->
-<!-- Professional Sidebar Navigation -->
-<div class="sidebar">
-    <!-- Cabinet Header -->
-    <div class="cabinet-header"><div class="cabinet-logo"><img src="../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
-        
-        <div class="cabinet-name">DIKRA centre Dentaire</div>
-        <div class="cabinet-subtitle">Casablanca, Maroc</div>
+    <!-- Professional Sidebar Navigation -->
+    <div class="sidebar">
+        <!-- Cabinet Header -->
+        <div class="cabinet-header">
+            <div class="cabinet-logo">
+                <img src="../../Photo/Photo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+            </div>
+            <div class="cabinet-name">DIKRA centre Dentaire</div>
+            <div class="cabinet-subtitle">Casablanca, Maroc</div>
+        </div>
+        <!-- Navigation Menu -->
+        <ul class="sidebar-menu">
+            <!-- DASHBOARD -->
+            <li class="sidebar-item">
+                <a href="dashboard.html" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                    Tableau de bord
+                </a>
+            </li>
+
+            <!-- RENDEZ-VOUS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-rdv-toggle">
+                    Rendez-vous
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-rdv-content">
+                    <div class="sidebar-item">
+                        <a href="Listes%20des%20Rendez-vous.html" class="sidebar-link active">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                            Liste des rendez-vous
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="Prise%20en%20ligne.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
+                            Prise en ligne
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="En%20présentiel.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            En présentiel
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="via-espace-patient.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
+                            Via espace patient
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="planning-equipe.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
+                            Planning de l'équipe
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="salle-attente.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
+                            Salle d'attente
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- PATIENTS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-patients-toggle">
+                    Patients
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-patients-content">
+                    <div class="sidebar-item">
+                        <a href="fiches-patients.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
+                            Fiches patients
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="dossiers-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
+                            Dossiers médicaux
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- CABINET -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-cabinet-toggle">
+                    Cabinet
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-cabinet-content">
+                    <div class="sidebar-item">
+                        <a href="salle-attente.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
+                            Salle d'attente
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- COMPTABILITÉ -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-compta-toggle">
+                    Comptabilité
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-compta-content">
+                    <div class="sidebar-item">
+                        <a href="comptabilite-generale.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
+                            Comptabilité générale
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="paiements-recus.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
+                            Paiements reçus
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="charges-depenses.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                            Charges & dépenses
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- COMMUNICATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-com-toggle">
+                    Communication
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-com-content">
+                    <div class="sidebar-item">
+                        <a href="messagerie-interne.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
+                            Messagerie interne
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="assistant-ia.html" class="sidebar-link">
+                            <span class="sidebar-icon">
+                                <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
+                            </span>
+                            Assistant IA
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="envoi-sms.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
+                            Envoi de SMS
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notifications.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                            Notifications
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- ORGANISATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-org-toggle">
+                    Organisation
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-org-content">
+                    <div class="sidebar-item">
+                        <a href="taches-rappels.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
+                            Tâches & rappels
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notes-personnelles.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
+                            Notes personnelles
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="statistiques.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                            Statistiques
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- GESTION DES STOCKS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-stock-toggle">
+                    Gestion des stocks
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-stock-content">
+                    <div class="sidebar-item">
+                        <a href="materiel-dentaire.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-box"></i></span>
+                            Matériel dentaire
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="consommables.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
+                            Consommables
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="medicaments.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
+                            Médicaments
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- DOCUMENTS & FORMULAIRES -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-docs-toggle">
+                    Documents & formulaires
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-docs-content">
+                    <div class="sidebar-item">
+                        <a href="ordonnances.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
+                            Ordonnances
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="certificats-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                            Certificats médicaux
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="feuilles-de-soins.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
+                            Feuilles de soins (CNOPS/CNSS)
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="imagerie-medicale.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
+                            Imagerie médicale
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="protheses.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
+                            Prothèses
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- UTILISATEURS -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-users-toggle">
+                    Utilisateurs
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-users-content">
+                    <div class="sidebar-item">
+                        <a href="Liste%20du%20personnel.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-list"></i></span>
+                            Liste du personnel
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="ajouter-un-membre.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
+                            Ajouter un membre
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="roles-permissions.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
+                            Rôles & permissions
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="planning-equipe.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+                            Planning de l'équipe
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="parametres-espace-patient.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                            Paramètres espace patient
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="gestion-des-acces.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-key"></i></span>
+                            Gestion des accès
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="dossiers-medicaux.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
+                            Dossiers médicaux
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- SITE WEB -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-website-toggle">
+                    Site web
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-website-content">
+                    <div class="sidebar-item">
+                        <a href="contenu-articles.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
+                            Contenu & articles
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="design-theme.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
+                            Design & thème
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="referencement-seo.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-search"></i></span>
+                            Référencement (SEO)
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="formulaire-contact.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
+                            Formulaire de contact
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="statistiques-visite.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
+                            Statistiques de visite
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- CONFIGURATION -->
+            <li class="sidebar-section">
+                <div class="section-header clickable" id="section-config-toggle">
+                    Configuration
+                    <i class="fas fa-chevron-down section-chevron"></i>
+                </div>
+                <div class="section-content" id="section-config-content">
+                    <div class="sidebar-item">
+                        <a href="mon-profil.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
+                            Mon profil
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="informations-cabinet.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-building"></i></span>
+                            Informations cabinet
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="parametres-facturation.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                            Paramètres de facturation
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="notifications.html" class="sidebar-link">
+                            <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
+                            Notifications
+                        </a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!-- User Section -->
+        <div class="user-section">
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <div class="user-details">
+                    <div class="user-name"></div>
+                    <div class="user-role"></div>
+                </div>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+                <span>Mode Sombre</span>
+            </button>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Déconnexion</span>
+            </button>
+        </div>
     </div>
-    <!-- Navigation Menu -->
-    <ul class="sidebar-menu">
-        <!-- d ASHBOARd  -->
-        <li class="sidebar-item">
-            <a href="dashboard.html" class="sidebar-link">
-                <span class="sidebar-icon"><i class="fas fa-home"></i></span>
-                Tableau de bord
-            </a>
-        </li>
 
-        <!-- RENdeZ-VOUS -->
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-rdv-toggle">
-                Rendez-vous
-                <i class="fas fa-chevron-down section-chevron"></i>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="content-header">
+            <div>
+                <h1 class="page-title">Liste des Rendez-vous</h1>
+                <p class="page-subtitle">Gérez et consultez tous les rendez-vous du cabinet</p>
             </div>
-            <div class="section-content" id="section-rdv-content">
-                <div class="sidebar-item">
-                    <a href="Listes des Rendez-vous.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-                        Liste des rendez-vous
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="Prise%20en%20ligne.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-globe"></i></span>
-                        Prise en ligne
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="En%20présentiel.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
-                        En présentiel
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="via-espace-patient.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-user-shield"></i></span>
-                        Via espace patient
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="planning-equipe.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-calendar-week"></i></span>
-                        Planning de l'équipe
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="salle-attente.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-clock"></i></span>
-                        Salle d'attente
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <!-- PATIENTS -->
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-patients-toggle">
-                Patients
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-patients-content">
-                <div class="sidebar-item">
-                    <a href="fiches-patients.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
-                        Fiches patients
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="dossiers-medicaux.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-folder-open"></i></span>
-                        Dossiers médicaux
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <!-- CABINET -->
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-cabinet-toggle">
-                Cabinet
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-cabinet-content">
-                <div class="sidebar-item">
-                    <a href="salle-attente.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
-                        Salle d'attente
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <!-- COMPTABILITÉ -->
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-compta-toggle">
-                Comptabilité
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-compta-content">
-                <div class="sidebar-item">
-                    <a href="comptabilite-generale.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
-                        Comptabilité générale
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="paiements-recus.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-credit-card"></i></span>
-                        Paiements reçus
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="charges-depenses.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-                        Charges & dépenses
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <!-- COMMUNICATION -->
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-com-toggle">
-                Communication
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-com-content">
-                <div class="sidebar-item">
-                    <a href="messagerie-interne.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
-                        Messagerie interne
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="assistant-ia.html" class="sidebar-link">
-                        <span class="sidebar-icon">
-                            <div class="ai-agent-icon"><i class="fas fa-robot"></i></div>
-                        </span>
-                        Assistant IA
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="envoi-sms.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-sms"></i></span>
-                        Envoi de SMS
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="notifications.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
-                        Notifications
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="messages-patients.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
-                        Messages patients
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <!-- ORGANISATION -->
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-org-toggle">
-                Organisation
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-org-content">
-                <div class="sidebar-item">
-                    <a href="taches-rappels.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
-                        Tâches & rappels
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="notes-personnelles.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-sticky-note"></i></span>
-                        Notes personnelles
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="statistiques.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
-                        Statistiques
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <!-- GESTION deS STOCKS -->
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-stock-toggle">
-                Gestion des stocks
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-stock-content">
-                <div class="sidebar-item">
-                    <a href="materiel-dentaire.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-box"></i></span>
-                        Matériel dentaire
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="consommables.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-vial"></i></span>
-                        Consommables
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="medicaments.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-pills"></i></span>
-                        Médicaments
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <!-- documentS & FORMULAIRES -->
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-docs-toggle">
-                Documents & formulaires
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-docs-content">
-                <div class="sidebar-item">
-                    <a href="ordonnances.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
-                        Ordonnances
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="certificats-medicaux.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-                        Certificats médicaux
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="feuilles-de-soins.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-file-invoice"></i></span>
-                        Feuilles de soins (CNOPS/CNSS)
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="imagerie-medicale.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-x-ray"></i></span>
-                        Imagerie médicale
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="protheses.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-teeth"></i></span>
-                        Prothèses
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <!-- UTILISATEURS -->
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-users-toggle">
-                Utilisateurs
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-users-content">
-                <div class="sidebar-item">
-                    <a href="Liste%20du%20personnel.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-list"></i></span>
-                        Liste du personnel
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="ajouter-un-membre.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-user-plus"></i></span>
-                        Ajouter un membre
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="roles-permissions.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-shield-alt"></i></span>
-                        Rôles & permissions
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="planning-equipe.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-                        Planning de l'équipe
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="parametres-espace-patient.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
-                        Paramètres espace patient
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="gestion-des-acces.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-key"></i></span>
-                        Gestion des accès
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="messages-patients.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-envelope"></i></span>
-                        Messages patients
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="dossiers-medicaux.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-file-medical"></i></span>
-                        Dossiers médicaux
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <!-- SITE WEB -->
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-website-toggle">
-                Site web
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-website-content">
-                <div class="sidebar-item">
-                    <a href="contenu-articles.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
-                        Contenu & articles
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="design-theme.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-paint-brush"></i></span>
-                        Design & thème
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="referencement-seo.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-search"></i></span>
-                        Référencement (SEO)
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="formulaire-contact.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-envelope-open"></i></span>
-                        Formulaire de contact
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="statistiques-visite.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
-                        Statistiques de visite
-                    </a>
-                </div>
-            </div>
-        </li>
-
-        <!-- CONFIGURATION -->
-        <li class="sidebar-section">
-            <div class="section-header clickable" id="section-config-toggle">
-                Configuration
-                <i class="fas fa-chevron-down section-chevron"></i>
-            </div>
-            <div class="section-content" id="section-config-content">
-                <div class="sidebar-item">
-                    <a href="mon-profil.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
-                        Mon profil
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="informations-cabinet.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-building"></i></span>
-                        Informations cabinet
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="parametres-facturation.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
-                        Paramètres de facturation
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="notifications.html" class="sidebar-link">
-                        <span class="sidebar-icon"><i class="fas fa-bell"></i></span>
-                        Notifications
-                    </a>
-                </div>
-            </div>
-        </li>
-    </ul>
-    <!-- User Section -->
-    <div class="user-section">
-        <div class="user-info">
-            <div class="user-avatar"></div>
-            <div class="user-details">
-                <div class="user-name"></div>
-                <div class="user-role"></div>
+            <div class="content-actions">
+                <button class="btn btn-primary" id="newAppointmentBtn">
+                    <i class="fas fa-plus"></i> Nouveau Rendez-vous
+                </button>
+                <button class="btn btn-success" id="planningBtn">
+                    <i class="fas fa-calendar-alt"></i> Planning
+                </button>
+                <button class="btn btn-warning" id="exportBtn">
+                    <i class="fas fa-download"></i> Exporter
+                </button>
             </div>
         </div>
-        <button class="theme-toggle" id="themeToggle">
-            <i class="fas fa-moon"></i>
-            <span>Mode Sombre</span>
-        </button>
-        <button class="logout-btn" id="logoutBtn">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Déconnexion</span>
-        </button>
+
+        <!-- Page Content Container -->
+        <div class="content-container">
+            <div class="content-header-section">
+                <h2 class="content-title">Rendez-vous à venir</h2>
+                <div>
+                    <button class="btn btn-small">
+                        <i class="fas fa-filter"></i> Filtrer
+                    </button>
+                    <button class="btn btn-small">
+                        <i class="fas fa-search"></i> Rechercher
+                    </button>
+                </div>
+            </div>
+            <div class="content-body">
+                <!-- Empty state -->
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times"></i>
+                    <h3>Aucun rendez-vous</h3>
+                    <p>Il n'y a pas de rendez-vous programmés pour le moment.</p>
+                    <button class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-plus"></i> Programmer un rendez-vous
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-
-<div class="main-content">
-  <div class="content-header">
-    <h1 class="page-title">Liste des Rendez-vous</h1>
-    <button class="btn btn-primary" onclick="showForm()">
-      <i class="fas fa-plus"></i>
-      Nouveau Rendez-vous
-    </button>
-  </div>
-
-  <!-- Add  Appointment Form -->
-  <div class="appointments-container" id="addForm" style="display: none; margin-bottom: 2rem;">
-    <div class="appointments-header">
-      <h2 class="appointments-title">Ajouter un Rendez-vous</h2>
-    </div>
-    <form id="appointmentForm" style="padding: 1.5rem;">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-        <div class="form-group">
-          <label class="form-label">date</label>
-          <input type="date" class="form-control" id="date" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Heure</label>
-          <input type="time" class="form-control" id="time" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Patient</label>
-          <select class="form-control" id="patientSelect" name="patient" required>
-            <option value="">Sélectionner un patient</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Médecin</label>
-          <input type="text" class="form-control" id="doctor" placeholder="Nom du médecin" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Traitement</label>
-          <input type="text" class="form-control" id="treatment" placeholder="Type de traitement" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Mode de prise</label>
-          <select class="form-control" id="mode" required>
-            <option value="En présentiel">En présentiel</option>
-            <option value="Prise en ligne">Prise en ligne</option>
-            <option value="Via espace patient">Via espace patient</option>
-            <option value="Par téléphone">Par téléphone</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Statut</label>
-          <select class="form-control" id="status" required>
-            <option value="Confirmé">Confirmé</option>
-            <option value="En attente">En attente</option>
-            <option value="Annulé">Annulé</option>
-          </select>
-        </div>
-      </div>
-      <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-        <button type="submit" class="btn btn-primary">Ajouter</button>
-        <button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
-      </div>
-    </form>
-  </div>
-
-  <div class="appointments-container">
-    <div class="appointments-header">
-      <h2 class="appointments-title">Rendez-vous Programmés</h2>
-      <div>
-        <button class="btn" onclick="showForm()" style="font-size: 1.1rem; padding: 0.75rem 1.5rem; background: #059669; color: white; border: none;"><i class="fas fa-plus"></i> Ajouter un Rendez-vous</button>
-        <button class="btn" onclick="loadAppointments()" style="font-size: 1.1rem; padding: 0.75rem 1.5rem; background: #3b82f6; color: white; border: none; margin-left: 0.5rem;"><i class="fas fa-refresh"></i> Actualiser</button>
-        <input type="text" id="searchInput" placeholder="Rechercher..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-left: 0.5rem;">
-        <select id="statusFilter" title="Filtrer par statut" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--bg-primary); color: var(--text-primary); margin-left: 0.5rem;">
-          <option value="">Tous les statuts</option>
-          <option value="Confirmé">Confirmé</option>
-          <option value="En attente">En attente</option>
-          <option value="Annulé">Annulé</option>
-        </select>
-      </div>
-    </div>
-    <table class="appointments-table">
-      <thead >
-        <tr>
-          <th>date</th>
-          <th>Heure</th>
-          <th>Patient</th>
-          <th>Médecin</th>
-          <th>Traitement</th>
-          <th>Mode de prise</th>
-          <th>Statut</th>
-          <th>Actions</th>
-        </tr>
-      </thead >
-      <tbody id="appointmentsTablebody">
-        <!-- Appointments will be loaded  here -->
-      </tbody>
-    </table>
-  </div>
-</div>
-<script src="../../../dataManager.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    loadAppointments();
-
-    // Function to load appointments from dataManager
-    function loadAppointments() {
-        const tbody = document.getElementById('appointmentsTablebody');
-        const appointments = dataManager.getAll('appointments');
-        tbody.innerHTML = '';
-
-        appointments.forEach(appointment => {
-            // Get patient name from patientId
-            const patient = dataManager.getById('patients', appointment.patientId);
-            const patientName = patient ? `${patient.firstName} ${patient.lastName}` : 'Patient inconnu';
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${appointment.date}</td>
-                <td>${appointment.time}</td>
-                <td>${patientName}</td>
-                <td>${appointment.doctor}</td>
-                <td>${appointment.treatment}</td>
-                <td>${appointment.mode}</td>
-                <td><span class="status-badge status-${getStatusClass(appointment.status)}">${appointment.status}</span></td>
-                <td class="action-buttons">
-                    <button class="btn btn-small btn-primary" onclick="editAppointment('${appointment.id}')">Modifier</button>
-                    <button class="btn btn-small btn-danger" onclick="deleteAppointment('${appointment.id}')">Supprimer</button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-    window.loadAppointments = loadAppointments;
-
-    // Function to get status class
-    function getStatusClass(status) {
-        switch(status) {
-            case 'Confirmé': return 'confirmed';
-            case 'En attente': return 'pending';
-            case 'Annulé': return 'cancelled';
-            default: return 'pending';
+    <!-- Common JavaScript -->
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+        const themeText = themeToggle.querySelector('span');
+        // Using sessionStorage instead of localStorage
+        const savedTheme = sessionStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            themeIcon.className = 'fas fa-sun';
+            themeText.textContent = 'Mode Clair';
         }
-    }
-
-    // Function to delete appointment
-    window.deleteAppointment = function(id) {
-        if (confirm('Êtes-vous sûr de vouloir supprimer ce rendez-vous ?')) {
-            try {
-                dataManager.delete('appointments', id);
-                loadAppointments();
-            } catch (error) {
-                alert('Erreur lors de la suppression: ' + error.message);
-            }
-        }
-    };
-
-    // Function to show add form
-    window.showForm = function() {
-        // Populate patient dropdown
-        populatePatientDropdown();
-        document.getElementById('addForm').style.display = 'block';
-    };
-
-    // Function to populate patient dropdown
-    function populatePatientDropdown() {
-        const patients = dataManager.getAll('patients');
-        const select = document.getElementById('patientSelect');
-        if (!select) return; // If not updated yet
-
-        select.innerHTML = '<option value="">Sélectionner un patient</option>';
-        patients.forEach(patient => {
-            const option = document.createElement('option');
-            option.value = patient.id;
-            option.textContent = `${patient.firstName} ${patient.lastName}`;
-            select.appendChild(option);
-        });
-    }
-
-    // Function to hide add form
-    window.hideForm = function() {
-        document.getElementById('addForm').style.display = 'none';
-        document.getElementById('appointmentForm').reset();
-    };
-
-    // Function to add appointment from form
-    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const appointmentData = {
-            date: formData.get('date'),
-            time: formData.get('time'),
-            patientId: formData.get('patient'),
-            doctor: formData.get('doctor'),
-            treatment: formData.get('treatment'),
-            mode: formData.get('mode'),
-            status: formData.get('status')
-        };
-        try {
-            dataManager.createAppointment(appointmentData);
-            loadAppointments();
-            hideForm();
-        } catch (error) {
-            alert('Erreur lors de la création: ' + error.message);
-        }
-    });
-
-    // Function to edit appointment
-    window.editAppointment = function(id) {
-        const appointment = dataManager.getById('appointments', id);
-        if (!appointment) {
-            alert('Rendez-vous non trouvé');
-            return;
-        }
-
-        // Populate form with existing data
-        document.getElementById('date').value = appointment.date;
-        document.getElementById('time').value = appointment.time;
-        document.getElementById('doctor').value = appointment.doctor;
-        document.getElementById('treatment').value = appointment.treatment;
-        document.getElementById('mode').value = appointment.mode;
-        document.getElementById('status').value = appointment.status;
-
-        // Set patient
-        const patientSelect = document.getElementById('patientSelect');
-        if (patientSelect) patientSelect.value = appointment.patientId;
-
-        // Change form to edit mode
-        const form = document.getElementById('appointmentForm');
-        form.dataset.editId = id;
-        document.querySelector('#addForm h2').textContent = 'Modifier un Rendez-vous';
-        document.querySelector('#appointmentForm button[type="submit"]').textContent = 'Modifier';
-
-        showForm();
-    };
-
-    // Handle edit vs create
-    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const editId = this.dataset.editId;
-        const formData = new FormData(this);
-        const appointmentData = {
-            date: formData.get('date'),
-            time: formData.get('time'),
-            patientId: formData.get('patient'),
-            doctor: formData.get('doctor'),
-            treatment: formData.get('treatment'),
-            mode: formData.get('mode'),
-            status: formData.get('status')
-        };
-
-        try {
-            if (editId) {
-                dataManager.updateAppointment(editId, appointmentData);
-                delete this.dataset.editId;
-                document.querySelector('#addForm h2').textContent = 'Ajouter un Rendez-vous';
-                document.querySelector('#appointmentForm button[type="submit"]').textContent = 'Ajouter';
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Mode Clair';
+                sessionStorage.setItem('theme', 'dark');
             } else {
-                dataManager.createAppointment(appointmentData);
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Mode Sombre';
+                sessionStorage.setItem('theme', 'light');
             }
-            loadAppointments();
-            hideForm();
-        } catch (error) {
-            alert('Erreur: ' + error.message);
-        }
-    });
-
-    // Search functionality
-    document.getElementById('searchInput').addEventListener('input', filterAppointments);
-
-    // Status filter
-    document.getElementById('statusFilter').addEventListener('change', filterAppointments);
-
-    function filterAppointments() {
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        const statusFilter = document.getElementById('statusFilter').value;
-        const appointments = dataManager.getAll('appointments');
-        const tbody = document.getElementById('appointmentsTablebody');
-        tbody.innerHTML = '';
-
-        const filtered = appointments.filter(app => {
-            const patient = dataManager.getById('patients', app.patientId);
-            const patientName = patient ? `${patient.firstName} ${patient.lastName}`.toLowerCase() : '';
-            const matchesSearch = patientName.includes(searchTerm) ||
-                                  app.doctor.toLowerCase().includes(searchTerm) ||
-                                  app.treatment.toLowerCase().includes(searchTerm);
-            const matchesStatus = !statusFilter || app.status === statusFilter;
-            return matchesSearch && matchesStatus;
         });
 
-        filtered.forEach(appointment => {
-            const patient = dataManager.getById('patients', appointment.patientId);
-            const patientName = patient ? `${patient.firstName} ${patient.lastName}` : 'Patient inconnu';
+        // Logout functionality
+        const logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
+            }
+        });
 
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${appointment.date}</td>
-                <td>${appointment.time}</td>
-                <td>${patientName}</td>
-                <td>${appointment.doctor}</td>
-                <td>${appointment.treatment}</td>
-                <td>${appointment.mode}</td>
-                <td><span class="status-badge status-${getStatusClass(appointment.status)}">${appointment.status}</span></td>
-                <td class="action-buttons">
-                    <button class="btn btn-small btn-primary" onclick="editAppointment('${appointment.id}')">Modifier</button>
-                    <button class="btn btn-small btn-danger" onclick="deleteAppointment('${appointment.id}')">Supprimer</button>
-                </td>
+        // Navigation link functionality
+        const mainLinks = document.querySelectorAll('.sidebar-link');
+        const mainContent = document.getElementById('mainContent');
+        mainLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Update active states
+                mainLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize active link
+        document.querySelector('.sidebar-link[href="Listes%20des%20Rendez-vous.html"]').classList.add('active');
+
+        // Collapsible section headers
+        document.querySelectorAll('.section-header.clickable').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isCollapsed = content.classList.contains('collapsed');
+                // Close all other sections
+                document.querySelectorAll('.section-content').forEach(el => {
+                    if (el !== content) {
+                        el.classList.add('collapsed');
+                        el.previousElementSibling.classList.add('collapsed');
+                    }
+                });
+                // Toggle current section
+                if (isCollapsed) {
+                    content.classList.remove('collapsed');
+                    header.classList.remove('collapsed');
+                } else {
+                    content.classList.add('collapsed');
+                    header.classList.add('collapsed');
+                }
+            });
+        });
+
+        // Open "Rendez-vous" by default
+        document.getElementById('section-rdv-content').classList.remove('collapsed');
+        document.getElementById('section-rdv-toggle').classList.remove('collapsed');
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('URL copiée dans le presse-papiers !');
+            }, function(err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('URL copiée dans le presse-papiers !');
+            });
+        }
+
+        // Main action buttons functionality
+        document.getElementById('newAppointmentBtn').addEventListener('click', function() {
+            // Simple form to add new appointment
+            const patientName = prompt('Nom du patient:');
+            if (!patientName) return;
+
+            const doctorName = prompt('Nom du médecin (Dr. Fatima Alaoui ou Dr. Mohamed Idrissi):');
+            if (!doctorName) return;
+
+            const treatmentType = prompt('Type de soin:');
+            if (!treatmentType) return;
+
+            const appointmentDate = prompt('Date (ex: 18 Jan 2024):');
+            if (!appointmentDate) return;
+
+            const appointmentTime = prompt('Heure (ex: 10:00):');
+            if (!appointmentTime) return;
+
+            // Add new card to grid
+            const grid = document.getElementById('appointmentsGrid');
+            const newCard = document.createElement('div');
+
+            newCard.className = 'appointment-card';
+            newCard.setAttribute('data-patient', patientName);
+            newCard.setAttribute('data-doctor', doctorName);
+            newCard.setAttribute('data-treatment', treatmentType);
+            newCard.setAttribute('data-status', 'pending');
+
+            newCard.innerHTML = `
+                <div class="card-header">
+                    <div class="patient-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="status-indicator">
+                        <span class="status-badge status-pending">En attente</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3 class="patient-name">Nom du patient: ${patientName}</h3>
+                    <div class="appointment-details">
+                        <div class="detail-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>${appointmentDate}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>${appointmentTime}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-user-md"></i>
+                            <span>${doctorName}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-tooth"></i>
+                            <span>${treatmentType}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="btn btn-small btn-primary" title="Modifier">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-small btn-success" title="Confirmer">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-small btn-warning" title="Annuler">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="btn btn-small btn-danger" title="Supprimer">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
             `;
-            tbody.appendChild(row);
+
+            grid.appendChild(newCard);
+            alert('Nouveau rendez-vous ajouté avec succès !');
         });
-    }
 
-    // Listen for data sync events
-    dataManager.onDataSync((detail) => {
-        if (detail.entity === 'appointments' || detail.entity === 'patients') {
-            loadAppointments();
-        }
-    });
-
-    // Theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-
-    themeToggle.addEventListener('click', function() {
-        body.classList.toggle('light-mode');
-        body.classList.toggle('dark-mode');
-        const icon = themeToggle.querySelector('i');
-        const span = themeToggle.querySelector('span');
-        if (body.classList.contains('dark-mode')) {
-            icon.className = 'fas fa-sun';
-            span.textContent = 'Mode Clair';
-        } else {
-            icon.className = 'fas fa-moon';
-            span.textContent = 'Mode Sombre';
-        }
-    });
-
-    // Collapsible sections
-    const toggles = document.querySelectorAll('.section-header.clickable');
-    toggles.forEach(toggle => {
-        toggle.addEventListener('click', function() {
-            const content = this.nextElementSibling;
-            const chevron = this.querySelector('.section-chevron');
-            content.classList.toggle('collapsed');
-            this.classList.toggle('collapsed');
+        document.getElementById('planningBtn').addEventListener('click', function() {
+            alert('Ouverture du planning des rendez-vous...');
+            // Here you could redirect to calendar view
         });
-    });
-});
-</script>
+
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            alert('Export des rendez-vous en cours...');
+            // Here you could trigger export functionality
+        });
+
+        // Search and Filter functionality for cards
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const dateFilter = document.getElementById('dateFilter');
+        const grid = document.getElementById('appointmentsGrid');
+        const cards = grid.getElementsByClassName('appointment-card');
+
+        function filterCards() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const statusValue = statusFilter.value.toLowerCase();
+            const dateValue = dateFilter.value;
+
+            for (let i = 0; i < cards.length; i++) {
+                const card = cards[i];
+                const patientName = card.getAttribute('data-patient').toLowerCase();
+                const doctorName = card.getAttribute('data-doctor').toLowerCase();
+                const treatmentType = card.getAttribute('data-treatment').toLowerCase();
+                const statusValueAttr = card.getAttribute('data-status');
+                const appointmentDate = card.querySelector('.detail-item i.fa-calendar').nextElementSibling.textContent;
+
+                let showCard = true;
+
+                // Search filter
+                if (searchTerm && !patientName.includes(searchTerm) && !doctorName.includes(searchTerm) && !treatmentType.includes(searchTerm)) {
+                    showCard = false;
+                }
+
+                // Status filter
+                if (statusValue && statusValueAttr !== statusValue) {
+                    showCard = false;
+                }
+
+                // Date filter
+                if (dateValue) {
+                    const today = new Date();
+                    const appointmentDateObj = new Date(appointmentDate.split(' ').reverse().join(' '));
+
+                    switch(dateValue) {
+                        case 'today':
+                            if (appointmentDateObj.toDateString() !== today.toDateString()) {
+                                showCard = false;
+                            }
+                            break;
+                        case 'week':
+                            const weekFromNow = new Date(today);
+                            weekFromNow.setDate(today.getDate() + 7);
+                            if (appointmentDateObj < today || appointmentDateObj > weekFromNow) {
+                                showCard = false;
+                            }
+                            break;
+                        case 'month':
+                            if (appointmentDateObj.getMonth() !== today.getMonth() || appointmentDateObj.getFullYear() !== today.getFullYear()) {
+                                showCard = false;
+                            }
+                            break;
+                    }
+                }
+
+                card.style.display = showCard ? '' : 'none';
+            }
+        }
+
+        searchInput.addEventListener('input', filterCards);
+        statusFilter.addEventListener('change', filterCards);
+        dateFilter.addEventListener('change', filterCards);
+
+        // Action buttons functionality for cards
+        document.addEventListener('click', function(e) {
+            const button = e.target.closest('.btn-small');
+            if (!button) return;
+
+            const card = button.closest('.appointment-card');
+            const patientName = card.getAttribute('data-patient');
+            const doctorName = card.getAttribute('data-doctor');
+            const treatmentType = card.getAttribute('data-treatment');
+            const statusBadge = card.querySelector('.status-badge');
+
+            if (button.classList.contains('btn-primary')) {
+                // Edit button
+                alert(`Modifier le rendez-vous de ${patientName} avec ${doctorName}\nType de soin: ${treatmentType}`);
+                // Here you could open a modal or redirect to edit page
+            } else if (button.classList.contains('btn-success')) {
+                // Confirm button
+                if (confirm(`Confirmer le rendez-vous de ${patientName} avec ${doctorName} ?`)) {
+                    statusBadge.className = 'status-badge status-confirmed';
+                    statusBadge.textContent = 'Confirmé';
+                    card.setAttribute('data-status', 'confirmed');
+                    alert('Rendez-vous confirmé avec succès !');
+                }
+            } else if (button.classList.contains('btn-warning')) {
+                // Cancel button (changed from danger to warning)
+                if (confirm(`Annuler le rendez-vous de ${patientName} avec ${doctorName} ?`)) {
+                    statusBadge.className = 'status-badge status-cancelled';
+                    statusBadge.textContent = 'Annulé';
+                    card.setAttribute('data-status', 'cancelled');
+                    alert('Rendez-vous annulé avec succès !');
+                }
+            } else if (button.classList.contains('btn-danger')) {
+                // Delete button
+                if (confirm(`Supprimer définitivement le rendez-vous de ${patientName} avec ${doctorName} ?\n\nCette action est irréversible.`)) {
+                    card.remove();
+                    alert('Rendez-vous supprimé avec succès !');
+                }
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId !== '#') {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

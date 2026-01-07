@@ -834,10 +834,10 @@
                     <p class="waiting-room-subtitle">Gestion des patients en attente de consultation</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" id="addPatientBtn">
                         <i class="fas fa-user-plus"></i> Ajouter Patient
                     </button>
-                    <button class="btn btn-success">
+                    <button class="btn btn-success" id="refreshBtn">
                         <i class="fas fa-refresh"></i> Actualiser
                     </button>
                 </div>
@@ -874,10 +874,10 @@
                 <div class="section-header">
                     <h2 class="section-title">Patients en attente</h2>
                     <div class="section-actions">
-                        <button class="btn btn-small">
+                        <button class="btn btn-small" id="filterBtn">
                             <i class="fas fa-filter"></i> Filtrer
                         </button>
-                        <button class="btn btn-small">
+                        <button class="btn btn-small" id="sortBtn">
                             <i class="fas fa-sort"></i> Trier
                         </button>
                     </div>
@@ -911,7 +911,7 @@
                             <p>Enregistrer un nouveau patient dans la salle d'attente</p>
                         </div>
                     </div>
-                    <button class="btn btn-primary" style="width: 100%;">
+                    <button class="btn btn-primary" style="width: 100%;" id="quickAddBtn">
                         <i class="fas fa-plus"></i> Ajouter
                     </button>
                 </div>
@@ -926,7 +926,7 @@
                             <p>Créer un nouveau rendez-vous pour un patient</p>
                         </div>
                     </div>
-                    <button class="btn btn-primary" style="width: 100%;">
+                    <button class="btn btn-primary" style="width: 100%;" id="scheduleBtn">
                         <i class="fas fa-calendar"></i> Planifier
                     </button>
                 </div>
@@ -941,7 +941,7 @@
                             <p>Organiser et prioriser les patients en attente</p>
                         </div>
                     </div>
-                    <button class="btn btn-primary" style="width: 100%;">
+                    <button class="btn btn-primary" style="width: 100%;" id="manageBtn">
                         <i class="fas fa-list"></i> Gérer
                     </button>
                 </div>
@@ -956,7 +956,7 @@
                             <p>Envoyer des rappels aux patients en attente</p>
                         </div>
                     </div>
-                    <button class="btn btn-primary" style="width: 100%;">
+                    <button class="btn btn-primary" style="width: 100%;" id="notifyBtn">
                         <i class="fas fa-paper-plane"></i> Notifier
                     </button>
                 </div>
@@ -1065,7 +1065,10 @@
         setInterval(updateClock, 1000);
 
         // Patient data (in a real app, this would come from an API)
-        const patients = [];
+        const patients = [
+          { id: 1, name: 'Alice Dupont', treatment: 'Détartrage', appointmentTime: '10:00', status: 'waiting' },
+          { id: 2, name: 'Bob Martin', treatment: 'Consultation', appointmentTime: '10:30', status: 'waiting' }
+        ];
 
         // Function to render patients list
         function renderPatientsList() {
@@ -1123,6 +1126,9 @@
                   <button class="btn btn-small btn-warning" onclick="updateStatus(${patient.id})">
                     <i class="fas fa-edit"></i> Modifier
                   </button>
+                  <button class="btn btn-small btn-danger" onclick="deletePatient(${patient.id})">
+                    <i class="fas fa-trash"></i> Supprimer
+                  </button>
                 </div>
               </div>
             `;
@@ -1150,6 +1156,50 @@
             }
           }
         }
+
+        // Function to delete a patient
+        function deletePatient(id) {
+          if (confirm('Supprimer ce patient ?')) {
+            const index = patients.findIndex(p => p.id === id);
+            if (index !== -1) {
+              patients.splice(index, 1);
+              renderPatientsList();
+            }
+          }
+        }
+
+        // Function to add a patient
+        function addPatient() {
+          const name = prompt("Nom du patient:");
+          if (!name) return;
+          const treatment = prompt("Traitement:", "Consultation");
+          const appointmentTime = prompt("Heure du RDV:", new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }));
+          const id = Date.now();
+          patients.push({ id, name, treatment, appointmentTime, status: 'waiting' });
+          renderPatientsList();
+        }
+
+        // Function to schedule an appointment
+        function scheduleAppointment() {
+          const name = prompt("Nom du patient:");
+          if (!name) return;
+          const treatment = prompt("Traitement:", "Consultation");
+          const appointmentTime = prompt("Heure du RDV:", new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }));
+          const id = Date.now();
+          patients.push({ id, name, treatment, appointmentTime, status: 'waiting' });
+          renderPatientsList();
+          alert("Rendez-vous planifié !");
+        }
+
+        // Add event listeners for buttons
+        document.getElementById('addPatientBtn').addEventListener('click', addPatient);
+        document.getElementById('refreshBtn').addEventListener('click', renderPatientsList);
+        document.getElementById('filterBtn').addEventListener('click', () => alert("Fonction de filtrage à implémenter"));
+        document.getElementById('sortBtn').addEventListener('click', () => alert("Fonction de tri à implémenter"));
+        document.getElementById('quickAddBtn').addEventListener('click', addPatient);
+        document.getElementById('scheduleBtn').addEventListener('click', scheduleAppointment);
+        document.getElementById('manageBtn').addEventListener('click', () => alert("Gestion des files à implémenter"));
+        document.getElementById('notifyBtn').addEventListener('click', () => alert("Notifications envoyées aux patients en attente"));
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {

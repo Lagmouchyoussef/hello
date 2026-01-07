@@ -1,4 +1,4 @@
-
+c
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1312,14 +1312,6 @@
 
 
 <script src="../../../dataManager.js"></script>
-<script>
-// Check authentication
-const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-if (!currentUser || currentUser.role !== 'admin') {
-    alert('Accès non autorisé. Veuillez vous connecter.');
-    window.location.href = '../../LOGING/html/loging.html';
-}
-</script>
 <script>
 // Theme Toggle
 const themeToggle = document.getElementById('themeToggle');

@@ -783,7 +783,7 @@
                 row.innerHTML = `
                     <td>${patientName}</td>
                     <td>${new Date(payment.date).toLocaleDateString('fr-FR')}</td>
-                    <td>${payment.amount} DH</td>
+                    <td>${payment.amount ? payment.amount + ' DH' : 'N/A'}</td>
                     <td>${payment.mode || 'N/A'}</td>
                     <td>${payment.description || ''}</td>
                     <td>

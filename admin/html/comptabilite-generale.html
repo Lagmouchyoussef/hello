@@ -633,7 +633,13 @@ Nouvelle Entrée
 <script>
 // Form functions
 function showForm() {
-    document.getElementById('addForm').style.display = 'block';
+    console.log('showForm called');
+    const form = document.getElementById('addForm');
+    console.log('addForm element:', form);
+    if (form) {
+        form.style.display = 'block';
+        form.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 function hideForm() {
@@ -678,6 +684,142 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set initial theme
     document.body.classList.add('light-mode');
+
+    // Accounting functionality
+    let entries = JSON.parse(localStorage.getItem('accountingEntries')) || [];
+
+    function saveEntries() {
+        localStorage.setItem('accountingEntries', JSON.stringify(entries));
+    }
+
+    function renderEntries() {
+        console.log('Render called, entries length:', entries.length);
+        const containers = document.querySelectorAll('.appointments-container');
+        const container = containers[1]; // The list container (second one)
+        console.log('Container found:', container);
+        const emptyState = container.querySelector('.empty-state');
+        console.log('Empty state found:', emptyState);
+        if (entries.length === 0) {
+            console.log('No entries, showing empty state');
+            emptyState.style.display = 'block';
+            // Remove table if exists
+            const table = container.querySelector('.appointments-table');
+            if (table) table.remove();
+            return;
+        }
+        console.log('Entries exist, hiding empty state');
+        emptyState.style.display = 'none';
+        // Create table if not exists
+        let table = container.querySelector('.appointments-table');
+        if (!table) {
+            console.log('Creating table');
+            table = document.createElement('table');
+            table.className = 'appointments-table';
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Débit (DH)</th>
+                        <th>Crédit (DH)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            `;
+            container.appendChild(table);
+        }
+        const tbody = table.querySelector('tbody');
+        console.log('Updating tbody');
+        tbody.innerHTML = entries.map((entry) => `
+            <tr>
+                <td>${entry.date}</td>
+                <td>${entry.description}</td>
+                <td>${parseFloat(entry.debit).toFixed(2)}</td>
+                <td>${parseFloat(entry.credit).toFixed(2)}</td>
+                <td><button class="btn btn-small btn-danger" onclick="deleteEntry('${entry.id}')">Supprimer</button></td>
+            </tr>
+        `).join('');
+        console.log('Tbody updated, calling updateSummaries');
+        updateSummaries();
+
+        // Reapply search filter if active
+        const searchValue = document.getElementById('searchInput').value;
+        if (searchValue) {
+            const query = searchValue.toLowerCase();
+            const rows = document.querySelectorAll('.appointments-table tbody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+    }
+
+    function updateSummaries() {
+        const totalDebit = entries.reduce((sum, e) => sum + parseFloat(e.debit || 0), 0);
+        const totalCredit = entries.reduce((sum, e) => sum + parseFloat(e.credit || 0), 0);
+        const balance = totalDebit - totalCredit;
+        document.querySelector('.summary-cards .summary-card:nth-child(1) h3').textContent = totalDebit.toFixed(2) + ' DH';
+        document.querySelector('.summary-cards .summary-card:nth-child(2) h3').textContent = totalCredit.toFixed(2) + ' DH';
+        document.querySelector('.summary-cards .summary-card:nth-child(3) h3').textContent = balance.toFixed(2) + ' DH';
+    }
+
+    function deleteEntry(id) {
+        console.log('Delete called with id:', id);
+        if (confirm('Supprimer cette entrée ?')) {
+            console.log('Confirmed delete');
+            const index = entries.findIndex(e => e.id === id);
+            console.log('Index found:', index);
+            if (index !== -1) {
+                entries.splice(index, 1);
+                console.log('Entry deleted, saving');
+                saveEntries();
+                renderEntries();
+            } else {
+                console.log('Entry not found');
+            }
+        } else {
+            console.log('Delete cancelled');
+        }
+    }
+
+    // Form submission
+    document.getElementById('accountingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log('Form submitted');
+        const date = document.getElementById('date').value;
+        const description = document.getElementById('Description').value;
+        const debit = document.getElementById('debit').value;
+        const credit = document.getElementById('credit').value;
+        console.log('Form values:', { date, description, debit, credit });
+        if (date && description && (debit || credit)) {
+            const id = Date.now().toString();
+            entries.push({ id, date, description, debit: debit || '0', credit: credit || '0' });
+            console.log('Entry added, total entries:', entries.length);
+            saveEntries();
+            renderEntries();
+            hideForm();
+            this.reset();
+        } else {
+            alert('Veuillez remplir tous les champs requis.');
+        }
+    });
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        const rows = document.querySelectorAll('.appointments-table tbody tr');
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(query) ? '' : 'none';
+        });
+    });
+
+    // Set default date
+    document.getElementById('date').value = new Date().toISOString().split('T')[0];
+
+    // Initial render
+    renderEntries();
 });
 </script>
 </body>
