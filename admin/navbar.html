@@ -401,81 +401,9 @@
         </div>
     </div>
 
-    <script>
-        // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        const themeIcon = themeToggle.querySelector('i');
-        const themeText = themeToggle.querySelector('span');
-        // Using sessionStorage instead of localStorage
-        const savedTheme = sessionStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-          body.classList.remove('light-mode');
-          body.classList.add('dark-mode');
-          themeIcon.className = 'fas fa-sun';
-          themeText.textContent = 'Mode Clair';
-        }
-        themeToggle.addEventListener('click', () => {
-          if (body.classList.contains('light-mode')) {
-            body.classList.remove('light-mode');
-            body.classList.add('dark-mode');
-            themeIcon.className = 'fas fa-sun';
-            themeText.textContent = 'Mode Clair';
-            sessionStorage.setItem('theme', 'dark');
-          } else {
-            body.classList.remove('dark-mode');
-            body.classList.add('light-mode');
-            themeIcon.className = 'fas fa-moon';
-            themeText.textContent = 'Mode Sombre';
-            sessionStorage.setItem('theme', 'light');
-          }
-        });
-        // Logout functionality
-        const logoutBtn = document.getElementById('logoutBtn');
-        logoutBtn.addEventListener('click', () => {
-          if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-            alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-          }
-        });
-        // Navigation link functionality
-        const mainLinks = document.querySelectorAll('.sidebar-link');
-        mainLinks.forEach(link => {
-          link.addEventListener('click', function(e) {
-            // Update active states
-            mainLinks.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-          });
-        });
-        // Initialize active link
-        document.querySelector('.sidebar-link[href="dashboard.html"]').classList.add('active');
-        // Collapsible section headers
-        document.querySelectorAll('.section-header.clickable').forEach(header => {
-          header.addEventListener('click', () => {
-            const content = header.nextElementSibling;
-            const isCollapsed = content.classList.contains('collapsed');
-            // Close all other sections
-            document.querySelectorAll('.section-content').forEach(el => {
-              if (el !== content) {
-                el.classList.add('collapsed');
-                el.previousElementSibling.classList.add('collapsed');
-              }
-            });
-            // Toggle current section
-            if (isCollapsed) {
-              content.classList.remove('collapsed');
-              header.classList.remove('collapsed');
-            } else {
-              content.classList.add('collapsed');
-              header.classList.add('collapsed');
-            }
-          });
-        });
-        // Open "Rendez-vous" by default
-        document.getElementById('section-rdv-content').classList.remove('collapsed');
-        document.getElementById('section-rdv-toggle').classList.remove('collapsed');
-    </script>
-</body>
+    
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 

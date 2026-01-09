@@ -434,21 +434,21 @@ body {
 
 @media (max-width: 480px) {
     .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        padding: 1rem 0;
+        width: 250px;
+        height: 100vh;
+        position: fixed;
+        padding: 1.5rem 0;
     }
     .main-content {
-        margin-left: 0;
+        margin-left: 250px;
         padding: 1rem;
     }
     .cabinet-header,
     .user-section {
-        text-align: left;
+        text-align: center;
     }
     .cabinet-logo {
-        margin: 0 0 1rem 1.5rem;
+        margin: 0 auto 1rem;
     }
     .content-header {
         flex-direction: column;

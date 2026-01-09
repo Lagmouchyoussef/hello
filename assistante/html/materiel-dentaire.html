@@ -706,7 +706,7 @@
             <p class="page-subtitle">Gestion de l'inventaire et du stock des équipements dentaires</p>
         </div>
         <div class="content-actions">
-            <button class="btn btn-primary" onclick="openAddMaterialModal()">
+            <button class="btn btn-primary">
                 <i class="fas fa-plus"></i> Ajouter Matériel
             </button>
             <button class="btn btn-success">
@@ -788,10 +788,10 @@
                 </div>
             </div>
             <div style="display: flex; gap: 1rem;">
-                <button class="btn btn-primary" onclick="applyFilters()">
+                <button class="btn btn-primary">
                     <i class="fas fa-filter"></i> Appliquer Filtres
                 </button>
-                <button class="btn btn-danger" onclick="clearFilters()">
+                <button class="btn btn-danger">
                     <i class="fas fa-times"></i> Effacer Filtres
                 </button>
             </div>
@@ -860,7 +860,7 @@
     <div class="content-container" style="margin: 10% auto; max-width: 600px; width: 90%;">
         <div class="content-header-section">
             <h2 class="content-title">Ajouter un Matériel</h2>
-            <button class="btn btn-small" onclick="closeAddMaterialModal()">
+            <button class="btn btn-small">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -922,7 +922,7 @@
                     <textarea class="form-control" id="materialDescription" rows="3"></textarea>
                 </div>
                 <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
-                    <button type="button" class="btn btn-danger" onclick="closeAddMaterialModal()">
+                    <button type="button" class="btn btn-danger">
                         <i class="fas fa-times"></i> Annuler
                     </button>
                     <button type="submit" class="btn btn-primary">
@@ -934,268 +934,7 @@
     </div>
 </div>
 
-<script>
-    // Theme Toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-    const themeIcon = themeToggle.querySelector('i');
-    const themeText = themeToggle.querySelector('span');
-    // Using sessionStorage instead of localStorage
-    const savedTheme = sessionStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      body.classList.remove('light-mode');
-      body.classList.add('dark-mode');
-      themeIcon.className = 'fas fa-sun';
-      themeText.textContent = 'Mode Clair';
-    }
-    themeToggle.addEventListener('click', () => {
-      if (body.classList.contains('light-mode')) {
-        body.classList.remove('light-mode');
-        body.classList.add('dark-mode');
-        themeIcon.className = 'fas fa-sun';
-        themeText.textContent = 'Mode Clair';
-        sessionStorage.setItem('theme', 'dark');
-      } else {
-        body.classList.remove('dark-mode');
-        body.classList.add('light-mode');
-        themeIcon.className = 'fas fa-moon';
-        themeText.textContent = 'Mode Sombre';
-        sessionStorage.setItem('theme', 'light');
-      }
-    });
 
-    // Logout functionality
-    const logoutBtn = document.getElementById('logoutBtn');
-    logoutBtn.addEventListener('click', () => {
-      if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-        alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-      }
-    });
-
-    // Navigation link functionality
-    const mainLinks = document.querySelectorAll('.sidebar-link');
-    const mainContent = document.getElementById('mainContent');
-    mainLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        // Update active states
-        mainLinks.forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
-      });
-    });
-
-    // Initialize active link
-    document.querySelector('.sidebar-link[href="materiel-dentaire.html"]').classList.add('active');
-
-    // Collapsible section headers
-    document.querySelectorAll('.section-header.clickable').forEach(header => {
-      header.addEventListener('click', () => {
-        const content = header.nextElementSibling;
-        const isCollapsed = content.classList.contains('collapsed');
-        // Close all other sections
-        document.querySelectorAll('.section-content').forEach(el => {
-          if (el !== content) {
-            el.classList.add('collapsed');
-            el.previousElementSibling.classList.add('collapsed');
-          }
-        });
-        // Toggle current section
-        if (isCollapsed) {
-          content.classList.remove('collapsed');
-          header.classList.remove('collapsed');
-        } else {
-          content.classList.add('collapsed');
-          header.classList.add('collapsed');
-        }
-      });
-    });
-
-    // Open "Gestion des stocks" by default
-    document.getElementById('section-stock-content').classList.remove('collapsed');
-    document.getElementById('section-stock-toggle').classList.remove('collapsed');
-
-    // Materials data (in a real app, this would come from an API)
-    let materials = [];
-
-    // Function to render materials table
-    function renderMaterialsTable() {
-      const tableBody = document.getElementById('materialsTableBody');
-      const totalMaterials = document.getElementById('totalMaterials');
-      const lowStockCount = document.getElementById('lowStockCount');
-      const inStockCount = document.getElementById('inStockCount');
-      const outOfStockCount = document.getElementById('outOfStockCount');
-
-      // Update statistics
-      totalMaterials.textContent = materials.length;
-      lowStockCount.textContent = materials.filter(m => m.currentStock <= m.minThreshold && m.currentStock > 0).length;
-      inStockCount.textContent = materials.filter(m => m.currentStock > m.minThreshold).length;
-      outOfStockCount.textContent = materials.filter(m => m.currentStock === 0).length;
-
-      if (materials.length === 0) {
-        tableBody.innerHTML = `
-          <tr>
-            <td colspan="8" style="text-align: center; color: var(--text-gray); padding: 3rem;">
-              <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-              <div>Aucun matériel enregistré</div>
-              <small>Cliquez sur "Ajouter Matériel" pour commencer</small>
-            </td>
-          </tr>
-        `;
-        document.getElementById('lowStockAlerts').style.display = 'none';
-        return;
-      }
-
-      tableBody.innerHTML = materials.map(material => {
-        const stockStatus = material.currentStock === 0 ? 'stock-out' :
-                           material.currentStock <= material.minThreshold ? 'stock-low' : 'stock-normal';
-        const statusText = material.currentStock === 0 ? 'Rupture' :
-                          material.currentStock <= material.minThreshold ? 'Faible' : 'Normal';
-        const statusClass = material.currentStock === 0 ? 'stock-out' :
-                           material.currentStock <= material.minThreshold ? 'stock-low' : 'stock-normal';
-
-        return `
-          <tr>
-            <td>${material.name}</td>
-            <td>${material.category}</td>
-            <td>${material.supplier || 'N/A'}</td>
-            <td>${material.currentStock} ${material.unit}</td>
-            <td>${material.minThreshold} ${material.unit}</td>
-            <td><span class="stock-status ${statusClass}">${statusText}</span></td>
-            <td>${material.lastUpdated}</td>
-            <td>
-              <button class="btn btn-small btn-primary" onclick="editMaterial(${material.id})" title="Modifier">
-                <i class="fas fa-edit"></i>
-              </button>
-              <button class="btn btn-small btn-success" onclick="adjustStock(${material.id})" title="Ajuster Stock">
-                <i class="fas fa-plus-minus"></i>
-              </button>
-              <button class="btn btn-small btn-danger" onclick="deleteMaterial(${material.id})" title="Supprimer">
-                <i class="fas fa-trash"></i>
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      // Show low stock alerts if any
-      const lowStockMaterials = materials.filter(m => m.currentStock <= m.minThreshold);
-      if (lowStockMaterials.length > 0) {
-        document.getElementById('lowStockAlerts').style.display = 'block';
-        document.getElementById('alertsList').innerHTML = lowStockMaterials.map(material => `
-          <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid var(--warning); border-radius: var(--border-radius); margin-bottom: 1rem; background: rgba(217, 119, 6, 0.05);">
-            <i class="fas fa-exclamation-triangle" style="color: var(--warning); font-size: 1.5rem;"></i>
-            <div style="flex: 1;">
-              <strong>${material.name}</strong> - Stock faible (${material.currentStock} ${material.unit} restant)
-            </div>
-            <button class="btn btn-small btn-warning" onclick="adjustStock(${material.id})">
-              Réapprovisionner
-            </button>
-          </div>
-        `).join('');
-      } else {
-        document.getElementById('lowStockAlerts').style.display = 'none';
-      }
-    }
-
-    // Function to open add material modal
-    function openAddMaterialModal() {
-      document.getElementById('addMaterialModal').style.display = 'flex';
-      document.getElementById('addMaterialForm').reset();
-    }
-
-    // Function to close add material modal
-    function closeAddMaterialModal() {
-      document.getElementById('addMaterialModal').style.display = 'none';
-    }
-
-    // Function to add new material
-    document.getElementById('addMaterialForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const newMaterial = {
-        id: Date.now(),
-        name: document.getElementById('materialName').value,
-        category: document.getElementById('materialCategory').value,
-        supplier: document.getElementById('materialSupplier').value,
-        supplierRef: document.getElementById('supplierRef').value,
-        currentStock: parseInt(document.getElementById('initialStock').value),
-        minThreshold: parseInt(document.getElementById('minThreshold').value),
-        unitPrice: parseFloat(document.getElementById('unitPrice').value) || 0,
-        unit: document.getElementById('unit').value,
-        description: document.getElementById('materialDescription').value,
-        lastUpdated: new Date().toLocaleDateString('fr-FR')
-      };
-
-      materials.push(newMaterial);
-      renderMaterialsTable();
-      closeAddMaterialModal();
-      alert('Matériel ajouté avec succès !');
-    });
-
-    // Function to edit material
-    function editMaterial(id) {
-      const material = materials.find(m => m.id === id);
-      if (material) {
-        // For now, just show an alert. In a real app, this would open an edit modal
-        alert(`Fonction d'édition à implémenter pour ${material.name}`);
-      }
-    }
-
-    // Function to adjust stock
-    function adjustStock(id) {
-      const material = materials.find(m => m.id === id);
-      if (material) {
-        const adjustment = prompt(`Ajuster le stock pour ${material.name} (stock actuel: ${material.currentStock} ${material.unit}):`, '0');
-        if (adjustment !== null) {
-          const newStock = material.currentStock + parseInt(adjustment);
-          if (newStock >= 0) {
-            material.currentStock = newStock;
-            material.lastUpdated = new Date().toLocaleDateString('fr-FR');
-            renderMaterialsTable();
-          } else {
-            alert('Le stock ne peut pas être négatif.');
-          }
-        }
-      }
-    }
-
-    // Function to delete material
-    function deleteMaterial(id) {
-      const material = materials.find(m => m.id === id);
-      if (material && confirm(`Êtes-vous sûr de vouloir supprimer ${material.name} ?`)) {
-        materials = materials.filter(m => m.id !== id);
-        renderMaterialsTable();
-      }
-    }
-
-    // Function to apply filters
-    function applyFilters() {
-      // For now, just show an alert. In a real app, this would filter the table
-      alert('Fonction de filtrage à implémenter');
-    }
-
-    // Function to clear filters
-    function clearFilters() {
-      document.getElementById('searchInput').value = '';
-      document.getElementById('categoryFilter').value = '';
-      document.getElementById('stockFilter').value = '';
-      document.getElementById('supplierFilter').value = '';
-      alert('Filtres effacés');
-    }
-
-    // Reset data functionality
-    document.getElementById('resetDataBtn').addEventListener('click', function() {
-      if (confirm('Êtes-vous sûr de vouloir réinitialiser toutes les données ?')) {
-        materials = [];
-        renderMaterialsTable();
-        alert('Données réinitialisées avec succès !');
-      }
-    });
-
-    // Initialize the page
-    document.addEventListener('DOMContentLoaded', function() {
-      renderMaterialsTable();
-    });
-</script>
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+

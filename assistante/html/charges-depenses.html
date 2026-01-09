@@ -515,7 +515,7 @@
 <div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Charges & dépenses</h1>
-<button class="btn btn-primary" onclick="showForm()">
+<button class="btn btn-primary">
 <i class="fas fa-plus"></i>
 Nouvelle Charge
 </button>
@@ -567,7 +567,7 @@ Nouvelle Charge
 </div>
 <div class="form-actions">
 <button type="submit" class="btn btn-primary">Ajouter</button>
-<button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
+<button type="button" class="btn btn-danger">Annuler</button>
 </div>
 </form>
 </div>
@@ -595,124 +595,11 @@ Nouvelle Charge
 </div>
 </div>
 
-<script>
-// Load data from localStorage
-let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 
-// DOM elements
-const addForm = document.getElementById('addForm');
-const expensesForm = document.getElementById('expensesForm');
-const expensesTableBody = document.getElementById('expensesTablebody');
-const searchInput = document.getElementById('searchInput');
-const totalChargesEl = document.getElementById('totalCharges');
-const totalDepensesEl = document.getElementById('totalDepenses');
-const balanceEl = document.getElementById('balance');
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    renderTable();
-    updateTotals();
-});
-
-// Show form
-function showForm() {
-    addForm.style.display = 'block';
-    addForm.scrollIntoView({ behavior: 'smooth' });
-}
-
-// Hide form
-function hideForm() {
-    addForm.style.display = 'none';
-    expensesForm.reset();
-}
-
-// Handle form submission
-expensesForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const formData = new FormData(expensesForm);
-    const expense = {
-        id: Date.now(),
-        date: formData.get('date'),
-        description: formData.get('Description'),
-        montant: parseFloat(formData.get('montant')),
-        type: formData.get('type'),
-        categorie: formData.get('categorie')
-    };
-    expenses.push(expense);
-    saveData();
-    renderTable();
-    updateTotals();
-    hideForm();
-});
-
-// Render table
-function renderTable(filter = '') {
-    expensesTableBody.innerHTML = '';
-    const filtered = expenses.filter(exp =>
-        exp.description.toLowerCase().includes(filter.toLowerCase()) ||
-        exp.categorie.toLowerCase().includes(filter.toLowerCase())
-    );
-    filtered.forEach(exp => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${new Date(exp.date).toLocaleDateString('fr-FR')}</td>
-            <td>${exp.description}</td>
-            <td>${exp.montant.toFixed(2)} DH</td>
-            <td><span class="type-${exp.type.toLowerCase()}">${exp.type}</span></td>
-            <td>${exp.categorie}</td>
-            <td>
-                <button class="btn-action btn-edit" onclick="editExpense(${exp.id})">
-                    <i class="fas fa-edit"></i> Modifier
-                </button>
-                <button class="btn-action btn-delete" onclick="deleteExpense(${exp.id})">
-                    <i class="fas fa-trash"></i> Supprimer
-                </button>
-            </td>
-        `;
-        expensesTableBody.appendChild(row);
-    });
-}
-
-// Search
-searchInput.addEventListener('input', (e) => {
-    renderTable(e.target.value);
-});
-
-// Update totals
-function updateTotals() {
-    const charges = expenses.filter(e => e.type === 'Charge').reduce((sum, e) => sum + e.montant, 0);
-    const depenses = expenses.filter(e => e.type === 'dépense').reduce((sum, e) => sum + e.montant, 0);
-    const balance = depenses - charges;
-
-    totalChargesEl.textContent = charges.toFixed(2) + ' DH';
-    totalDepensesEl.textContent = depenses.toFixed(2) + ' DH';
-    balanceEl.textContent = balance.toFixed(2) + ' DH';
-    balanceEl.style.color = balance >= 0 ? 'var(--success)' : 'var(--danger)';
-}
-
-// Delete expense
-function deleteExpense(id) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette charge/dépense ?')) {
-        expenses = expenses.filter(e => e.id !== id);
-        saveData();
-        renderTable();
-        updateTotals();
-    }
-}
-
-// Edit expense (simplified, could expand to edit form)
-function editExpense(id) {
-    alert('Fonction d\'édition à implémenter');
-}
-
-// Save to localStorage
-function saveData() {
-    localStorage.setItem('expenses', JSON.stringify(expenses));
-}
-</script>
-
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

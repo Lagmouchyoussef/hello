@@ -588,7 +588,7 @@
                 <h1 class="page-title">Paiements Reçus</h1>
             </div>
             <div class="content-actions">
-                <button class="btn btn-primary" onclick="showForm()">
+                <button class="btn btn-primary">
                     <i class="fas fa-plus"></i> Nouveau Paiement
                 </button>
             </div>
@@ -630,7 +630,7 @@
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
+                    <button type="button" class="btn btn-danger">Annuler</button>
                     <button type="submit" class="btn btn-primary">Ajouter</button>
                 </div>
             </form>
@@ -666,250 +666,13 @@
     </div>
 
     <!-- DataManager Script -->
-    <script src="../../../dataManager.js"></script>
+    
 
     <!-- JavaScript -->
-    <script>
-        // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        const themeIcon = themeToggle.querySelector('i');
-        const themeText = themeToggle.querySelector('span');
-        const savedTheme = sessionStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-            body.classList.remove('light-mode');
-            body.classList.add('dark-mode');
-            themeIcon.className = 'fas fa-sun';
-            themeText.textContent = 'Mode Clair';
-        }
-        themeToggle.addEventListener('click', () => {
-            if (body.classList.contains('light-mode')) {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-                themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'Mode Clair';
-                sessionStorage.setItem('theme', 'dark');
-            } else {
-                body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
-                themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'Mode Sombre';
-                sessionStorage.setItem('theme', 'light');
-            }
-        });
-
-        // Logout functionality
-        const logoutBtn = document.getElementById('logoutBtn');
-        logoutBtn.addEventListener('click', () => {
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-            }
-        });
-
-        // Navigation functionality
-        document.querySelectorAll('.section-header.clickable').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const isCollapsed = content.classList.contains('collapsed');
-                document.querySelectorAll('.section-content').forEach(el => {
-                    if (el !== content) {
-                        el.classList.add('collapsed');
-                        el.previousElementSibling.classList.add('collapsed');
-                    }
-                });
-                if (isCollapsed) {
-                    content.classList.remove('collapsed');
-                    header.classList.remove('collapsed');
-                } else {
-                    content.classList.add('collapsed');
-                    header.classList.add('collapsed');
-                }
-            });
-        });
-
-        // Open "Comptabilité" by default
-        document.getElementById('section-compta-content').classList.remove('collapsed');
-        document.getElementById('section-compta-toggle').classList.remove('collapsed');
-
-        // Payments functionality
-        let payments = [];
-        let patients = [];
-        let editingId = null;
-
-        function loadData() {
-            payments = dataManager.getAll('payments').filter(p => p.type === 'received');
-            patients = dataManager.getAll('patients');
-            renderPatients();
-            renderPayments();
-        }
-
-        function renderPatients() {
-            const select = document.getElementById('patientId');
-            select.innerHTML = '<option value="">Sélectionner un patient</option>';
-            patients.forEach(patient => {
-                const option = document.createElement('option');
-                option.value = patient.id;
-                option.textContent = `${patient.firstName} ${patient.lastName}`;
-                select.appendChild(option);
-            });
-        }
-
-        function showForm() {
-            document.getElementById('addForm').style.display = 'block';
-            document.getElementById('patientId').focus();
-        }
-
-        function hideForm() {
-            document.getElementById('addForm').style.display = 'none';
-            document.getElementById('paymentsForm').reset();
-            editingId = null;
-            document.getElementById('paymentsForm').onsubmit = addPayment;
-        }
-
-        function renderPayments() {
-            const tbody = document.getElementById('paymentsTableBody');
-            tbody.innerHTML = '';
-
-            if (payments.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-secondary);">Aucun paiement enregistré</td></tr>';
-                return;
-            }
-
-            payments.forEach((payment) => {
-                const patient = patients.find(p => p.id === payment.patientId);
-                const patientName = patient ? `${patient.firstName} ${patient.lastName}` : 'Patient inconnu';
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${patientName}</td>
-                    <td>${new Date(payment.date).toLocaleDateString('fr-FR')}</td>
-                    <td>${payment.amount ? payment.amount + ' DH' : 'N/A'}</td>
-                    <td>${payment.mode || 'N/A'}</td>
-                    <td>${payment.description || ''}</td>
-                    <td>
-                        <button class="action-btn edit" onclick="editPayment('${payment.id}')">
-                            <i class="fas fa-edit"></i> Modifier
-                        </button>
-                        <button class="action-btn delete" onclick="deletePayment('${payment.id}')">
-                            <i class="fas fa-trash"></i> Supprimer
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            updateTotal();
-        }
-
-        function updateTotal() {
-            const total = payments.reduce((sum, payment) => sum + parseFloat(payment.amount), 0);
-            document.getElementById('totalAmount').textContent = `Total: ${total.toFixed(2)} DH`;
-        }
-
-        function addPayment(event) {
-            event.preventDefault();
-
-            const patientId = document.getElementById('patientId').value;
-            const date = document.getElementById('date').value;
-            const amount = document.getElementById('montant').value;
-            const mode = document.getElementById('mode_paiement').value;
-            const description = document.getElementById('description').value;
-
-            try {
-                const newPayment = dataManager.createPayment({
-                    patientId,
-                    amount: parseFloat(amount),
-                    type: 'received',
-                    date,
-                    mode,
-                    description
-                });
-                loadData();
-                hideForm();
-            } catch (error) {
-                alert('Erreur: ' + error.message);
-            }
-        }
-
-        function editPayment(id) {
-            const payment = payments.find(p => p.id === id);
-            if (!payment) return;
-
-            document.getElementById('patientId').value = payment.patientId;
-            document.getElementById('date').value = payment.date;
-            document.getElementById('montant').value = payment.amount;
-            document.getElementById('mode_paiement').value = payment.mode || '';
-            document.getElementById('description').value = payment.description || '';
-
-            editingId = id;
-            showForm();
-
-            // Change form submission to update
-            const form = document.getElementById('paymentsForm');
-            form.onsubmit = (event) => {
-                event.preventDefault();
-                updatePayment();
-            };
-        }
-
-        function updatePayment() {
-            const patientId = document.getElementById('patientId').value;
-            const date = document.getElementById('date').value;
-            const amount = document.getElementById('montant').value;
-            const mode = document.getElementById('mode_paiement').value;
-            const description = document.getElementById('description').value;
-
-            try {
-                dataManager.updatePayment(editingId, {
-                    patientId,
-                    amount: parseFloat(amount),
-                    type: 'received',
-                    date,
-                    mode,
-                    description
-                });
-                loadData();
-                hideForm();
-            } catch (error) {
-                alert('Erreur: ' + error.message);
-            }
-        }
-
-        function deletePayment(id) {
-            if (confirm('Êtes-vous sûr de vouloir supprimer ce paiement ?')) {
-                try {
-                    dataManager.delete('payments', id);
-                    loadData();
-                } catch (error) {
-                    alert('Erreur: ' + error.message);
-                }
-            }
-        }
-
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#paymentsTableBody tr');
-
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
-        });
-
-        // Real-time sync
-        dataManager.onDataSync((detail) => {
-            if (detail.entity === 'payments' || detail.entity === 'patients') {
-                loadData();
-            }
-        });
-
-        // Initialize
-        document.getElementById('paymentsForm').addEventListener('submit', addPayment);
-        loadData();
-    </script>
-</body>
+    
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

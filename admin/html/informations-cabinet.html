@@ -661,11 +661,11 @@ textarea.form-control {
 <div class="info-value" id="display_description"></div>
 </div>
 <div class="btn-group">
-<button class="btn btn-primary" onclick="showForm()">
+<button class="btn btn-primary">
 <i class="fas fa-edit"></i>
 Modifier
 </button>
-<button class="btn btn-danger" onclick="deleteCabinet()">
+<button class="btn btn-danger">
 <i class="fas fa-trash"></i>
 Supprimer
 </button>
@@ -758,7 +758,7 @@ Description
 <i class="fas fa-save"></i>
 Enregistrer
 </button>
-<button type="button" class="btn btn-secondary" onclick="cancelEdit()">
+<button type="button" class="btn btn-secondary">
 <i class="fas fa-times"></i>
 Annuler
 </button>
@@ -768,187 +768,11 @@ Annuler
 </div>
 </div>
 
-<script>
-// Cabinet information management
-let cabinetData = {
-    nom_cabinet: 'DIKRA centre Dentaire',
-    Adresse: '',
-    telephone: '',
-    email: '',
-    site_web: '',
-    numero_fiscal: '',
-    numero_cnss: '',
-    nom_medecin: '',
-    titre_medecin: '',
-    Description: ''
-};
 
-// Load cabinet data
-function loadCabinetData() {
-    const saved = localStorage.getItem('cabinetData');
-    if (saved) {
-        cabinetData = { ...cabinetData, ...JSON.parse(saved) };
-    }
 
-    // Check if data exists
-    const hasData = Object.values(cabinetData).some(value => value && value.trim() !== '');
-
-    if (hasData) {
-        showDisplay();
-    } else {
-        showForm();
-    }
-}
-
-// Show display mode
-function showDisplay() {
-    document.getElementById('infoDisplay').style.display = 'grid';
-    document.getElementById('infoForm').style.display = 'none';
-
-    // Populate display
-    Object.keys(cabinetData).forEach(key => {
-        const element = document.getElementById('display_' + key);
-        if (element) {
-            element.textContent = cabinetData[key] || 'Non défini';
-        }
-    });
-}
-
-// Show form mode
-function showForm() {
-    document.getElementById('infoDisplay').style.display = 'none';
-    document.getElementById('infoForm').style.display = 'block';
-
-    // Populate form
-    Object.keys(cabinetData).forEach(key => {
-        const element = document.getElementById(key);
-        if (element) {
-            element.value = cabinetData[key] || '';
-        }
-    });
-
-    hideMessages();
-}
-
-// Save cabinet data
-function saveCabinetData() {
-    const formData = new FormData(document.getElementById('cabinetForm'));
-    const newData = {};
-
-    for (let [key, value] of formData.entries()) {
-        newData[key] = value;
-    }
-
-    // Validate required fields
-    const requiredFields = ['nom_cabinet', 'Adresse', 'telephone', 'email'];
-    let isValid = true;
-
-    requiredFields.forEach(field => {
-        const element = document.getElementById(field);
-        if (!newData[field] || newData[field].trim() === '') {
-            element.style.borderColor = '#dc2626';
-            isValid = false;
-        } else {
-            element.style.borderColor = 'var(--border-color)';
-        }
-    });
-
-    if (!isValid) {
-        showError('Veuillez remplir tous les champs obligatoires.');
-        return;
-    }
-
-    // Validate email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(newData.email)) {
-        document.getElementById('email').style.borderColor = '#dc2626';
-        showError('Adresse email invalide.');
-        return;
-    }
-
-    // Save data
-    cabinetData = { ...cabinetData, ...newData };
-    localStorage.setItem('cabinetData', JSON.stringify(cabinetData));
-
-    showSuccess('Informations du cabinet mises à jour avec succès !');
-    setTimeout(() => {
-        showDisplay();
-    }, 2000);
-}
-
-// Cancel edit
-function cancelEdit() {
-    showDisplay();
-    hideMessages();
-}
-
-// Delete cabinet data
-function deleteCabinet() {
-    if (confirm('Êtes-vous sûr de vouloir supprimer toutes les informations du cabinet ? Cette action est irréversible.')) {
-        cabinetData = {
-            nom_cabinet: '',
-            Adresse: '',
-            telephone: '',
-            email: '',
-            site_web: '',
-            numero_fiscal: '',
-            numero_cnss: '',
-            nom_medecin: '',
-            titre_medecin: '',
-            Description: ''
-        };
-        localStorage.removeItem('cabinetData');
-        showForm();
-        showSuccess('Informations du cabinet supprimées.');
-    }
-}
-
-// Show success message
-function showSuccess(message) {
-    const successEl = document.getElementById('successMessage');
-    successEl.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
-    successEl.style.display = 'block';
-    document.getElementById('errorMessage').style.display = 'none';
-}
-
-// Show error message
-function showError(message) {
-    const errorEl = document.getElementById('errorMessage');
-    errorEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
-    errorEl.style.display = 'block';
-    document.getElementById('successMessage').style.display = 'none';
-}
-
-// Hide messages
-function hideMessages() {
-    document.getElementById('successMessage').style.display = 'none';
-    document.getElementById('errorMessage').style.display = 'none';
-}
-
-// Form validation on input
-document.addEventListener('DOMContentLoaded', function() {
-    loadCabinetData();
-
-    // Form submission
-    document.getElementById('cabinetForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        saveCabinetData();
-    });
-
-    // Real-time validation
-    document.querySelectorAll('.form-control').forEach(input => {
-        input.addEventListener('input', function() {
-            if (this.style.borderColor === 'rgb(220, 38, 38)') {
-                this.style.borderColor = 'var(--border-color)';
-            }
-            hideMessages();
-        });
-    });
-});
-</script>
-
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

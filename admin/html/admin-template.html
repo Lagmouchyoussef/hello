@@ -375,7 +375,7 @@
                     Rendez-vous
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-rdv-content">
+                <div class="section-content collapsed" id="section-rdv-content">
                     <div class="sidebar-item">
                         <a href="Listes%20des%20Rendez-vous.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
@@ -421,7 +421,7 @@
                     Patients
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-patients-content">
+                <div class="section-content collapsed" id="section-patients-content">
                     <div class="sidebar-item">
                         <a href="fiches-patients.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-user-injured"></i></span>
@@ -443,7 +443,7 @@
                     Cabinet
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-cabinet-content">
+                <div class="section-content collapsed" id="section-cabinet-content">
                     <div class="sidebar-item">
                         <a href="salle-attente.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-chair"></i></span>
@@ -459,7 +459,7 @@
                     Comptabilité
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-compta-content">
+                <div class="section-content collapsed" id="section-compta-content">
                     <div class="sidebar-item">
                         <a href="comptabilite-generale.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-calculator"></i></span>
@@ -487,7 +487,7 @@
                     Communication
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-com-content">
+                <div class="section-content collapsed" id="section-com-content">
                     <div class="sidebar-item">
                         <a href="messagerie-interne.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-comments"></i></span>
@@ -523,7 +523,7 @@
                     Organisation
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-org-content">
+                <div class="section-content collapsed" id="section-org-content">
                     <div class="sidebar-item">
                         <a href="taches-rappels.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-tasks"></i></span>
@@ -551,7 +551,7 @@
                     Gestion des stocks
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-stock-content">
+                <div class="section-content collapsed" id="section-stock-content">
                     <div class="sidebar-item">
                         <a href="materiel-dentaire.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-box"></i></span>
@@ -579,7 +579,7 @@
                     Documents & formulaires
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-docs-content">
+                <div class="section-content collapsed" id="section-docs-content">
                     <div class="sidebar-item">
                         <a href="ordonnances.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-prescription"></i></span>
@@ -619,7 +619,7 @@
                     Utilisateurs
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-users-content">
+                <div class="section-content collapsed" id="section-users-content">
                     <div class="sidebar-item">
                         <a href="Liste%20du%20personnel.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-list"></i></span>
@@ -671,7 +671,7 @@
                     Site web
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-website-content">
+                <div class="section-content collapsed" id="section-website-content">
                     <div class="sidebar-item">
                         <a href="contenu-articles.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-edit"></i></span>
@@ -711,7 +711,7 @@
                     Configuration
                     <i class="fas fa-chevron-down section-chevron"></i>
                 </div>
-                <div class="section-content" id="section-config-content">
+                <div class="section-content collapsed" id="section-config-content">
                     <div class="sidebar-item">
                         <a href="mon-profil.html" class="sidebar-link">
                             <span class="sidebar-icon"><i class="fas fa-user-cog"></i></span>
@@ -831,100 +831,71 @@
 
     <!-- Common JavaScript -->
     <script>
-        // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        const themeIcon = themeToggle.querySelector('i');
-        const themeText = themeToggle.querySelector('span');
-        // Using sessionStorage instead of localStorage
-        const savedTheme = sessionStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-            body.classList.remove('light-mode');
-            body.classList.add('dark-mode');
-            themeIcon.className = 'fas fa-sun';
-            themeText.textContent = 'Mode Clair';
-        }
-        themeToggle.addEventListener('click', () => {
-            if (body.classList.contains('light-mode')) {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-                themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'Mode Clair';
-                sessionStorage.setItem('theme', 'dark');
-            } else {
-                body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
-                themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'Mode Sombre';
-                sessionStorage.setItem('theme', 'light');
-            }
-        });
-
-        // Logout functionality
-        const logoutBtn = document.getElementById('logoutBtn');
-        logoutBtn.addEventListener('click', () => {
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-            }
-        });
-
-        // Navigation link functionality
-        const mainLinks = document.querySelectorAll('.sidebar-link');
-        const mainContent = document.getElementById('mainContent');
-        mainLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Update active states
-                mainLinks.forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Collapsible sections
+            const toggles = document.querySelectorAll('.section-header.clickable');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    content.classList.toggle('collapsed');
+                    this.classList.toggle('collapsed');
+                });
             });
-        });
 
-        // Initialize active link (update based on current page)
-        // document.querySelector('.sidebar-link[href="current-page.html"]').classList.add('active');
+            // Expand section with active link and scroll to it
+            setTimeout(() => {
+                const activeLink = document.querySelector('.sidebar-link.active');
+                if (activeLink) {
+                    const sectionContent = activeLink.closest('.section-content');
+                    if (sectionContent && sectionContent.classList.contains('collapsed')) {
+                        sectionContent.classList.remove('collapsed');
+                        const header = sectionContent.previousElementSibling;
+                        if (header && header.classList.contains('clickable')) {
+                            header.classList.remove('collapsed');
+                        }
+                    }
+                    // Manually scroll the sidebar to center the active link
+                    const sidebar = document.querySelector('.sidebar');
+                    if (sidebar) {
+                        const linkRect = activeLink.getBoundingClientRect();
+                        const sidebarRect = sidebar.getBoundingClientRect();
+                        const linkTop = linkRect.top - sidebarRect.top + sidebar.scrollTop;
+                        const centerOffset = sidebar.clientHeight / 2 - activeLink.clientHeight / 2;
+                        sidebar.scrollTop = linkTop - centerOffset;
+                    }
+                }
+            }, 500);
 
-        // Collapsible section headers
-        document.querySelectorAll('.section-header.clickable').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const isCollapsed = content.classList.contains('collapsed');
-                // Close all other sections
-                document.querySelectorAll('.section-content').forEach(el => {
-                    if (el !== content) {
-                        el.classList.add('collapsed');
-                        el.previousElementSibling.classList.add('collapsed');
+            // Theme toggle
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    document.body.classList.toggle('dark-mode');
+                    document.body.classList.toggle('light-mode');
+                    const icon = this.querySelector('i');
+                    const span = this.querySelector('span');
+                    if (document.body.classList.contains('dark-mode')) {
+                        icon.className = 'fas fa-sun';
+                        span.textContent = 'Mode Clair';
+                    } else {
+                        icon.className = 'fas fa-moon';
+                        span.textContent = 'Mode Sombre';
                     }
                 });
-                // Toggle current section
-                if (isCollapsed) {
-                    content.classList.remove('collapsed');
-                    header.classList.remove('collapsed');
-                } else {
-                    content.classList.add('collapsed');
-                    header.classList.add('collapsed');
-                }
-            });
-        });
+            }
 
-        // Open "Rendez-vous" by default
-        document.getElementById('section-rdv-content').classList.remove('collapsed');
-        document.getElementById('section-rdv-toggle').classList.remove('collapsed');
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId !== '#') {
-                    e.preventDefault();
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }
-            });
+            // Logout button (placeholder)
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    // Add logout logic here
+                    alert('Déconnexion...');
+                });
+            }
         });
     </script>
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 

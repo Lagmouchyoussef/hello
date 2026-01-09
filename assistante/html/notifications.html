@@ -797,15 +797,15 @@
             <div class="notification-description">Recevoir une notification lors de la prise d'un nouveau rendez-vous</div>
           </div>
           <div class="notification-channels">
-            <div class="channel-toggle email active" onclick="toggleChannel(this)">
+            <div class="channel-toggle email active">
               <i class="fas fa-envelope channel-icon"></i>
               Email
             </div>
-            <div class="channel-toggle push active" onclick="toggleChannel(this)">
+            <div class="channel-toggle push active">
               <i class="fas fa-mobile-alt channel-icon"></i>
               Push
             </div>
-            <div class="channel-toggle inapp active" onclick="toggleChannel(this)">
+            <div class="channel-toggle inapp active">
               <i class="fas fa-desktop channel-icon"></i>
               In-App
             </div>
@@ -817,11 +817,11 @@
             <div class="notification-description">Envoyer des rappels avant les rendez-vous</div>
           </div>
           <div class="notification-channels">
-            <div class="channel-toggle sms active" onclick="toggleChannel(this)">
+            <div class="channel-toggle sms active">
               <i class="fas fa-sms channel-icon"></i>
               SMS
             </div>
-            <div class="channel-toggle email active" onclick="toggleChannel(this)">
+            <div class="channel-toggle email active">
               <i class="fas fa-envelope channel-icon"></i>
               Email
             </div>
@@ -833,11 +833,11 @@
             <div class="notification-description">Notifications en cas d'annulation de rendez-vous</div>
           </div>
           <div class="notification-channels">
-            <div class="channel-toggle push active" onclick="toggleChannel(this)">
+            <div class="channel-toggle push active">
               <i class="fas fa-mobile-alt channel-icon"></i>
               Push
             </div>
-            <div class="channel-toggle inapp active" onclick="toggleChannel(this)">
+            <div class="channel-toggle inapp active">
               <i class="fas fa-desktop channel-icon"></i>
               In-App
             </div>
@@ -864,11 +864,11 @@
             <div class="notification-description">Confirmation des paiements effectués par les patients</div>
           </div>
           <div class="notification-channels">
-            <div class="channel-toggle email active" onclick="toggleChannel(this)">
+            <div class="channel-toggle email active">
               <i class="fas fa-envelope channel-icon"></i>
               Email
             </div>
-            <div class="channel-toggle inapp active" onclick="toggleChannel(this)">
+            <div class="channel-toggle inapp active">
               <i class="fas fa-desktop channel-icon"></i>
               In-App
             </div>
@@ -880,11 +880,11 @@
             <div class="notification-description">Rappels pour les paiements non réglés</div>
           </div>
           <div class="notification-channels">
-            <div class="channel-toggle email" onclick="toggleChannel(this)">
+            <div class="channel-toggle email">
               <i class="fas fa-envelope channel-icon"></i>
               Email
             </div>
-            <div class="channel-toggle sms" onclick="toggleChannel(this)">
+            <div class="channel-toggle sms">
               <i class="fas fa-sms channel-icon"></i>
               SMS
             </div>
@@ -911,15 +911,15 @@
             <div class="notification-description">Notifications immédiates pour les cas d'urgence</div>
           </div>
           <div class="notification-channels">
-            <div class="channel-toggle sms active" onclick="toggleChannel(this)">
+            <div class="channel-toggle sms active">
               <i class="fas fa-sms channel-icon"></i>
               SMS
             </div>
-            <div class="channel-toggle push active" onclick="toggleChannel(this)">
+            <div class="channel-toggle push active">
               <i class="fas fa-mobile-alt channel-icon"></i>
               Push
             </div>
-            <div class="channel-toggle email active" onclick="toggleChannel(this)">
+            <div class="channel-toggle email active">
               <i class="fas fa-envelope channel-icon"></i>
               Email
             </div>
@@ -968,7 +968,7 @@
         </div>
       </div>
 
-      <button class="save-button" onclick="saveSettings()">
+      <button class="save-button">
         <i class="fas fa-save"></i>
         Enregistrer les paramètres
       </button>
@@ -1018,280 +1018,11 @@
 </div>
 </div>
 
-<script>
-// Professional Notifications Management
-let notificationSettings = JSON.parse(localStorage.getItem('notificationSettings')) || {
-  appointments: {
-    new: { email: true, push: true, inapp: true },
-    reminders: { sms: true, email: true },
-    cancellations: { push: true, inapp: true }
-  },
-  payments: {
-    received: { email: true, inapp: true },
-    pending: { email: false, sms: false }
-  },
-  emergency: {
-    alerts: { sms: true, push: true, email: true }
-  },
-  advanced: {
-    reminderFrequency: '24',
-    smsHours: '9-18',
-    language: 'fr'
-  }
-};
 
-let notificationsLog = [];
-localStorage.setItem('notificationsLog', JSON.stringify(notificationsLog));
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  loadSettings();
-  updateUI();
-});
-
-// Load settings into UI
-function loadSettings() {
-  // Load channel toggles
-  document.querySelectorAll('.channel-toggle').forEach(toggle => {
-    const category = toggle.closest('.notification-category').querySelector('.category-icon').classList[1];
-    const notification = toggle.closest('.notification-item').querySelector('.notification-title').textContent.toLowerCase().replace(/\s+/g, '');
-    const channel = toggle.classList[1];
-
-    if (notificationSettings[category] && notificationSettings[category][notification] && notificationSettings[category][notification][channel]) {
-      toggle.classList.add('active');
-    }
-  });
-
-  // Load advanced settings
-  document.getElementById('reminderFrequency').value = notificationSettings.advanced.reminderFrequency;
-  document.getElementById('smsHours').value = notificationSettings.advanced.smsHours;
-  document.getElementById('notificationLanguage').value = notificationSettings.advanced.language;
-}
-
-// Toggle channel
-function toggleChannel(element) {
-  element.classList.toggle('active');
-}
-
-// Save settings
-function saveSettings() {
-  const saveBtn = document.querySelector('.save-button');
-  saveBtn.disabled = true;
-  saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
-
-  // Collect channel settings
-  document.querySelectorAll('.notification-category').forEach(categoryEl => {
-    const category = categoryEl.querySelector('.category-icon').classList[1];
-    if (!notificationSettings[category]) notificationSettings[category] = {};
-
-    categoryEl.querySelectorAll('.notification-item').forEach(itemEl => {
-      const notification = itemEl.querySelector('.notification-title').textContent.toLowerCase().replace(/\s+/g, '');
-      if (!notificationSettings[category][notification]) notificationSettings[category][notification] = {};
-
-      itemEl.querySelectorAll('.channel-toggle').forEach(toggle => {
-        const channel = toggle.classList[1];
-        notificationSettings[category][notification][channel] = toggle.classList.contains('active');
-      });
-    });
-  });
-
-  // Collect advanced settings
-  notificationSettings.advanced = {
-    reminderFrequency: document.getElementById('reminderFrequency').value,
-    smsHours: document.getElementById('smsHours').value,
-    language: document.getElementById('notificationLanguage').value
-  };
-
-  // Save to localStorage
-  localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
-
-  // Show success feedback
-  setTimeout(() => {
-    saveBtn.disabled = false;
-    saveBtn.innerHTML = '<i class="fas fa-check"></i> Paramètres enregistrés !';
-
-    setTimeout(() => {
-      saveBtn.innerHTML = '<i class="fas fa-save"></i> Enregistrer les paramètres';
-    }, 2000);
-  }, 1000);
-}
-
-// Update UI elements
-function updateUI() {
-  updateStats();
-  updateLog();
-}
-
-// Update statistics
-function updateStats() {
-  document.getElementById('totalNotifications').textContent = 0;
-  document.getElementById('activeChannels').textContent = 0;
-  document.getElementById('responseRate').textContent = '0%';
-}
-
-// Count active channels
-function countActiveChannels() {
-  let count = 0;
-  Object.values(notificationSettings).forEach(category => {
-    if (typeof category === 'object' && category !== notificationSettings.advanced) {
-      Object.values(category).forEach(notification => {
-        if (typeof notification === 'object') {
-          Object.values(notification).forEach(enabled => {
-            if (enabled) count++;
-          });
-        }
-      });
-    }
-  });
-  return count;
-}
-
-// Update notifications log
-function updateLog() {
-  const logContainer = document.getElementById('notificationsLog');
-
-  if (notificationsLog.length === 0) {
-    logContainer.innerHTML = `
-      <div class="empty-log">
-        <div class="empty-icon">
-          <i class="fas fa-bell-slash"></i>
-        </div>
-        <p class="empty-text">Aucune notification pour le moment</p>
-      </div>
-    `;
-    return;
-  }
-
-  logContainer.innerHTML = '';
-  notificationsLog.slice(0, 10).forEach(notification => {
-    const logItem = document.createElement('div');
-    logItem.className = 'log-item';
-
-    logItem.innerHTML = `
-      <div class="log-header">
-        <div class="log-title">${notification.title}</div>
-        <div class="log-time">${formatTime(notification.timestamp)}</div>
-      </div>
-      <div class="log-message">${notification.message}</div>
-      <div class="log-type ${notification.type}">${notification.type}</div>
-    `;
-
-    logContainer.appendChild(logItem);
-  });
-}
-
-// Format time
-function formatTime(date) {
-  const d = new Date(date);
-  const now = new Date();
-  const diff = now - d;
-
-  if (diff < 60000) return 'À l\'instant';
-  if (diff < 3600000) return `Il y a ${Math.floor(diff / 60000)} min`;
-  if (diff < 86400000) return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
-}
-
-// Simulate adding a notification (for demo purposes)
-function addSampleNotification() {
-  const sampleNotifications = [
-    {
-      title: 'Nouveau rendez-vous',
-      message: 'Mme Dupont a pris rendez-vous pour demain 14:00',
-      type: 'appointment',
-      timestamp: new Date()
-    },
-    {
-      title: 'Paiement reçu',
-      message: 'Paiement de 500 DH reçu de M. Alaoui',
-      type: 'payment',
-      timestamp: new Date(Date.now() - 3600000)
-    },
-    {
-      title: 'Alerte urgence',
-      message: 'Cas d\'urgence dentaire signalé',
-      type: 'emergency',
-      timestamp: new Date(Date.now() - 7200000)
-    }
-  ];
-
-  const randomNotification = sampleNotifications[Math.floor(Math.random() * sampleNotifications.length)];
-  notificationsLog.unshift(randomNotification);
-
-  // Keep only last 50 notifications
-  if (notificationsLog.length > 50) {
-    notificationsLog = notificationsLog.slice(0, 50);
-  }
-
-  localStorage.setItem('notificationsLog', JSON.stringify(notificationsLog));
-  updateUI();
-}
-
-// Sample notifications disabled
-// setInterval(addSampleNotification, 30000);
-
-// Export settings (for backup)
-function exportSettings() {
-  const dataStr = JSON.stringify({
-    settings: notificationSettings,
-    log: notificationsLog
-  }, null, 2);
-
-  const dataBlob = new Blob([dataStr], { type: 'application/json' });
-  const url = URL.createObjectURL(dataBlob);
-
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'notifications-backup.json';
-  link.click();
-
-  URL.revokeObjectURL(url);
-}
-
-// Import settings (for restore)
-function importSettings() {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.json';
-
-  input.onchange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const data = JSON.parse(e.target.result);
-          if (data.settings) {
-            notificationSettings = data.settings;
-            localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
-          }
-          if (data.log) {
-            notificationsLog = data.log;
-            localStorage.setItem('notificationsLog', JSON.stringify(notificationsLog));
-          }
-          loadSettings();
-          updateUI();
-          alert('Paramètres importés avec succès !');
-        } catch (error) {
-          alert('Erreur lors de l\'importation du fichier.');
-        }
-      };
-      reader.readAsText(file);
-    }
-  };
-
-  input.click();
-}
-
-// Make functions globally available
-window.toggleChannel = toggleChannel;
-window.saveSettings = saveSettings;
-window.exportSettings = exportSettings;
-window.importSettings = importSettings;
-</script>
-
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

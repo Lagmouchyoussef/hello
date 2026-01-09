@@ -712,7 +712,7 @@
 <div class="main-content">
 <div class="content-header">
  <h1 class="page-title">Dossiers médicaux</h1>
- <button class="btn btn-primary" onclick="showForm()">
+ <button class="btn btn-primary">
   <i class="fas fa-plus"></i>
   Ajouter un dossier
  </button>
@@ -789,7 +789,7 @@
   </div>
   <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
    <button type="submit" class="btn btn-primary">Enregistrer</button>
-   <button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
+   <button type="button" class="btn btn-danger">Annuler</button>
   </div>
  </form>
 </div>
@@ -824,253 +824,8 @@
 </div>
 </div>
 
-<script src="../../../dataManager.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    loadRecords();
 
-    // Function to load records
-    function loadRecords() {
-        const records = dataManager.getAll('records');
-        displayRecords(records);
-    }
 
-    // Function to display records in table
-    function displayRecords(records) {
-        const tbody = document.getElementById('dossiersTablebody');
-        tbody.innerHTML = '';
-
-        if (records.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="5" class="empty-state">
-                        <i class="fas fa-folder-open"></i>
-                        <h3>Aucun dossier trouvé</h3>
-                        <p>Commencez par ajouter un nouveau dossier médical.</p>
-                    </td>
-                </tr>
-            `;
-            return;
-        }
-
-        records.forEach(record => {
-            const patient = dataManager.getById('patients', record.patientId);
-            const patientName = patient ? `${patient.firstName} ${patient.lastName}` : 'Patient inconnu';
-
-            const statusClass = record.type === 'consultation' ? 'status-ongoing' :
-                               record.type === 'traitement' ? 'status-completed' : 'status-new';
-            const row = `
-                <tr onclick="showRecordDetails('${record.id}')" style="cursor: pointer;">
-                    <td>${patientName}</td>
-                    <td>${new Date(record.date).toLocaleDateString('fr-FR')}</td>
-                    <td>${record.description || 'N/A'}</td>
-                    <td><span class="status-badge ${statusClass}">${record.type || 'Nouveau'}</span></td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); editRecord('${record.id}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deleteRecord('${record.id}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `;
-            tbody.innerHTML += row;
-        });
-    }
-
-    // Function to show record details
-    window.showRecordDetails = function(id) {
-        const record = dataManager.getById('records', id);
-        if (!record) return;
-
-        const patient = dataManager.getById('patients', record.patientId);
-        const patientName = patient ? `${patient.firstName} ${patient.lastName}` : 'Patient inconnu';
-
-        document.getElementById('generalInfo').innerHTML = `
-            <div class="info-item"><strong>Patient:</strong> ${patientName}</div>
-            <div class="info-item"><strong>Date:</strong> ${new Date(record.date).toLocaleDateString('fr-FR')}</div>
-            <div class="info-item"><strong>Type:</strong> ${record.type}</div>
-            <div class="info-item"><strong>Description:</strong> ${record.description}</div>
-            <div class="info-item"><strong>Diagnostic:</strong> ${record.diagnosis || 'N/A'}</div>
-        `;
-
-        document.getElementById('consultationHistory').innerHTML = `
-            <p>Date: ${new Date(record.date).toLocaleDateString('fr-FR')}</p>
-            <p>Description: ${record.description}</p>
-            <p>Notes: ${record.notes || 'Aucune note'}</p>
-        `;
-
-        document.getElementById('currentTreatments').innerHTML = `
-            <p>Traitement: ${record.treatment || 'Aucun traitement en cours'}</p>
-        `;
-
-        document.getElementById('allergiesHistory').innerHTML = `
-            <div class="info-item"><strong>Notes supplémentaires:</strong> ${record.notes || 'Aucune'}</div>
-        `;
-
-        document.getElementById('recordDetails').style.display = 'block';
-        document.getElementById('recordDetails').scrollIntoView({ behavior: 'smooth' });
-    };
-
-    // Function to show form
-    window.showForm = function(id = null) {
-        populatePatientDropdown();
-        const form = document.getElementById('recordForm');
-        const title = document.getElementById('formTitle');
-        const formElement = document.getElementById('medicalRecordForm');
-
-        if (id) {
-            const record = dataManager.getById('records', id);
-            if (record) {
-                document.getElementById('patientSelect').value = record.patientId;
-                document.getElementById('recordDate').value = record.date;
-                document.getElementById('recordType').value = record.type;
-                document.getElementById('description').value = record.description;
-                document.getElementById('diagnosis').value = record.diagnosis || '';
-                document.getElementById('treatment').value = record.treatment || '';
-                document.getElementById('notes').value = record.notes || '';
-                title.textContent = 'Modifier le dossier médical';
-                formElement.dataset.editId = id;
-            }
-        } else {
-            formElement.reset();
-            title.textContent = 'Ajouter un dossier médical';
-            delete formElement.dataset.editId;
-        }
-
-        form.style.display = 'block';
-        form.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    // Function to populate patient dropdown
-    function populatePatientDropdown() {
-        const patients = dataManager.getAll('patients');
-        const select = document.getElementById('patientSelect');
-        select.innerHTML = '<option value="">Sélectionner un patient</option>';
-        patients.forEach(patient => {
-            const option = document.createElement('option');
-            option.value = patient.id;
-            option.textContent = `${patient.firstName} ${patient.lastName}`;
-            select.appendChild(option);
-        });
-    }
-
-    // Function to hide form
-    window.hideForm = function() {
-        document.getElementById('recordForm').style.display = 'none';
-        document.getElementById('recordDetails').style.display = 'none';
-    };
-
-    // Function to save record
-    document.getElementById('medicalRecordForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const editId = this.dataset.editId;
-        const formData = new FormData(this);
-        const recordData = {
-            patientId: formData.get('patient'),
-            date: formData.get('date'),
-            type: formData.get('type'),
-            description: formData.get('description'),
-            diagnosis: formData.get('diagnosis'),
-            treatment: formData.get('treatment'),
-            notes: formData.get('notes')
-        };
-
-        try {
-            if (editId) {
-                dataManager.updateRecord(editId, recordData);
-            } else {
-                dataManager.createRecord(recordData);
-            }
-            loadRecords();
-            hideForm();
-        } catch (error) {
-            alert('Erreur: ' + error.message);
-        }
-    });
-
-    // Function to edit record
-    window.editRecord = function(id) {
-        showForm(id);
-    };
-
-    // Function to delete record
-    window.deleteRecord = function(id) {
-        if (confirm('Êtes-vous sûr de vouloir supprimer ce dossier médical ?')) {
-            try {
-                dataManager.delete('records', id);
-                loadRecords();
-            } catch (error) {
-                alert('Erreur lors de la suppression: ' + error.message);
-            }
-        }
-    };
-
-    // Function to search and filter records
-    function searchRecords() {
-        const query = document.getElementById('searchInput').value.toLowerCase();
-        const statusFilter = document.getElementById('statusFilter').value;
-        const records = dataManager.getAll('records');
-        const filtered = records.filter(record => {
-            const patient = dataManager.getById('patients', record.patientId);
-            const patientName = patient ? `${patient.firstName} ${patient.lastName}`.toLowerCase() : '';
-            const matchesQuery = patientName.includes(query) ||
-                                record.description.toLowerCase().includes(query) ||
-                                record.type.toLowerCase().includes(query);
-            const matchesStatus = !statusFilter || record.type === statusFilter;
-            return matchesQuery && matchesStatus;
-        });
-        displayRecords(filtered);
-    }
-
-    // Event listeners
-    document.getElementById('searchInput').addEventListener('input', searchRecords);
-    document.getElementById('statusFilter').addEventListener('change', searchRecords);
-
-    // Listen for data sync events
-    dataManager.onDataSync((detail) => {
-        if (detail.entity === 'records' || detail.entity === 'patients') {
-            loadRecords();
-        }
-    });
-
-    // Theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-
-    themeToggle.addEventListener('click', function() {
-        body.classList.toggle('light-mode');
-        body.classList.toggle('dark-mode');
-        const icon = themeToggle.querySelector('i');
-        const span = themeToggle.querySelector('span');
-        if (body.classList.contains('dark-mode')) {
-            icon.className = 'fas fa-sun';
-            span.textContent = 'Mode Clair';
-        } else {
-            icon.className = 'fas fa-moon';
-            span.textContent = 'Mode Sombre';
-        }
-    });
-
-    // Logout button
-    const logoutBtn = document.getElementById('logoutBtn');
-    logoutBtn.addEventListener('click', function() {
-        window.location.href = '../../../Site web/html/index.html';
-    });
-
-    // Collapsible sections
-    const toggles = document.querySelectorAll('.section-header.clickable');
-    toggles.forEach(toggle => {
-        toggle.addEventListener('click', function() {
-            const content = this.nextElementSibling;
-            const chevron = this.querySelector('.section-chevron');
-            content.classList.toggle('collapsed');
-            this.classList.toggle('collapsed');
-        });
-    });
-});
-</script>
 
 <style>
 /* Additional styles for professional look */
@@ -1141,8 +896,9 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 </style>
 
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

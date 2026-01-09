@@ -695,7 +695,7 @@ Erreur lors de la mise à jour du profil.
 <button type="submit" class="btn btn-primary" id="saveBtn">
   <i class="fas fa-save"></i> Enregistrer les modifications
 </button>
-<button type="button" class="btn btn-danger" onclick="resetForm()" id="resetBtn">
+<button type="button" class="btn btn-danger" id="resetBtn">
   <i class="fas fa-undo"></i> Réinitialiser
 </button>
 </div>
@@ -704,174 +704,11 @@ Erreur lors de la mise à jour du profil.
 </div>
 </div>
 
-<script>
-// Profile management
-let profileData = {
-    prenom: '',
-    nom: '',
-    email: '',
-    telephone: '',
-    specialite: '',
-    numero_ordre: '',
-    adresse: '',
-    biographie: ''
-};
 
-// Load profile data
-function loadProfile() {
-    const saved = localStorage.getItem('profileData');
-    if (saved) {
-        profileData = { ...profileData, ...JSON.parse(saved) };
-    }
 
-    // Populate form
-    Object.keys(profileData).forEach(key => {
-        const element = document.getElementById(key);
-        if (element) {
-            element.value = profileData[key];
-        }
-    });
-
-    updateProfileDisplay();
-}
-
-// Update profile display
-function updateProfileDisplay() {
-    const fullName = `${profileData.prenom} ${profileData.nom}`;
-    const title = profileData.specialite;
-
-    document.getElementById('profileName').textContent = fullName;
-    document.getElementById('profileTitle').textContent = title;
-    document.getElementById('profileAvatar').textContent = profileData.prenom.charAt(0) + profileData.nom.charAt(0);
-}
-
-// Save profile
-function saveProfile() {
-    // Collect form data
-    const formData = new FormData(document.getElementById('profileForm'));
-    const newData = {};
-
-    for (let [key, value] of formData.entries()) {
-        newData[key] = value;
-    }
-
-    // Validate required fields
-    const requiredFields = ['prenom', 'nom', 'email', 'telephone', 'specialite'];
-    let isValid = true;
-
-    requiredFields.forEach(field => {
-        const element = document.getElementById(field);
-        if (!newData[field] || newData[field].trim() === '') {
-            element.style.borderColor = '#dc2626';
-            isValid = false;
-        } else {
-            element.style.borderColor = 'var(--border-color)';
-        }
-    });
-
-    if (!isValid) {
-        showError('Veuillez remplir tous les champs obligatoires.');
-        return;
-    }
-
-    // Validate email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(newData.email)) {
-        document.getElementById('email').style.borderColor = '#dc2626';
-        showError('Adresse email invalide.');
-        return;
-    }
-
-    // Save data
-    profileData = { ...profileData, ...newData };
-    localStorage.setItem('profileData', JSON.stringify(profileData));
-
-    updateProfileDisplay();
-    showSuccess('Profil mis à jour avec succès !');
-}
-
-// Reset form
-function resetForm() {
-    loadProfile();
-    hideMessages();
-}
-
-// Show success message
-function showSuccess(message) {
-    const successEl = document.getElementById('successMessage');
-    successEl.textContent = message;
-    successEl.style.display = 'block';
-    document.getElementById('errorMessage').style.display = 'none';
-
-    setTimeout(() => {
-        successEl.style.display = 'none';
-    }, 5000);
-}
-
-// Show error message
-function showError(message) {
-    const errorEl = document.getElementById('errorMessage');
-    errorEl.textContent = message;
-    errorEl.style.display = 'block';
-    document.getElementById('successMessage').style.display = 'none';
-
-    setTimeout(() => {
-        errorEl.style.display = 'none';
-    }, 5000);
-}
-
-// Hide messages
-function hideMessages() {
-    document.getElementById('successMessage').style.display = 'none';
-    document.getElementById('errorMessage').style.display = 'none';
-}
-
-// Avatar upload simulation
-document.getElementById('profileAvatar').addEventListener('click', function() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-
-    input.onchange = function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            // Simulate upload
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                // In a real app, you'd upload to server and get URL back
-                showSuccess('Photo de profil mise à jour !');
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    input.click();
-});
-
-// Form validation on input
-document.querySelectorAll('.form-control').forEach(input => {
-    input.addEventListener('input', function() {
-        if (this.style.borderColor === 'rgb(220, 38, 38)') {
-            this.style.borderColor = 'var(--border-color)';
-        }
-        hideMessages();
-    });
-});
-
-// Initialize
-document.addEventListener('DOMContentLoaded', function() {
-    loadProfile();
-
-    // Form submission
-    document.getElementById('profileForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        saveProfile();
-    });
-});
-</script>
-
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../navbar.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
     <style>
         /* CSS Variables for consistent theming */
         :root {
@@ -1053,8 +1059,11 @@
                 <button class="btn btn-success" id="planningBtn">
                     <i class="fas fa-calendar-alt"></i> Planning
                 </button>
-                <button class="btn btn-warning" id="exportBtn">
+                <button class="btn btn-warning admin-only" id="exportBtn">
                     <i class="fas fa-download"></i> Exporter
+                </button>
+                <button class="btn btn-danger admin-only" id="deleteAllBtn">
+                    <i class="fas fa-trash-alt"></i> Supprimer Tout
                 </button>
             </div>
         </div>
@@ -1062,334 +1071,111 @@
         <!-- Page Content Container -->
         <div class="content-container">
             <div class="content-header-section">
-                <h2 class="content-title">Rendez-vous à venir</h2>
+                <h2 class="content-title">Gestion des Rendez-vous</h2>
                 <div>
-                    <button class="btn btn-small">
+                    <button class="btn btn-small" id="filterBtn">
                         <i class="fas fa-filter"></i> Filtrer
                     </button>
-                    <button class="btn btn-small">
+                    <button class="btn btn-small" id="searchBtn">
                         <i class="fas fa-search"></i> Rechercher
                     </button>
                 </div>
             </div>
-            <div class="content-body">
-                <!-- Empty state -->
-                <div class="empty-state">
-                    <i class="fas fa-calendar-times"></i>
-                    <h3>Aucun rendez-vous</h3>
-                    <p>Il n'y a pas de rendez-vous programmés pour le moment.</p>
-                    <button class="btn btn-primary" style="margin-top: 1rem;">
-                        <i class="fas fa-plus"></i> Programmer un rendez-vous
-                    </button>
+            <div class="filters-section" id="filtersSection" style="display: none;">
+                <div class="search-input">
+                    <input type="text" id="searchInput" placeholder="Rechercher par nom, médecin, traitement...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <select id="statusFilter" class="form-select">
+                    <option value="">Tous les statuts</option>
+                    <option value="pending">En attente</option>
+                    <option value="confirmed">Confirmé</option>
+                    <option value="cancelled">Annulé</option>
+                    <option value="completed">Terminé</option>
+                </select>
+                <select id="dateFilter" class="form-select">
+                    <option value="">Toutes les dates</option>
+                    <option value="today">Aujourd'hui</option>
+                    <option value="week">Cette semaine</option>
+                    <option value="month">Ce mois</option>
+                </select>
+            </div>
+            <!-- Tabs -->
+            <ul class="nav nav-tabs" id="appointmentTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="table-tab" data-bs-toggle="tab" data-bs-target="#table-view" type="button" role="tab">Liste</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="calendar-tab" data-bs-toggle="tab" data-bs-target="#calendar-view" type="button" role="tab">Calendrier</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="stats-tab" data-bs-toggle="tab" data-bs-target="#stats-view" type="button" role="tab">Statistiques</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="appointmentTabsContent">
+                <div class="tab-pane fade show active" id="table-view" role="tabpanel">
+                    <div class="content-body">
+                        <table class="table table-striped data-table">
+                            <thead>
+                                <tr>
+                                    <th data-column="patient">Patient</th>
+                                    <th data-column="date">Date</th>
+                                    <th data-column="time">Heure</th>
+                                    <th data-column="doctor">Médecin</th>
+                                    <th data-column="treatment">Traitement</th>
+                                    <th>Mode</th>
+                                    <th data-column="status">Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="calendar-view" role="tabpanel">
+                    <div class="content-body">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="stats-view" role="tabpanel">
+                    <div class="content-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <canvas id="statsChart"></canvas>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Résumé</h5>
+                                        <p class="card-text">Total des rendez-vous: <span id="totalAppointments">0</span></p>
+                                        <p class="card-text">Confirmés: <span id="confirmedAppointments">0</span></p>
+                                        <p class="card-text">En attente: <span id="pendingAppointments">0</span></p>
+                                        <p class="card-text">Annulés: <span id="cancelledAppointments">0</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Common JavaScript -->
-    <script>
-        // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        const themeIcon = themeToggle.querySelector('i');
-        const themeText = themeToggle.querySelector('span');
-        // Using sessionStorage instead of localStorage
-        const savedTheme = sessionStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-            body.classList.remove('light-mode');
-            body.classList.add('dark-mode');
-            themeIcon.className = 'fas fa-sun';
-            themeText.textContent = 'Mode Clair';
-        }
-        themeToggle.addEventListener('click', () => {
-            if (body.classList.contains('light-mode')) {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-                themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'Mode Clair';
-                sessionStorage.setItem('theme', 'dark');
-            } else {
-                body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
-                themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'Mode Sombre';
-                sessionStorage.setItem('theme', 'light');
-            }
-        });
-
-        // Logout functionality
-        const logoutBtn = document.getElementById('logoutBtn');
-        logoutBtn.addEventListener('click', () => {
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                alert('Déconnexion réussie !\nRedirection vers la page de connexion...');
-            }
-        });
-
-        // Navigation link functionality
-        const mainLinks = document.querySelectorAll('.sidebar-link');
-        const mainContent = document.getElementById('mainContent');
-        mainLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Update active states
-                mainLinks.forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Initialize active link
-        document.querySelector('.sidebar-link[href="Listes%20des%20Rendez-vous.html"]').classList.add('active');
-
-        // Collapsible section headers
-        document.querySelectorAll('.section-header.clickable').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const isCollapsed = content.classList.contains('collapsed');
-                // Close all other sections
-                document.querySelectorAll('.section-content').forEach(el => {
-                    if (el !== content) {
-                        el.classList.add('collapsed');
-                        el.previousElementSibling.classList.add('collapsed');
-                    }
-                });
-                // Toggle current section
-                if (isCollapsed) {
-                    content.classList.remove('collapsed');
-                    header.classList.remove('collapsed');
-                } else {
-                    content.classList.add('collapsed');
-                    header.classList.add('collapsed');
-                }
-            });
-        });
-
-        // Open "Rendez-vous" by default
-        document.getElementById('section-rdv-content').classList.remove('collapsed');
-        document.getElementById('section-rdv-toggle').classList.remove('collapsed');
-
-        // Copy to clipboard function
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(function() {
-                alert('URL copiée dans le presse-papiers !');
-            }, function(err) {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('URL copiée dans le presse-papiers !');
-            });
-        }
-
-        // Main action buttons functionality
-        document.getElementById('newAppointmentBtn').addEventListener('click', function() {
-            // Simple form to add new appointment
-            const patientName = prompt('Nom du patient:');
-            if (!patientName) return;
-
-            const doctorName = prompt('Nom du médecin (Dr. Fatima Alaoui ou Dr. Mohamed Idrissi):');
-            if (!doctorName) return;
-
-            const treatmentType = prompt('Type de soin:');
-            if (!treatmentType) return;
-
-            const appointmentDate = prompt('Date (ex: 18 Jan 2024):');
-            if (!appointmentDate) return;
-
-            const appointmentTime = prompt('Heure (ex: 10:00):');
-            if (!appointmentTime) return;
-
-            // Add new card to grid
-            const grid = document.getElementById('appointmentsGrid');
-            const newCard = document.createElement('div');
-
-            newCard.className = 'appointment-card';
-            newCard.setAttribute('data-patient', patientName);
-            newCard.setAttribute('data-doctor', doctorName);
-            newCard.setAttribute('data-treatment', treatmentType);
-            newCard.setAttribute('data-status', 'pending');
-
-            newCard.innerHTML = `
-                <div class="card-header">
-                    <div class="patient-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="status-indicator">
-                        <span class="status-badge status-pending">En attente</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h3 class="patient-name">Nom du patient: ${patientName}</h3>
-                    <div class="appointment-details">
-                        <div class="detail-item">
-                            <i class="fas fa-calendar"></i>
-                            <span>${appointmentDate}</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-clock"></i>
-                            <span>${appointmentTime}</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-user-md"></i>
-                            <span>${doctorName}</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-tooth"></i>
-                            <span>${treatmentType}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn btn-small btn-primary" title="Modifier">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-small btn-success" title="Confirmer">
-                        <i class="fas fa-check"></i>
-                    </button>
-                    <button class="btn btn-small btn-warning" title="Annuler">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <button class="btn btn-small btn-danger" title="Supprimer">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            `;
-
-            grid.appendChild(newCard);
-            alert('Nouveau rendez-vous ajouté avec succès !');
-        });
-
-        document.getElementById('planningBtn').addEventListener('click', function() {
-            alert('Ouverture du planning des rendez-vous...');
-            // Here you could redirect to calendar view
-        });
-
-        document.getElementById('exportBtn').addEventListener('click', function() {
-            alert('Export des rendez-vous en cours...');
-            // Here you could trigger export functionality
-        });
-
-        // Search and Filter functionality for cards
-        const searchInput = document.getElementById('searchInput');
-        const statusFilter = document.getElementById('statusFilter');
-        const dateFilter = document.getElementById('dateFilter');
-        const grid = document.getElementById('appointmentsGrid');
-        const cards = grid.getElementsByClassName('appointment-card');
-
-        function filterCards() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const statusValue = statusFilter.value.toLowerCase();
-            const dateValue = dateFilter.value;
-
-            for (let i = 0; i < cards.length; i++) {
-                const card = cards[i];
-                const patientName = card.getAttribute('data-patient').toLowerCase();
-                const doctorName = card.getAttribute('data-doctor').toLowerCase();
-                const treatmentType = card.getAttribute('data-treatment').toLowerCase();
-                const statusValueAttr = card.getAttribute('data-status');
-                const appointmentDate = card.querySelector('.detail-item i.fa-calendar').nextElementSibling.textContent;
-
-                let showCard = true;
-
-                // Search filter
-                if (searchTerm && !patientName.includes(searchTerm) && !doctorName.includes(searchTerm) && !treatmentType.includes(searchTerm)) {
-                    showCard = false;
-                }
-
-                // Status filter
-                if (statusValue && statusValueAttr !== statusValue) {
-                    showCard = false;
-                }
-
-                // Date filter
-                if (dateValue) {
-                    const today = new Date();
-                    const appointmentDateObj = new Date(appointmentDate.split(' ').reverse().join(' '));
-
-                    switch(dateValue) {
-                        case 'today':
-                            if (appointmentDateObj.toDateString() !== today.toDateString()) {
-                                showCard = false;
-                            }
-                            break;
-                        case 'week':
-                            const weekFromNow = new Date(today);
-                            weekFromNow.setDate(today.getDate() + 7);
-                            if (appointmentDateObj < today || appointmentDateObj > weekFromNow) {
-                                showCard = false;
-                            }
-                            break;
-                        case 'month':
-                            if (appointmentDateObj.getMonth() !== today.getMonth() || appointmentDateObj.getFullYear() !== today.getFullYear()) {
-                                showCard = false;
-                            }
-                            break;
-                    }
-                }
-
-                card.style.display = showCard ? '' : 'none';
-            }
-        }
-
-        searchInput.addEventListener('input', filterCards);
-        statusFilter.addEventListener('change', filterCards);
-        dateFilter.addEventListener('change', filterCards);
-
-        // Action buttons functionality for cards
-        document.addEventListener('click', function(e) {
-            const button = e.target.closest('.btn-small');
-            if (!button) return;
-
-            const card = button.closest('.appointment-card');
-            const patientName = card.getAttribute('data-patient');
-            const doctorName = card.getAttribute('data-doctor');
-            const treatmentType = card.getAttribute('data-treatment');
-            const statusBadge = card.querySelector('.status-badge');
-
-            if (button.classList.contains('btn-primary')) {
-                // Edit button
-                alert(`Modifier le rendez-vous de ${patientName} avec ${doctorName}\nType de soin: ${treatmentType}`);
-                // Here you could open a modal or redirect to edit page
-            } else if (button.classList.contains('btn-success')) {
-                // Confirm button
-                if (confirm(`Confirmer le rendez-vous de ${patientName} avec ${doctorName} ?`)) {
-                    statusBadge.className = 'status-badge status-confirmed';
-                    statusBadge.textContent = 'Confirmé';
-                    card.setAttribute('data-status', 'confirmed');
-                    alert('Rendez-vous confirmé avec succès !');
-                }
-            } else if (button.classList.contains('btn-warning')) {
-                // Cancel button (changed from danger to warning)
-                if (confirm(`Annuler le rendez-vous de ${patientName} avec ${doctorName} ?`)) {
-                    statusBadge.className = 'status-badge status-cancelled';
-                    statusBadge.textContent = 'Annulé';
-                    card.setAttribute('data-status', 'cancelled');
-                    alert('Rendez-vous annulé avec succès !');
-                }
-            } else if (button.classList.contains('btn-danger')) {
-                // Delete button
-                if (confirm(`Supprimer définitivement le rendez-vous de ${patientName} avec ${doctorName} ?\n\nCette action est irréversible.`)) {
-                    card.remove();
-                    alert('Rendez-vous supprimé avec succès !');
-                }
-            }
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId !== '#') {
-                    e.preventDefault();
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }
-            });
-        });
-    </script>
-</body>
+    </div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<!-- jsPDF for PDF export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- xlsx for Excel export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- Custom JS -->
+<script src="../js/script.js"></script>
+<script src="../../js/common.js"></script></body>
 </html>
+

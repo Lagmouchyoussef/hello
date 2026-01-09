@@ -550,7 +550,7 @@ input:checked + .slider:before {
 <div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Référencement (SEO)</h1>
-<button class="btn btn-primary" onclick="saveSettings()">
+<button class="btn btn-primary">
 <i class="fas fa-save"></i>
 Sauvegarder
 </button>
@@ -647,246 +647,22 @@ Sauvegarder
 </div>
 </div>
 <div class="btn-group">
-<button class="btn btn-secondary" onclick="generateSitemap()">
+<button class="btn btn-secondary">
 <i class="fas fa-sitemap"></i>
 Générer Sitemap
 </button>
-<button class="btn btn-success" onclick="validateSEO()">
+<button class="btn btn-success">
 <i class="fas fa-check"></i>
 Valider SEO
 </button>
 </div>
 </div>
 
-<script>
-// SEO settings management
-let seoSettings = {
-    pageTitle: '',
-    metaDescription: '',
-    keywords: '',
-    canonicalUrl: '',
-    ogTitle: '',
-    ogDescription: '',
-    ogImage: '',
-    generateSitemap: false
-};
 
-// Load settings from localStorage
-function loadSEOSettings() {
-    const saved = localStorage.getItem('seoSettings');
-    if (saved) {
-        seoSettings = { ...seoSettings, ...JSON.parse(saved) };
-    }
-    applySettingsToUI();
-    updatePreview();
-    updateAnalysis();
-}
 
-// Save settings to localStorage
-function saveSettings() {
-    // Update settings from form
-    seoSettings.pageTitle = document.getElementById('pageTitle').value;
-    seoSettings.metaDescription = document.getElementById('metaDescription').value;
-    seoSettings.keywords = document.getElementById('keywords').value;
-    seoSettings.canonicalUrl = document.getElementById('canonicalUrl').value;
-    seoSettings.ogTitle = document.getElementById('ogTitle').value;
-    seoSettings.ogDescription = document.getElementById('ogDescription').value;
-    seoSettings.ogImage = document.getElementById('ogImage').value;
-    seoSettings.generateSitemap = document.getElementById('generateSitemap').checked;
-
-    localStorage.setItem('seoSettings', JSON.stringify(seoSettings));
-    alert('Paramètres SEO sauvegardés avec succès !');
-}
-
-// Apply settings to UI elements
-function applySettingsToUI() {
-    document.getElementById('pageTitle').value = seoSettings.pageTitle;
-    document.getElementById('metaDescription').value = seoSettings.metaDescription;
-    document.getElementById('keywords').value = seoSettings.keywords;
-    document.getElementById('canonicalUrl').value = seoSettings.canonicalUrl;
-    document.getElementById('ogTitle').value = seoSettings.ogTitle;
-    document.getElementById('ogDescription').value = seoSettings.ogDescription;
-    document.getElementById('ogImage').value = seoSettings.ogImage;
-    document.getElementById('generateSitemap').checked = seoSettings.generateSitemap;
-
-    updateCharacterCounters();
-}
-
-// Update character counters
-function updateCharacterCounters() {
-    const title = document.getElementById('pageTitle').value;
-    const description = document.getElementById('metaDescription').value;
-
-    const titleCounter = document.getElementById('titleCounter');
-    const descCounter = document.getElementById('descriptionCounter');
-
-    titleCounter.textContent = `${title.length} / 60 caractères`;
-    descCounter.textContent = `${description.length} / 160 caractères`;
-
-    // Update counter colors
-    titleCounter.className = 'character-counter';
-    descCounter.className = 'character-counter';
-
-    if (title.length > 50) titleCounter.classList.add('warning');
-    if (title.length > 60) titleCounter.classList.add('error');
-
-    if (description.length > 140) descCounter.classList.add('warning');
-    if (description.length > 160) descCounter.classList.add('error');
-}
-
-// Update search result preview
-function updatePreview() {
-    const title = document.getElementById('pageTitle').value || 'Titre de la page';
-    const description = document.getElementById('metaDescription').value || 'Description qui apparaîtra dans les résultats de recherche Google...';
-    const url = document.getElementById('canonicalUrl').value || 'https://cabinet-al-farabi.ma';
-
-    document.getElementById('previewTitle').textContent = title;
-    document.getElementById('previewDesc').textContent = description;
-    document.getElementById('previewUrl').textContent = url.replace(/^https?:\/\//, '') + ' › page';
-}
-
-// Update SEO analysis
-function updateAnalysis() {
-    const analysisContainer = document.getElementById('analysisContainer');
-    const title = document.getElementById('pageTitle').value;
-    const description = document.getElementById('metaDescription').value;
-    const keywords = document.getElementById('keywords').value;
-
-    let analysisHTML = '';
-
-    // Title analysis
-    if (title.length === 0) {
-        analysisHTML += `
-            <div class="analysis-item error">
-                <i class="fas fa-times-circle analysis-icon" style="color: #dc2626;"></i>
-                <div class="analysis-text">Titre de page non défini</div>
-            </div>`;
-    } else if (title.length < 30) {
-        analysisHTML += `
-            <div class="analysis-item warning">
-                <i class="fas fa-exclamation-triangle analysis-icon" style="color: #d97706;"></i>
-                <div class="analysis-text">Titre trop court (recommandé: 30-60 caractères)</div>
-            </div>`;
-    } else if (title.length <= 60) {
-        analysisHTML += `
-            <div class="analysis-item success">
-                <i class="fas fa-check-circle analysis-icon" style="color: var(--success);"></i>
-                <div class="analysis-text">Titre optimisé pour le référencement</div>
-            </div>`;
-    } else {
-        analysisHTML += `
-            <div class="analysis-item error">
-                <i class="fas fa-times-circle analysis-icon" style="color: #dc2626;"></i>
-                <div class="analysis-text">Titre trop long (maximum 60 caractères)</div>
-            </div>`;
-    }
-
-    // Description analysis
-    if (description.length === 0) {
-        analysisHTML += `
-            <div class="analysis-item error">
-                <i class="fas fa-times-circle analysis-icon" style="color: #dc2626;"></i>
-                <div class="analysis-text">Meta description non définie</div>
-            </div>`;
-    } else if (description.length < 120) {
-        analysisHTML += `
-            <div class="analysis-item warning">
-                <i class="fas fa-exclamation-triangle analysis-icon" style="color: #d97706;"></i>
-                <div class="analysis-text">Meta description trop courte (recommandé: 120-160 caractères)</div>
-            </div>`;
-    } else if (description.length <= 160) {
-        analysisHTML += `
-            <div class="analysis-item success">
-                <i class="fas fa-check-circle analysis-icon" style="color: var(--success);"></i>
-                <div class="analysis-text">Meta description optimisée</div>
-            </div>`;
-    } else {
-        analysisHTML += `
-            <div class="analysis-item error">
-                <i class="fas fa-times-circle analysis-icon" style="color: #dc2626;"></i>
-                <div class="analysis-text">Meta description trop longue (maximum 160 caractères)</div>
-            </div>`;
-    }
-
-    // Keywords analysis
-    if (keywords.length === 0) {
-        analysisHTML += `
-            <div class="analysis-item error">
-                <i class="fas fa-times-circle analysis-icon" style="color: #dc2626;"></i>
-                <div class="analysis-text">Mots-clés principaux non définis</div>
-            </div>`;
-    } else {
-        const keywordCount = keywords.split(',').length;
-        if (keywordCount <= 5) {
-            analysisHTML += `
-                <div class="analysis-item success">
-                    <i class="fas fa-check-circle analysis-icon" style="color: var(--success);"></i>
-                    <div class="analysis-text">Mots-clés bien définis (${keywordCount} mots-clés)</div>
-                </div>`;
-        } else {
-            analysisHTML += `
-                <div class="analysis-item warning">
-                    <i class="fas fa-exclamation-triangle analysis-icon" style="color: #d97706;"></i>
-                    <div class="analysis-text">Trop de mots-clés (${keywordCount}, recommandé: 3-5)</div>
-                </div>`;
-        }
-    }
-
-    analysisContainer.innerHTML = analysisHTML;
-}
-
-// Generate sitemap
-function generateSitemap() {
-    alert('Fonctionnalité de génération de sitemap en cours de développement.\n\nLe sitemap sera généré automatiquement et soumis aux moteurs de recherche.');
-}
-
-// Validate SEO
-function validateSEO() {
-    updateAnalysis();
-    const title = document.getElementById('pageTitle').value;
-    const description = document.getElementById('metaDescription').value;
-    const keywords = document.getElementById('keywords').value;
-
-    let score = 0;
-    let total = 3;
-
-    if (title.length >= 30 && title.length <= 60) score++;
-    if (description.length >= 120 && description.length <= 160) score++;
-    if (keywords.length > 0) score++;
-
-    const percentage = Math.round((score / total) * 100);
-
-    if (percentage >= 80) {
-        alert(`✅ Score SEO: ${percentage}%\nExcellent ! Votre page est bien optimisée.`);
-    } else if (percentage >= 60) {
-        alert(`⚠️ Score SEO: ${percentage}%\nBon travail, mais quelques améliorations sont possibles.`);
-    } else {
-        alert(`❌ Score SEO: ${percentage}%\nVotre page nécessite des optimisations importantes.`);
-    }
-}
-
-// Event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    // Load initial settings
-    loadSEOSettings();
-
-    // Real-time updates
-    ['pageTitle', 'metaDescription', 'keywords', 'canonicalUrl', 'ogTitle', 'ogDescription', 'ogImage'].forEach(id => {
-        document.getElementById(id).addEventListener('input', function() {
-            updateCharacterCounters();
-            updatePreview();
-            updateAnalysis();
-        });
-    });
-
-    document.getElementById('generateSitemap').addEventListener('change', function() {
-        seoSettings.generateSitemap = this.checked;
-    });
-});
-</script>
-
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

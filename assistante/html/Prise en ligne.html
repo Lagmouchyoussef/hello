@@ -760,10 +760,10 @@
         <div class="content-header">
             <h1 class="page-title">Gestion des Prises de Rendez-vous en Ligne</h1>
             <div>
-                <button class="btn btn-primary" onclick="refreshBookings()">
+                <button class="btn btn-primary">
                     <i class="fas fa-sync"></i> Actualiser
                 </button>
-                <button class="btn btn-success" onclick="exportBookings()">
+                <button class="btn btn-success">
                     <i class="fas fa-download"></i> Exporter
                 </button>
             </div>
@@ -877,76 +877,10 @@
         </div>
     </div>
 
-    <script>
-        // Theme toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        const themeIcon = themeToggle.querySelector('i');
-        const themeText = themeToggle.querySelector('span');
-
-        themeToggle.addEventListener('click', () => {
-            if (body.classList.contains('light-mode')) {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-                themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'Mode Clair';
-            } else {
-                body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
-                themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'Mode Sombre';
-            }
-        });
-
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                alert('Déconnexion réussie !');
-            }
-        });
-
-        // Navigation
-        document.querySelectorAll('.sidebar-link').forEach(link => {
-            link.addEventListener('click', function() {
-                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        document.querySelector('.sidebar-link[href="Prise en ligne.html"]').classList.add('active');
-
-        // Collapsible sections
-        document.querySelectorAll('.section-header.clickable').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const isCollapsed = content.classList.contains('collapsed');
-                document.querySelectorAll('.section-content').forEach(el => {
-                    if (el !== content) el.classList.add('collapsed');
-                    el.previousElementSibling.classList.add('collapsed');
-                });
-                if (isCollapsed) {
-                    content.classList.remove('collapsed');
-                    header.classList.remove('collapsed');
-                } else {
-                    content.classList.add('collapsed');
-                    header.classList.add('collapsed');
-                }
-            });
-        });
-
-        document.getElementById('section-rdv-content').classList.remove('collapsed');
-        document.getElementById('section-rdv-toggle').classList.remove('collapsed');
-
-        function refreshBookings() {
-            alert('Données actualisées !');
-        }
-
-        function exportBookings() {
-            alert('Fonctionnalité d\'export à implémenter');
-        }
-    </script>
-</body>
+    
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

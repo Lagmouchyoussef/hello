@@ -704,53 +704,11 @@ Devise par défaut
 </div>
 </div>
 
-<script>
-// Sidebar collapsible functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize collapsible sections
-    const sectionHeaders = document.querySelectorAll('.section-header.clickable');
-    sectionHeaders.forEach(header => {
-        header.addEventListener('click', function() {
-            const content = this.nextElementSibling;
-            const chevron = this.querySelector('.section-chevron');
 
-            if (content.classList.contains('collapsed')) {
-                content.classList.remove('collapsed');
-                this.classList.remove('collapsed');
-            } else {
-                content.classList.add('collapsed');
-                this.classList.add('collapsed');
-            }
-        });
-    });
 
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-
-    themeToggle.addEventListener('click', function() {
-        if (body.classList.contains('light-mode')) {
-            body.className = 'dark-mode';
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Mode Clair</span>';
-        } else {
-            body.className = 'light-mode';
-            themeToggle.innerHTML = '<i class="fas fa-moon"></i><span>Mode Sombre</span>';
-        }
-    });
-
-    // Logout functionality (placeholder)
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-            // Implement logout logic
-            alert('Déconnexion...');
-        }
-    });
-});
-
-</script>
-
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

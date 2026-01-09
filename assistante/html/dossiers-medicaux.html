@@ -611,7 +611,7 @@
 <div class="main-content">
 <div class="content-header">
  <h1 class="page-title">Dossiers médicaux</h1>
- <button class="btn btn-primary" onclick="showForm()">
+ <button class="btn btn-primary">
   <i class="fas fa-plus"></i>
   Ajouter un dossier
  </button>
@@ -688,7 +688,7 @@
   </div>
   <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
    <button type="submit" class="btn btn-primary">Enregistrer</button>
-   <button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
+   <button type="button" class="btn btn-danger">Annuler</button>
   </div>
  </form>
 </div>
@@ -723,216 +723,7 @@
 </div>
 </div>
 
-<script>
-// Sample data for medical records
-let medicalRecords = [];
 
-let currentRecordId = null;
-
-// Function to display records in table
-function displayRecords(records = medicalRecords) {
-  const tbody = document.getElementById('dossiersTablebody');
-  tbody.innerHTML = '';
-
-  if (records.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="5" class="empty-state">
-          <i class="fas fa-folder-open"></i>
-          <h3>Aucun dossier trouvé</h3>
-          <p>Commencez par ajouter un nouveau dossier médical.</p>
-        </td>
-      </tr>
-    `;
-    return;
-  }
-
-  records.forEach(record => {
-    const statusClass = record.status === 'En cours' ? 'status-ongoing' :
-                       record.status === 'Terminé' ? 'status-completed' : 'status-new';
-    const row = `
-      <tr onclick="showRecordDetails(${record.id})" style="cursor: pointer;">
-        <td>${record.patient}</td>
-        <td>${new Date(record.lastConsultation).toLocaleDateString('fr-FR')}</td>
-        <td>${record.doctor}</td>
-        <td><span class="status-badge ${statusClass}">${record.status}</span></td>
-        <td>
-          <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); editRecord(${record.id})">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deleteRecord(${record.id})">
-            <i class="fas fa-trash"></i>
-          </button>
-        </td>
-      </tr>
-    `;
-    tbody.innerHTML += row;
-  });
-}
-
-// Function to show record details
-function showRecordDetails(id) {
-  const record = medicalRecords.find(r => r.id === id);
-  if (!record) return;
-
-  document.getElementById('generalInfo').innerHTML = `
-    <div class="info-item"><strong>Patient:</strong> ${record.patient}</div>
-    <div class="info-item"><strong>Dernière consultation:</strong> ${new Date(record.lastConsultation).toLocaleDateString('fr-FR')}</div>
-    <div class="info-item"><strong>Médecin traitant:</strong> ${record.doctor}</div>
-    <div class="info-item"><strong>Statut:</strong> <span class="status-badge ${record.status === 'En cours' ? 'status-ongoing' : record.status === 'Terminé' ? 'status-completed' : 'status-new'}">${record.status}</span></div>
-    <div class="info-item"><strong>Groupe sanguin:</strong> ${record.bloodType}</div>
-  `;
-
-  document.getElementById('consultationHistory').innerHTML = `
-    <p>Dernière consultation: ${new Date(record.lastConsultation).toLocaleDateString('fr-FR')}</p>
-    <p>Médecin: ${record.doctor}</p>
-  `;
-
-  document.getElementById('currentTreatments').innerHTML = `
-    <p>Aucun traitement en cours.</p>
-  `;
-
-  document.getElementById('allergiesHistory').innerHTML = `
-    <div class="info-item"><strong>Allergies:</strong> ${record.allergies}</div>
-    <div class="info-item"><strong>Antécédents:</strong> ${record.medicalHistory}</div>
-  `;
-
-  document.getElementById('recordDetails').style.display = 'block';
-  document.getElementById('recordDetails').scrollIntoView({ behavior: 'smooth' });
-}
-
-// Function to show form
-function showForm(id = null) {
-  const form = document.getElementById('recordForm');
-  const title = document.getElementById('formTitle');
-  const formElement = document.getElementById('medicalRecordForm');
-
-  if (id) {
-    const record = medicalRecords.find(r => r.id === id);
-    if (record) {
-      document.getElementById('patientSelect').value = record.patient;
-      document.getElementById('lastConsultation').value = record.lastConsultation;
-      document.getElementById('doctor').value = record.doctor;
-      document.getElementById('status').value = record.status;
-      document.getElementById('bloodType').value = record.bloodType;
-      document.getElementById('allergies').value = record.allergies;
-      document.getElementById('medicalHistory').value = record.medicalHistory;
-      title.textContent = 'Modifier le dossier médical';
-      currentRecordId = id;
-    }
-  } else {
-    formElement.reset();
-    title.textContent = 'Ajouter un dossier médical';
-    currentRecordId = null;
-  }
-
-  form.style.display = 'block';
-  form.scrollIntoView({ behavior: 'smooth' });
-}
-
-// Function to hide form
-function hideForm() {
-  document.getElementById('recordForm').style.display = 'none';
-  document.getElementById('recordDetails').style.display = 'none';
-}
-
-// Function to save record
-function saveRecord(event) {
-  event.preventDefault();
-
-  const submitBtn = document.querySelector('#medicalRecordForm button[type="submit"]');
-  const originalText = submitBtn.innerHTML;
-  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
-  submitBtn.disabled = true;
-
-  // Simulate async operation
-  setTimeout(() => {
-    const patient = document.getElementById('patientSelect').value;
-    const lastConsultation = document.getElementById('lastConsultation').value;
-    const doctor = document.getElementById('doctor').value;
-    const status = document.getElementById('status').value;
-    const bloodType = document.getElementById('bloodType').value;
-    const allergies = document.getElementById('allergies').value;
-    const medicalHistory = document.getElementById('medicalHistory').value;
-
-    if (currentRecordId) {
-      // Update existing record
-      const index = medicalRecords.findIndex(r => r.id === currentRecordId);
-      if (index !== -1) {
-        medicalRecords[index] = { ...medicalRecords[index], patient, lastConsultation, doctor, status, bloodType, allergies, medicalHistory };
-      }
-    } else {
-      // Add new record
-      const newId = Math.max(...medicalRecords.map(r => r.id)) + 1;
-      medicalRecords.push({ id: newId, patient, lastConsultation, doctor, status, bloodType, allergies, medicalHistory });
-    }
-
-    displayRecords();
-    hideForm();
-    submitBtn.innerHTML = originalText;
-    submitBtn.disabled = false;
-  }, 1000);
-}
-
-// Function to edit record
-function editRecord(id) {
-  showForm(id);
-}
-
-// Function to delete record
-function deleteRecord(id) {
-  if (confirm('Êtes-vous sûr de vouloir supprimer ce dossier médical ?')) {
-    medicalRecords = medicalRecords.filter(r => r.id !== id);
-    displayRecords();
-  }
-}
-
-// Function to search and filter records
-function searchRecords() {
-  const query = document.getElementById('searchInput').value.toLowerCase();
-  const statusFilter = document.getElementById('statusFilter').value;
-  const filtered = medicalRecords.filter(record => {
-    const matchesQuery = record.patient.toLowerCase().includes(query) ||
-                        record.doctor.toLowerCase().includes(query) ||
-                        record.status.toLowerCase().includes(query);
-    const matchesStatus = !statusFilter || record.status === statusFilter;
-    return matchesQuery && matchesStatus;
-  });
-  displayRecords(filtered);
-}
-
-// Initialize page
-document.addEventListener('DOMContentLoaded', function() {
-  displayRecords();
-
-  // Populate patient select
-  const patientSelect = document.getElementById('patientSelect');
-  medicalRecords.forEach(record => {
-    const option = document.createElement('option');
-    option.value = record.patient;
-    option.textContent = record.patient;
-    patientSelect.appendChild(option);
-  });
-
-  // Add more sample patients
-  const samplePatients = [];
-  samplePatients.forEach(patient => {
-    if (!medicalRecords.find(r => r.patient === patient)) {
-      const option = document.createElement('option');
-      option.value = patient;
-      option.textContent = patient;
-      patientSelect.appendChild(option);
-    }
-  });
-
-  // Form submission
-  document.getElementById('medicalRecordForm').addEventListener('submit', saveRecord);
-
-  // Search and filter functionality
-  document.getElementById('searchInput').addEventListener('input', searchRecords);
-  document.getElementById('statusFilter').addEventListener('change', searchRecords);
-});
-</script>
 
 <style>
 /* Additional styles for professional look */
@@ -1003,8 +794,9 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 </style>
 
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

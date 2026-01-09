@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../navbar.css">
-<script src="../../../dataManager.js"></script>
+
 <style>
     /* CSS Variables */
     :root {
@@ -597,7 +597,7 @@
 <div class="main-content">
 <div class="content-header">
 <h1 class="page-title">Fiches Patients</h1>
-<button class="btn btn-primary" onclick="showForm()">
+<button class="btn btn-primary">
 <i class="fas fa-plus"></i>
 Nouveau Patient
 </button>
@@ -635,7 +635,7 @@ Nouveau Patient
 </div>
 <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
 <button type="submit" class="btn btn-primary">Ajouter</button>
-<button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
+<button type="button" class="btn btn-danger">Annuler</button>
 </div>
 </form>
 </div>
@@ -665,219 +665,11 @@ Nouveau Patient
 </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    loadPatients();
 
-    // Function to load patients
-    function loadPatients() {
-        const tbody = document.getElementById('patientsTablebody');
-        const patients = dataManager.getAll('patients');
-        tbody.innerHTML = '';
 
-        if (patients.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 2rem;">Aucun patient trouvé</td></tr>';
-            return;
-        }
-
-        patients.forEach(patient => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${patient.firstName}</td>
-                <td>${patient.lastName}</td>
-                <td>${formatDate(patient.birthDate)}</td>
-                <td>${patient.phone}</td>
-                <td>${patient.email}</td>
-                <td>${patient.address}</td>
-                <td><span class="status-badge ${patient.status === 'active' ? 'status-confirmed' : 'status-cancelled'}">${patient.status === 'active' ? 'Actif' : 'Inactif'}</span></td>
-                <td class="action-buttons">
-                    <button class="btn btn-small btn-primary" onclick="editPatient('${patient.id}')">Modifier</button>
-                    <button class="btn btn-small btn-danger" onclick="deletePatient('${patient.id}')">Supprimer</button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-
-    // Function to format date
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('fr-FR');
-    }
-
-    // Function to show add form
-    window.showForm = function() {
-        document.getElementById('addForm').style.display = 'block';
-    };
-
-    // Function to hide add form
-    window.hideForm = function() {
-        document.getElementById('addForm').style.display = 'none';
-        document.getElementById('patientForm').reset();
-        document.getElementById('patientForm').dataset.editId = '';
-        document.querySelector('#addForm h2').textContent = 'Ajouter un Patient';
-        document.querySelector('#patientForm button[type="submit"]').textContent = 'Ajouter';
-    };
-
-    // Function to add/edit patient from form
-    document.getElementById('patientForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const patientData = {
-            firstName: formData.get('firstName'),
-            lastName: formData.get('lastName'),
-            birthDate: formData.get('birthDate'),
-            phone: formData.get('phone'),
-            email: formData.get('email'),
-            address: formData.get('address'),
-            status: 'active'
-        };
-
-        try {
-            const editId = this.dataset.editId;
-            if (editId) {
-                dataManager.updatePatient(editId, patientData);
-            } else {
-                dataManager.createPatient(patientData);
-            }
-            loadPatients();
-            hideForm();
-        } catch (error) {
-            alert('Erreur: ' + error.message);
-        }
-    });
-
-    // Function to edit patient
-    window.editPatient = function(id) {
-        const patient = dataManager.getById('patients', id);
-        if (!patient) {
-            alert('Patient non trouvé');
-            return;
-        }
-
-        // Populate form
-        document.getElementById('firstName').value = patient.firstName;
-        document.getElementById('lastName').value = patient.lastName;
-        document.getElementById('birthDate').value = patient.birthDate;
-        document.getElementById('phone').value = patient.phone;
-        document.getElementById('email').value = patient.email;
-        document.getElementById('address').value = patient.address;
-
-        // Set edit mode
-        const form = document.getElementById('patientForm');
-        form.dataset.editId = id;
-        document.querySelector('#addForm h2').textContent = 'Modifier un Patient';
-        document.querySelector('#patientForm button[type="submit"]').textContent = 'Modifier';
-
-        showForm();
-    };
-
-    // Function to delete patient
-    window.deletePatient = function(id) {
-        if (confirm('Êtes-vous sûr de vouloir supprimer ce patient ? Cette action supprimera également tous ses rendez-vous et dossiers médicaux.')) {
-            try {
-                // Delete related appointments and records
-                const appointments = dataManager.getAppointmentsByPatient(id);
-                appointments.forEach(app => dataManager.delete('appointments', app.id));
-
-                const records = dataManager.getRecordsByPatient(id);
-                records.forEach(record => dataManager.delete('records', record.id));
-
-                // Delete patient
-                dataManager.delete('patients', id);
-                loadPatients();
-            } catch (error) {
-                alert('Erreur lors de la suppression: ' + error.message);
-            }
-        }
-    };
-
-    // Search functionality
-    document.getElementById('searchInput').addEventListener('input', filterPatients);
-
-    function filterPatients() {
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        const patients = dataManager.getAll('patients');
-        const tbody = document.getElementById('patientsTablebody');
-        tbody.innerHTML = '';
-
-        const filtered = patients.filter(patient => {
-            return patient.firstName.toLowerCase().includes(searchTerm) ||
-                   patient.lastName.toLowerCase().includes(searchTerm) ||
-                   patient.email.toLowerCase().includes(searchTerm) ||
-                   patient.phone.includes(searchTerm);
-        });
-
-        if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 2rem;">Aucun patient trouvé</td></tr>';
-            return;
-        }
-
-        filtered.forEach(patient => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${patient.firstName}</td>
-                <td>${patient.lastName}</td>
-                <td>${formatDate(patient.birthDate)}</td>
-                <td>${patient.phone}</td>
-                <td>${patient.email}</td>
-                <td>${patient.address}</td>
-                <td><span class="status-badge ${patient.status === 'active' ? 'status-confirmed' : 'status-cancelled'}">${patient.status === 'active' ? 'Actif' : 'Inactif'}</span></td>
-                <td class="action-buttons">
-                    <button class="btn btn-small btn-primary" onclick="editPatient('${patient.id}')">Modifier</button>
-                    <button class="btn btn-small btn-danger" onclick="deletePatient('${patient.id}')">Supprimer</button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-
-    // Listen for data sync events
-    dataManager.onDataSync((detail) => {
-        if (detail.entity === 'patients') {
-            loadPatients();
-        }
-    });
-
-    // Theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-
-    themeToggle.addEventListener('click', function() {
-        body.classList.toggle('light-mode');
-        body.classList.toggle('dark-mode');
-        const icon = themeToggle.querySelector('i');
-        const span = themeToggle.querySelector('span');
-        if (body.classList.contains('dark-mode')) {
-            icon.className = 'fas fa-sun';
-            span.textContent = 'Mode Clair';
-        } else {
-            icon.className = 'fas fa-moon';
-            span.textContent = 'Mode Sombre';
-        }
-    });
-
-    // Logout button
-    const logoutBtn = document.getElementById('logoutBtn');
-    logoutBtn.addEventListener('click', function() {
-        window.location.href = '../../../Site web/html/index.html';
-    });
-
-    // Collapsible sections
-    const toggles = document.querySelectorAll('.section-header.clickable');
-    toggles.forEach(toggle => {
-        toggle.addEventListener('click', function() {
-            const content = this.nextElementSibling;
-            const chevron = this.querySelector('.section-chevron');
-            content.classList.toggle('collapsed');
-            this.classList.toggle('collapsed');
-        });
-    });
-});
-</script>
-
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

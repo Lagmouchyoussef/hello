@@ -469,7 +469,7 @@
 <div class="main-content">
 <div class="content-header">
 <h1 class="page-title">design & Thème</h1>
-<button class="btn btn-primary" onclick="saveSettings()">
+<button class="btn btn-primary">
 <i class="fas fa-save"></i>
 Sauvegarder
 </button>
@@ -557,209 +557,22 @@ Sauvegarder
 </div>
 </div>
 <div class="btn-group">
-<button class="btn btn-secondary" onclick="resetSettings()">
+<button class="btn btn-secondary">
 <i class="fas fa-undo"></i>
 Réinitialiser
 </button>
-<button class="btn btn-success" onclick="applyTheme()">
+<button class="btn btn-success">
 <i class="fas fa-eye"></i>
 Appliquer le thème
 </button>
 </div>
 </div>
 
-<script>
-// Theme presets
-const themePresets = {
-    medical: {
-        primaryColor: '#1e3a8a',
-        fontFamily: 'Inter',
-        layoutStyle: 'Classique',
-        logoUrl: '',
-        backgroundImage: '',
-        transparency: 0.9
-    },
-    modern: {
-        primaryColor: '#059669',
-        fontFamily: 'Inter',
-        layoutStyle: 'Moderne',
-        logoUrl: '',
-        backgroundImage: '',
-        transparency: 0.8
-    },
-    warm: {
-        primaryColor: '#d97706',
-        fontFamily: 'Arial',
-        layoutStyle: 'Moderne',
-        logoUrl: '',
-        backgroundImage: '',
-        transparency: 0.85
-    },
-    cool: {
-        primaryColor: '#0891b2',
-        fontFamily: 'Helvetica',
-        layoutStyle: 'Minimaliste',
-        logoUrl: '',
-        backgroundImage: '',
-        transparency: 0.75
-    }
-};
 
-// Theme settings management
-let currentSettings = {
-    primaryColor: '#1e3a8a',
-    fontFamily: 'Inter',
-    layoutStyle: 'Moderne',
-    logoUrl: '',
-    backgroundImage: '',
-    transparency: 0.8
-};
 
-// Load settings from localStorage
-function loadSettings() {
-    const saved = localStorage.getItem('designThemeSettings');
-    if (saved) {
-        currentSettings = { ...currentSettings, ...JSON.parse(saved) };
-    }
-    applySettingsToUI();
-    updatePreview();
-}
-
-// Save settings to localStorage
-function saveSettings() {
-    localStorage.setItem('designThemeSettings', JSON.stringify(currentSettings));
-    alert('Paramètres sauvegardés avec succès !');
-}
-
-// Apply settings to UI elements
-function applySettingsToUI() {
-    // Theme preset
-    document.getElementById('themePreset').value = '';
-
-    // Primary color
-    document.querySelectorAll('.color-option').forEach(option => {
-        option.classList.toggle('selected', option.dataset.color === currentSettings.primaryColor);
-    });
-
-    // Font family
-    document.getElementById('fontFamily').value = currentSettings.fontFamily;
-
-    // Layout style
-    document.getElementById('layoutStyle').value = currentSettings.layoutStyle;
-
-    // Logo URL
-    document.getElementById('logoUrl').value = currentSettings.logoUrl;
-
-    // Background image
-    document.getElementById('backgroundImage').value = currentSettings.backgroundImage;
-
-    // Transparency
-    document.getElementById('transparency').value = currentSettings.transparency;
-}
-
-// Update preview
-function updatePreview() {
-    const preview = document.getElementById('themePreview');
-    preview.style.backgroundColor = currentSettings.primaryColor;
-    preview.style.fontFamily = currentSettings.fontFamily;
-    preview.style.opacity = currentSettings.transparency;
-
-    if (currentSettings.backgroundImage) {
-        preview.style.backgroundImage = `url(${currentSettings.backgroundImage})`;
-        preview.style.backgroundSize = 'cover';
-        preview.style.backgroundPosition = 'center';
-    } else {
-        preview.style.backgroundImage = 'none';
-    }
-}
-
-// Color picker functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Theme preset
-    document.getElementById('themePreset').addEventListener('change', function() {
-        const preset = this.value;
-        if (preset && themePresets[preset]) {
-            currentSettings = { ...themePresets[preset] };
-            applySettingsToUI();
-            updatePreview();
-        }
-    });
-
-    // Color options
-    document.querySelectorAll('.color-option').forEach(option => {
-        option.addEventListener('click', function() {
-            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
-            this.classList.add('selected');
-            currentSettings.primaryColor = this.dataset.color;
-            document.getElementById('themePreset').value = ''; // Reset preset when custom color selected
-            updatePreview();
-        });
-    });
-
-    // Font family change
-    document.getElementById('fontFamily').addEventListener('change', function() {
-        currentSettings.fontFamily = this.value;
-        updatePreview();
-    });
-
-    // Layout style change
-    document.getElementById('layoutStyle').addEventListener('change', function() {
-        currentSettings.layoutStyle = this.value;
-        updatePreview();
-    });
-
-    // Logo URL change
-    document.getElementById('logoUrl').addEventListener('input', function() {
-        currentSettings.logoUrl = this.value;
-        updatePreview();
-    });
-
-    // Background image change
-    document.getElementById('backgroundImage').addEventListener('input', function() {
-        currentSettings.backgroundImage = this.value;
-        updatePreview();
-    });
-
-    // Transparency change
-    document.getElementById('transparency').addEventListener('input', function() {
-        currentSettings.transparency = this.value;
-        updatePreview();
-    });
-
-    // Load initial settings
-    loadSettings();
-});
-
-// Reset settings
-function resetSettings() {
-    currentSettings = {
-        primaryColor: '#1e3a8a',
-        fontFamily: 'Inter',
-        layoutStyle: 'Moderne',
-        logoUrl: '',
-        backgroundImage: '',
-        transparency: 0.8
-    };
-    document.getElementById('themePreset').value = '';
-    applySettingsToUI();
-    updatePreview();
-}
-
-// Apply theme globally (for demo purposes)
-function applyTheme() {
-    document.documentElement.style.setProperty('--medical-blue', currentSettings.primaryColor);
-    document.body.style.fontFamily = currentSettings.fontFamily;
-    if (currentSettings.backgroundImage) {
-        document.body.style.backgroundImage = `url(${currentSettings.backgroundImage})`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundAttachment = 'fixed';
-    }
-    alert('Thème appliqué à la page !');
-}
-</script>
-
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

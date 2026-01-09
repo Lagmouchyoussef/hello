@@ -786,41 +786,11 @@ body {
 
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
 
-    themeToggle.addEventListener('click', function() {
-        body.classList.toggle('light-mode');
-        body.classList.toggle('dark-mode');
-        const icon = themeToggle.querySelector('i');
-        const span = themeToggle.querySelector('span');
-        if (body.classList.contains('dark-mode')) {
-            icon.className = 'fas fa-sun';
-            span.textContent = 'Mode Clair';
-        } else {
-            icon.className = 'fas fa-moon';
-            span.textContent = 'Mode Sombre';
-        }
-    });
 
-    // Collapsible sections
-    const toggles = document.querySelectorAll('.section-header.clickable');
-    toggles.forEach(toggle => {
-        toggle.addEventListener('click', function() {
-            const content = this.nextElementSibling;
-            const chevron = this.querySelector('.section-chevron');
-            content.classList.toggle('collapsed');
-            this.classList.toggle('collapsed');
-        });
-    });
-});
-</script>
-
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

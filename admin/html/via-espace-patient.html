@@ -690,7 +690,7 @@
 <div class="main-content">
   <div class="content-header">
     <h1 class="page-title">Rendez-vous via Espace Patient</h1>
-    <button class="btn btn-primary" onclick="showForm()">
+    <button class="btn btn-primary">
       <i class="fas fa-plus"></i>
       Nouveau Rendez-vous
     </button>
@@ -753,7 +753,7 @@
       </div>
       <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
         <button type="submit" class="btn btn-primary">Ajouter</button>
-        <button type="button" class="btn btn-danger" onclick="hideForm()">Annuler</button>
+        <button type="button" class="btn btn-danger">Annuler</button>
       </div>
     </form>
   </div>
@@ -796,114 +796,10 @@
   </div>
 </div>
 
-<script>
-// Sample appointment data (empty for now)
-let appointments = [];
 
-// Function to render appointments
-function renderAppointments(filteredAppointments = appointments) {
-  const tbody = document.getElementById('appointmentsTablebody');
-  tbody.innerHTML = '';
-
-  filteredAppointments.forEach(appointment => {
-    const row = document.createElement('tr');
-
-    const statusClass = appointment.status === 'Confirmé' ? 'status-confirmed' :
-                       appointment.status === 'En attente' ? 'status-pending' : 'status-cancelled';
-
-    row.innerHTML = `
-      <td>${appointment.date}</td>
-      <td>${appointment.time}</td>
-      <td>${appointment.patient}</td>
-      <td>${appointment.type}</td>
-      <td>${appointment.treatment}</td>
-      <td><span class="status-badge ${statusClass}">${appointment.status}</span></td>
-      <td>
-        <div class="action-buttons">
-          <button class="btn btn-small btn-success" onclick="changeStatus(${appointment.id}, 'Confirmé')">
-            <i class="fas fa-check"></i>
-          </button>
-          <button class="btn btn-small btn-danger" onclick="changeStatus(${appointment.id}, 'Annulé')">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-      </td>
-    `;
-
-    tbody.appendChild(row);
-  });
-}
-
-// Function to show/hide form
-function showForm() {
-  document.getElementById('addForm').style.display = 'block';
-}
-
-function hideForm() {
-  document.getElementById('addForm').style.display = 'none';
-}
-
-// Function to change appointment status
-function changeStatus(id, newStatus) {
-  const appointment = appointments.find(app => app.id === id);
-  if (appointment) {
-    appointment.status = newStatus;
-    renderAppointments();
-  }
-}
-
-// Form submission
-document.getElementById('appointmentForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const newAppointment = {
-    id: appointments.length + 1,
-    date: document.getElementById('date').value,
-    time: document.getElementById('time').value,
-    patient: document.getElementById('patient').value,
-    type: document.getElementById('type').value,
-    treatment: document.getElementById('treatment').value,
-    status: document.getElementById('status').value
-  };
-
-  appointments.push(newAppointment);
-  renderAppointments();
-  hideForm();
-  this.reset();
-
-  // Show success message
-  const successMsg = document.getElementById('successMessage');
-  successMsg.style.display = 'block';
-  setTimeout(() => {
-    successMsg.style.display = 'none';
-  }, 3000);
-});
-
-// Search functionality
-document.getElementById('searchInput').addEventListener('input', function() {
-  const searchTerm = this.value.toLowerCase();
-  const filtered = appointments.filter(app =>
-    app.patient.toLowerCase().includes(searchTerm) ||
-    app.treatment.toLowerCase().includes(searchTerm) ||
-    app.type.toLowerCase().includes(searchTerm)
-  );
-  renderAppointments(filtered);
-});
-
-// Filter functionality
-document.getElementById('statusFilter').addEventListener('change', function() {
-  const statusFilter = this.value;
-  const filtered = statusFilter ? appointments.filter(app => app.status === statusFilter) : appointments;
-  renderAppointments(filtered);
-});
-
-// Initialize the page
-document.addEventListener('DOMContentLoaded', function() {
-  renderAppointments();
-});
-</script>
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

@@ -584,122 +584,17 @@
 </div>
 <div class="message-body" id="messageBody"></div>
 <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-<button class="btn btn-success" onclick="markAsTreated()">Marquer comme traité</button>
-<button class="btn btn-danger" onclick="hideMessageDetails()">Fermer</button>
+<button class="btn btn-success">Marquer comme traité</button>
+<button class="btn btn-danger">Fermer</button>
 </div>
 </div>
 </div>
 
-<script>
-// Contact messages management
-let contactMessages = [];
 
-let currentMessageId = null;
 
-// Load and display messages
-function loadMessages() {
-    const tbody = document.getElementById('contactsTablebody');
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const statusFilter = document.getElementById('statusFilter').value;
-
-    tbody.innerHTML = '';
-
-    contactMessages
-        .filter(message => {
-            const matchesSearch = message.name.toLowerCase().includes(searchTerm) ||
-                                message.email.toLowerCase().includes(searchTerm) ||
-                                message.subject.toLowerCase().includes(searchTerm);
-            const matchesStatus = !statusFilter || message.status === statusFilter;
-            return matchesSearch && matchesStatus;
-        })
-        .forEach(message => {
-            const row = document.createElement('tr');
-
-            const statusClass = message.status === 'Traité' ? 'status-treated' : 'status-pending';
-
-            row.innerHTML = `
-                <td>${message.name}</td>
-                <td>${message.email}</td>
-                <td>${message.subject}</td>
-                <td>${message.date}</td>
-                <td><span class="status-badge ${statusClass}">${message.status}</span></td>
-                <td>
-                    <button class="btn-action btn-view" onclick="viewMessage(${message.id})">
-                        <i class="fas fa-eye"></i> Voir
-                    </button>
-                    ${message.status === 'En attente' ?
-                        `<button class="btn-action btn-mark-treated" onclick="markAsTreated(${message.id})">
-                            <i class="fas fa-check"></i> Traiter
-                        </button>` : ''}
-                </td>
-            `;
-
-            tbody.appendChild(row);
-        });
-}
-
-// View message details
-function viewMessage(id) {
-    const message = contactMessages.find(m => m.id === id);
-    if (!message) return;
-
-    currentMessageId = id;
-
-    document.getElementById('messageFrom').textContent = message.name;
-    document.getElementById('messageEmail').textContent = message.email;
-    document.getElementById('messageDate').textContent = `Reçu le ${message.date}`;
-    document.getElementById('messageSubject').textContent = message.subject;
-    document.getElementById('messageBody').textContent = message.message;
-
-    document.getElementById('messageDetails').style.display = 'block';
-    document.getElementById('messageDetails').scrollIntoView({ behavior: 'smooth' });
-}
-
-// Mark message as treated
-function markAsTreated(id = null) {
-    const messageId = id || currentMessageId;
-    const message = contactMessages.find(m => m.id === messageId);
-    if (message) {
-        message.status = 'Traité';
-        loadMessages();
-        if (!id) {
-            hideMessageDetails();
-        }
-        showNotification('Message marqué comme traité', 'success');
-    }
-}
-
-// Hide message details
-function hideMessageDetails() {
-    document.getElementById('messageDetails').style.display = 'none';
-    currentMessageId = null;
-}
-
-// Show notification
-function showNotification(message, type = 'info') {
-    // Simple notification - could be enhanced with a proper notification system
-    alert(message);
-}
-
-// Event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    loadMessages();
-
-    // Search functionality
-    document.getElementById('searchInput').addEventListener('input', loadMessages);
-    document.getElementById('statusFilter').addEventListener('change', loadMessages);
-});
-
-// Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && document.getElementById('messageDetails').style.display === 'block') {
-        hideMessageDetails();
-    }
-});
-</script>
-
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 

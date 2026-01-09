@@ -749,19 +749,19 @@
         Modèles de messages
       </h3>
       <div class="templates-grid">
-        <div class="template-card" onclick="useTemplate('rappel')">
+        <div class="template-card">
           <div class="template-icon">📅</div>
           <h4 class="template-title">Rappel RDV</h4>
         </div>
-        <div class="template-card" onclick="useTemplate('confirmation')">
+        <div class="template-card">
           <div class="template-icon">✅</div>
           <h4 class="template-title">Confirmation</h4>
         </div>
-        <div class="template-card" onclick="useTemplate('urgence')">
+        <div class="template-card">
           <div class="template-icon">🚨</div>
           <h4 class="template-title">Urgence</h4>
         </div>
-        <div class="template-card" onclick="useTemplate('promotion')">
+        <div class="template-card">
           <div class="template-icon">🎉</div>
           <h4 class="template-title">Promotion</h4>
         </div>
@@ -776,7 +776,7 @@
       </h3>
       <div class="recipient-input-group">
         <input type="tel" class="recipient-input" id="recipientInput" placeholder="+212 6XX XXX XXX">
-        <button class="add-recipient-btn" onclick="addRecipient()">
+        <button class="add-recipient-btn">
           <i class="fas fa-plus"></i> Ajouter
         </button>
       </div>
@@ -797,7 +797,7 @@
       ></textarea>
       <div class="message-footer">
         <div class="char-counter" id="charCounter">0/160 caractères</div>
-        <button class="send-button" id="sendButton" onclick="sendSMS()" disabled>
+        <button class="send-button" id="sendButton" disabled>
           <i class="fas fa-paper-plane"></i>
           Envoyer SMS
         </button>
@@ -837,311 +837,11 @@
 </div>
 </div>
 
-<script>
-// Professional SMS Interface Functionality
-let recipients = [];
-let smsHistory = JSON.parse(localStorage.getItem('smsHistory')) || [];
-let smsStats = JSON.parse(localStorage.getItem('smsStats')) || {
-  sent: 0,
-  pending: 0,
-  failed: 0
-};
 
-// SMS Templates
-const smsTemplates = {
-  rappel: "Bonjour, rappel de votre rendez-vous demain à [heure] au DIKRA centre Dentaire. Merci de confirmer.",
-  confirmation: "Votre rendez-vous du [date] à [heure] est confirmé. Au plaisir de vous accueillir !",
-  urgence: "DIKRA centre Dentaire - En cas d'urgence dentaire, contactez-nous au 05XX XX XX XX.",
-  promotion: "Découvrez nos nouvelles offres ! Consultation gratuite pour les nouveaux patients. Réservez dès maintenant !"
-};
 
-// DOM elements
-const recipientInput = document.getElementById('recipientInput');
-const recipientTags = document.getElementById('recipientTags');
-const messageTextarea = document.getElementById('messageTextarea');
-const charCounter = document.getElementById('charCounter');
-const sendButton = document.getElementById('sendButton');
-const historyList = document.getElementById('historyList');
-const totalSent = document.getElementById('totalSent');
-const totalPending = document.getElementById('totalPending');
-const totalFailed = document.getElementById('totalFailed');
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  setupEventListeners();
-  updateUI();
-  updateCharCounter();
-});
-
-// Setup event listeners
-function setupEventListeners() {
-  recipientInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      addRecipient();
-    }
-  });
-
-  messageTextarea.addEventListener('input', updateCharCounter);
-  messageTextarea.addEventListener('input', updateSendButton);
-}
-
-// Add recipient
-function addRecipient() {
-  const phone = recipientInput.value.trim();
-  if (!phone) return;
-
-  // Basic phone validation
-  const phoneRegex = /^(\+212|0)[6-7]\d{8}$/;
-  if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
-    alert('Veuillez entrer un numéro de téléphone valide (format: +212 6XX XXX XXX ou 06XX XXX XXX)');
-    return;
-  }
-
-  if (!recipients.includes(phone)) {
-    recipients.push(phone);
-    updateRecipientTags();
-    recipientInput.value = '';
-    updateSendButton();
-  }
-}
-
-// Update recipient tags
-function updateRecipientTags() {
-  recipientTags.innerHTML = '';
-  recipients.forEach((recipient, index) => {
-    const tag = document.createElement('div');
-    tag.className = 'recipient-tag';
-    tag.innerHTML = `
-      ${recipient}
-      <span class="tag-remove" onclick="removeRecipient(${index})">×</span>
-    `;
-    recipientTags.appendChild(tag);
-  });
-}
-
-// Remove recipient
-function removeRecipient(index) {
-  recipients.splice(index, 1);
-  updateRecipientTags();
-  updateSendButton();
-}
-
-// Use template
-function useTemplate(templateKey) {
-  const template = smsTemplates[templateKey];
-  if (template) {
-    messageTextarea.value = template;
-    updateCharCounter();
-    updateSendButton();
-    messageTextarea.focus();
-  }
-}
-
-// Update character counter
-function updateCharCounter() {
-  const length = messageTextarea.value.length;
-  const maxLength = 160;
-  charCounter.textContent = `${length}/${maxLength} caractères`;
-
-  if (length > maxLength * 0.9) {
-    charCounter.className = 'char-counter error';
-  } else if (length > maxLength * 0.8) {
-    charCounter.className = 'char-counter warning';
-  } else {
-    charCounter.className = 'char-counter';
-  }
-}
-
-// Update send button
-function updateSendButton() {
-  const hasRecipients = recipients.length > 0;
-  const hasMessage = messageTextarea.value.trim().length > 0;
-  const isValidLength = messageTextarea.value.length <= 160;
-
-  sendButton.disabled = !hasRecipients || !hasMessage || !isValidLength;
-}
-
-// Send SMS
-async function sendSMS() {
-  if (sendButton.disabled) return;
-
-  const message = messageTextarea.value.trim();
-  if (!message || recipients.length === 0) return;
-
-  // Disable send button
-  sendButton.disabled = true;
-  sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
-
-  try {
-    // Simulate sending SMS to each recipient
-    for (const recipient of recipients) {
-      await sendSingleSMS(recipient, message);
-    }
-
-    // Clear form
-    recipients = [];
-    messageTextarea.value = '';
-    updateRecipientTags();
-    updateCharCounter();
-    updateSendButton();
-
-    alert(`SMS envoyé avec succès à ${recipients.length} destinataire(s) !`);
-
-  } catch (error) {
-    alert('Erreur lors de l\'envoi des SMS. Veuillez réessayer.');
-    console.error('SMS Error:', error);
-  } finally {
-    sendButton.disabled = false;
-    sendButton.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer SMS';
-  }
-}
-
-// Send single SMS (simulated)
-async function sendSingleSMS(recipient, message) {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000));
-
-  // Simulate random success/failure (90% success rate)
-  const success = Math.random() > 0.1;
-
-  const smsRecord = {
-    id: Date.now() + Math.random(),
-    recipient: recipient,
-    message: message,
-    timestamp: new Date(),
-    status: success ? 'sent' : 'failed'
-  };
-
-  smsHistory.unshift(smsRecord);
-
-  if (success) {
-    smsStats.sent++;
-  } else {
-    smsStats.failed++;
-  }
-
-  saveData();
-  updateUI();
-}
-
-// Update UI
-function updateUI() {
-  updateHistory();
-  updateStats();
-}
-
-// Update history
-function updateHistory() {
-  if (smsHistory.length === 0) {
-    historyList.innerHTML = `
-      <div class="empty-history">
-        <div class="empty-icon">
-          <i class="fas fa-inbox"></i>
-        </div>
-        <p class="empty-text">Aucun SMS envoyé pour le moment</p>
-      </div>
-    `;
-    return;
-  }
-
-  historyList.innerHTML = '';
-  smsHistory.slice(0, 50).forEach(sms => { // Show last 50
-    const item = document.createElement('div');
-    item.className = 'history-item';
-
-    const statusClass = sms.status === 'sent' ? 'status-sent' :
-                       sms.status === 'failed' ? 'status-failed' : 'status-pending';
-    const statusText = sms.status === 'sent' ? 'Envoyé' :
-                      sms.status === 'failed' ? 'Échoué' : 'En attente';
-
-    item.innerHTML = `
-      <div class="history-meta">
-        <div class="history-recipient">${sms.recipient}</div>
-        <div class="history-time">${formatTime(sms.timestamp)}</div>
-      </div>
-      <div class="history-message">${sms.message}</div>
-      <div class="history-status ${statusClass}">${statusText}</div>
-    `;
-
-    historyList.appendChild(item);
-  });
-}
-
-// Update stats
-function updateStats() {
-  totalSent.textContent = smsStats.sent;
-  totalPending.textContent = smsStats.pending;
-  totalFailed.textContent = smsStats.failed;
-}
-
-// Format time
-function formatTime(date) {
-  const d = new Date(date);
-  const now = new Date();
-  const diff = now - d;
-
-  if (diff < 60000) return 'À l\'instant';
-  if (diff < 3600000) return `Il y a ${Math.floor(diff / 60000)} min`;
-  if (diff < 86400000) return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
-}
-
-// Save data
-function saveData() {
-  localStorage.setItem('smsHistory', JSON.stringify(smsHistory));
-  localStorage.setItem('smsStats', JSON.stringify(smsStats));
-}
-
-/*
- * SMS API Integration Structure
- *
- * To integrate with a real SMS service, replace sendSingleSMS() with:
- *
- * async function sendSingleSMS(recipient, message) {
- *   try {
- *     const response = await fetch('/api/sms/send', {
- *       method: 'POST',
- *       headers: {
- *         'Content-Type': 'application/json',
- *       },
- *       body: JSON.stringify({
- *         to: recipient,
- *         message: message
- *       })
- *     });
- *
- *     const result = await response.json();
- *
- *     const smsRecord = {
- *       id: Date.now(),
- *       recipient: recipient,
- *       message: message,
- *       timestamp: new Date(),
- *       status: result.success ? 'sent' : 'failed',
- *       apiId: result.messageId
- *     };
- *
- *     smsHistory.unshift(smsRecord);
- *     if (result.success) smsStats.sent++;
- *     else smsStats.failed++;
- *
- *     saveData();
- *     updateUI();
- *
- *   } catch (error) {
- *     // Handle error
- *     smsStats.failed++;
- *     saveData();
- *     updateUI();
- *     throw error;
- *   }
- * }
- */
-</script>
-
-</body>
+<script src="../../js/common.js"></script></body>
 </html>
+
 
 
 
